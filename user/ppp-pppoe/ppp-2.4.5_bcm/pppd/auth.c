@@ -1002,6 +1002,7 @@ auth_withpeer_fail(unit, protocol)
      */
     status = EXIT_AUTH_TOPEER_FAILED;
     lcp_close(unit, "Failed to authenticate ourselves to peer");
+	system("nvram_set 2860 wan_wan0_pppoe_auth failed");
 }
 
 /*
@@ -1048,6 +1049,7 @@ auth_withpeer_success(unit, protocol, prot_flavor)
     }
 
     notice("%s authentication succeeded", prot);
+	system("nvram_set 2860 wan_wan0_pppoe_auth success");
 
     /* Save the authentication method for later. */
     auth_done[unit] |= bit;

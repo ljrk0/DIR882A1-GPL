@@ -1,0 +1,2 @@
+/* svn info: $Revision: 847 $ $Date: 2018-06-06 18:37:11 +0800 (Wed, 06 Jun 2018) $ */
+function SOAPGetOperationModeResponse(){this.OperationModeList=new SOAPOperationModeList}function SOAPOperationModeList(){var e=new SOAPOperationModeInfo;this.OperationModeInfo=$.makeArray(e)}function SOAPOperationModeInfo(){var e=new Array;this.RadioID="",this.CurrentOPMode="",this.AvailableOPMode=$.makeArray(e)}function SOAPSetOperationModeResponse(){this.RadioID="",this.CurrentOPMode=""}

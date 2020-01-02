@@ -25,10 +25,18 @@
 */
 
 #include "rt_config.h"
+#ifdef DLINK_SUPERMESH_SUPPROT
 #include "dlink_mesh.h"
 extern int (*dlink_hook_set_mesh_ie)(UCHAR *mesh_ie, int maxlen);
 char * dlink_mesh_get_ssid(uint8_t *ssid_len);
-
+int dlink_mesh_scan_done(void);
+int dlink_mesh_check_scan_running(RTMP_ADAPTER *pAd);
+int dlink_mesh_scan_get_ch_idx(RTMP_ADAPTER *pAd);
+int dlink_mesh_scan_deinit(RTMP_ADAPTER *pAd);
+uint8_t dlink_mesh_scan_find_channel(RTMP_ADAPTER *pAd);
+int dlink_mesh_select_best_channel(RTMP_ADAPTER *pAd);
+int dlink_mesh_check_nb_scan(RTMP_ADAPTER *pAd);
+#endif
 
 #ifdef SCAN_SUPPORT
 
@@ -197,13 +205,27 @@ INT scan_ch_restore(RTMP_ADAPTER *pAd, UCHAR OpMode, struct wifi_dev *pwdev)
 		if (pAd->ApCfg.bAutoChannelAtBootup==TRUE)
 		{
 			UCHAR RfIC = wmode_2_rfic(wdev->PhyMode);
-			wdev->channel = SelectBestChannel(pAd, pAd->ApCfg.AutoChannelAlg);
-			pAd->ApCfg.bAutoChannelAtBootup = FALSE;
+#ifdef DLINK_SUPERMESH_SUPPROT
+			/* dlink mesh: start */
+			if (dlink_mesh_check_scan_running(pAd) == 0)
+			/* dlink mesh: end */
+#endif
+			{
+				pAd->ApCfg.bAutoChannelAtBootup = FALSE;
+#ifdef DLINK_SUPERMESH_SUPPROT
+				/* dlink mesh: start */
+				if (dlink_mesh_select_best_channel(pAd) == 0)
+				/* dlink mesh: end */
+#endif
+				{
+					wdev->channel = SelectBestChannel(pAd, pAd->ApCfg.AutoChannelAlg);
 #ifdef DOT11_N_SUPPORT
-			N_ChannelCheck(pAd,wdev->PhyMode,wdev->channel);
+					N_ChannelCheck(pAd,wdev->PhyMode,wdev->channel);
 #endif /* DOT11_N_SUPPORT */
-			APStopByRf(pAd, RfIC);
-			APStartUpByRf(pAd, RfIC);
+					APStopByRf(pAd, RfIC);
+					APStartUpByRf(pAd, RfIC);
+				}	
+			}
 		}
 
 	        if (((pAd->CommonCfg.Channel > 14) &&
@@ -317,13 +339,14 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType,struct wi
 #ifdef CON_WPS
 	PWSC_CTRL pWscControl = NULL;
 #endif /*CON_WPS*/	
+#ifdef DLINK_SUPERMESH_SUPPROT
 /* dlink mesh: start */
 char *mesh_ssid = NULL;
 UCHAR mesh_ie[MESH_IE_MAX] = {0};
 ULONG dlink_ie_len = 0;
 ULONG mesh_ie_len = 0;
 /* dlink mesh: end */
-
+#endif
 
 	if (MlmeAllocateMemory(pAd, &frm_buf) != NDIS_STATUS_SUCCESS)
 	{
@@ -404,8 +427,9 @@ ULONG mesh_ie_len = 0;
 			MgtMacHeaderInitExt(pAd, &Hdr80211, SUBTYPE_PROBE_REQ, 0, BROADCAST_ADDR, 
 								src_mac_addr,
 								BROADCAST_ADDR);
+#ifdef DLINK_SUPERMESH_SUPPROT
 			/* dlink mesh: start */
-			if (pAd->ScanCtrl.PartialScan.bScanning == TRUE && wdev->dlink_mesh_en)
+			if (pAd->ScanCtrl.PartialScan.bScanning == TRUE && wdev->dlink_mesh_scan_en)
 				{
 				mesh_ssid = dlink_mesh_get_ssid(&SsidLen);
 				MakeOutgoingFrame(frm_buf,				&FrameLen,
@@ -420,6 +444,7 @@ ULONG mesh_ie_len = 0;
 				}
 			else
 			/* dlink mesh: end */
+#endif
 			MakeOutgoingFrame(frm_buf,				 &FrameLen,
 							  sizeof(HEADER_802_11),	&Hdr80211,
 							  1,						&SsidIe,
@@ -582,6 +607,7 @@ ULONG mesh_ie_len = 0;
 #endif /* DOT11_VHT_AC */
 	}
 #endif /* DOT11_N_SUPPORT */
+#ifdef DLINK_SUPERMESH_SUPPROT
 /* dlink mesh: start */
 if (dlink_hook_set_mesh_ie)
 	{
@@ -594,7 +620,7 @@ if (dlink_hook_set_mesh_ie)
 		}
 	}
 /* dlink mesh: end */
-
+#endif
 
 #ifdef WSC_STA_SUPPORT
 	if (OpMode == OPMODE_STA)
@@ -835,7 +861,18 @@ VOID ScanNextChannel(RTMP_ADAPTER *pAd, UCHAR OpMode, struct wifi_dev *pwdev)
 #endif	//APCLI_SUPPORT
 #endif	//CONFIG_AP_SUPPORT
 #endif	// WH_EZ_SETUP
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+			/* dlink mesh: start */
+			if(dlink_mesh_check_scan_running(pAd) == 0)
+			{
+				if (dlink_mesh_check_nb_scan(pAd) == 1)
+				{
+					dlink_mesh_scan_done();
+				}
+				dlink_mesh_scan_deinit(pAd);
+			}
+			/* dlink mesh: end */
+#endif
 	} 
 	else 
 	{
@@ -902,15 +939,36 @@ VOID ScanNextChannel(RTMP_ADAPTER *pAd, UCHAR OpMode, struct wifi_dev *pwdev)
 			MTWF_LOG(DBG_CAT_PROTO, DBG_SUBCAT_ALL, DBG_LVL_ERROR, ("%s():ScanTimer not assigned!\n", __FUNCTION__));
 			return;
 		}
-	/* dlink mesh: start */
-	/* FIXME: it should be wrong that do active scan immediately in DFS channel. */
-	if(pAd->ScanCtrl.PartialScan.bScanning == TRUE && ScanType==SCAN_ACTIVE)
-		{
-		ScanType = FAST_SCAN_ACTIVE;
-		}
-	/* dlink mesh: end */		
+	
 		/* We need to shorten active scan time in order for WZC connect issue */
 		/* Chnage the channel scan time for CISCO stuff based on its IAPP announcement */
+#ifdef DLINK_SUPERMESH_SUPPROT
+		/* dlink mesh: start */
+		if (dlink_mesh_check_scan_running(pAd) == 1)
+		{
+			int cur_chindex = dlink_mesh_scan_get_ch_idx(pAd);
+
+			if (cur_chindex != -1)
+			{
+				if (pAd->ApCfg.bAutoChannelAtBootup ||
+					pAd->ChannelList[cur_chindex].DfsReq == TRUE)
+				{
+					ScanType = SCAN_PASSIVE;
+				}
+			}
+
+			if (ScanType == SCAN_PASSIVE)
+			{
+				stay_time = MIN_CHANNEL_TIME;
+			}
+			else
+			{
+				stay_time = FAST_ACTIVE_SCAN_TIME;
+			}
+		}
+		/* dlink mesh: end */
+		else 
+#endif
 		if (ScanType == FAST_SCAN_ACTIVE)
 			stay_time = FAST_ACTIVE_SCAN_TIME;
 		else /* must be SCAN_PASSIVE or SCAN_ACTIVE*/
@@ -1056,6 +1114,14 @@ UCHAR FindScanChannel(
 
 	if (pAd->ScanCtrl.PartialScan.bScanning == TRUE)
 	{
+#ifdef DLINK_SUPERMESH_SUPPROT
+		/* dlink mesh: start */
+		if (pAd->ScanCtrl.DLinkScan)
+		{
+			return dlink_mesh_scan_find_channel(pAd);
+		}
+		/* dlink mesh: end */
+#endif
 		scan_channel = FindPartialScanChannel(pAd);
 		return scan_channel;
 	}

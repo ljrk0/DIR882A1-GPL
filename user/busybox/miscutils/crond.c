@@ -39,7 +39,7 @@
 #define CRONUPDATE      "cron.update"
 #endif
 #ifndef MAXLINES
-#define MAXLINES        256	/* max lines in non-root crontabs */
+#define MAXLINES        3072	/* max lines in non-root crontabs */
 #endif
 
 

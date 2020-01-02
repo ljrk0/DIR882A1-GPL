@@ -947,6 +947,10 @@ BOOLEAN MacTableDeleteEntry(RTMP_ADAPTER *pAd, USHORT wcid, UCHAR *pAddr)
 		if((pAd->ApCfg.BandSteering == TRUE) && IS_ENTRY_CLIENT(pEntry) && IS_VALID_MAC(pEntry->Addr))
 			BndStrg_UpdateEntry(pAd, pEntry, FALSE, FALSE, 0, FALSE);
 #endif
+#ifdef BAND_STEERING_PLUS
+		if ((pAd->ApCfg.BandSteering) && IS_ENTRY_CLIENT(pEntry) && IS_VALID_MAC(pEntry->Addr))
+			BndStrg_UpdateEntry(pAd, pEntry, NULL, FALSE);
+#endif
 #endif /*CONFIG_AP_SUPPORT*/
 
 #ifdef MT_PS

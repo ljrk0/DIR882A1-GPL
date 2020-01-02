@@ -962,6 +962,11 @@ VOID UserCfgExit(RTMP_ADAPTER *pAd)
 			BndStrg_Release(pAd);
 		}
 #endif /* BAND_STEERING */
+#ifdef BAND_STEERING_PLUS
+		if (pAd->ApCfg.BandSteering) {
+			BndStrg_Release(pAd);
+		}
+#endif /* BAND_STEERING */
 	}
 #endif /* CONFIG_AP_SUPPORT */
 

@@ -150,6 +150,8 @@ VOID WscSetupLockTimeout(
                         wdev,
                         IE_CHANGE);
 	MTWF_LOG(DBG_CAT_SEC, CATSEC_WPS, DBG_LVL_TRACE, ("WscSetupLockTimeout!\n"));
+	printk("WscSetupLockTimeout() -------------->  wps pin func recover!!!\n");
+		
 
 	return;
 }
@@ -181,6 +183,31 @@ VOID	WscCheckPinAttackCount(
 		(i.e., until the user intervenes to unlock AP's  PIN for use by external Registrars)
 	*/
 	pWscControl->PinAttackCount++;
+	printk("WscCheckPinAttackCount() -------------->  pWscControl->PinAttackCount=%d\n",pWscControl->PinAttackCount);
+	printk("WscCheckPinAttackCount() -------------->  pWscControl->MaxPinAttack=%d\n",pWscControl->MaxPinAttack);
+	printk("WscCheckPinAttackCount() -------------->  pWscControl->SetupLockTime=%d\n",pWscControl->SetupLockTime);
+	
+	/*
+		Dlink wps pin lock spec:
+
+		1. WPS Configuration will not successfully pass the authentication for the first 2 
+		incorrect PINs but will be successful on the 3rd trial with the correct PIN. (Major) 
+		2. WPS Configuration will not be successful to pass authentication after 10 incorrect 
+		PIN trial. (Major) 
+
+		Note: 
+		DUT will be locked after the fail count is 3 or more. 
+		The locking time is (2 ^ fail_counter-3)*60, and list fail count with lock time as below, 
+		3 : 1 minute 
+		4 : 2 minutes 
+		5 : 4 minutes 
+		6 : 8 minutes 
+		7 : 16 minutes 
+		8 : 32 minutes 
+		9 : 64 minutes 
+		10 : Locked forever until reboot
+	*/
+
 	if (pWscControl->PinAttackCount >= pWscControl->MaxPinAttack)
 	{		
 		pWscControl->bSetupLock = TRUE;
@@ -193,7 +220,11 @@ VOID	WscCheckPinAttackCount(
 		if (pWscControl->PinAttackCount < WSC_LOCK_FOREVER_PIN_ATTACK)
 		{
 			pWscControl->WscSetupLockTimerRunning = TRUE;
-			RTMPSetTimer(&pWscControl->WscSetupLockTimer, pWscControl->SetupLockTime*60*1000);
+			//RTMPSetTimer(&pWscControl->WscSetupLockTimer, pWscControl->SetupLockTime*60*1000);
+			if(pWscControl->PinAttackCount>=3)
+			    RTMPSetTimer(&pWscControl->WscSetupLockTimer, (pWscControl->PinAttackCount-2)*60*1000);
+			else
+				RTMPSetTimer(&pWscControl->WscSetupLockTimer, pWscControl->SetupLockTime*60*1000);
 		}
 			WscBuildBeaconIE(pAd, 
 							 pWscControl->WscConfStatus, 

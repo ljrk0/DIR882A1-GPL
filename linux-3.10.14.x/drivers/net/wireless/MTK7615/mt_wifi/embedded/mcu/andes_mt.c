@@ -2982,8 +2982,8 @@ INT AndesLedEnhanceOP(
 	ret = AndesSendCmdMsg(pAd, msg);
 	if (ret)
 		printk("%s: Fail!\n", __FUNCTION__);
-	else
-		printk("%s: Success!\n", __FUNCTION__);
+	//else
+	//	printk("%s: Success!\n", __FUNCTION__);
 	os_free_mem(buf);
 
 error:

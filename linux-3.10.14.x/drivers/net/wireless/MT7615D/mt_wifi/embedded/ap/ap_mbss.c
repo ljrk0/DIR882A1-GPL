@@ -427,6 +427,17 @@ INT MBSS_Close(PNET_DEV pDev)
 	wdev->bAllowBeaconing = FALSE;
 	WifiSysApLinkDown(pAd,wdev);
 	WifiSysClose(pAd,wdev);
+#ifdef BAND_STEERING_PLUS
+	if (pAd->ApCfg.BandSteering) {
+		PBND_STRG_CLI_TABLE table;
+
+		table = Get_BndStrgTable(pAd, BssId);
+		if (table) {
+			/* Inform daemon interface down */
+			BndStrg_SetInfFlags(pAd, wdev, table, FALSE);
+		}
+	}
+#endif /* BAND_STEERING_PLUS */
 
 	return 0;
 }

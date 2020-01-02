@@ -2832,6 +2832,11 @@ LabelOK:
 		BndStrg_UpdateEntry(pAd, pEntry, bHTCap, bVHTCap, nss, TRUE);
 	}
 #endif
+#ifdef BAND_STEERING_PLUS
+		if (pAd->ApCfg.BandSteering) {
+			BndStrg_UpdateEntry(pAd, pEntry, ie_list, TRUE);
+		}
+#endif
 
 #ifdef VENDOR_FEATURE6_SUPPORT
     if(arris_event_send_hook && (StatusCode == MLME_SUCCESS))

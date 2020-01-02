@@ -347,11 +347,15 @@ EXPORT_SYMBOL(dma_find_channel);
  */
 struct dma_chan *net_dma_find_channel(void)
 {
+#if defined (CONFIG_SPLICE_NET_SUPPORT)
 	struct dma_chan *chan = dma_find_channel(DMA_MEMCPY);
 	if (chan && !is_dma_copy_aligned(chan->device, 1, 1, 1))
 		return NULL;
 
 	return chan;
+#else
+	return NULL;
+#endif
 }
 EXPORT_SYMBOL(net_dma_find_channel);
 

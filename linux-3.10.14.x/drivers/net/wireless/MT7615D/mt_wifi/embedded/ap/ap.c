@@ -1070,7 +1070,8 @@ VOID APStartUpForMbss(RTMP_ADAPTER *pAd,BSS_STRUCT *pMbss)
 #ifdef MT_DFS_SUPPORT    
     if((pAd->Dot11_H.RDMode == RD_SILENCE_MODE)  && (pMbss->wdev.channel > 14)) 
 	{
-    DfsCacNormalStart(pAd);
+		if(pMbss->wdev.channel > 48 && pMbss->wdev.channel < 149 )
+			DfsCacNormalStart(pAd);
     }	
     
 #endif
@@ -1159,10 +1160,14 @@ VOID APStartUpForMbss(RTMP_ADAPTER *pAd,BSS_STRUCT *pMbss)
             {
                 if(pAd->Dot11_H.RDMode == RD_NORMAL_MODE) 
 				{
-					DfsCacNormalStart(pAd);
+					if(pMbss->wdev.channel > 48 && pMbss->wdev.channel < 149 )
+                   		DfsCacNormalStart(pAd);
 			    }	
 		if(pMbss->wdev.channel > 14)
-			WrapDfsRadarDetectStart(pAd);    
+		{
+			if(pMbss->wdev.channel > 48 && pMbss->wdev.channel < 149 )
+                    	WrapDfsRadarDetectStart(pAd); 
+		}			
             }
 #endif /* MT_DFS_SUPPORT */
         } 
@@ -1193,6 +1198,20 @@ VOID APStartUpForMbss(RTMP_ADAPTER *pAd,BSS_STRUCT *pMbss)
                 greenap_get_allow_status(greenap));        
     }
 #endif /* GREENAP_SUPPORT */
+#ifdef BAND_STEERING_PLUS
+#ifdef CONFIG_AP_SUPPORT
+		if (pAd->ApCfg.BandSteering) {
+			PBND_STRG_CLI_TABLE table;
+	
+			table = Get_BndStrgTable(pAd, pMbss->mbss_idx);
+			if (table) {
+				/* Inform daemon interface ready */
+				BndStrg_SetInfFlags(pAd, &pMbss->wdev, table, TRUE);
+			}
+		}
+#endif /* CONFIG_AP_SUPPORT */
+#endif /* BAND_STEERING_PLUS */
+
 
 	if (wdev->bAllowBeaconing)
 	{
@@ -1547,7 +1566,8 @@ VOID APStartUpForMain(RTMP_ADAPTER *pAd)
 #endif /* DOT11R_FT_SUPPORT */
 
 
-#ifdef BAND_STEERING
+
+#if defined BAND_STEERING || defined BAND_STEERING_PLUS
 	if (pAd->ApCfg.BandSteering)
 		BndStrg_Init(pAd);
 #endif /* BAND_STEERING */
@@ -1685,6 +1705,17 @@ VOID APStopByRf(RTMP_ADAPTER *pAd,UCHAR RfIC)
 		WifiSysClose(pAd, &pMbss->wdev);
 
 		APReleaseRekeyTimer(pAd, &pMbss->wdev);
+#ifdef BAND_STEERING_PLUS
+	if (pAd->ApCfg.BandSteering) {
+			PBND_STRG_CLI_TABLE table;
+
+			table = Get_BndStrgTable(pAd, idx);
+		if (table) {
+				/* Inform daemon interface ready */
+				BndStrg_SetInfFlags(pAd, &pMbss->wdev, table, FALSE);
+			}
+		}
+#endif /* BAND_STEERING_PLUS */
 
 	}
 

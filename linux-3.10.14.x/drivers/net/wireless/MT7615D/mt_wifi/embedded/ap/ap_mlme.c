@@ -473,6 +473,9 @@ VOID APMlmePeriodicExec(
 #endif /* DOT11_N_SUPPORT */
 #endif /* APCLI_SUPPORT */
 
+#ifdef BAND_STEERING_PLUS
+	BndStrgHeartBeatMonitor(pAd);
+#endif
 
 }
 

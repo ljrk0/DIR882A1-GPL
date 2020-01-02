@@ -1,0 +1,234 @@
+#!/bin/sh
+
+##############################################################################
+#
+# INTEL CONFIDENTIAL
+# Copyright (c) 2016 Intel Corporation All Rights Reserved
+#
+# The source code contained or described herein and all documents related
+# to the source code ("Material") are owned by Intel Corporation or its
+# suppliers or licensors. Title to the Material remains with Intel
+# Corporation or its suppliers and licensors. The Material contains trade
+# secrets and proprietary and confidential information of Intel or its
+# suppliers and licensors. The Material is protected by worldwide copyright
+# and trade secret laws and treaty provisions. No part of the Material may
+# be used, copied, reproduced, modified, published, uploaded, posted,
+# transmitted, distributed, or disclosed in any way without Intel's prior
+# express written permission.
+#
+# No license under any patent, copyright, trade secret or other intellectual
+# property right is granted to or conferred upon you by disclosure or
+# delivery of the Materials, either expressly, by implication, inducement,
+# estoppel or otherwise. Any license under such intellectual property rights
+# must be express and approved by Intel in writing.
+#
+##############################################################################
+
+. /etc/shgw/shgw.constants
+. /etc/shgw/shgw.common
+. /etc/shgw/shgw.errno
+. /etc/shgw/shgw.env
+
+
+get_wan_iface(){
+	WAN_IFACE=$(fn_get_wan_iface)
+}
+
+flush_ipv4_tables() {
+	${IPTABLES} -w -F SHP_MGT_CONSOLE_B -t filter
+	${IPTABLES} -w -F SHP_MGT_CONSOLE_A -t filter
+
+	${IPTABLES} -w -F SHP_WAN_BLOCK -t filter
+	${IPTABLES} -w -F SHP_WAN_ALLOW -t filter
+}
+
+flush_ipv4_ipset() {
+	${IPSET} -F SHP_MGT_CONSOLE_SET_A
+	${IPSET} -F SHP_WAN_ALLOW_SET
+}
+
+flush_ipv6_tables() {
+	${IP6TABLES} -w -F SHP_MGT_CONSOLE_B -t filter
+	${IP6TABLES} -w -F SHP_MGT_CONSOLE_A -t filter
+	
+	${IP6TABLES} -w -F SHP_WAN_BLOCK -t filter
+	${IP6TABLES} -w -F SHP_WAN_ALLOW -t filter
+}
+
+flush_ipv6_ipset() {
+	${IPSET} -F SHP_MGT_CONSOLE_SET_A_IP6
+	${IPSET} -F SHP_WAN_ALLOW_SET_IP6	
+}
+
+add_ipsets_to_iptables() {
+		${IPTABLES} -w -I SHP_WAN_ALLOW -m set --match-set SHP_WAN_ALLOW_SET dst,dst -t filter -i ${WAN_IFACE} -p tcp -j ACCEPT
+		${IPTABLES} -w -I SHP_MGT_CONSOLE_A -m set --match-set SHP_MGT_CONSOLE_SET_A src,dst -t filter -j ACCEPT
+		${IP6TABLES} -w -I SHP_WAN_ALLOW -m set --match-set SHP_WAN_ALLOW_SET_IP6 dst,dst -i ${WAN_IFACE} -p tcp -t filter -j ACCEPT
+		${IP6TABLES} -w -I SHP_MGT_CONSOLE_A -m set --match-set SHP_MGT_CONSOLE_SET_A_IP6 src,dst -t filter -j ACCEPT
+}
+
+check_and_run_script() {
+	flush_ipv4_tables
+	flush_ipv6_tables
+	add_ipsets_to_iptables
+	if [ -f ${SHGW_INBOUND_SEC_SCRIPT} ]; then
+		${CHMOD} +x ${SHGW_INBOUND_SEC_SCRIPT}
+		${SHGW_INBOUND_SEC_SCRIPT}
+	 	${RM} -f ${SHGW_INBOUND_SEC_SCRIPT}
+	fi
+}
+
+#Creates 4 user defined chains and inserts rules
+create_ip4table_chains() {
+	${IPTABLES} -w -N SHP_WAN_BLOCK -t filter
+	${IPTABLES} -w -N SHP_WAN_ALLOW -t filter
+	${IPSET} -N SHP_WAN_ALLOW_SET hash:ip,port
+	
+	insert_filter_forward_ipset_ip4targets
+	${IPTABLES} -w -I SHP_WAN_ALLOW -m set --match-set SHP_WAN_ALLOW_SET dst,dst -t filter -i ${WAN_IFACE} -p tcp -j ACCEPT
+	
+	${IPTABLES} -w -N SHP_MGT_CONSOLE_B -t filter
+	${IPTABLES} -w -N SHP_MGT_CONSOLE_A -t filter
+	${IPSET} -N SHP_MGT_CONSOLE_SET_A hash:ip,port
+	
+	insert_filter_input_ipset_ip4targets
+	${IPTABLES} -w -I SHP_MGT_CONSOLE_A -m set --match-set SHP_MGT_CONSOLE_SET_A src,dst -t filter -j ACCEPT
+}
+
+remove_ip4table_chains() {
+	flush_ipv4_tables
+	flush_ipv4_ipset
+		
+
+	remove_filter_input_ipset_ip4targets	
+	${IPSET} -X SHP_MGT_CONSOLE_SET_A
+	${IPTABLES} -w -X SHP_MGT_CONSOLE_B -t filter
+	${IPTABLES} -w -X SHP_MGT_CONSOLE_A -t filter
+		
+	remove_filter_forward_ipset_ip4targets
+	
+	${IPSET} -X SHP_WAN_ALLOW_SET
+	${IPTABLES} -w -X SHP_WAN_BLOCK -t filter
+	${IPTABLES} -w -X SHP_WAN_ALLOW -t filter	
+}
+
+# Insert IP4 targets in INPUT chain for ipset interception
+insert_filter_input_ipset_ip4targets() {
+	${IPTABLES} -w -I INPUT -t filter -j SHP_MGT_CONSOLE_B
+	${IPTABLES} -w -I INPUT -t filter -j SHP_MGT_CONSOLE_A
+}
+
+# Insert IP6 targets in INPUT chain for ipset interception
+insert_filter_input_ipset_ip6targets() {
+	${IP6TABLES} -w -I INPUT -t filter -j SHP_MGT_CONSOLE_B
+	${IP6TABLES} -w -I INPUT -t filter -j SHP_MGT_CONSOLE_A
+}
+
+# Insert IP4 targets in FORWARD chain for ipset interception
+insert_filter_forward_ipset_ip4targets() {
+	${IPTABLES} -w -I FORWARD -t filter -j SHP_WAN_BLOCK
+	${IPTABLES} -w -I FORWARD -t filter -j SHP_WAN_ALLOW
+}
+
+# Insert IP6 targets in FORWARD chain for ipset interception
+insert_filter_forward_ipset_ip6targets() {
+	${IP6TABLES} -w -I FORWARD -t filter -j SHP_WAN_BLOCK
+	${IP6TABLES} -w -I FORWARD -t filter -j SHP_WAN_ALLOW
+}
+# Remove IP4 targets from INPUT chain for ipset interception
+remove_filter_input_ipset_ip4targets() {
+	${IPTABLES} -w -D INPUT -t filter -j SHP_MGT_CONSOLE_B
+	${IPTABLES} -w -D INPUT -t filter -j SHP_MGT_CONSOLE_A
+}
+
+# Remove IP6 targets from INPUT chain for ipset interception
+remove_filter_input_ipset_ip6targets() {
+	${IP6TABLES} -w -D INPUT -t filter -j SHP_MGT_CONSOLE_B
+	${IP6TABLES} -w -D INPUT -t filter -j SHP_MGT_CONSOLE_A
+}
+
+# Remove IP4 targets from FORWARD chain for ipset interception
+remove_filter_forward_ipset_ip4targets() {
+	${IPTABLES} -w -D FORWARD -t filter -j SHP_WAN_BLOCK
+	${IPTABLES} -w -D FORWARD -t filter -j SHP_WAN_ALLOW
+}
+
+# Remove IP6 targets from FORWARD chain for ipset interception
+remove_filter_forward_ipset_ip6targets() {
+	${IP6TABLES} -w -D FORWARD -t filter -j SHP_WAN_BLOCK
+	${IP6TABLES} -w -D FORWARD -t filter -j SHP_WAN_ALLOW
+}
+
+#Creates 4 user defined chains and inserts rules
+create_ip6table_chains() {
+	${IP6TABLES} -w -N SHP_WAN_BLOCK -t filter
+	${IP6TABLES} -w -N SHP_WAN_ALLOW -t filter
+	${IPSET} -N SHP_WAN_ALLOW_SET_IP6 hash:ip,port family inet6
+	
+	insert_filter_forward_ipset_ip6targets
+	${IP6TABLES} -w -I SHP_WAN_ALLOW -m set --match-set SHP_WAN_ALLOW_SET_IP6 dst,dst -i ${WAN_IFACE} -p tcp -t filter -j ACCEPT
+	
+	${IP6TABLES} -w -N SHP_MGT_CONSOLE_B -t filter
+	${IP6TABLES} -w -N SHP_MGT_CONSOLE_A -t filter
+	${IPSET} -N SHP_MGT_CONSOLE_SET_A_IP6 hash:ip,port family inet6
+	
+	insert_filter_input_ipset_ip6targets
+	${IP6TABLES} -w -I SHP_MGT_CONSOLE_A -m set --match-set SHP_MGT_CONSOLE_SET_A_IP6 src,dst -t filter -j ACCEPT
+}
+
+remove_ip6table_chains() {
+	flush_ipv6_tables
+	flush_ipv6_ipset
+	
+	remove_filter_input_ipset_ip6targets
+	
+	${IPSET} -X SHP_MGT_CONSOLE_SET_A_IP6
+	${IP6TABLES} -w -X SHP_MGT_CONSOLE_B -t filter
+	${IP6TABLES} -w -X SHP_MGT_CONSOLE_A -t filter
+
+	remove_filter_forward_ipset_ip6targets	
+
+	${IPSET} -X SHP_WAN_ALLOW_SET_IP6
+	${IP6TABLES} -w -X SHP_WAN_BLOCK -t filter
+	${IP6TABLES} -w -X SHP_WAN_ALLOW -t filter	
+}
+
+#Main
+
+get_wan_iface
+
+case $1 in
+	inbound_sec_start)
+		remove_ip4table_chains
+		remove_ip6table_chains	
+		create_ip4table_chains
+		create_ip6table_chains
+		;;
+	inbound_sec_stop)
+		remove_ip4table_chains
+		remove_ip6table_chains
+		;;
+	add_rules)
+		check_and_run_script
+		;;
+	flush_ipset)
+		flush_ipv4_ipset
+		flush_ipv6_ipset
+		;;
+	halt_ipset)
+		remove_filter_input_ipset_ip4targets
+		remove_filter_input_ipset_ip6targets
+		remove_filter_forward_ipset_ip4targets
+		remove_filter_forward_ipset_ip6targets
+		;;
+	resume_ipset)
+		remove_filter_input_ipset_ip4targets
+		remove_filter_input_ipset_ip6targets
+		remove_filter_forward_ipset_ip4targets
+		remove_filter_forward_ipset_ip6targets
+		insert_filter_input_ipset_ip4targets
+		insert_filter_input_ipset_ip6targets
+		insert_filter_forward_ipset_ip4targets
+		insert_filter_forward_ipset_ip6targets
+		;;
+esac

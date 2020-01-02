@@ -4096,6 +4096,8 @@ VOID RTMPIoctlGetMacTable(
 	STA_TR_ENTRY *tr_entry;
 	char *msg;
 
+	POS_COOKIE  pObj = (POS_COOKIE) pAd->OS_Cookie;
+    UCHAR apIdx = pObj->ioctl_if;
 	/* allocate memory */
 	os_alloc_mem(NULL, (UCHAR **)&pMacTab, sizeof(RT_802_11_MAC_TABLE));
 	if (pMacTab == NULL)
@@ -4109,7 +4111,7 @@ VOID RTMPIoctlGetMacTable(
 	{
 		pEntry = &(pAd->MacTab.Content[i]);
 		tr_entry = &(pAd->MacTab.tr_entry[i]);
-                if (IS_ENTRY_CLIENT(pEntry) && (pEntry->Sst == SST_ASSOC))
+                if (IS_ENTRY_CLIENT(pEntry) && (pEntry->Sst == SST_ASSOC) && (pEntry->apidx == apIdx))
 		{
 			if(pMacTab->Num >= MAX_NUMBER_OF_MAC)
 			{
@@ -4170,7 +4172,8 @@ VOID RTMPIoctlGetMacTable(
 	for (i=0; VALID_UCAST_ENTRY_WCID(pAd, i); i++)
 	{
 		MAC_TABLE_ENTRY *pEntry = &pAd->MacTab.Content[i];
-
+		if(pEntry->func_tb_idx != (UCHAR)pObj->ioctl_if)
+			continue;
 		if (IS_ENTRY_CLIENT(pEntry) && (pEntry->Sst == SST_ASSOC))
 		{
 			if((strlen(msg)+MAC_LINE_LEN ) >= (GET_MAX_UCAST_NUM(pAd)*MAC_LINE_LEN) )
@@ -6599,7 +6602,7 @@ static INT dump_mac_table(RTMP_ADAPTER *pAd, UINT32 ent_type, BOOLEAN bReptCli)
 #if defined(MT7615)
 	UINT32 ps_stat[4] = {0};
 #endif
-
+	
 	if (wdev != NULL)
 		ucBand = HcGetBandByWdev(wdev);
 
@@ -6654,7 +6657,8 @@ static INT dump_mac_table(RTMP_ADAPTER *pAd, UINT32 ent_type, BOOLEAN bReptCli)
 			}
 #endif /* MAC_REPEATER_SUPPORT */
 		}
-
+		if(pEntry->func_tb_idx != (UCHAR)pObj->ioctl_if)
+			continue;
 		if ((pEntry->wdev == NULL) || HcGetBandByWdev(pEntry->wdev) != ucBand)
 			continue;
 
@@ -6992,8 +6996,8 @@ EXPORT_SYMBOL(wlconfig_assoc_flag);
 INT	Show_Assoc_Proc(RTMP_ADAPTER *pAd, RTMP_STRING *arg)
 {
         /*
-          ·ÂÕÕSDK iwpriv apcli0 show connStatus
-          Ô­°æº¯Êý RTMPIoctlConnStatus() ÊµÏÖ
+          ï¿½ï¿½ï¿½ï¿½SDK iwpriv apcli0 show connStatus
+          Ô­ï¿½æº¯ï¿½ï¿½ RTMPIoctlConnStatus() Êµï¿½ï¿½
         */
 	
 		INT i=0;

@@ -10,6 +10,17 @@ CFLAGS += -fPIC
 LDFLAGS	+= -L$(ROOTDIR)/user/apps/rcm -L$(ROOTDIR)/user/apps/notify_rc 
 LDFLAGS += -lnvram -lrcm -lnotifyrc -L$(ROOTDIR)/user/openssl-1.0.2j/ -lssl -lcrypto
 
+ifeq ($(CONFIG_FOTA), y)
+	CFLAGS += -DCONFIG_FOTA
+endif
+
+ifeq ($(CONFIG_IMG_CRYPT), y)
+	CFLAGS += -D__SUPPORT_IMG_CRYPT__
+endif
+
+ifeq ($(CONFIG_TZ_LOCATION), y)
+	CFLAGS += -DCONFIG_TZ_LOCATION
+endif
 
 OBJS := timer.o linux_timer.o
 

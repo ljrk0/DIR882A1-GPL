@@ -4245,6 +4245,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 					if (SelAlg > 3 || SelAlg < 0)
 					{
 						pAd->ApCfg.bAutoChannelAtBootup = FALSE;
+						pAd->ApCfg.AutoChannelAlg = 0;
 					}
 					else /*Enable*/
 					{
@@ -4257,7 +4258,10 @@ NDIS_STATUS	RTMPSetProfileParameters(
 					}
 				}
 				else /*Disable*/
+				{
 					pAd->ApCfg.bAutoChannelAtBootup = FALSE;
+					pAd->ApCfg.AutoChannelAlg = 0;
+				}
 				MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("AutoChannelAtBootup=%d\n", pAd->ApCfg.bAutoChannelAtBootup));
 			}
 

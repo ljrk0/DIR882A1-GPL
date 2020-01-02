@@ -103,6 +103,8 @@ ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A2")
 obj-$(CONFIG_MT_AP_SUPPORT)       += MT7615D/mt_wifi_ap/
 else ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A1")
 obj-$(CONFIG_MT_AP_SUPPORT)       += MT7615D/mt_wifi_ap/
+else ifeq ("$(CONFIG_PRODUCT)", "DIR_1360")
+obj-$(CONFIG_MT_AP_SUPPORT)       += MT7615D/mt_wifi_ap/
 else
 obj-$(CONFIG_MT_AP_SUPPORT)       += MTK7615/mt_wifi_ap/
 endif

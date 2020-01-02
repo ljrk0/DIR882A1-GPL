@@ -900,7 +900,9 @@ struct _vendor_ie_cap {
     BOOLEAN is_rlt;
     BOOLEAN is_mtk;
     BOOLEAN is_quant;
+#ifdef DLINK_SUPERMESH_SUPPROT
 	BOOLEAN is_dlink_mesh;
+#endif
 #ifdef WH_EZ_SETUP
 	UINT ez_capability;
 #ifdef NEW_CONNECTION_ALGO
@@ -1188,8 +1190,6 @@ typedef struct _BSS_ENTRY{
 #endif /* DOT11K_RRM_SUPPORT */
 #ifdef MWDS
 	BOOLEAN		bSupportMWDS; 		/* Determine If own MWDS capability */
-	uint8_t snr;
-	uint16_t tmp[2];
 
 
 #endif /* MWDS */

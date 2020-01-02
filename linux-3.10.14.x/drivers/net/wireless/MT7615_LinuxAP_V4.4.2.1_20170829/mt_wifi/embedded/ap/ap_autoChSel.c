@@ -21,8 +21,10 @@
 
 #include "rt_config.h"
 #include "ap_autoChSel.h"
-
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+int dlink_mesh_update_ch_autosel_busytime(RTMP_ADAPTER *pAd, int ch_num, unsigned int *chidx_list);
+VOID dlink_mesh_build_2g_autoch_list(RTMP_ADAPTER *pAd);
+#endif
 extern UCHAR ZeroSsid[32];
 
 extern COUNTRY_REGION_CH_DESC Country_Region_ChDesc_2GHZ[];
@@ -622,6 +624,11 @@ static inline UCHAR SelectClearChannelBusyTime(
        	if(pChannelInfo == NULL)
 	{
 		MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_ERROR, ("pAd->pChannelInfo equal NULL.\n"));
+#ifdef DLINK_SUPERMESH_SUPPROT
+		/* dlink mesh: start */
+		dlink_mesh_update_ch_autosel_busytime(pAd, 0, NULL);
+		/* dlink mesh: end */
+#endif
 		return (FirstChannel(pAd));
 		
 	}
@@ -784,7 +791,11 @@ static inline UCHAR SelectClearChannelBusyTime(
         i, pSubGroupMaxBusyTimeTable[i], i, pSubGroupMaxBusyTimeChIdxTable[i],
         i, pSubGroupMinBusyTimeTable[i], i, pSubGroupMinBusyTimeChIdxTable[i]));
 	}
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+	/* dlink mesh: start */
+	dlink_mesh_update_ch_autosel_busytime(pAd, GroupNum, pSubGroupMinBusyTimeChIdxTable);
+	/* dlink mesh: end */
+#endif
 #ifdef DOT11_VHT_AC
         /*Return channel in case of VHT BW80+80*/
 	 if ((pAd->CommonCfg.vht_bw == VHT_BW_8080) 
@@ -2043,7 +2054,11 @@ VOID AutoChSelBuildChannelListFor2G(
     INT i = 0;
         
     MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_TRACE,("%s----------------->\n",__FUNCTION__));
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+    /* dlink mesh: start */
+    return dlink_mesh_build_2g_autoch_list(pAd);
+    /* dlink mesh: end */
+#endif
     for (i = 0; i <= pAd->AutoChSelCtrl.ChannelListNum2G; i++)
     {
         pAd->AutoChSelCtrl.AutoChSel2GChList[i].Channel = pAd->ChannelList[i].Channel;

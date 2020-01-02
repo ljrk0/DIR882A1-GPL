@@ -590,6 +590,11 @@ ifeq ($(CONFIG_BAND_STEERING),y)
     ap_objs +=  $(SRC_EMBEDDED_DIR)/ap/ap_band_steering.o
 endif
 
+ifeq ($(CONFIG_BAND_STEERING_PLUS),y)
+    EXTRA_CFLAGS += -DBAND_STEERING_PLUS
+    ap_objs +=  $(SRC_EMBEDDED_DIR)/ap/ap_band_steering_plus.o
+endif
+
 ifeq ($(CONFIG_VOW_SUPPORT),y)
     EXTRA_CFLAGS += -DVOW_SUPPORT
 endif

@@ -21,10 +21,15 @@ mngcli: mngcli.o
 	
 -include $(OBJS:%.o=.%.depend)
 romfs:
-	$(ROMFSINST) /bin/mngcli
 	mkdir -p $(ROOTDIR)/romfs/lib/McAfee
 	mkdir -p $(ROOTDIR)/romfs/etc/McAfee
 	mkdir -p $(ROOTDIR)/romfs/etc/McAfee/shqw
+	$(ROMFSINST) /bin/mngcli
+	cp -af bin/* $(ROOTDIR)/romfs/bin
+	cp -af lib/* $(ROOTDIR)/romfs/lib/
+	mkdir -p $(ROOTDIR)/romfs/etc_ro/McAfee
+	cp -af etc/* $(ROOTDIR)/romfs/etc_ro/McAfee/
+	
 	
 clean:
 	rm -f *.o mngcli .*.depend *.so

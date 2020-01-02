@@ -53,6 +53,23 @@ enum {
 #define FALSE 0
 #endif
 
+//private config
+#define PRIVATE_RANDROOTCA_PATH "/var/private/.randRootCA"
+#define PRIVATE_SERVER_KEY_PRIVATE_PATH "/private/server.key.private"
+#define PRIVATE_SERVER_KEY_PATH "/var/private/server.key"
+#define PRIVATE_SERVER_REQ_PATH "/private/server.req"
+#define LIGHTTPD_PEM_PATH "/var/private/lighttpd.pem"
+#define PRIVATE_PASSWORD "QaZWsX741852"
+//factory config
+#define FACTORY_MODE "factory_mode"
+#define FACTORY_MAC  "factory_mac"
+#define FACTORY_MODE_FLAG "/private/factory_mode"
+enum{
+	FACTORY_CONFIG,
+	DEFAULT_CONFIG,
+	USER_CONFIG
+};
+
 #if defined(PRODUCT_DIR853_A1)||defined(PRODUCT_DIR853_A2) ||defined(PRODUCT_DIR1360)
 #define INTERFACE_2G			"rax0"
 #define INTERFACE_5G			"ra0"
@@ -67,6 +84,12 @@ enum {
 #define APCLI_IF_5G 			"apclii0"
 #define INTERFACE_2G_GUEST1		"ra1"
 #define	INTERFACE_5G_GUEST1		"rai1"
+
+#endif
+#if defined(__THIRD_WIFI_CARD_SUPPORT__)
+#define MACNUM_WAN_LAN_INTERVAL 	4
+#else
+#define MACNUM_WAN_LAN_INTERVAL 	3
 #endif
 
 #define INTERNET_STATUS "/tmp/internet_status"
@@ -329,13 +352,6 @@ struct strbuf {
 	unsigned int origsize;	/* unmodified orignal buffer size in bytes */
 };
 
-#define FACTORY_MODE "factory_mode"
-enum{
-	FACTORY_CONFIG,
-	DEFAULT_CONFIG,
-	USER_CONFIG
-};
-
 extern void str_binit(struct strbuf *b, char *buf, uint size);
 extern int str_bprintf(struct strbuf *b, const char *fmt, ...);
 extern int get_meminfo_item(const char *name);
@@ -378,4 +394,53 @@ extern int tbsFileFullWrite(int iFD, const void *pszBuf, size_t ulLen);
 extern int  send_signal_to_pid(char *name,int type);
 extern int pingAccessible(const char * pHost);
 extern int pingDualStackAccessible(const char * pHost,int type);
+
+
+enum {
+    IP6_ADDR_UNKNOWNTYPE,
+    IP6_ADDR_LINKLOCAL,
+    IP6_ADDR_UNIQUELOCAL,
+    IP6_ADDR_GLOBALUNIQUE,
+    IP6_ADDR_MULTICAST,
+    IP6_ADDR_LOOPBACK,
+    IP6_ADDR_UNSPECIFIED,
+};
+
+#define MAX_IF_NAME_LEN     16
+#define MAX_IP6_LEN         46
+#define MAX_IF_NAME_LEN     16
+
+#define   CMP_LOGIC_EQUAL  0
+#define  CMP_LOGIC_SMALL  -1
+#define  CMP_LOGIC_BIG   1
+#define MAX_IP6_ADDR_LEN 48
+
+/* 用来判断返回值是否正常*/
+#define RET_SUCCEED(ret) (ret == TRUE)
+#define RET_FAILED(ret)  (ret != TRUE)
+
+extern int tbsGetIp6AddrTypeByStr(const char *pszIp6Addr);
+extern int tbsGetIp6AddrType(const struct in6_addr *pstIp6Addr);
+extern int tbsIfIpv6Switch(const char *pszDevName, int iHow);
+extern int tbsEnableIfIpv6(const char *pszDevName);
+extern int tbsDisableIfIpv6(const char *pszDevName);
+extern int tbsGetEui64IfIdByMac(const unsigned char *pucMacAddr,
+                                unsigned char *pucIfId, unsigned int uiLen);
+extern int tbsGetEui64IfIdByMacStr(const char *pszMacStr, unsigned char *pucIfId, unsigned int uiLen);
+extern int tbsGetRandomIfId(unsigned char *pucIfId, unsigned int uiLen);
+extern int tbsGenerateIp6Addr(struct in6_addr *pstIp6Prefix,
+                              unsigned char *pucIfId, unsigned int uiLen);
+extern int tbsIp6AddrStr2Num(struct in6_addr *pstIp6Addr, const char *pcIp6Addr);
+extern int tbsIp6AddrNum2Str(struct in6_addr *pstIp6Addr,
+                             char *pcIp6Addr, unsigned int uiLen);
+extern int tbsCheckGlobalID(char *pszGlobalID);
+extern int tbsCheckIpv6Addr(const char *pszIpv6Addr);
+extern int tbsCheckIpv6AddrList(const char *pszIp6AddrList, int iMaxCount,
+                                int (*CheckFunc)(const char *));
+extern int tbsCheckIpv6PrefixLen(const char *pszIpv6PrefixLen);
+extern int tbsCheckDUID(char *pszDUID);
+extern int tbsCheckIPv6GlobalAddr(const char *pszValue);
+extern int tbsIPv6AddrCmp(const char * pszAddr1,const char * pszAddr2);
+extern int tbsGetLLIp6Addr(char *DevMac,char *IP6Addr);
+
 #endif /* _shutils_h_ */

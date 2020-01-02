@@ -28,8 +28,9 @@
 #ifdef APCLI_SUPPORT
 
 #include "rt_config.h"
+#ifdef DLINK_SUPERMESH_SUPPROT
 int dlink_mesh_apcli_discon(RTMP_ADAPTER *pAd, APCLI_STRUCT *pApCliEntry, uint16_t reason);
-
+#endif
 static VOID ApCliAuthTimeout(
 	IN PVOID SystemSpecific1,
 	IN PVOID FunctionContext,
@@ -592,7 +593,7 @@ static VOID ApCliPeerDeauthAction(RTMP_ADAPTER *pAd, MLME_QUEUE_ELEM *Elem)
 
 			MTWF_LOG(DBG_CAT_CLIENT, CATCLIENT_APCLI, DBG_LVL_TRACE, ("APCLI AUTH_RSP - receive DE-AUTH from our AP\n"));
 			*pCurrState = APCLI_AUTH_REQ_IDLE;
-
+#ifdef DLINK_SUPERMESH_SUPPROT
 			/* dlink mesh: start */
 			if (pAd->ApCfg.ApCliTab[ifIndex].wdev.dlink_mesh_en)
 				{
@@ -600,7 +601,7 @@ static VOID ApCliPeerDeauthAction(RTMP_ADAPTER *pAd, MLME_QUEUE_ELEM *Elem)
 				dlink_mesh_apcli_discon(pAd, &pAd->ApCfg.ApCliTab[ifIndex], Reason);
 				}
 				/* dlink mesh: end */
-
+#endif
 #ifdef MAC_REPEATER_SUPPORT
 			ifIndex = (USHORT)(Elem->Priv);
 #endif /* MAC_REPEATER_SUPPORT */

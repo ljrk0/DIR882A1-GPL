@@ -41,6 +41,9 @@ extern int stop_iptalbes();
 extern int tw_wl_guest_cafestyle(void);
 extern char * tw_get_wan_interface(char *wan_name);
 
+int load_IPv6_iptables(void);
+int IPv6_REMOTEMANGE_run(void);
+
 /*static router*/
 extern int tw_sroute_init(char *ifname);
 /*ftpd*/
@@ -91,6 +94,14 @@ extern char * Gobi_BandChannel(char *line, int size);
 
 extern int tw_get_usb_wan_interface(char *wan_name);
 extern int tw_get_cur_wan_type(char *wan_type);
+
+#ifdef CONFIG_TZ_LOCATION
+
+int schedule_iptables_start(const char * pRule_name);
+int schedule_iptables_stop(const char * pRule_name);
+
+#endif
+
 #endif /*_LOGIC_RCM_EXTERN_H_*/
 
 

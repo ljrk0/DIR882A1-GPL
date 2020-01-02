@@ -1,7 +1,7 @@
 /* MODULE NAME: meshd_common.h
  *
  * PURPOSE:
- *    {What is covered in this file ¨C function and scope.}
+ *    {What is covered in this file - function and scope.}
  *
  * NOTES:
  *    {Something must be known or noticed}
@@ -22,16 +22,6 @@
 
 /* NAMING CONSTANT DECLARATIONS */
 #define MESH_IE_MAX 255
-#define BW20		(1 << 0)
-#define BW40		(1 << 1)
-#define BW80		(1 << 2)
-#define BW160		(1 << 3)
-#define MESH_WMODE_B	(1 << 0)
-#define MESH_WMODE_G	(1 << 1)
-#define MESH_WMODE_N	(1 << 2)
-#define MESH_WMODE_A	(1 << 16)
-#define MESH_WMODE_AN	(1 << 17)
-#define MESH_WMODE_AC	(1 << 18)
 
 
 
@@ -40,18 +30,6 @@
 
 
 /* DATA STRUCTURE DECLARATIONS */
-struct drv_cfg_s {
-	uint8_t antenna;
-	uint8_t scan_interval;
-	uint8_t weak_client_interval;
-	uint8_t weak_client_threshold;	//SNR
-	uint8_t nbr_aged_time;
-	uint8_t nbr_max_cnt;
-	char mesh_ul_if[IFNAMSIZ];
-	char mesh_dl_if[IFNAMSIZ];
-	char mesh_ssid[32];
-};
-
 struct ht_mcs_tx_s {
 #ifdef RT_BIG_ENDIAN
 	uint8_t reserved:3;
@@ -77,6 +55,7 @@ struct ht_mcs_tx_s {
  */
 int mesh_module_init(void);
 int mesh_module_exit(void);
+ULONG count_uint32_overflow(ULONG a, ULONG b, ULONG *overflowCount);
 
 
 #endif	/* _DLINK_MESH_H */

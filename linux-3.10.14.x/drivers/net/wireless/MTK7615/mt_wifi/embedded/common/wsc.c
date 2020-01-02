@@ -31,6 +31,7 @@
 */
 #endif /* MTK_LICENSE */
 #include    "rt_config.h"
+#include    <autoconf.h>
 
 #ifdef WSC_INCLUDED
 #include    "wsc_tlv.h"

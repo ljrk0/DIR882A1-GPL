@@ -16,7 +16,11 @@
 */
 #endif /* MTK_LICENSE */
 #ifndef _BAND_STEERING_DEF_H_
-#define __BAND_STEERING_DEF_H__
+#define _BAND_STEERING_DEF_H_
+
+#if defined BAND_STEERING_PLUS && defined BAND_STEERING
+#error: "Band Steering and Band Steering Plus should not be enabled together"
+#endif
 
 #ifdef BAND_STEERING
 #ifndef DOT11_N_SUPPORT
@@ -25,17 +29,21 @@
 
 #define BND_STRG_MAX_TABLE_SIZE	256
 #define BND_STRG_TIMER_PERIOD	1000
-#define BND_STRG_AGE_TIME		150000
-#define BND_STRG_HOLD_TIME		90000
-#define BND_STRG_CHECK_TIME_5G	30000
+#define BND_STRG_AGE_TIME		0
+#define BND_STRG_HOLD_TIME		50
+#define BND_STRG_CHECK_TIME		30
 #define BND_STRG_RSSI_DIFF		30
 #define BND_STRG_RSSI_LOW		-70
 #define BND_STRG_AUTO_ONOFF_THRD 4000
 #define P_BND_STRG_TABLE	(&pAd->ApCfg.BndStrgTable)
 #define SIZE_OF_VHT_CAP_IE 		12
 
+#if 1
 #define BND_STRG_DBG
+#endif
+#if 1
 #define BND_STRG_QA
+#endif
 
 struct _BNDSTRG_OPS;
 
@@ -157,6 +165,10 @@ typedef struct _BND_STRG_CLI_TABLE{
 #ifdef BND_STRG_DBG
 	UCHAR MonitorAddr[MAC_ADDR_LEN];
 #endif /* BND_STRG_DBG */
+#ifdef VENDOR_FEATURE5_SUPPORT
+	BNDSTRG_NVRAM_CLIENT nvram_entry[NVRAM_TABLE_SIZE];
+	UINT8 bndstrg_nvram_client_count;
+#endif /* VENDOR_FEATURE5_SUPPORT */
 	UINT8		Band;
 	UINT32 		AutoOnOffThrd;   /* Threshold to auto turn bndstrg on/off by 2.4G false CCA */
 	UINT32 		DaemonPid;

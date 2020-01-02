@@ -72,7 +72,7 @@ mimetype.assign             = (
 url.access-deny             = ( "~", ".inc" )
 
 server.upload-dirs = ( "/var/run" )
-server.max-request-size = 16384
+server.max-request-size = 32768
 static-file.exclude-extensions = ( ".php", ".pl", ".fcgi" )
 
 
@@ -93,7 +93,7 @@ fastcgi.server = (
 	((
 		"socket" => "/var/prog.fcgi.socket-0",
 		"check-local" => "enable",
-		"bin-path" => "/etc_ro/lighttpd/www/web/HNAP1/prog.fcgi",
+		"bin-path" => "/bin/prog.cgi",
 		"idle-timeout" => 10,
 		"min-procs" => 1,
 		"max-procs" => 1
@@ -102,7 +102,7 @@ fastcgi.server = (
 	((
 		"socket" => "/var/prog.fcgi.socket-0",
 		"check-local" => "enable",
-		"bin-path" => "/etc_ro/lighttpd/www/web/HNAP1/prog.fcgi",
+		"bin-path" => "/bin/prog.cgi",
 		"idle-timeout" => 10,
 		"min-procs" => 1,
 		"max-procs" => 1
@@ -126,13 +126,17 @@ $SERVER["socket"] == "0.0.0.0:443" {
        server.document-root = "/etc_ro/lighttpd/www/web"
 }
 
-
+$SERVER["socket"] == "[::]:443" {
+       ssl.engine = "enable"
+       ssl.pemfile = "/var/private/lighttpd.pem"
+       server.document-root = "/etc_ro/lighttpd/www/web"
+}
 
 server_root = "/var/web"
 cgi.assign = (
                 ".cgi" => "",
-                ".htm" => "/etc_ro/lighttpd/www/web/HNAP1/prog.cgi",
-                ".html" => "/etc_ro/lighttpd/www/web/HNAP1/prog.cgi",
+                ".htm" => "/bin/prog.cgi",
+                ".html" => "/bin/prog.cgi",
 
                 )
 alias.url += ( "/cgi-bin" => "/etc_ro/lighttpd/www/web/cgi-bin", 

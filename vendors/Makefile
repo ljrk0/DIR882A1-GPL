@@ -26,7 +26,13 @@ dir_v := $(VEND)/$(CONFIG_VENDOR)/$(CONFIG_PRODUCT)/.
 # Note: the all and clean targets are not normally used,
 # since user/Makefile jumps directory to the product directory
 all image clean romfs romfs.post vendor_%:
+	if [ -f configenc.sh ]; then \
+	$(VEND)/configenc.sh dec $(dir_v); \
+	fi
 	$(MAKE) -C $(dir_v) dir_v=$(dir_v) -f $(VEND)/vendors-common.mak $@
+	if [ -f configenc.sh ]; then \
+	$(VEND)/configenc.sh clean $(dir_v); \
+	fi
 
 prune:
 	@for i in `ls -d */ | grep -v -e '$(CONFIG_VENDOR)' -e 'config' -e 'Generic'`; do \

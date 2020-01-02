@@ -72,7 +72,7 @@ mimetype.assign             = (
 url.access-deny             = ( "~", ".inc" )
 
 server.upload-dirs = ( "/var/run" )
-server.max-request-size = 16384
+server.max-request-size = 32768
 static-file.exclude-extensions = ( ".php", ".pl", ".fcgi" )
 
 
@@ -117,7 +117,11 @@ $SERVER["socket"] == "0.0.0.0:443" {
        server.document-root = "/etc_ro/lighttpd/www/web"
 }
 
-
+$SERVER["socket"] == "[::]:443" {
+       ssl.engine = "enable"
+       ssl.pemfile = "/var/private/lighttpd.pem"
+       server.document-root = "/etc_ro/lighttpd/www/web"
+}
 
 server_root = "/var/web"
 cgi.assign = (

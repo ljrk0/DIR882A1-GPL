@@ -491,11 +491,15 @@ VOID MtAsicUpdateRxWCIDTableByFw(
 		&ucTotalTlvNumber);
 
 	/* Send TLV msg*/
-	if ((WtblInfo.IsReset == TRUE) || (WtblInfo.SkipClearPrevSecKey == FALSE))
-		CmdExtWtblUpdate(pAd, (UINT8)WtblInfo.Wcid, RESET_WTBL_AND_SET, pTlvBuffer, u4TotalTlvLen);
+        if (WtblInfo.IsReset == TRUE) {
+            if (WtblInfo.SkipClearPrevSecKey == TRUE)
+                CmdExtWtblUpdate(pAd, (UINT8)WtblInfo.Wcid, SET_WTBL, pTlvBuffer, u4TotalTlvLen);       
+            else
+                CmdExtWtblUpdate(pAd, (UINT8)WtblInfo.Wcid, RESET_WTBL_AND_SET, pTlvBuffer, u4TotalTlvLen);
+        }   
 	else
 		CmdExtWtblUpdate(pAd, (UINT8)WtblInfo.Wcid, SET_WTBL, pTlvBuffer, u4TotalTlvLen);
-
+	
 	/* Free TLV msg */
 	if (pTlvBuffer)
 	{

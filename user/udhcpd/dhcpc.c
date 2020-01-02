@@ -35,6 +35,7 @@
 #include <sys/ioctl.h>
 #include <net/if.h>
 #include <errno.h>
+#include <sys/sysinfo.h>
 
 #include "dhcpd.h"
 #include "dhcpc.h"
@@ -53,6 +54,13 @@ static unsigned long timeout;
 static int packet_num; /* = 0 */
 static int fd;
 static int signal_pipe[2];
+
+uint32_t get_uptime(void)
+{
+    struct sysinfo info;
+    sysinfo(&info);
+    return (uint32_t)info.uptime;
+}
 
 #define LISTEN_NONE 0
 #define LISTEN_KERNEL 1
@@ -332,8 +340,9 @@ int main(int argc, char *argv[])
 	run_script(NULL, "deconfig");
 	change_mode(LISTEN_RAW);
 	for (;;) {
-
-		tv.tv_sec = timeout - time(0);
+		//tv.tv_sec = timeout - time(0);
+		tv.tv_sec = timeout - get_uptime();
+		
 		tv.tv_usec = 0;
 		FD_ZERO(&rfds);
 
@@ -356,7 +365,8 @@ int main(int argc, char *argv[])
 			retval = select(max_fd + 1, &rfds, NULL, NULL, &tv);
 		} else retval = 0; /* If we already timed out, fall through */
 
-		now = time(0);
+		//now = time(0);
+		now = get_uptime();
 		if (retval == 0) {
 			/* timeout dropped to zero */
 			switch (state) {
@@ -387,16 +397,18 @@ int main(int argc, char *argv[])
 				if (packet_num < 3) {
 					/* send request packet */
 					if (state == RENEW_REQUESTED)
+					{
 						send_renew(xid, server_addr, requested_ip); /* unicast */
+					}
 					else send_selecting(xid, server_addr, requested_ip); /* broadcast */
 					
-					timeout = now + ((packet_num == 2) ? 10 : 2);
+					timeout = now + ((packet_num == 2) ? 10 : 2);				
 					packet_num++;
 				} else {
 					/* timed out, go back to init state */
 					if (state == RENEW_REQUESTED) run_script(NULL, "deconfig");
 					state = INIT_SELECTING;
-					timeout = now;
+					timeout = now;									
 					packet_num = 0;
 					change_mode(LISTEN_RAW);
 				}
@@ -412,14 +424,15 @@ int main(int argc, char *argv[])
 				if ((t2 - t1) <= (lease / 14400 + 1)) {
 					/* timed out, enter rebinding state */
 					state = REBINDING;
-					timeout = now + (t2 - t1);
+					timeout = now + (t2 - t1);									
 					DEBUG(LOG_INFO, "Entering rebinding state");
+					change_mode(LISTEN_RAW);//it's fail, may be has dhcp relay,to check it succefull,change to raw mode,it is ingnore firewall rule
 				} else {
-					/* send a request packet */
+					/* send a request packet */					
 					send_renew(xid, server_addr, requested_ip); /* unicast */
 					
 					t1 = (t2 - t1) / 2 + t1;
-					timeout = t1 + start;
+					timeout = t1 + start;										
 				}
 				break;
 			case REBINDING:
@@ -433,16 +446,16 @@ int main(int argc, char *argv[])
 					packet_num = 0;
 					change_mode(LISTEN_RAW);
 				} else {
-					/* send a request packet */
+					/* send a request packet */					
 					send_renew(xid, 0, requested_ip); /* broadcast */
 
 					t2 = (lease - t2) / 2 + t2;
-					timeout = t2 + start;
+					timeout = t2 + start;															
 				}
 				break;
 			case RELEASED:
 				/* yah, I know, *you* say it would never happen */
-				timeout = 0x7fffffff;
+				timeout = 0x7fffffff;										
 				break;
 			}
 		} else if (retval > 0 && listen_mode != LISTEN_NONE && FD_ISSET(fd, &rfds)) {
@@ -467,8 +480,7 @@ int main(int argc, char *argv[])
 			if ((message = get_option(&packet, DHCP_MESSAGE_TYPE)) == NULL) {
 				DEBUG(LOG_ERR, "couldnt get option from packet -- ignoring");
 				continue;
-			}
-			
+			}			
 			switch (state) {
 			case INIT_SELECTING:
 				/* Must be a DHCPOFFER to one of our xid's */
@@ -480,7 +492,7 @@ int main(int argc, char *argv[])
 						
 						/* enter requesting state */
 						state = REQUESTING;
-						timeout = now;
+						timeout = now;															
 						packet_num = 0;
 					} else {
 						DEBUG(LOG_ERR, "No server ID in message");
@@ -555,7 +567,7 @@ int main(int argc, char *argv[])
 						system(exe_cmd);
 					}
 					start = now;
-					timeout = t1 + start;
+					timeout = t1 + start;																
 					requested_ip = packet.yiaddr;
 					run_script(&packet,
 						   ((state == RENEWING || state == REBINDING) ? "renew" : "bound"));
@@ -574,7 +586,7 @@ int main(int argc, char *argv[])
 					if (state != REQUESTING)
 						run_script(NULL, "deconfig");
 					state = INIT_SELECTING;
-					timeout = now;
+					timeout = now;																					
 					requested_ip = 0;
 					packet_num = 0;
 					change_mode(LISTEN_RAW);

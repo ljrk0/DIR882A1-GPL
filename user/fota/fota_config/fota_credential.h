@@ -1,0 +1,30 @@
+
+/*
+*/
+
+#ifndef __FOTA_CREDENTIAL_H__
+#define __FOTA_CREDENTIAL_H__
+
+
+#ifdef PRODUCT_DIR882
+#define FOTA_CLIENT_ID "f212cfae3a32d70eb0f20fc764525365"
+#define FOTA_CLIENT_SECRET "763c3cb2dee61ee262c8813a854b97fe"
+#elif defined(PRODUCT_DIR878)
+#define FOTA_CLIENT_ID "9e6a3c354cac6e684996a634f4c1c207"
+#define FOTA_CLIENT_SECRET "746eb9b027aacec781abd10db986e0e9"
+#elif defined(PRODUCT_DIR1935)
+#define FOTA_CLIENT_ID "cda0c358a9e3ae4efaffe86a4d24cb7d"
+#define FOTA_CLIENT_SECRET "9f81e8b7cea6a89695b2668d46d81c84"
+#elif defined(PRODUCT_DIR867)
+#define FOTA_CLIENT_ID "a8d70601520778e39516d83f4e27945a"
+#define FOTA_CLIENT_SECRET "d3a5fd1a8719a996a5dc6b831e2bd4fb"
+#elif defined(PRODUCT_DIR853_A1)
+#define FOTA_CLIENT_ID "da4871a7cb3ba0a45c82fbc2b09e5edf"
+#define FOTA_CLIENT_SECRET "5e3cfe9b6be99e5d86e274cf67c66b71"
+#elif defined(PRODUCT_DIR853_A2)
+#define FOTA_CLIENT_ID "da4871a7cb3ba0a45c82fbc2b09e5edf"
+#define FOTA_CLIENT_SECRET "5e3cfe9b6be99e5d86e274cf67c66b71"
+#endif
+
+#endif
+

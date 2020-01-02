@@ -1,0 +1,685 @@
+{
+  "RegionalProfiles": {
+    "AU": {
+      "Wizard": {
+        "VLAN": true
+      },
+      "VLANLists": [{
+        "Name": "Aussie Broadband",
+        "VLAN": {
+          "Internet": [0, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Amaysim",
+        "VLAN": {
+          "Internet": [0, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Belong",
+        "VLAN": {
+          "Internet": [0, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Dodo",
+        "VLAN": {
+          "Internet": [100, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Exetel",
+        "VLAN": {
+          "Internet": [0, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Future Broadband FTTP",
+        "VLAN": {
+          "Internet": [0, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Future Broadband FTTN/ FTTB/ HFC",
+        "VLAN": {
+          "Internet": [100, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "iiNet",
+        "VLAN": {
+          "Internet": [0, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Internode",
+        "VLAN": {
+          "Internet": [0, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "iPrimus",
+        "VLAN": {
+          "Internet": [100, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Mate ADSL/ VDSL",
+        "VLAN": {
+          "Internet": [0, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Mate FTTN/ FTTB/ HFC",
+        "VLAN": {
+          "Internet": [100, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Mungi Internet",
+        "VLAN": {
+          "Internet": [0, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "More Telecom",
+        "VLAN": {
+          "Internet": [0, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "MyRebulic Fibre",
+        "VLAN": {
+          "Internet": [0, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "MyRebulic VDSL",
+        "VLAN": {
+          "Internet": [0, 10],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Optus",
+        "VLAN": {
+          "Internet": [0, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "SkyMesh",
+        "VLAN": {
+          "Internet": [0, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Tangerine Telecom",
+        "VLAN": {
+          "Internet": [0, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "TPG",
+        "VLAN": {
+          "Internet": [2, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Telstra",
+        "VLAN": {
+          "Internet": [0, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "2 Degrees",
+        "VLAN": {
+          "Internet": [10, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "CallPlus",
+        "VLAN": {
+          "Internet": [10, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "MyRepublic",
+        "VLAN": {
+          "Internet": [10, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Slingshot",
+        "VLAN": {
+          "Internet": [10, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Spark",
+        "VLAN": {
+          "Internet": [10, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Vodafone",
+        "VLAN": {
+          "Internet": [10, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "Manual",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }]
+    },
+    "MY": {
+      "Wizard": {
+        "VLAN": true
+      },
+      "VLANLists": [{
+        "Name": "TM Unifi/Unifi Lite",
+        "VLAN": {
+          "Internet": [500, 0],
+          "VOIP": [400, 0],
+          "IPTV": [600, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": 4
+        },
+        "ConnectionType": {
+          "Internet": "DHCPPPPoE",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Maxis BB: TM",
+        "VLAN": {
+          "Internet": [621, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "DHCPPPPoE",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Maixs BB: Maxis",
+        "VLAN": {
+          "Internet": [11, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "DHCPPPPoE",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "OHANA",
+        "VLAN": {
+          "Internet": [624, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "DHCPPPPoE",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "REDTONE",
+        "VLAN": {
+          "Internet": [623, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "DHCPPPPoE",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Singnet",
+        "VLAN": {
+          "Internet": [10, 0],
+          "VOIP": [30, 1],
+          "IPTV": [20, 4]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": 4
+        },
+        "ConnectionType": {
+          "Internet": "DHCP",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }]
+    },
+    "SG": {
+      "Wizard": {
+        "VLAN": true
+      },
+      "VLANLists": [{
+        "Name": "TM Unifi/Unifi Lite",
+        "VLAN": {
+          "Internet": [500, 0],
+          "VOIP": [400, 0],
+          "IPTV": [600, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": 4
+        },
+        "ConnectionType": {
+          "Internet": "DHCPPPPoE",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Maxis BB: TM",
+        "VLAN": {
+          "Internet": [621, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "DHCPPPPoE",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Maixs BB: Maxis",
+        "VLAN": {
+          "Internet": [11, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "DHCPPPPoE",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "OHANA",
+        "VLAN": {
+          "Internet": [624, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "DHCPPPPoE",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "REDTONE",
+        "VLAN": {
+          "Internet": [623, 0],
+          "VOIP": [0, 0],
+          "IPTV": [0, 0]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": null
+        },
+        "ConnectionType": {
+          "Internet": "DHCPPPPoE",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }, {
+        "Name": "Singnet",
+        "VLAN": {
+          "Internet": [10, 0],
+          "VOIP": [30, 1],
+          "IPTV": [20, 4]
+        },
+        "Designated LAN Port": {
+          "Internet": null,
+          "VOIP": null,
+          "IPTV": 4
+        },
+        "ConnectionType": {
+          "Internet": "DHCP",
+          "VOIP": null,
+          "IPTV": null
+        }
+      }]
+    }
+  }
+}

@@ -1443,6 +1443,11 @@ extern const char bb_default_login_shell[];
 #undef isupper
 #undef isxdigit
 
+//Let telnet login use CLI authenticate
+//#ifdef CONFIG_APPS_CLI
+#define CLI_LOGIN
+//#endif
+
 /* This one is more efficient - we save ~400 bytes */
 #undef isdigit
 #define isdigit(a) ((unsigned)((a) - '0') <= 9)

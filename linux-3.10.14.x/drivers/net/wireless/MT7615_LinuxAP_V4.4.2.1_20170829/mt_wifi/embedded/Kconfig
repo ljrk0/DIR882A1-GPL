@@ -209,6 +209,11 @@ config IGMP_SNOOP_SUPPORT
 	depends on MT_AP_SUPPORT
 	default y
 
+config DLINK_SUPERMESH_SUPPORT
+	bool "DLINK supermesh"
+	depends on MT_DRIVER_4421
+	default n
+
 #config BLOCK_NET_IF
 #	bool "NETIF Block"
 #	depends on WIFI_DRIVER
@@ -423,6 +428,7 @@ menu "WiFi Operation Modes"
 		config WIFI_MODE_AP
 				tristate "AP"
 				select MT_AP_SUPPORT
+				default y
 
 		config WIFI_MODE_STA
 				tristate "STA"

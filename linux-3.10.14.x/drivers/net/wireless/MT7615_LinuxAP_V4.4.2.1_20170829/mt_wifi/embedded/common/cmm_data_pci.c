@@ -29,7 +29,10 @@
 
 
 #include	"rt_config.h"
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+#include "dlink_mesh.h"
+PUCHAR dlink_mesh_gz_tx_filter(RTMP_ADAPTER *pAd, PNDIS_PACKET pPkt, UINT infIdx);
+#endif
 #ifdef RX_SCATTER
 static INT rx_scatter_info(
     IN RTMP_RX_RING *pRxRing,
@@ -3639,7 +3642,11 @@ INT CutThroughPktTx(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
 #ifdef CONFIG_AP_SUPPORT
 	pEntry = &pAd->MacTab.Content[(UCHAR)RTMP_GET_PACKET_WCID(pTxBlk->pPacket)];
 	INC_COUNTER64(pEntry->TxPackets);
+#ifdef DLINK_SUPERMESH_SUPPROT
+	pEntry->TxBytes = count_uint32_overflow(pEntry->TxBytes, pTxBlk->SrcBufLen, &pEntry->TxBytesOverflowCount);
+#else	
 	pEntry->TxBytes += pTxBlk->SrcBufLen;
+#endif	
 	pEntry->OneSecTxBytes += pTxBlk->SrcBufLen;
 	pEntry->one_sec_tx_pkts++;
 #endif /* CONFIG_AP_SUPPORT */
@@ -3679,6 +3686,14 @@ INT32 FullOffloadFrameTx(RTMP_ADAPTER *pAd, PNDIS_PACKET pPacket, UCHAR QueIdx, 
 		skb_pull(pPacket, 4);
 	}
 #endif	/* RTMP_UDMA_SUPPORT */
+#ifdef DLINK_SUPERMESH_SUPPROT
+	/* dlink mesh: start */
+	if (dlink_mesh_gz_tx_filter(pAd, pPacket, RTMP_GET_PACKET_WDEV(pPacket))!= NULL) {
+		RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_FAILURE);
+		return 0;
+	}
+	/* dlink mesh: end */
+#endif
 	RTMP_SEM_LOCK(&pAd->FastPathTxFreeQueLock);
 	FPTxElement = DlListFirst(&pAd->FastPathTxFreeQue, struct FastPathTxQueElement, List);
 
@@ -4027,7 +4042,11 @@ pkt_handle:
 			if (IS_ENTRY_CLIENT(&pAd->MacTab.Content[Wcid])) {
 				if (pAd->MacTab.Content[Wcid].pMbss) {
 					pAd->MacTab.Content[Wcid].pMbss->TxCount++;
+#ifdef DLINK_SUPERMESH_SUPPROT
+					pAd->MacTab.Content[Wcid].pMbss->TransmittedByteCount = count_uint32_overflow(pAd->MacTab.Content[Wcid].pMbss->TransmittedByteCount, RTPKT_TO_OSPKT(pTxBlk->pPacket)->len, &pAd->MacTab.Content[Wcid].pMbss->TransmittedByteOverflowCount);
+#else					
 					pAd->MacTab.Content[Wcid].pMbss->TransmittedByteCount += RTPKT_TO_OSPKT(pTxBlk->pPacket)->len;
+#endif
 				}
 			}
 #ifdef APCLI_SUPPORT

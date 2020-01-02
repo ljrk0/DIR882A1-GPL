@@ -1474,6 +1474,13 @@ enum {
 	OID_WIFI_TEST_RF_INDEX_OFFSET = 0x1015,
 };
 
+enum WNM_COMMAND {
+	OID_802_11_WNM_CMD_ENABLE 	= 0x01,
+	OID_802_11_WNM_CMD_CAP 		= 0x02,
+	OID_802_11_WNM_CMD_SEND_BTM_REQ = 0x03,
+};
+
+
 struct bbp_info {
 	UINT32 bbp_start;
 	UINT32 bbp_end;
@@ -1586,6 +1593,18 @@ struct btm_rsp_data {
 	UCHAR peer_mac_addr[6];
 	UINT32 btm_rsp_len;
 	UCHAR btm_rsp[0];
+};
+
+struct GNU_PACKED wnm_command {
+	UINT8 command_id;
+	UINT8 command_len;
+	UINT8 command_body[0];
+};
+
+struct GNU_PACKED wnm_event {
+	UINT8 event_id;
+	UINT8 event_len;
+	UINT8 event_body[0];
 };
 
 struct proxy_arp_entry {

@@ -10,6 +10,13 @@ CFLAGS +=  -fPIC
 LDFLAGS += -L$(ROOTDIR)/user/apps/rcm -L$(ROOTDIR)/user/openssl-1.0.2j/
 LDFLAGS += -lnvram -lrcm -lssl -lcrypto
 
+ifeq ($(CONFIG_FOTA), y)
+	CFLAGS += -DCONFIG_FOTA
+endif
+
+ifeq ($(CONFIG_TZ_LOCATION), y)
+	CFLAGS += -DCONFIG_TZ_LOCATION
+endif
 
 OBJS := protest.o
 

@@ -25,7 +25,11 @@
 */
 
 #include "rt_config.h"
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+int dlink_mesh_info_channel(RTMP_ADAPTER *pAd, struct wifi_dev *wdev, uint8_t channel);
+int dlink_mesh_info_bssid(RTMP_ADAPTER *pAd, struct wifi_dev *wdev, UCHAR *bssid);
+int dlink_mesh_check_data_struct(int vie, int wdev, int bss, int mtab, int scan, int preq);
+#endif
 /**
  * @addtogroup wifi_dev_system
  * @{
@@ -309,6 +313,14 @@ extern INT sta_rx_pkt_allow(RTMP_ADAPTER *pAd, RX_BLK *pRxBlk);
 INT32 wdev_init(RTMP_ADAPTER *pAd, struct wifi_dev *wdev, enum WDEV_TYPE WdevType,
 				PNET_DEV IfDev, INT8 func_idx, VOID *func_dev, VOID *sys_handle)
 {
+#ifdef DLINK_SUPERMESH_SUPPROT
+	int my_vie = sizeof(struct _vendor_ie_cap);
+	int my_wdev = sizeof(struct wifi_dev);
+	int my_bss = sizeof(struct _BSS_STRUCT);
+	int my_mtab = sizeof(struct _MAC_TABLE_ENTRY);
+	int my_scan = sizeof(struct _SCAN_CTRL_);
+	int my_preq = sizeof(struct _PEER_PROBE_REQ_PARAM);
+#endif
 	INT32 wdev_idx = 0;
 
 	wdev->wdev_type = WdevType;
@@ -323,10 +335,14 @@ INT32 wdev_init(RTMP_ADAPTER *pAd, struct wifi_dev *wdev, enum WDEV_TYPE WdevTyp
 	wdev_protect_init(wdev);
 	wlan_operate_init(wdev);
     //wdev->bss_info_argument.ucBssIndex = 0xff;
+#ifdef DLINK_SUPERMESH_SUPPROT
 	/* dlink mesh: start */
+	wdev->dlink_mesh_scan_en = 0;
 	wdev->dlink_mesh_en = 0;
+	wdev->dlink_isolation_flag = 0;
+	dlink_mesh_check_data_struct(my_vie, my_wdev, my_bss, my_mtab, my_scan, my_preq);
 	/* dlink mesh: end */
-
+#endif
 	switch (wdev->wdev_type)
 	{
 #ifdef CONFIG_AP_SUPPORT
@@ -419,6 +435,15 @@ INT32 wdev_attr_update(RTMP_ADAPTER *pAd, struct wifi_dev *wdev)
 				wdev->if_addr, MAC_ADDR_LEN);
 		}
 		COPY_MAC_ADDR(wdev->bssid, wdev->if_addr);
+#ifdef DLINK_SUPERMESH_SUPPROT
+		/* dlink mesh: start */
+		if (wdev->dlink_mesh_en)
+		{
+			dlink_mesh_info_channel(pAd, wdev, wdev->channel);
+			dlink_mesh_info_bssid(pAd, wdev, wdev->bssid);
+		}
+		/* dlink mesh: end */
+#endif
 	break;
 #endif /* CONFIG_AP_SUPPORT */
 	default:

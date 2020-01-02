@@ -305,6 +305,125 @@ BOOLEAN CFG80211_HandleP2pMgmtFrame(RTMP_ADAPTER *pAd, RX_BLK *pRxBlk, UCHAR OpM
 				MTWF_LOG(DBG_CAT_P2P, DBG_SUBCAT_ALL, DBG_LVL_INFO,("MAIN STA RtmpOsCFG80211RxMgmt OK!! TYPE = %d, freq = %d, %02x:%02x:%02x:%02x:%02x:%02x\n",
 										pHeader->FC.SubType, freq, PRINT_MAC(pHeader->Addr2)));
 #ifdef DISABLE_HOSTAPD_PROBE_RESP
+#if defined BAND_STEERING || defined BAND_STEERING_PLUS
+
+				if((pHeader->FC.SubType == SUBTYPE_PROBE_REQ) && (pAd->ApCfg.BandSteering == TRUE))
+				{
+						/* retreive Ht Support, Vht Support and RxMCSBitmask from probe request */
+						PFRAME_802_11 Fr = (PFRAME_802_11)pRxBlk->FC;
+						UCHAR		*Ptr;
+   						UCHAR		eid =0, eid_len = 0, *eid_data;
+						UINT	total_ie_len = 0;
+						BOOLEAN IsHtSupport;
+						BOOLEAN IsVhtSupport;
+						UINT32 RxMCSBitmask = 0;
+						struct wifi_dev* wdev = pWdev;
+						struct raw_rssi_info rssi_info;
+						RXD_BASE_STRUCT *rxd_base = (RXD_BASE_STRUCT *)pRxBlk->rmac_info;
+
+						BOOLEAN bBndStrgCheck = FALSE;
+						rssi_info.raw_rssi[0] = pRxBlk->rx_signal.raw_rssi[0];
+						rssi_info.raw_rssi[1] = pRxBlk->rx_signal.raw_rssi[1];
+						rssi_info.raw_rssi[2] = pRxBlk->rx_signal.raw_rssi[2];
+						rssi_info.raw_rssi[3] = pRxBlk->rx_signal.raw_rssi[3];
+						rssi_info.raw_snr = min(pRxBlk->rx_signal.raw_snr[0], pRxBlk->rx_signal.raw_snr[1]);
+    					rssi_info.Channel =	(rxd_base != NULL) ? rxd_base->RxD1.ChFreq : 0;
+						 
+						Ptr = Fr->Octet;
+    					eid = Ptr[0];
+    					eid_len = Ptr[1];
+						total_ie_len = eid_len + 2;
+						eid_data = Ptr+2;
+    
+   					    /* get variable fields from payload and advance the pointer*/
+						while((eid_data + eid_len) <= ((UCHAR*)Fr + pRxBlk->DataSize))
+    					{    
+        					switch(eid)
+        					{
+								case IE_HT_CAP:
+									if (pAd->ApCfg.BandSteering != TRUE)
+										break;
+									if (eid_len >= SIZE_HT_CAP_IE)
+									{
+										IsHtSupport = TRUE;
+										RxMCSBitmask = *(UINT32 *)(eid_data + 3);
+									}
+									else
+										MTWF_LOG(DBG_CAT_MLME, DBG_SUBCAT_ALL, DBG_LVL_WARN, ("%s() - wrong IE_HT_CAP. eid_len = %d\n", __FUNCTION__, eid_len));
+									break;			
+							
+								case IE_VHT_CAP:
+									if (pAd->ApCfg.BandSteering != TRUE)
+										break;
+									if (eid_len >= SIZE_OF_VHT_CAP_IE)
+										IsVhtSupport = TRUE;
+									else
+										MTWF_LOG(DBG_CAT_MLME, DBG_SUBCAT_ALL, DBG_LVL_WARN, ("%s() - wrong IE_VHT_CAP. eid_len = %d\n", __FUNCTION__, eid_len));
+									break;			
+								
+        					}
+							eid = Ptr[total_ie_len];
+    						eid_len = Ptr[total_ie_len + 1];
+							eid_data = Ptr + total_ie_len + 2;
+							total_ie_len += (eid_len + 2);
+						}
+						if(pWdev == NULL)
+								wdev = pAd->wdev_list[0];
+						if(IS_BROADCAST_MAC_ADDR(pRxBlk->Addr1))
+						{
+							int apidx;
+							for(apidx=0; apidx<pAd->ApCfg.BssidNum; apidx++)
+							{
+								BSS_STRUCT *mbss = &pAd->ApCfg.MBSSID[apidx];
+								wdev = &mbss->wdev;
+								if( wdev->channel == rssi_info.Channel ){
+#ifdef BAND_STEERING									
+									bBndStrgCheck = CFG80211_HandleBndStrProbeReq(pAd, wdev, pRxBlk,IsHtSupport,IsVhtSupport,RxMCSBitmask,rssi_info);
+#endif
+#ifdef BAND_STEERING_PLUS
+								{
+									MLME_QUEUE_ELEM Elem = { {0} };
+									PEER_PROBE_REQ_PARAM ProbeReqParam = { {0} };
+									ProbeReqParam.IsHtSupport = IsHtSupport;
+									ProbeReqParam.IsVhtSupport = IsVhtSupport;
+									ProbeReqParam.RxMCSBitmask = RxMCSBitmask;
+									Elem.rssi_info.raw_rssi[0] = rssi_info.raw_rssi[0];
+									Elem.rssi_info.raw_rssi[1] = rssi_info.raw_rssi[1];
+									Elem.rssi_info.raw_rssi[2] = rssi_info.raw_rssi[2];
+									Elem.rssi_info.raw_rssi[3] = rssi_info.raw_rssi[3];
+									Elem.MsgType = APMT2_PEER_PROBE_REQ;
+									bBndStrgCheck = BndStrg_CheckConnectionReq(pAd, wdev, pRxBlk->Addr2, &Elem, &ProbeReqParam);
+								}
+#endif
+									if (bBndStrgCheck == FALSE)
+										return TRUE;
+								}
+							}
+						}
+						else{
+#ifdef BAND_STEERING							
+							bBndStrgCheck = CFG80211_HandleBndStrProbeReq(pAd, wdev, pRxBlk,IsHtSupport,IsVhtSupport,RxMCSBitmask,rssi_info);
+#endif
+#ifdef BAND_STEERING_PLUS
+						{
+							MLME_QUEUE_ELEM Elem = { {0} };
+							PEER_PROBE_REQ_PARAM ProbeReqParam = { {0} };
+							ProbeReqParam.IsHtSupport = IsHtSupport;
+							ProbeReqParam.IsVhtSupport = IsVhtSupport;
+							ProbeReqParam.RxMCSBitmask = RxMCSBitmask;
+							Elem.rssi_info.raw_rssi[0] = rssi_info.raw_rssi[0];
+							Elem.rssi_info.raw_rssi[1] = rssi_info.raw_rssi[1];
+							Elem.rssi_info.raw_rssi[2] = rssi_info.raw_rssi[2];
+							Elem.rssi_info.raw_rssi[3] = rssi_info.raw_rssi[3];
+							Elem.MsgType = APMT2_PEER_PROBE_REQ;
+							bBndStrgCheck = BndStrg_CheckConnectionReq(pAd, wdev, pRxBlk->Addr2, &Elem, &ProbeReqParam);
+						}
+#endif
+						}
+						if (bBndStrgCheck == FALSE)
+							return TRUE;
+				}
+#endif /* BAND_STEERING */
 				if((pHeader->FC.SubType == SUBTYPE_PROBE_REQ) && IS_BROADCAST_MAC_ADDR(pRxBlk->Addr1))
 				{
 					int apidx;

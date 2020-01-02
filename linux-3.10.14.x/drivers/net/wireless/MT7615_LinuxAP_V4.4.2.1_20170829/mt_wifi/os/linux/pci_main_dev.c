@@ -32,8 +32,9 @@
 #include "rt_os_util.h"
 #include "rt_os_net.h"
 #include <linux/pci.h>
+#ifdef DLINK_SUPERMESH_SUPPROT
 #include "dlink_mesh.h"
-
+#endif
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 8, 0)
 #define DEVEXIT
 #define DEVEXIT_P
@@ -379,9 +380,10 @@ static int DEVINIT rt_pci_probe(struct pci_dev *pdev, const struct pci_device_id
 	rv = RtmpOSNetDevAttach(OpMode, net_dev, &netDevHook);
 	if (rv)
 		goto err_out_free_netdev;
+#ifdef DLINK_SUPERMESH_SUPPROT
 	/* dlink mesh module initial */
 	mesh_module_init();
-
+#endif
 
 #ifdef PRE_ASSIGN_MAC_ADDR
 {
@@ -458,8 +460,10 @@ static VOID DEVEXIT rt_pci_remove(struct pci_dev *pci_dev)
 
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
+#ifdef DLINK_SUPERMESH_SUPPROT
 	/* dlink mesh module exit */
 	mesh_module_exit();
+#endif
 	MTWF_LOG(DBG_CAT_HIF, CATHIF_PCI, DBG_LVL_TRACE, ("===> %s()\n", __FUNCTION__));
 
 	if (pAd != NULL)

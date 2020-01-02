@@ -32,8 +32,8 @@ UINT16 BND_STRG_CONDITIONS[] = { fBND_STRG_CND_RSSI_DIFF,
 								fBND_STRG_CND_DEFAULT_5G,
 								fBND_STRG_CND_5G_RSSI_DYNAMIC};
 
-UINT8 BND_STRG_DEFAULT_CND_PRI[] = {fBND_STRG_PRIORITY_RSSI_DIFF,
-									fBND_STRG_PRIORITY_BAND_PERSIST,
+UINT8 BND_STRG_DEFAULT_CND_PRI[] = {fBND_STRG_PRIORITY_BAND_PERSIST,
+									fBND_STRG_PRIORITY_RSSI_DIFF,
 									fBND_STRG_PRIORITY_5G_RSSI,
 									fBND_STRG_PRIORITY_HT_SUPPORT,
 									fBND_STRG_PRIORITY_DEFAULT_5G};
@@ -266,20 +266,31 @@ INT BndStrg_TableInit(PRTMP_ADAPTER pAd, PBND_STRG_CLI_TABLE table)
 	table->Ops = &D_BndStrgOps;
 	table->DaemonPid = 0xffffffff;
 	table->RssiDiff = BND_STRG_RSSI_DIFF;
-	table->RssiLow = BND_STRG_RSSI_LOW;
-	table->AgeTime = BND_STRG_AGE_TIME;
-	table->HoldTime = BND_STRG_HOLD_TIME;
-	table->CheckTime_5G = BND_STRG_CHECK_TIME_5G;
+	table->RssiLow = pAd->ApCfg.BndStrgRssiLow;
+	table->AgeTime = pAd->ApCfg.BndStrgAge;
+	table->HoldTime = pAd->ApCfg.BndStrgHoldTime;
+	if((table->Band & BAND_24G) == BAND_24G)
+		table->CheckTime_2G = pAd->ApCfg.BndStrgCheckTime;
+	if((table->Band & BAND_5G) == BAND_5G)
+		table->CheckTime_5G = pAd->ApCfg.BndStrgCheckTime;
 	table->AutoOnOffThrd = BND_STRG_AUTO_ONOFF_THRD;
 	if(pAd->ApCfg.BndStrgConditionCheck){
 		table->AlgCtrl.ConditionCheck = pAd->ApCfg.BndStrgConditionCheck;
 	}else{
+#ifdef VENDOR_FEATURE6_SUPPORT
 		table->AlgCtrl.ConditionCheck = fBND_STRG_CND_RSSI_DIFF | \
 										fBND_STRG_CND_BAND_PERSIST | \
 										fBND_STRG_CND_HT_SUPPORT | \
 										fBND_STRG_CND_5G_RSSI | \
 										fBND_STRG_CND_DEFAULT_5G | \
 										fBND_STRG_CND_5G_RSSI_DYNAMIC;
+#else
+		table->AlgCtrl.ConditionCheck = fBND_STRG_CND_RSSI_DIFF | \
+										fBND_STRG_CND_BAND_PERSIST | \
+										fBND_STRG_CND_HT_SUPPORT | \
+										fBND_STRG_CND_5G_RSSI | \
+										fBND_STRG_CND_DEFAULT_5G;
+#endif
 	}
 	if(pAd->ApCfg.BndStrgCndPriSize){
 		memcpy(table->BndStrgCndPri, pAd->ApCfg.BndStrgCndPri, pAd->ApCfg.BndStrgCndPriSize);
@@ -308,12 +319,14 @@ INT BndStrg_Release(PRTMP_ADAPTER pAd)
 	PBND_STRG_CLI_TABLE table = P_BND_STRG_TABLE;
 
 	MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF, (YLW("%s()\n"), __FUNCTION__));
+#if 1
 	if (table->bEnabled == TRUE)
 		ret_val = BndStrg_Enable(table, 0);
 	BndStrg_SetInfFlags(pAd, table, FALSE);
 
 	if ((table->b2GInfReady == FALSE && table->b5GInfReady == FALSE))
 		ret_val = BndStrg_TableRelease(table);
+#endif
 	if (ret_val != BND_STRG_SUCCESS)
 	{
 		BND_STRG_MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_ERROR,
@@ -377,6 +390,7 @@ INT BndStrg_InsertEntry(
 			entry->BndStrg_Sta_State = BNDSTRG_STA_INIT;
 			break;
 		}
+		entry = NULL;
 	}
 
 	if (entry) {
@@ -396,6 +410,12 @@ INT BndStrg_InsertEntry(
 		table->Size++;
 	}
 	NdisReleaseSpinLock(&table->Lock);
+#if 0
+	BND_STRG_MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF,
+			("%s(): Index=%u, %02x:%02x:%02x:%02x:%02x:%02x, "
+			"Table Size = %u\n",
+			__FUNCTION__, i, PRINT_MAC(pAddr), table->Size));
+#endif
 	
 	BND_STRG_PRINTQAMSG(table, pAddr, ("%s: (%02x:%02x:%02x:%02x:%02x:%02x) \n",
 		__FUNCTION__,PRINT_MAC(pAddr)));
@@ -409,6 +429,12 @@ INT BndStrg_DeleteEntry(PBND_STRG_CLI_TABLE table, PUCHAR pAddr, UINT32 Index)
 	PBND_STRG_CLI_ENTRY entry, pre_entry, this_entry;
 	INT ret_val = BND_STRG_SUCCESS;
 
+#if 0
+	BND_STRG_MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF,
+			("%s(): Index=%u, %02x:%02x:%02x:%02x:%02x:%02x, "
+			"Table Size = %u\n",
+			__FUNCTION__, Index, PRINT_MAC(pAddr), table->Size));
+#endif
 
 	NdisAcquireSpinLock(&table->Lock);
 	HashIdx = MAC_ADDR_HASH_INDEX(pAddr);
@@ -439,6 +465,9 @@ INT BndStrg_DeleteEntry(PBND_STRG_CLI_TABLE table, PUCHAR pAddr, UINT32 Index)
 	
 	if (entry && entry->bValid) 
 	{
+#if 0
+		/*if (MAC_ADDR_EQUAL(entry->Addr, pAddr))*/
+#endif
 		{
 			pre_entry = NULL;
 			this_entry = table->Hash[HashIdx];
@@ -470,6 +499,13 @@ INT BndStrg_DeleteEntry(PBND_STRG_CLI_TABLE table, PUCHAR pAddr, UINT32 Index)
 			entry->bValid = FALSE;
 			table->Size--;
 		}
+#if 0
+		else {
+			MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_ERROR,
+					("%s(): worng entry!\n", __FUNCTION__));
+			ret_val = BND_STRG_UNEXP;
+		}
+#endif
 	}
 	
 	BND_STRG_PRINTQAMSG(table, pAddr, ("%s: (%02x:%02x:%02x:%02x:%02x:%02x) \n",
@@ -567,6 +603,7 @@ INT BndStrg_Enable(PBND_STRG_CLI_TABLE table, BOOLEAN enable)
 		msg.Action = BNDSTRG_ONOFF;
 		msg.OnOff = table->bEnabled;
 		msg.Band = table->Band;
+#if 1
 		table->sent_action_code_counter[msg.Action - 1]++;
 		RtmpOSWrielessEventSend(
 			pAd->net_dev,
@@ -575,6 +612,9 @@ INT BndStrg_Enable(PBND_STRG_CLI_TABLE table, BOOLEAN enable)
 			NULL,
 			(UCHAR *)&msg,
 			sizeof(msg));
+#else
+		D_BndStrgSendMsg(pAd, &msg)
+#endif
 
 	BND_STRG_MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF,
 				(GRN("%s(): Band steering %s running.\n"),
@@ -764,13 +804,11 @@ BOOLEAN BndStrg_IsClientStay(
 	{
 		BNDSTRG_MSG msg;
 	
-		if ((pAd->CommonCfg.dbdc_mode == TRUE) && (pEntry->wdev->channel <= 14))
+		if (pEntry->wdev->channel <= 14)
 		{
 			/* do not disconnect sta since sta is in 2.4G */
 			return TRUE;
-		}
-
-		if (pEntry->wdev->channel > 14)
+		}else
 		{
 			/* ignore 5G dynamic RSSI if entry does not support 2.4G */
 			PBND_STRG_CLI_ENTRY entry = NULL;
@@ -797,10 +835,8 @@ BOOLEAN BndStrg_IsClientStay(
 		 /* we don't know the index, daemon should look it up */
 		msg.TableIndex = BND_STRG_MAX_TABLE_SIZE;
 
-		BND_STRG_MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_TRACE,
-				(YLW("%s(): Kick client (%02x:%02x:%02x:%02x:%02x:%02x)")
-				 YLW(" due to low Rssi(%d).\n")
-				 , __FUNCTION__, PRINT_MAC(pEntry->Addr), Rssi));
+		BND_STRG_PRINTQAMSG(table, pEntry->Addr, ("%s: Kick client (%02x:%02x:%02x:%02x:%02x:%02x) due to low Rssi(%d)\n",
+								__FUNCTION__,PRINT_MAC(pEntry->Addr), Rssi));
 
 		RtmpOSWrielessEventSend(
 			pAd->net_dev,
@@ -827,14 +863,14 @@ void BndStrg_UpdateEntry(PRTMP_ADAPTER pAd,
 	struct wifi_dev *wdev;
 	BNDSTRG_MSG msg;
 	PBND_STRG_CLI_TABLE table = P_BND_STRG_TABLE;
-    if((pAd->ApCfg.BandSteering != TRUE)) {
-		MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_ERROR, ("%s(): BandSteering %d\n", __FUNCTION__,pAd->ApCfg.BandSteering));
+	
+	if(!pEntry || !pEntry->wdev )
         return;
-    }
-    if(!pEntry || 
-			!pEntry->wdev
-	  ) {
-	  	MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_ERROR, ("%s(): pEntry is Null\n", __FUNCTION__));
+	
+    if((pAd->ApCfg.BandSteering != TRUE) ||
+		(pAd->ApCfg.BndStrgBssIdx[pEntry->func_tb_idx] != 1)) {
+		MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("%s(): BandSteering %d BssIdx[%d:%d]\n",
+			__FUNCTION__,pAd->ApCfg.BandSteering,pEntry->func_tb_idx,pAd->ApCfg.BndStrgBssIdx[pEntry->func_tb_idx]));
         return;
 	}
 	wdev = pEntry->wdev;
@@ -861,9 +897,6 @@ void BndStrg_UpdateEntry(PRTMP_ADAPTER pAd,
 				entry->BndStrg_Sta_State = BNDSTRG_STA_ASSOC;
 			else
 				entry->BndStrg_Sta_State = BNDSTRG_STA_DISASSOC;
-		}else
-		{
-			MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_ERROR,("%s():entry not found for %02x:%02x:%02x:%02x:%02x:%02x\n", __FUNCTION__ , PRINT_MAC(pEntry->Addr)));	
 		}
 	}
 	return;
@@ -898,6 +931,143 @@ INT Set_BndStrg_CndPriority(
 	return TRUE;
 }
 
+#ifdef VENDOR_FEATURE5_SUPPORT
+INT Show_BndStrg_NvramTable(
+	PRTMP_ADAPTER	pAd,
+	RTMP_STRING		*arg)
+{
+	PBND_STRG_CLI_TABLE table = P_BND_STRG_TABLE;
+	PBNDSTRG_NVRAM_CLIENT	table_nvram_client;
+	int i;
+	char PhyMode[10];
+	printk("%s bndstrg_nvram_client_count %d \n",__func__,table->bndstrg_nvram_client_count);
+	printk("Addr             	Band\tPhymde\t\t\t\tNSS\tManipulable\n");
+	for(i = 0; i < table->bndstrg_nvram_client_count; i++) {
+		table_nvram_client = &table->nvram_entry[i];
+		memset(PhyMode,0x00,10);
+		if(table_nvram_client->PhyMode == fPhyMode_Legacy)
+			sprintf(PhyMode,"%s","Legacy");
+		else if(table_nvram_client->PhyMode == fPhyMode_HT)
+			sprintf(PhyMode,"%s","11n");
+		else if(table_nvram_client->PhyMode == fPhyMode_VHT)
+			sprintf(PhyMode,"%s","11ac");
+		printk("%02x:%02x:%02x:%02x:%02x:%02x \t%-3s\t%-20s\t\t%d\t%s\n",PRINT_MAC(table_nvram_client->Addr),
+			((table_nvram_client->Band == BAND_24G)? "2G":"5G"),PhyMode,table_nvram_client->Nss,(table_nvram_client->Manipulable ? "YES":"NO"));
+	}
+	return TRUE;
+}
+
+static BOOLEAN BndStrg_NvramTableLookup(PBND_STRG_CLI_TABLE table, unsigned char *pAddr)
+{
+	int i;
+	
+	for(i = 0; i < NVRAM_TABLE_SIZE; i++)
+	{
+		if(MAC_ADDR_EQUAL(table->nvram_entry[i].Addr,pAddr))
+			return TRUE;
+	}
+	return FALSE;		
+}
+
+static BOOLEAN BndStrg_NvramInsertEntry(PBND_STRG_CLI_TABLE table,  PBNDSTRG_NVRAM_CLIENT msg)
+{
+	PBNDSTRG_NVRAM_CLIENT nvram_entry = NULL;
+	int i=0;
+	if (!BndStrg_NvramTableLookup(table, msg->Addr)) {
+		if (table->bndstrg_nvram_client_count < NVRAM_TABLE_SIZE)	{
+			nvram_entry = &table->nvram_entry[table->bndstrg_nvram_client_count];
+			memset(nvram_entry, 0, sizeof(BNDSTRG_NVRAM_CLIENT));
+			memcpy(nvram_entry->Addr, msg->Addr, MAC_ADDR_LEN);
+			table->bndstrg_nvram_client_count++;
+		}
+	}
+	else {		
+		for(i = 0; i < table->bndstrg_nvram_client_count; i++)
+		{
+			if(MAC_ADDR_EQUAL(table->nvram_entry[i].Addr,msg->Addr))
+				break;
+		}
+		nvram_entry = &table->nvram_entry[i];
+	}
+    
+    if(nvram_entry)
+    {
+	nvram_entry->Band = msg->Band;
+	nvram_entry->Nss = msg->Nss;
+	nvram_entry->Manipulable = msg->Manipulable;
+	nvram_entry->PhyMode= msg->PhyMode;
+    }
+    else
+    {
+        BND_STRG_MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_ERROR, ("%s: nvram_entry is NULL!\n",__FUNCTION__));
+        return FALSE;
+    }
+	
+	return TRUE;
+}
+
+void BndStrg_SetNvram(PRTMP_ADAPTER pAd, RTMP_IOCTL_INPUT_STRUCT *wrq)
+{
+	BNDSTRG_NVRAM_CLIENT bsdmsg;
+	PBND_STRG_CLI_TABLE table = P_BND_STRG_TABLE;
+	BNDSTRG_MSG msg;
+	INT Status;
+
+	if (table->bInitialized == FALSE)
+		return;
+	
+	if (wrq->u.data.length != sizeof(BNDSTRG_NVRAM_CLIENT))
+		return;
+	else
+	{
+		Status = copy_from_user(&bsdmsg, wrq->u.data.pointer, wrq->u.data.length);
+		if ((BndStrg_NvramInsertEntry(table, &bsdmsg))) {
+			msg.Action = NVRAM_UPDATE;
+			memcpy(msg.nvram_entry.Addr, bsdmsg.Addr, MAC_ADDR_LEN);
+			memcpy(msg.Addr, bsdmsg.Addr, MAC_ADDR_LEN);
+			msg.nvram_entry.Band = bsdmsg.Band;
+			msg.nvram_entry.Manipulable = bsdmsg.Manipulable ;
+			msg.nvram_entry.Nss = bsdmsg.Nss ;
+			msg.nvram_entry.PhyMode = bsdmsg.PhyMode;
+			D_BndStrgSendMsg(pAd, &msg);
+		}
+		else {				
+			BND_STRG_MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_INFO, ("%s: NVRAM table full\n",__FUNCTION__));
+		}
+	}
+	return;
+}
+
+void BndStrg_GetNvram(PRTMP_ADAPTER pAd, RTMP_IOCTL_INPUT_STRUCT *wrq)
+{
+	PBND_STRG_CLI_TABLE table = P_BND_STRG_TABLE;
+	BNDSTRG_NVRAM_LIST *nvram_list = NULL;
+	PBNDSTRG_NVRAM_CLIENT	nvram_client;
+	PBNDSTRG_NVRAM_CLIENT	table_nvram_client;
+	int i;
+	if (table->bInitialized == FALSE)
+		return;
+	os_alloc_mem(pAd, (UCHAR **)&nvram_list, sizeof(BNDSTRG_NVRAM_LIST));
+	if (nvram_list == NULL)
+		return;
+	NdisZeroMemory(nvram_list, sizeof(BNDSTRG_NVRAM_LIST));
+	nvram_list->Num = table->bndstrg_nvram_client_count;
+	for(i = 0; i < nvram_list->Num; i++) {
+		table_nvram_client = &table->nvram_entry[i];
+		nvram_client = &nvram_list->nvram_entry[i];
+		memcpy(nvram_client->Addr, table_nvram_client->Addr, MAC_ADDR_LEN);
+		nvram_client->Band = table_nvram_client->Band;
+		nvram_client->Manipulable= table_nvram_client->Manipulable;
+		nvram_client->PhyMode= table_nvram_client->PhyMode;
+		nvram_client->Nss= table_nvram_client->Nss;
+	}
+	wrq->u.data.length = sizeof(BNDSTRG_NVRAM_LIST);
+	copy_to_user(wrq->u.data.pointer, nvram_list, wrq->u.data.length);
+	if (nvram_list != NULL)
+		os_free_mem(nvram_list);					
+	return;
+}
+#endif /* VENDOR_FEATURE5_SUPPORT */
 UINT8 GetNssFromHTCapRxMCSBitmask(UINT32 RxMCSBitmask)
 {
 	UCHAR	RxMCS[4];
@@ -945,6 +1115,15 @@ static VOID D_ShowTableInfo(PBND_STRG_CLI_TABLE table)
 {
 	BNDSTRG_MSG msg;
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER) table->priv;
+	UINT8 idx=0;
+
+	BND_STRG_MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF,
+						("\t BndStrgBssIdx "));
+	for (idx =0; idx <  pAd->ApCfg.BssidNum; idx++)
+	{
+		printk(":%d",pAd->ApCfg.BndStrgBssIdx[idx]);
+	}
+	printk("\n");
 	
 	msg.Action = TABLE_INFO;
 	printk("sent_action_code_counter \n");
@@ -974,6 +1153,7 @@ static VOID D_ShowTableEntries(PBND_STRG_CLI_TABLE table)
 	BNDSTRG_MSG msg;
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER) table->priv;
 	CHAR	band_str[4][10]={"","5G","2.4G","2.4G/5G"};
+#if 1
 	INT i;
 	BND_STRG_MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF,
 						("\t%s Accessible Clients:\n",band_str[table->Band]));
@@ -987,6 +1167,7 @@ static VOID D_ShowTableEntries(PBND_STRG_CLI_TABLE table)
 							 i, PRINT_MAC(table->Entry[i].Addr)));
 		}
 	}
+#endif
 
 	BND_STRG_MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF,
 						("\tBndStrg Table Entries:\n"));
@@ -994,6 +1175,155 @@ static VOID D_ShowTableEntries(PBND_STRG_CLI_TABLE table)
 	D_BndStrgSendMsg(pAd, &msg);
 }
 
+#if 0
+static INT D_TableEntryAdd(
+			BND_STRG_CLI_TABLE *table,
+			PUCHAR pAddr,
+			PBND_STRG_CLI_ENTRY *entry_out)
+{
+	INT i;
+	UCHAR HashIdx;
+	PBND_STRG_CLI_ENTRY entry = NULL, this_entry = NULL;
+	INT ret_val = BND_STRG_SUCCESS;
+
+	if (table->Size >= BND_STRG_MAX_TABLE_SIZE) {
+		MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_WARN, ("%s(): Table is full!\n", __FUNCTION__));
+		return BND_STRG_TABLE_FULL;
+	}
+
+	NdisAcquireSpinLock(&table->Lock);
+	for (i = 0; i< BND_STRG_MAX_TABLE_SIZE; i++)
+	{
+		entry = &table->Entry[i];
+
+		/* pick up the first available vacancy*/
+		if (entry->bValid == FALSE)	{
+			NdisZeroMemory(entry, sizeof(BND_STRG_CLI_ENTRY));
+			/* Fill Entry */
+			RTMP_GetCurrentSystemTick(&entry->jiffies);
+			COPY_MAC_ADDR(entry->Addr, pAddr);
+			entry->bValid = TRUE;
+			break;
+		}
+	}
+
+	if (entry) {
+		/* add this MAC entry into HASH table */
+		HashIdx = MAC_ADDR_HASH_INDEX(pAddr);
+		if (table->Hash[HashIdx] == NULL) {
+			table->Hash[HashIdx] = entry;
+		} else {
+			this_entry = table->Hash[HashIdx];
+			while (this_entry->pNext != NULL) {
+				this_entry = this_entry->pNext;
+			}
+			this_entry->pNext = entry;
+		}
+		
+		*entry_out = entry;
+		table->Size++;
+	}
+	NdisReleaseSpinLock(&table->Lock);
+#if 0
+	BND_STRG_MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF,
+			("%s(): Index=%u, %02x:%02x:%02x:%02x:%02x:%02x, "
+			"Table Size = %u\n",
+			__FUNCTION__, i, PRINT_MAC(pAddr), table->Size));
+#endif
+	return ret_val;
+}
+
+static INT D_TableEntryDel(
+			BND_STRG_CLI_TABLE *table,
+			PUCHAR pAddr,
+			UINT32 Index)
+{
+	USHORT HashIdx;
+	PBND_STRG_CLI_ENTRY entry, pre_entry, this_entry;
+	INT ret_val = BND_STRG_SUCCESS;
+
+	if (Index >= BND_STRG_MAX_TABLE_SIZE)
+		return BND_STRG_INVALID_ARG;
+#if 0
+	BND_STRG_MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF,
+			("%s(): Index=%u, %02x:%02x:%02x:%02x:%02x:%02x, "
+			"Table Size = %u\n",
+			__FUNCTION__, Index, PRINT_MAC(pAddr), table->Size));
+#endif
+	NdisAcquireSpinLock(&table->Lock);
+	HashIdx = MAC_ADDR_HASH_INDEX(pAddr);
+	entry = &table->Entry[Index];
+	if (entry && entry->bValid) 
+	{
+#if 0
+		/*if (MAC_ADDR_EQUAL(entry->Addr, pAddr))*/
+#endif
+		{
+			pre_entry = NULL;
+			this_entry = table->Hash[HashIdx];
+			ASSERT(this_entry);
+			if (this_entry != NULL)
+			{
+				/* update Hash list*/
+				do
+				{
+					if (this_entry == entry)
+					{
+						if (pre_entry == NULL)
+							table->Hash[HashIdx] = entry->pNext;
+						else
+							pre_entry->pNext = entry->pNext;
+						break;
+					}
+
+					pre_entry = this_entry;
+					this_entry = this_entry->pNext;
+				} while (this_entry);
+			}
+
+			/* not found !!!*/
+			ASSERT(this_entry != NULL);
+
+			NdisZeroMemory(entry->Addr, MAC_ADDR_LEN);
+			entry->jiffies = 0;
+			entry->elapsed_time = 0;
+			entry->bValid = FALSE;
+			table->Size--;
+		}
+#if 0
+		else {
+			MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_ERROR,
+					("%s(): worng entry!\n", __FUNCTION__));
+			ret_val = BND_STRG_UNEXP;
+		}
+#endif
+	}
+	NdisReleaseSpinLock(&table->Lock);
+
+	return ret_val;
+}
+
+static INT D_TableLookup(
+			BND_STRG_CLI_TABLE *table,
+			PUCHAR pAddr)
+{
+	ULONG HashIdx;
+	BND_STRG_CLI_ENTRY *entry = NULL;
+	
+	HashIdx = MAC_ADDR_HASH_INDEX(pAddr);
+	entry = table->Hash[HashIdx];
+
+	while (entry && entry->bValid)
+	{
+		if (MAC_ADDR_EQUAL(entry->Addr, pAddr))
+			break;
+		else
+			entry = entry->pNext;
+	}
+
+	return entry;
+}
+#endif
 
 static BOOLEAN D_CheckConnectionReq(
 			PRTMP_ADAPTER pAd,
@@ -1015,6 +1345,9 @@ static BOOLEAN D_CheckConnectionReq(
 	UINT32 frame_check_flags = 0;
 	CHAR i, rssi_max;
 	BOOLEAN IsInf2G = FALSE;
+
+	if(!(pAd->ApCfg.BndStrgBssIdx[wdev->func_idx])) 
+		return TRUE;
 
 	/* Send to daemon */
 	if (pAd->CommonCfg.dbdc_mode)
@@ -1053,6 +1386,10 @@ static BOOLEAN D_CheckConnectionReq(
 	BND_STRG_PRINTQAMSG(table, pSrcAddr, ("%s: (%02x:%02x:%02x:%02x:%02x:%02x) rssi %d,%d,%d,%d Band %s bAllowStaConnectInHt %d bVHTCap %d Nss %d FrameType %s\n",
 		__FUNCTION__,PRINT_MAC(pSrcAddr), msg.Rssi[0],msg.Rssi[1],msg.Rssi[2],msg.Rssi[3],(msg.Band == BAND_24G ? "2.4G" : "5G"), bAllowStaConnectInHt, bVHTCap, Nss, FrameType == 0 ? ("probe") : (FrameType == 3 ? "auth" : "unknow")));
 	D_BndStrgSendMsg(pAd, &msg);
+#if 0
+	MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%02x:%02x:%02x:%02x:%02x:%02x, Band = %u, FrameType = %u\n",
+			PRINT_MAC(pSrcAddr), msg.Band, FrameType));
+#endif	
 
 	if (FrameType < (sizeof(frame_type_to_frame_check_flags)/sizeof(UINT32)))
 		frame_check_flags = frame_type_to_frame_check_flags[FrameType];
@@ -1455,6 +1792,7 @@ static VOID D_MsgHandle(
 				table->Ops->TableEntryAdd(table, msg->Addr, &entry);
 			else
 				entry->BndStrg_Sta_State = BNDSTRG_STA_INIT;
+			entry->Control_Flags = msg->Control_Flags;
 			break;
 
 		case CLI_UPDATE:
@@ -1477,8 +1815,8 @@ static VOID D_MsgHandle(
 			{
 				/* we can aging the entry if it is not in the mac table */
 				msg->ReturnCode = BND_STRG_SUCCESS;
-				BND_STRG_PRINTQAMSG(table, msg->Addr, ("%s: (%02x:%02x:%02x:%02x:%02x:%02x) msg->Action %d\n",
-				__FUNCTION__,PRINT_MAC(msg->Addr), msg->Action));
+				//BND_STRG_PRINTQAMSG(table, msg->Addr, ("%s: (%02x:%02x:%02x:%02x:%02x:%02x) msg->Action %d\n",
+				//__FUNCTION__,PRINT_MAC(msg->Addr), msg->Action));
 				table->Ops->TableEntryDel(table, msg->Addr, BND_STRG_MAX_TABLE_SIZE);
 			}
 			else
@@ -1495,12 +1833,43 @@ static VOID D_MsgHandle(
 			break;
 
 		case BNDSTRG_ONOFF:
-			BndStrg_Enable(table, msg->OnOff);
-			D_SetCndChkFlag(table,table->AlgCtrl.ConditionCheck);
-			D_SetCndPriority(table, table->BndStrgCndPri, table->BndStrgCndPriSize);
-			if (msg->OnOff) 
+			if (msg->OnOff)
+			{
+				UINT32	ap_idx,i;
+				/* disconnect all connected STA to keep the link status
+				 * between bndstrg daemon and driver
+				 */
+				for(ap_idx=MAIN_MBSSID; ap_idx < pAd->ApCfg.BssidNum; ap_idx++)
+				{
+					if(pAd->ApCfg.BndStrgBssIdx[ap_idx] == TRUE)
+						APMlmeKickOutAllSta(pAd, ap_idx, REASON_DEAUTH_STA_LEAVING);
+				}
+				
+				for (i=1; VALID_UCAST_ENTRY_WCID(pAd, i); i++)
+				{
+					MAC_TABLE_ENTRY *pEntry = &pAd->MacTab.Content[i];
+					if (IS_ENTRY_CLIENT(pEntry) && 
+					pAd->ApCfg.BndStrgBssIdx[pEntry->func_tb_idx] == TRUE)
+					{
+						MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_ERROR, ("[PMF]%s: MacTableDeleteEntry %x:%x:%x:%x:%x:%x\n",
+								 __FUNCTION__, PRINT_MAC(pEntry->Addr)));
+						MacTableDeleteEntry(pAd, pEntry->wcid, pEntry->Addr);
+					}
+				}
+
+				BndStrg_Enable(table, msg->OnOff);
+				D_SetCndChkFlag(table,table->AlgCtrl.ConditionCheck);
+				D_SetCndPriority(table, table->BndStrgCndPri, table->BndStrgCndPriSize);
+				D_SetAgeTime(table,table->AgeTime);
+				D_SetHoldTime(table,table->HoldTime);
+				D_SetRssiLow(table,table->RssiLow);
+				if((table->Band & BAND_24G) == BAND_24G)
+					D_SetCheckTime(table, BAND_24G,table->CheckTime_2G);
+				if((table->Band & BAND_5G) == BAND_5G)
+					D_SetCheckTime(table, BAND_5G,table->CheckTime_5G);
 				table->DaemonPid = current->pid;
-			else {
+			}else
+			{
 				UINT32 i;
 				PBND_STRG_CLI_ENTRY entry = NULL;
 				for (i=0;i<BND_STRG_MAX_TABLE_SIZE;i++) {
@@ -1510,8 +1879,16 @@ static VOID D_MsgHandle(
 					}
 				}
 				table->DaemonPid = 0xffffffff;
+				BndStrg_Enable(table, msg->OnOff);
 			}
 			break;
+#ifdef VENDOR_FEATURE5_SUPPORT
+		case NVRAM_UPDATE:
+			if (!(table->Ops->NvramTableEntryAdd(table, &msg->nvram_entry))) {
+				BND_STRG_MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_INFO, ("%s: NVRAM table full\n",__FUNCTION__));
+			}
+			break;
+#endif /* VENDOR_FEATURE5_SUPPORT */
 		default:
 			MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_WARN, ("%s: unknown action code. (%d)\n",__FUNCTION__, msg->Action));
 			break;
@@ -1538,6 +1915,80 @@ BNDSTRG_OPS D_BndStrgOps = {
 	.SetMntAddr = D_SetMntAddr,
 #endif /* BND_STRG_DBG */
 	.MsgHandle= D_MsgHandle,
+#ifdef VENDOR_FEATURE5_SUPPORT	
+	.NvramTableLookup = BndStrg_NvramTableLookup,
+	.NvramTableEntryAdd = BndStrg_NvramInsertEntry,
+#endif /* VENDOR_FEATURE5_SUPPORT */
 };
+
+void BndStrgSetProfileParam(struct _RTMP_ADAPTER *pAd, RTMP_STRING *tmpbuf, RTMP_STRING *pBuffer)
+{
+	INT	i = 0;	
+	RTMP_STRING *macptr = NULL;
+	/* Band Steering Enable/Disable */
+	if(RTMPGetKeyParameter("BandSteering", tmpbuf, 10, pBuffer, TRUE))
+	{
+		pAd->ApCfg.BandSteering = (UCHAR) simple_strtol(tmpbuf, 0, 10);
+		MTWF_LOG(DBG_CAT_CFG, DBG_CAT_AP, DBG_LVL_OFF, ("BandSteering=%d\n", pAd->ApCfg.BandSteering));
+	}
+	if(RTMPGetKeyParameter("BndStrgBssIdx", tmpbuf, 50, pBuffer, TRUE))
+	{
+		MTWF_LOG(DBG_CAT_CFG, DBG_CAT_AP, DBG_LVL_OFF, ("BndStrgBssIdx=%s\n", tmpbuf));
+		for (i = 0, macptr = rstrtok(tmpbuf,";"); macptr; macptr = rstrtok(NULL,";"), i++)
+		{
+			pAd->ApCfg.BndStrgBssIdx[i] = simple_strtoul(macptr,0,10);		
+		}
+
+		if (i == 0)
+			pAd->ApCfg.BndStrgBssIdx[MAIN_MBSSID] = 1;
+	}else{
+		pAd->ApCfg.BndStrgBssIdx[MAIN_MBSSID] = 1;
+	}
+	if(RTMPGetKeyParameter("BndStrgCndChk", tmpbuf, 10, pBuffer, TRUE))
+	{
+		pAd->ApCfg.BndStrgConditionCheck = (UINT32) simple_strtol(tmpbuf, 0, 16);
+		MTWF_LOG(DBG_CAT_CFG, DBG_CAT_AP, DBG_LVL_TRACE, ("BndStrgCndChk=%x\n", pAd->ApCfg.BndStrgConditionCheck));
+	}
+	if(RTMPGetKeyParameter("BndStrgCndPriority", tmpbuf, 50, pBuffer, TRUE))
+	{
+		for (i = 0, macptr = rstrtok(tmpbuf,";"); macptr; macptr = rstrtok(NULL,";"), i++)
+		{
+			pAd->ApCfg.BndStrgCndPri[i] = simple_strtoul(macptr,0,10);
+		}
+		pAd->ApCfg.BndStrgCndPriSize = i;
+	}
+	if(RTMPGetKeyParameter("BndStrgAge", tmpbuf, 10, pBuffer, TRUE))
+	{
+		pAd->ApCfg.BndStrgAge = (UINT32) simple_strtol(tmpbuf, 0, 10);
+		MTWF_LOG(DBG_CAT_CFG, DBG_CAT_AP, DBG_LVL_TRACE, ("BndStrgAge=%x\n", pAd->ApCfg.BndStrgAge));
+	}else
+	{
+		pAd->ApCfg.BndStrgAge = BND_STRG_AGE_TIME;
+	}
+	if(RTMPGetKeyParameter("BndStrgHoldTime", tmpbuf, 10, pBuffer, TRUE))
+	{
+		pAd->ApCfg.BndStrgHoldTime = (UINT32) simple_strtol(tmpbuf, 0, 10);
+		MTWF_LOG(DBG_CAT_CFG, DBG_CAT_AP, DBG_LVL_TRACE, ("BndStrgHoldTime=%x\n", pAd->ApCfg.BndStrgHoldTime));
+	}else
+	{
+		pAd->ApCfg.BndStrgHoldTime = BND_STRG_HOLD_TIME;
+	}
+	if(RTMPGetKeyParameter("BndStrgCheckTime", tmpbuf, 10, pBuffer, TRUE))
+	{
+		pAd->ApCfg.BndStrgCheckTime = (UINT32) simple_strtol(tmpbuf, 0, 10);
+		MTWF_LOG(DBG_CAT_CFG, DBG_CAT_AP, DBG_LVL_TRACE, ("BndStrgCheckTime=%x\n", pAd->ApCfg.BndStrgCheckTime));
+	}else
+	{
+		pAd->ApCfg.BndStrgCheckTime = BND_STRG_CHECK_TIME;
+	}
+	if(RTMPGetKeyParameter("BndStrgRssiLow", tmpbuf, 10, pBuffer, TRUE))
+	{
+		pAd->ApCfg.BndStrgRssiLow = (CHAR) simple_strtol(tmpbuf, 0, 10);
+		MTWF_LOG(DBG_CAT_CFG, DBG_CAT_AP, DBG_LVL_TRACE, ("BndStrgRssiLow=%x\n", pAd->ApCfg.BndStrgRssiLow));
+	}else
+	{
+		pAd->ApCfg.BndStrgRssiLow = BND_STRG_RSSI_LOW;
+	}
+}
 #endif /* BAND_STEERING */
 

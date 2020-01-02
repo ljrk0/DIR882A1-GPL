@@ -37,9 +37,10 @@ char const *pEventText[EVENT_MAX_EVENT_TYPE] = {
 	"has been aged-out and disassociated" ,
 	"active countermeasures",
 	"has disassociated with invalid PSK password"};
+#ifdef DLINK_SUPERMESH_SUPPROT
 int dlink_mesh_client_idle_timeout(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry, uint16_t reason);
 int dlink_mesh_check_weak_client(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry);
-
+#endif
 
 UCHAR get_apidx_by_addr(RTMP_ADAPTER *pAd, UCHAR *addr)
 {
@@ -304,9 +305,9 @@ NDIS_STATUS APOneShotSettingInitialize(RTMP_ADAPTER *pAd)
 	AutoChBssTableInit(pAd);
 	ChannelInfoInit(pAd);
 
-        ApAutoChannelAtBootUp(pAd);
-
         WifiSysOpen(pAd,wdev);
+
+        ApAutoChannelAtBootUp(pAd);
 
 #ifdef MT_DFS_SUPPORT
 	DfsDedicatedExclude(pAd);
@@ -2807,12 +2808,13 @@ VOID MacTableMaintenance(RTMP_ADAPTER *pAd)
 
 		if (bDisconnectSta)
 		{
+#ifdef DLINK_SUPERMESH_SUPPROT
 			/* dlink mesh: start */
 			pr_err("[DLINK_VENDOR_CHECK] STA idle timeout.\n"); //remove this after verified
 			//default idle time(MAC_TABLE_AGEOUT_TIME) is too long: 480 seconds !!!
 			dlink_mesh_client_idle_timeout(pAd, pEntry, REASON_DEAUTH_STA_LEAVING);
 			/* dlink mesh: end */
-
+#endif
 			/* send wireless event - for ageout */
 			RTMPSendWirelessEvent(pAd, IW_AGEOUT_EVENT_FLAG, pEntry->Addr, 0, 0);
 
@@ -2904,14 +2906,14 @@ VOID MacTableMaintenance(RTMP_ADAPTER *pAd)
 #endif
 			continue;
 		}
-
+#ifdef DLINK_SUPERMESH_SUPPROT
 		/* dlink mesh: start */
 		if (pEntry->wdev->dlink_mesh_en==0)
 		{
 			dlink_mesh_check_weak_client(pAd, pEntry);
 		}
 		/* dlink mesh: end */
-		
+#endif		
 
 #if defined(CONFIG_HOTSPOT_R2) || defined (CONFIG_DOT11V_WNM)
 		if (pEntry->BTMDisassocCount == 1)

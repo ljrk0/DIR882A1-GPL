@@ -33,13 +33,9 @@
 #include <unistd.h>
 #include <time.h>
 
-#if defined(PRODUCT_DIR853_A1) ||defined(PRODUCT_DIR853_A2)||defined(PRODUCT_DIR1360)
-#define IFNAME_5G "ra0"
-#define IFNAME_2G "rax0"
-#else
+
 #define IFNAME_2G "ra0"
 #define IFNAME_5G "rai0"
-#endif
 
 #define HASH_TABLE_SIZE                 256
 #define MAC_ADDR_LEN				6
@@ -50,10 +46,12 @@
 
 #define BND_STRG_MAX_TABLE_SIZE	256
 #define BND_STRG_TIMER_PERIOD	1000
-#define BND_STRG_AGE_TIME		150000
-#define BND_STRG_HOLD_TIME		90000
-#define BND_STRG_CHECK_TIME_5G	30000
-#define BND_STRG_CHECK_TIME_2G	30000
+#define BND_STRG_AGE_TIME		0
+#define BND_STRG_DORMANT_TIME	80
+#define BND_STRG_HOLD_TIME		50
+#define BND_STRG_CHECK_TIME_5G	30
+#define BND_STRG_CHECK_TIME_2G	30
+#define BND_STRG_OPERATION_STR_GAP_TIME  0
 #define BND_STRG_RSSI_DIFF		30
 #define BND_STRG_RSSI_LOW		-70
 #define BND_STRG_N_DIFF			3
@@ -68,7 +66,7 @@
 #endif
 
 enum BND_STRG_PRIORITY_FLAGS {
-	fBND_STRG_PRIORITY_RSSI_DIFF		,
+	fBND_STRG_PRIORITY_RSSI_DIFF = 0	,
 	fBND_STRG_PRIORITY_BAND_PERSIST		,
 	fBND_STRG_PRIORITY_HT_SUPPORT		,
 	fBND_STRG_PRIORITY_5G_RSSI			,
@@ -93,7 +91,12 @@ enum bndstrg_return_code {
 	BND_STRG_STA_IS_CONNECTED,
 	BND_STRG_UNEXP,
 };
-
+enum bndstrg_operational_band_change_code{
+	BND_OPERATIONAL_BAND_CHANGE_OFF = 0,
+	BND_OPERATIONAL_BAND_CHANGE_ON,
+	BND_OPERATIONAL_BAND_CHANGE_BLOCKED,
+	BND_OPERATIONAL_BAND_CHANGE_ALLOWED,
+};
 enum bndstrg_control_flags {
 	fBND_STRG_CLIENT_SUPPORT_2G			= (1 << 0),
 	fBND_STRG_CLIENT_SUPPORT_5G			= (1 << 1),
@@ -137,6 +140,7 @@ struct bndstrg_entry_stat {
 	u8 		AssocCount;
 	char	FirstClientDelTime[16];
 	u8 		MacDelCount;
+	u8		ScanCycle;
 };
 
 enum PhyMode {
@@ -163,6 +167,12 @@ struct bndstrg_cli_entry {
 	u8 				bValid;
 	u32				TableIndex;
 	u8				bActiveStatus;
+	u8				bConnected;
+	u8				updateBandChange;
+	u8				operational_band_change_status;
+	u32				operational_band_change_start_time;
+	u32 			operation_band_steering_time_gap;
+	char			rssi_diff;
 	u8				AgingConfirmed[2]; /* confirm this sta is not connected to our 2.4G or 5G interface before aging */
 	u32 				Control_Flags;
 	struct timespec 	tp;		/* timestamp when insert-entry */
@@ -173,6 +183,7 @@ struct bndstrg_cli_entry {
 	u8              Nss;
 	u8 				Manipulable;
 	u8 				band;
+	s8				matched_rule_id;
 };
 
 /* for setting different band steering algorithms */
@@ -199,11 +210,13 @@ enum ACTION_CODE{
 	SET_AGE_TIME,
 	SET_HOLD_TIME,
 	SET_CHECK_TIME,
+	SET_OPR_STR_GAP_TIME,
 	SET_MNT_ADDR,
 	SET_CHEK_CONDITIONS,
 	INF_STATUS_RSP_DBDC,
 	SET_CND_PRIORITY,
-	NVRAM_UPDATE
+	NVRAM_UPDATE,
+	BNDSTRG_TABLE_FULL,
 };
 
 struct bndstrg_cli_table {
@@ -217,19 +230,21 @@ struct bndstrg_cli_table {
 	char		 RssiDiff;			/* if Rssi2.4G > Rssi5G by RssiCheck, then allow client to connect 2.4G */
 	char		 RssiLow;			/* if Rssi5G < RssiLow, then this client cannot connect to 5G */
 	u32		AgeTime;			/* Entry Age Time (ms) */
+	u32		DormantTime;
 	u32		HoldTime;		/* Time for holding 2.4G connection rsp (ms) */
 	u32		CheckTime_5G;	/* Time for deciding if a client is 2.4G only (ms) */
 	u32		CheckTime_2G;	/* Time for deciding if a client is 5G only (ms) */
+	u32 OprStrGapTime;
 	u32 		Size;
-	u8		uc2GIfName[32];
-	u8		uc5GIfName[32];
+	char	uc2GIfName[32];
+	char	uc5GIfName[32];
 	u8		status_queried;
 	u8		status_queried_cnt;
 	u8		table_enable_cnt;
 	u8		dbdc_mode;
 	struct bndstrg_alg_control	AlgCtrl;
-	u32 sent_action_code_counter[NVRAM_UPDATE]; //NVRAM_UPDATE = 22 in ACTION_CODE
-	u32 received_action_code_counter[NVRAM_UPDATE]; //NVRAM_UPDATE = 22 in ACTION_CODE
+	u32 sent_action_code_counter[BNDSTRG_TABLE_FULL]; //NVRAM_UPDATE = 22 in ACTION_CODE
+	u32 received_action_code_counter[BNDSTRG_TABLE_FULL]; //NVRAM_UPDATE = 22 in ACTION_CODE
 	struct bndstrg_cli_entry 	Entry[BND_STRG_MAX_TABLE_SIZE];
 	struct bndstrg_cli_entry* 	Hash[HASH_TABLE_SIZE];
 	u32 PriorityList[fBND_STRG_PRIORITY_MAX];
@@ -242,6 +257,8 @@ struct bndstrg_cli_table {
 #ifdef BND_STRG_DBG
 	unsigned char MonitorAddr[MAC_ADDR_LEN];
 #endif /* BND_STRG_DBG */
+    u8 tablefullStatus;
+    struct bndstrg_cli_entry *LRUentry;
 };
 
 /* Use for I/O between driver and daemon */
@@ -273,7 +290,7 @@ struct bndstrg_msg{
 	u8 	Nss;
 	u32 PriorityList[fBND_STRG_PRIORITY_MAX];
 	u8 	PriorityListSize;
-	struct bndstrg_nvram_client nvram_entry;
+	struct bndstrg_nvram_client nvram_entry;	
 };
 
 struct bndstrg {
@@ -303,4 +320,3 @@ void bndstrg_run(struct bndstrg *bndstrg);
 	((_Control_Flags & fBND_STRG_CLIENT_SUPPORT_2G) && (_Control_Flags & fBND_STRG_CLIENT_SUPPORT_5G))
 
 #endif /* __BNDSTRG_H__ */
-

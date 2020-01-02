@@ -988,7 +988,7 @@ static int dhcpv6_handle_advert(enum dhcpv6_msg orig, const int rc,
 			cand.preference -= 2000;
 	}
 
-#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+#if 0//#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
 	/*
 	  * IPv6 CE-Router Test Debug:
 	  * 1. If a DHCP client fails to receive an expected response from a

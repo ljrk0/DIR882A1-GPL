@@ -2065,6 +2065,7 @@ VOID WscEapEnrolleeAction(
 						if ((CurOpMode == AP_MODE) && pWscControl->bSetupLock)
 						{
 							rv = WSC_ERROR_SETUP_LOCKED;
+							printk("%s_____________%d____WSC_ERROR_SETUP_LOCKED\n",__FUNCTION__,__LINE__);
 							goto Fail;
 						}
 #endif /* WSC_V2_SUPPORT */
@@ -2378,7 +2379,10 @@ Fail:
 #ifdef CONFIG_AP_SUPPORT
 #ifdef WSC_V2_SUPPORT
     	if ((CurOpMode == AP_MODE) && pWscControl->bSetupLock)
+    		{
+    		printk("%s_____________%d____WSC_ERROR_SETUP_LOCKED\n",__FUNCTION__,__LINE__);
 			rv = WSC_ERROR_SETUP_LOCKED;
+    		}
 #endif /* WSC_V2_SUPPORT */
 #endif /* CONFIG_AP_SUPPORT */
 
@@ -5400,7 +5404,9 @@ VOID WscBuildProbeRespIE(
 #endif /* WSC_V2_SUPPORT */
 			tempVal = pWpsCtrl->WscConfigMethods & 0x00FF;
 	}
-
+#ifdef WIFI_CER_SUPPORT	
+	tempVal = 0x104;
+#endif
 	tempVal = htons(tempVal);
 	templen = AppendWSCTLV(WSC_ID_CONFIG_METHODS, pData, (UINT8 *)&tempVal, 0);
 	pData += templen;
@@ -8892,7 +8898,7 @@ VOID	WscGenRandomKey(
 #define SIG_RA0_WPSENROLL_FIN (SIGRTMIN+8) /*40*/
 #define SIG_RAI0_WPSENROLL_FIN (SIGRTMIN+9) /*41*/
 
-void sendSigToNvramRaXEnrollFin(char *ifname)
+void sendSigToNvramRaXEnrollFin(int dev_idx)
 {
 #ifdef LINUX
 
@@ -8913,12 +8919,12 @@ void sendSigToNvramRaXEnrollFin(char *ifname)
 		{
 				if(!strcmp(p->comm, WSC_NVRAM_APPNAME))
 				{
-					if(!strncmp(ifname,"rax0",3))
+					if(dev_idx == 2)
 					{
 						send_sig(SIG_RA0_WPSENROLL_FIN, p, 0);
 						printk("====>send_sig(SIG_RA0_WPSENROLL_FIN)\n");
 					}
-					else if(!strncmp(ifname,"ra0",4))
+					else if(dev_idx == 0)
 					{
 						send_sig(SIG_RAI0_WPSENROLL_FIN, p, 0);
 						printk("====>send_sig(SIG_RAI0_WPSENROLL_FIN)\n");
@@ -9891,7 +9897,7 @@ VOID WscWriteConfToDatFile(RTMP_ADAPTER *pAd, UCHAR CurOpMode)
 	RTMP_STRING WepKeyFormatName[MAX_WEPKEYNAME_LEN] = {0};
 	INT				tempStrLen = 0;
 
-	MTWF_LOG(DBG_CAT_SEC, CATSEC_WPS, DBG_LVL_TRACE, ("-----> WscWriteConfToDatFile(CurOpMode = %d)\n", CurOpMode));
+	MTWF_LOG(DBG_CAT_SEC, CATSEC_WPS, DBG_LVL_ERROR, ("-----> WscWriteConfToDatFile(CurOpMode = %d)(devname=%s)apidx=(%d)\n", CurOpMode, pAd->net_dev->name, apidx));
 
 #ifdef CONFIG_AP_SUPPORT
 	if (CurOpMode == AP_MODE)
@@ -9902,6 +9908,10 @@ VOID WscWriteConfToDatFile(RTMP_ADAPTER *pAd, UCHAR CurOpMode)
 			return;
 		}
 		pWscControl = &pAd->ApCfg.MBSSID[apidx].WscControl;
+
+#ifdef WIFI_CER_SUPPORT
+		fileName = "/etc/Wireless/RT2860/RT2860_dbdc.dat";
+#else
 #ifdef VENDOR_FEATURE6_SUPPORT		
 #ifdef MT_FIRST_CARD
 		if (pAd->dev_idx == 0)
@@ -9919,6 +9929,9 @@ VOID WscWriteConfToDatFile(RTMP_ADAPTER *pAd, UCHAR CurOpMode)
 #endif /* CONFIG_RT_SECOND_CARD */
 #endif
 			fileName = AP_PROFILE_PATH;
+#endif
+	
+		MTWF_LOG(DBG_CAT_SEC, CATSEC_WPS, DBG_LVL_ERROR, ("-----> WscWriteConfToDatFile(fileName = %s)\n", fileName));
 		snprintf((RTMP_STRING *) WepKeyName, sizeof(WepKeyName), "Key%dStr%d=", pAd->ApCfg.MBSSID[apidx].wdev.SecConfig.PairwiseKeyId+1, apidx+1);
 		snprintf((RTMP_STRING *) WepKeyFormatName, sizeof(WepKeyFormatName), "Key%dType=", pAd->ApCfg.MBSSID[apidx].wdev.SecConfig.PairwiseKeyId+1);
 	}
@@ -10188,7 +10201,7 @@ VOID WscWriteConfToDatFile(RTMP_ADAPTER *pAd, UCHAR CurOpMode)
 	printk("WscWriteConfToDatFile()-------------------------->OpMode=0x%x\n",CurOpMode);
 	if((CurOpMode == AP_MODE))
 	{
-	    sendSigToNvramRaXEnrollFin(pAd->net_dev->name);   			 
+	    sendSigToNvramRaXEnrollFin(apidx);   			 
 	}
 #endif
 WriteErr:

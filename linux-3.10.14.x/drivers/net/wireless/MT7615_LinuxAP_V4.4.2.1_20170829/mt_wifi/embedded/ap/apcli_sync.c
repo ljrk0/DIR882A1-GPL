@@ -29,9 +29,10 @@
 #ifdef APCLI_SUPPORT
 
 #include "rt_config.h"
+#ifdef DLINK_SUPERMESH_SUPPROT
 #include "dlink_mesh.h"
 extern int (*dlink_hook_set_mesh_ie)(UCHAR *mesh_ie, int maxlen);
-
+#endif
 
 #ifdef WH_EZ_SETUP
 #ifdef DUAL_CHIP
@@ -1003,7 +1004,13 @@ static VOID ApCliEnqueueProbeRequest_A3Bcast(
 #ifdef DOT11_VHT_AC
     struct _build_ie_info  vht_ie_info;
 #endif /*DOT11_VHT_AC*/
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+	/* dlink mesh: start */
+UCHAR mesh_ie[MESH_IE_MAX] = {0};
+ULONG dlink_ie_len = 0;
+ULONG mesh_ie_len = 0;
+/* dlink mesh: end */
+#endif
 #ifdef WSC_AP_SUPPORT	
 	BOOLEAN bHasWscIe = FALSE;
 #endif /* WSC_AP_SUPPORT */
@@ -1095,6 +1102,20 @@ static VOID ApCliEnqueueProbeRequest_A3Bcast(
 #endif /* TXBF_SUPPORT && VHT_TXBF_SUPPORT */ 
 
         FrameLen += build_vht_ies(pAd, &vht_ie_info);
+#ifdef DLINK_SUPERMESH_SUPPROT
+		/* dlink mesh: start */
+		if (pApCliEntry->wdev.dlink_mesh_en && dlink_hook_set_mesh_ie)
+			{
+			mesh_ie_len = dlink_hook_set_mesh_ie(mesh_ie, MESH_IE_MAX);
+			if (mesh_ie_len > 0) {
+				MakeOutgoingFrame((pOutBuffer + FrameLen), &dlink_ie_len,
+					mesh_ie_len, mesh_ie,
+					END_OF_ARGS);
+				FrameLen += dlink_ie_len;
+				}
+				}
+		/* dlink mesh: end */
+#endif		
 
 #if defined(TXBF_SUPPORT) && defined(VHT_TXBF_SUPPORT)
 		pAd->CommonCfg.ETxBfEnCond = ucETxBfCap;
@@ -1193,12 +1214,13 @@ static VOID ApCliEnqueueProbeRequest(
 #ifdef DOT11_VHT_AC
     struct _build_ie_info  vht_ie_info;
 #endif /*DOT11_VHT_AC*/
+#ifdef DLINK_SUPERMESH_SUPPROT
 /* dlink mesh: start */
 UCHAR mesh_ie[MESH_IE_MAX] = {0};
 ULONG dlink_ie_len = 0;
 ULONG mesh_ie_len = 0;
 /* dlink mesh: end */
-
+#endif
 #ifdef WSC_AP_SUPPORT	
 	BOOLEAN bHasWscIe = FALSE;
 #endif /* WSC_AP_SUPPORT */
@@ -1295,6 +1317,7 @@ ULONG mesh_ie_len = 0;
 #endif /* TXBF_SUPPORT && VHT_TXBF_SUPPORT */ 
 
         FrameLen += build_vht_ies(pAd, &vht_ie_info);
+#ifdef DLINK_SUPERMESH_SUPPROT
 /* dlink mesh: start */
 if (pApCliEntry->wdev.dlink_mesh_en && dlink_hook_set_mesh_ie)
 	{
@@ -1307,7 +1330,7 @@ if (pApCliEntry->wdev.dlink_mesh_en && dlink_hook_set_mesh_ie)
 		}
 	}
 /* dlink mesh: end */
-
+#endif
 #if defined(TXBF_SUPPORT) && defined(VHT_TXBF_SUPPORT)
 		pAd->CommonCfg.ETxBfEnCond = ucETxBfCap;
 #endif /* TXBF_SUPPORT && VHT_TXBF_SUPPORT */ 

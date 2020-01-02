@@ -167,6 +167,14 @@ MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%s():shiang! PeerProbeReqSan
 			return;
 	}
 #endif /* BAND_STEERING */
+#ifdef BAND_STEERING_PLUS
+	if (pAd->ApCfg.BandSteering) {
+		BOOLEAN bBndStrgCheck = TRUE;
+		bBndStrgCheck = BndStrg_CheckConnectionReq(pAd, wdev, ProbeReqParam.Addr2, Elem, &ProbeReqParam);
+		if (bBndStrgCheck == FALSE)
+			return;
+	}
+#endif /* BAND_STEERING */
 
 		/* allocate and send out ProbeRsp frame */
 		NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);

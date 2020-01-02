@@ -29,9 +29,10 @@
 #ifdef DOT11R_FT_SUPPORT
 #include "ft.h"
 #endif /* DOT11R_FT_SUPPORT */
+#ifdef DLINK_SUPERMESH_SUPPROT
 int dlink_mesh_client_discon(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry, uint16_t reason);
 int dlink_mesh_ignore_client(unsigned char *mac);
-
+#endif
 #ifdef WH_EZ_SETUP
 #ifdef DUAL_CHIP
 extern NDIS_SPIN_LOCK ez_conn_perm_lock;
@@ -250,10 +251,12 @@ static VOID APPeerDeauthReqAction(
 	                ("%s: receive not client de-auth ###\n", __FUNCTION__));
 		else
 		{
+#ifdef DLINK_SUPERMESH_SUPPROT
 			/* dlink mesh: start */
 			pr_err("[DLINK_VENDOR_CHECK] STA DE-AUTH.\n");	//remove this after verified
 			dlink_mesh_client_discon(pAd, pEntry, Reason);
 			/* dlink mesh: end */
+#endif
 		    MacTableDeleteEntry(pAd, Elem->Wcid, Addr2);
 		}
 
@@ -619,6 +622,7 @@ SendAuth:
 			apidx, auth_info.auth_seq, auth_info.auth_alg,
 			auth_info.auth_status, Elem->Wcid,
 			PRINT_MAC(auth_info.addr2)));
+#ifdef DLINK_SUPERMESH_SUPPROT
 		/* dlink mesh: start */
 		if (dlink_mesh_ignore_client(pRcvHdr->Addr2))
 			{
@@ -626,7 +630,7 @@ SendAuth:
 			return;
 			}
 		/* dlink mesh: end */
-		
+#endif
 
 #ifdef WH_EZ_SETUP
 	if ((auth_info.auth_alg == AUTH_MODE_EZ)

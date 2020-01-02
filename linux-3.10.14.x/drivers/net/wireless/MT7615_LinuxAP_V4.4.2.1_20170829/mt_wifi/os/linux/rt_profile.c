@@ -51,7 +51,9 @@
 #endif
 
 #define BSSID_WCID_TO_REMOVE 1
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+int dlink_mesh_barrier(struct sk_buff *pkt);
+#endif
 struct dev_type_name_map{
 	INT type;
 	RTMP_STRING *prefix[MAX_NUM_OF_INF];
@@ -1335,23 +1337,18 @@ int RTMPSendPackets(
 		return 0;
 	}
 #endif /* CONFIG_ATE */
-/* dlink mesh: start */
-{
-struct sk_buff *pRxPkt = RTPKT_TO_OSPKT(pPacket);
-uint32_t *p_magic;
-if (ntohs(pRxPkt->protocol)==0x88B5)
+#ifdef DLINK_SUPERMESH_SUPPROT
+	/* dlink mesh: start */
 	{
-	p_magic = (uint32_t *)&pRxPkt->data[14];
-	if (ntohl(*p_magic)==0xff15a945)
+		struct sk_buff *pRxPkt = RTPKT_TO_OSPKT(pPacket);
+		if (dlink_mesh_barrier(pRxPkt))
 		{
-		RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_SUCCESS);
-		return 0;
+			RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_SUCCESS);
+			return 0;
 		}
 	}
-}
-/* dlink mesh: stop */
-
-
+	/* dlink mesh: stop */
+#endif
 #ifdef WSC_NFC_SUPPORT
 	{
 		struct sk_buff *pRxPkt = RTPKT_TO_OSPKT(pPacket);

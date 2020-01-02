@@ -1,0 +1,3278 @@
+#
+# Suggested Format:
+#
+#  ############################################################################
+#  # < MODULE NAME >
+#  ############################################################################
+#
+#  #####
+#  # < FILE NAME > , range < MIN > - < MAX >
+#  #####
+#  < NUM > : < MESSAGE INCLUDE FORMAT STRING (like %s, %d, etc) >
+#
+#  Range Legend:
+#       1000 ~ 1999         : dns proxy
+#       2000 ~ 2999         : hashmap wrapper
+#       3000 ~ 3999         : csp
+#       4000 ~ 4999         : device discovery
+#       5000 ~ 5999         : device isolation
+#
+
+###############################################################################
+# DNS PROXY - [1000 ~ 1999]
+###############################################################################
+
+#####
+# main.c dnsproxy , range 1100 - 1199
+#####
+1100 : parse vnic ip called
+1101 : Launching Dns Socket Server
+1102 : DNSProxy Terminating
+1103 : [init_dnsproxy] Version mismatch!
+1104 : [init_dnsproxy] Version match!
+1107 : Failed to refresh device hashmap data
+1108 : Failed to get the router id from db
+1111 : Config deinit failed, continuing the cleanup process
+1113 : Cleaning up DnsProxy
+1114 : Failed to parse the blockpage json read from config
+1115 : Entering parse_blockpage_ips
+1116 : Failed to get the resolved local ip map
+1117 : [parse_local_http_domains] failed to parse the json array %s
+1118 : [parse_local_http_domains] no domain found in the domain json array
+1119 : [parse_local_http_domains] memory allocation failed for local http domain
+1120 : [parse_local_http_domains] domain name is null at %d index in the json array
+1121 : [parse_local_http_domains] get sting failed
+1122 : [init_dnsproxy] shgw_ipset_dnsproxy_init failed
+1123 : Failed to get the resolved local ip map
+1124 : [init_dnsproxy] Failed to add static ipset iptable rules
+1125 : [init_dnsproxy] shgw_add_tld_json failed
+
+#####
+# form_and_send_edns_to_cloud , range 1200 - 1299
+#####
+1200 : is_policy_enforcement_needed called
+1201 : Memory Allocation Failure for dns_query_rec in is_policy_enforcement needed. Size %d
+1202 : Failed to parse req dns pakcet
+1203 : Query is not of Type A or ANY
+1207 : dns_request_cb called
+1208 : Process Request: Get packet Details Failed
+1209 : Policy need not be enforced
+1210 : Devid:%s Decision:%hhu
+1211 : Process Request: Failed to contact Policy Server
+1212 : Process Request: Sending Of Request to DNS Server failed
+1215 : contact_policy_server called
+1216 : Failed to form policy request packet
+1217 : Failed to send policy request packet
+1220 : set_RR_count_to_one called
+1221 : form_rdata called
+1222 : Failed to get Router Id
+1223 : Failed to get Device Id
+1224 : Failed to get Version
+1225 : form_policy_request_packet called
+1226 : Form Policy Request Packet Failed to duplicate
+1227 : Failed to form Rdata
+1228 : Failed to append collected data
+1229 : fill_opt_header_fields called
+1230 : get_rdata called
+1231 : Invalid Option Code
+1232 : Get Rdata : Failed to allocate Memory. Size %d
+1233 : append_collected_data called
+1234 : Failed to re-allocate memory. Size %d
+1235 : send_policy_request_packet called
+1236 : Socket to Send EDNS to Cloud Failed. %s
+1237 : Failed to Send Data to EDNS server. Error %s
+1238 : Process Request: Receive Data Failed
+1239 : setup_events called
+1240 : Failed to allocate memory for callback data. Size %d
+1241 : Failed to populate client info
+1242 : Failed to initialize isp callback data
+1243 : start_events called
+1244 : started policy event and timer, event_add() returned %d
+1245 : started isp event and timer, event_add() returned %d
+1246 : Request received to get the device id for ip : %s
+1247 : Failed to get the device id for ip : %s from active device hashmap
+1248 : [get_device_id] Device Ip : %s, Device id : %s
+1249 : Failed to open file : %s. Reason %s
+1250 : Device id : %s
+1251 : Router id : %s
+1252 : Router id is NULL.Hence not contacting the policy server.
+1253 : Failed to get the device id for ip : %s, Dev id : %s from device hashmap
+1254 : policy sock_fd : %d, isp sock_fd : %d
+1255 : Failed to allocate memory to store client_info_t in populate_client_info. Size %d
+1258 : populate_client_info invoked
+1259 : init_policy_data invoked
+1260 : policy fd is not legal (less than 0). Val %d
+1261 : Failed to allocate memory for the policy event. Size %d
+1262 : Failed to allocate memory for policy timer. Size %d
+1263 : init_isp_cb_data invoked
+1264 : Failed to allocate memory for isp event, closig the isp fd. Size %d
+1265 : Failed to allocate memory for isp timer. Size %d
+1266 : notify_device_discovery invoked
+1267 : process_dns_request called
+1268 : Process Request: setup_event failed
+1269 : Processing DNS request done
+1270 : rdata len is %d
+1271 : set_socket_options failed
+1272 : Entering resolve_local
+1273 : Identified the parse packet is a local http domain request
+1274 : event_add() failed for policy, retcode=%d
+1275 : event_add() failed for ISP, retcode=%d
+1276 : Request type: %d
+1277 : No EDNS port identified. Skipping Policy Check
+1278 : Query type is AAAA
+1279 : Failed to resolve the ip of the lan_interface : %s
+1280 : Resolved local ip = %d.%d.%d.%d if_index=%d
+1281 : [resolve_local] client ip address = %d.%d.%d.%d
+1282 : [resolve_local] Checking whether the  client belongs to %s interface
+1283 : [resolve_local] match failed
+1284 : domain %s
+1285 : policy control enable 
+1286 : [get_device_id] shgw info for the Device Ip : %s, Device id : %s
+
+#####
+# dns_socket_server.c , range 1300 - 1399
+#####
+1300 : bind_on_port called
+1301 : Unable to GetAddrInfo
+1302 : Unable to Establish Socket, Trying Next one. Error %s
+1303 : Bind Successful
+1304 : UDP Server Error
+1306 : run_event_loop called
+1307 : start_request_interception called
+1308 : Memory allocation failed for request event callback!. Size %d
+1309 : Memory allocation failed in event_new()
+1310 : Memory allocation failed in event_new()
+1311 : Bind on port %s for proto %d failed. sc=%d
+1312 : Bind on port %s for proto %d failed. sc=%d
+1313 : Start req interception failed sc=%d
+1339 : Starting inotify watcher to listen to the notifications from device discovery
+1340 : Failed to register for UDS event
+1341 : Setting socket option failed
+1342 : event_base_new() failed.
+1343 : event_add() failed, retcode=%d
+1344 : event_add() failed, retcode=%d
+1345 : Policy cache initialization failed with error %d
+1346 : Failed to init pod watcher
+1347 : Failed to init ipset_context_store
+1348 : Entering cleanup_event_loop_variables
+
+#####
+# parse_dns_response.c log strings , range 1400 - 1499
+#####
+1400 : Parse_dns_response called
+1401 : The answer offset for the packet is %d
+1402 : Updated the answer offset to %d
+1403 : get_answer_offset called
+1404 : modify_ttl called
+1405 : dns response packet's ttl is %d
+1406 : parse_rr called
+1407 : update ttl if required called
+1408 : Record of type A in the RR
+1409 : TTL of the RR is modified to %d
+1410 : Malloc failed allocating requested size : %d
+1411 : Parse_rr failed and returned %d
+1412 : print_rr_data called
+
+#####
+# process_dns_response.c log strings , range 1500-1599
+#####
+1500 : process_dns_response called
+1501 : get_packet_details failed
+1508 : verify_dns_packet returned %d
+1511 : Memory Alloction Failed for answer records. Size %d
+1513 : update_dns_details called
+1514 : Receive data failed!
+1515 : Handle dns response called
+1516 : Handle dns forward called
+1517 : Failed to store dns response context. Forwarding!
+1518 : Dns Response: Cleanup callback data called
+1519 : cleanup_isp_cb_data called
+1520 : Dns Response timed out! Cleanup.
+1521 : Failed to allocate memory for DNS Response. Size %d
+1522 : dns_response_cb called
+1523 : shgw_update_cache() failed, sc=%d
+1524 : Policy is host reputation
+1525 : process dns response failed for SHGW_DNS packet type
+1526 : The dns response is for updating the redirector ip table rules
+1527 : Failed to process the dns response for the SHGW_DNS packet with domain name %s 
+1528 : [handle_dns_forward] shgw_block failed
+
+#####
+# process_policy_response.c log strings , range 1600-1699
+#####
+1600 : IP Address recived to take decision : %s
+1601 : send_ipv6_resolved_response_to_client called
+1602 : size received after offset is %d
+1603 : failed to send DNS transparently IPv6
+1604 : Process Policy Decision: Get packet Details Failed
+1605 : Memory allocation failed for size %d
+1608 : Sending Of Deny Response to client failed
+1609 : Modify header for response called
+1610 : Appending Deny answer called
+1611 : Prepare Deny response called
+1612 : Answer offset : %d
+1613 : Memory allocation Failed for deny response. Size %d
+1614 : Preparing deny response failed with error %d
+1615 : Sending Of Deny Response to client failed
+1616 : Process Policy response called
+1617 : Receive data failed
+1618 : Policy Decision : %d
+1619 : Handle deny response called
+1620 : Get deny ip called
+1621 : Get vnic subnet called
+1622 : send deny response to client called
+1623 : Cleanup callback data called
+1624 : Policy events stopped
+1625 : Policy callback data freed
+1626 : isp events stopped
+1627 : client info freed
+1628 : Handle allow response
+1629 : [handle_allow_response] Dns response pending. Updated the policy decision.
+1630 : Sending Of Allow Response to client failed
+1631 : Policy Response timed out. Allow the lookup!
+1632 : No answer records! Not caching!
+1633 : Parsing domain name failed! Not caching!
+1634 : Update cache for domain:%s devid:%s. Decision:%hhu, ttl:%u
+1635 : Policy cache update failed!
+1636 : [handle_block_response] Entering
+1637 : 
+1638 : [handle_block_response] Failed to perform shgw_block
+1639 : [upsert_hr_redirector_ip] Entering
+1640 : [upsert_hr_redirector_ip] block typed %d not supported
+1641 : [upsert_hr_redirector_ip] edns packet buffer is empty
+1642 : [upsert_hr_redirector_ip] MEMORY_ALLOC_FAILED for answer records
+1643 : [upsert_hr_redirector_ip] Ip address matched ! %s
+1644 : [upsert_hr_redirector_ip] redirector ip has changed - %s
+1645 : [upsert_hr_redirector_ip] Failed to remove host reputation iptable rule
+1646 : [upsert_hr_redirector_ip] Failed to insert host reputation iptable rule
+1647 : [get_block_type] Entering
+1648 : 
+1649 : [get_block_type] Leaving
+1650 : 
+1651 : [handle_allow_response] This packet is not from client
+1652 : [cleanup_cts_callback_data] Entering
+1653 : [cleanup_cts_callback_data] Leaving
+1654 : [process_policy_response] Policy response is for cts packet
+1655 : 
+1656 : 
+1657 : [upsert_redirector_ip] Answer count is zero
+1658 : [handle_block_response] shgw info for the dns response.
+
+
+#####
+# dns_request_packet_parser.c log strings , range 1700-1799
+#####
+1700 : Received request to parse dns packet
+1701 : Error Parsing the DNS packet. Data is NULL or too small
+1702 : Question Count more than 1, returning without parsing
+1704 : Received Domain name : %s and Label length : %d to get the actual domain name
+1705 : Domain name after replacing label lengths with dots : %s
+1706 : Received request to get the domain name and type
+1707 : Malloc for Domain Name failed. Couldn't get Domain name and type. Size %d
+1708 : DNS Packet is of type A
+1709 : DNS Packet is of type AAAA
+1710 : DNS Packet if of type other than A and AAAA
+1712 : Verify DNS Request Packet Called
+1713 : Empty domain name
+1714 : Length of domain name is zero
+1715 : [verify_dns_req_packet] Dropping DNS packets destined to port other than 53
+
+#####
+# Utils.c , range 1800 - 1825
+#####
+1801 : generate_policy_hash_key : determined key : %d
+1802 : get_local_port called
+1803 : duplicate_packet called
+1804 : Failed to getsockname while getting local port
+1805 : [_retrieve_local_lan_ips] asprintf failed
+1806 : [_retrieve_local_lan_ips] Failed to whitelist lan ips
+1808 : Failed to bind. Error %s
+1814 : send_dns_transparently called
+1815 : Memory allocation failed for dup_packet. Size %d
+1816 : Received callback from sqlite
+1817 : Failed to allocate memory for storing the data from sqlite
+1818 : In get router id from db
+1819 : Failed to Allocate memory for query : %s
+1820 : sqlite query failed
+1821 : router id from db : %s
+1822 : [_retrieve_local_lan_ips] Entering
+1823 : [_retrieve_local_lan_ips] Failed to resolve the ip of the lan_interface : %s
+1824 : [_retrieve_local_lan_ips] resolving local ip for the interface
+1825 : [_retrieve_local_lan_ips] failed to parse the json array %s
+
+#####
+# dns_utils.c , range 1826 - 1875
+#####
+1826 : verify_dns_packet called
+1827 : Dns buffer received is empty
+1828 : Its a Dns question. Stoping the processing
+1829 : Incorrect question count. Stop Processing
+1830 : Dns upstream server returned error, forwarding the response to client
+1831 : No answers to process. Forward the packet
+
+1832 : verify_policy_response called
+1833 : Policy buffer received is empty
+1834 : Invalid policy response type!
+1835 : Invalid question count in policy response!
+1836 : Policy server returned error!
+
+1837 : free_rr_set called
+
+1838 : Parse Policy info called
+1839 : Policy decision is deny!
+1840 : Invalid policy response. Allow the request.
+1841 : Memory Alloction Failed for answer records. Size %d
+1842 : Parse DNS Response Failed
+
+1843 : get policy info called
+
+1844 : get_packet_details called
+1850 : Src addr: %s:%d
+1851 : Dst addr: %s:%d
+1852 : Src addr: %s:%d
+1853 : Dst addr: %s:%d
+
+1845 : prepare_to_recvmsg called
+1846 : Memory allocation failed for msg_buf
+
+1847 : receive_data called
+1848 : recvmsg failed. Error %s
+
+1849 : get_transaction_id : determined transtion id : %d
+
+#####
+# socket_utils.c , range 1876 - 1899
+#####
+1876 : set_socket_options called
+1877 : SetSockOpt Failed: IP_PKTINFO. Error %s
+1878 : SetSockOpt Failed: IP_TRANSPARENT. Error %s
+1879 : SetSockOpt Failed: IP_RECVORIGDSTADDR. Error %s
+1880 : SetSockOpt Failed: SO_REUSEADDR. Error %s
+1881 : SetSockOpt Failed: IPV6_V6ONLY. Error %s
+1882 : SetSockOpt Failed: IPV6_RECVPKTINFO. Error %s
+1883 : SetSockOpt Failed: IPV6_TRANSPARENT. Error %s
+1884 : SetSockOpt Failed: IPV6_RECVORIGDSTADDR. Error %s
+1885 : SetSockOpt Failed: SO_REUSEADDR. Error %s
+
+
+1886 : send_dns called
+1887 : Failed to establish socket. Error %s
+1888 : set socket options failed
+1889 : Failed to sendto. Error %s
+
+#####
+# refresh_deviceid_cache.c , range 1900 - 1950
+#####
+1900 : Deleting and Reinitialising the hashmap
+1901 : Device id Hash map init failed
+1902 : Adding ip : %s and Device id : %s to hashmap
+1903 : Failed to add data to hashmap
+1904 : Executing query : %s
+1905 : Failed to open db : %s
+1906 : SQL error : %s
+1907 : [refresh_active_device_data] Refreshing %s hashmap data
+1908 : Failed to Allocate memory for query to select the device ids from device discovery table
+1909 : Failed to retreive the hashmap data from sqlite
+1910 : Failed to Refresh active device data
+1911 : Failed to Refresh inactive device data
+1912 : Failed to allocate memory for storing the ip in hashmap size %d and device id in hashmap. Size %d
+1913 : fill_hashmap_with_latest_deviceid_info_cb called
+1914 : retreive_deviceid_info_from_db_and_fill_hashmap called
+1915 : retreive_deviceid_info_from_db_and_fill_hashmap return status %d
+1916 : failed to allocate memory to the hashmap keys. not adding entry to the hashmap
+1917 : free hashmap entry invoked
+1918 : [fill_hashmap_with_latest_deviceid_info_cb] ip6 array index get failed!
+1919 : [fill_hashmap_with_latest_deviceid_info_cb] ip6 add to strmap failed!
+1920 : [refresh_inactive_device_data] Refreshing %s hashmap data
+
+#####
+# shgw_dns_stats.c , range 1951 - 1969
+#####
+1951 : Json stats object creation failed!
+1952 : Json stats string creation failed!
+1953 : stats updation query creation failed!
+1954 : stats updation in db failed!
+1955 : event_new() failed.
+
+###
+# shgw_dnsproxy_stub.c : 1970 - 1999
+###
+1970 : case SHGW_WHITELISTED_DOMAIN_CHECK
+1971 : shgw_add_wl_redir_dom_cs failed
+1972 : [perform_desired_command] case SHGW_TLD_CHECK
+1973 :
+1974 :
+1975 : RPC received to recheck whitelisted domains
+1976 : shgw_register_uds called
+1977 : shgw_uds_server_init failed
+1978 : perform_desired_command called
+1979 : case DNSPROXY_STOP
+1980 : case DNSPROXY_UPDATE_LOG_LEVEL
+1981 : [perform_desired_command] shgw_rpc_read_cmd_data failed
+1982 : default case called
+1983 : case UPDATE_DNSPROXY_CONFIG
+1984 : Failed to perform config init
+1985 : case REFRESH_DEVICE_DATA
+1986 : Command data %s
+1987 : Command data type is wrong! %s
+1988 : Invalidating all the policy caches!
+1989 : Failed to get devid from json
+1990 : Invalidating policy cache for devid: %s
+1991 : Leaving invalidate cache
+1992 : case INVALIDATE_CACHE
+1993 : case CONTINUE_TO_SITE
+1994 : Data received is in wrong format. %s
+1995 : shgw_handle_cts failed
+1996 : Block or Unblock Device case
+1997 : Failed to read device_block/device_unblock data
+1998 : shgw_block/unblock_device data = %s
+1999 : shgw_handle_device_block failed
+2000 : [perform_desired_command] shgw_rpc_read_cmd_data failed
+
+#####
+# shgw_policy_cache.c : 1000 - 1099
+#####
+1000 : Freeing domain entry %s
+1001 : Freeing device cache entry for %s
+1002 : Freeing policy cache entry for domain %s
+1003 : Cache Miss! Domain entry for %s not found!
+1004 : Cache Miss! Dev cache entry for %s not found!
+1005 : Cache Miss! Policy entry for %s not found!
+1006 : Cache Miss! Policy entry for %s expired!
+1007 : Cache Hit! Policy entry for %s is %hhu
+1008 : No Domain entry for %s
+1009 : Max size reached for cache!
+1010 : Max size reached for cache! Not caching %s
+1011 : Key depulication failed for domain %s
+1012 : Memory allocation failed for storing metadata of domain %s
+1013 : Hashmap add failed for domain %s
+1014 : Devcache entry for %s found!
+1015 : Key depulication failed for devid %s
+1016 : Memory allocation failed for storing metadata of devid %s
+1017 : Hashmap Init failed for devid %s
+1018 : Hashmap Add failed for devid %s
+1019 : Update cache for domain:%s with decision:%hhu and expiry:%u
+1020 : Creating new policy entry
+1021 : Memory allocation failed for new policy entry
+1022 : Hashmap add failed!
+1023 : Not caching domain:%s for devid:%s
+1024 : Evicting domains used prior to %u
+1025 : Evicted %d domains from the cache
+1026 : Deleting dev cache entry for %s
+1027 : Not evicting cache entries
+1028 : Lower Watermark reached. Evicting items!
+1029 : Higher Watermark reached. Evicting items!
+1030 : Domain info hashmap init failed!
+1031 : Dev info hashmap init failed!
+1032 : Periodic watcher init failed!
+1033 : Max size reached for entries!
+1034 : Max size reached for entries! Not caching %s
+1035 : Number of policy cache entries: %d
+1036 : [shgw_update_cache] get_domain_name_and_type() failed.
+1037 : [_update_cache] set_and_get_domain_key() failed.
+1038 : [_parse_resource_records] answer_count is 0
+1039 : [_parse_resource_records] SHGW_CALLOC() failed for size=%d
+1040 : [_parse_resource_records] parse_dns_response() failed.
+1041 : [_update_cache] _parse_resource_records() failed status=%d domain_name=%s
+1042 : [_update_cache] _copy_to_cache() failed.
+1043 : [shgw_update_cache] _parse_resource_records() failed status=%d domain_name=%s
+1044 : [shgw_check_cache] dns cache ttl expired for %s %d seconds ago.
+1045 : [shgw_check_cache] SHGW_MALLOC() failed for size %d
+1046 : [shgw_check_cache] dns cache hit, domain_name=%s pending ttl=%d
+1047 : [_copy_to_cache] SHGW_REALLOC() failed for size %d
+1048 : [_update_cache] ignoring DNS q_type %d domain_name=%s
+1049 : [shgw_check_cache] ignoring DNS q_type %d
+1050 : [_update_cache] cached successfully domain_name=%s ttl=%d
+1051 : Returning without initializing  the caches
+
+###############################################################################
+# Hashmap Wrapper - [2000 ~ 2999]
+###############################################################################
+
+#####
+# Hashmap wrapper.c log statments
+#####
+2000 : Memory allocation for ptrmap failed
+2001 : failed to init the ptr hashmap
+2002 : Memory allocation for strmap failed
+2003 : failed to init the str hashmap
+2004 : added key %s to the hashmap successfully
+2005 : failed to add the key to the hashmap
+2006 : failed to get entry from the hashmap for key %s
+2007 : found the key %s in the database. returning the value
+2008 : successfully deleted the key %s from the hashmap
+2009 : failed to delete the key from the database %s
+2010 : failed to get entry from the hashmap for key %s
+2011 : Found the entry from the hashmap for key %s
+2012 : [hm_add_to_strmap_safe] key or value is null
+
+
+###############################################################################
+# CSP - [3000 ~ 3999]
+###############################################################################
+
+#####
+# csp_enrollment.c range: 3000 - 3099
+#####
+3000 : [get_csp_service_discovery_urls] called
+3001 : [get_csp_service_discovery_urls] Service Discovery ttl for  %s : %d
+3002 : [get_csp_service_discovery_urls] Service Discovery TTL is Null or expired for service : %s
+3003 : Enrollment url from DB : %s
+3007 : In prepare enrollment request
+3008 : CSP Enrollment request data : %s
+3009 : In store enrollment data
+3010 : unable to allocate memory for query corresponding to storing the csp enrollment response
+3013 : Failed to get the hardware id
+3014 : Failed to prepare csp enrollment request data
+3015 : [get_csp_service_discovery_urls] service discovery failed for %s
+3016 : CSP enroll - get_device_id called
+3017 : Enrollment ttl from db : %s
+3018 : Current enrollment ttl : %ld epoch time : %ld
+3020 : asprintf failed to form enrollment url
+3021 : [store_enrollment_data] CJSON Parse Failed
+3024 : The enrollment url : %s
+3025 : Hardware id : %s
+3026 : Client id : %s
+3027 : Nonce : %s
+3030 : [get_device_id] CSP enrollment call failed when ttl is NULL!
+3035 : Get client enrollment url failed.
+3039 : [get_csp_service_discovery_urls] service discovery Success. Transition calling for %d
+3042 : [csp_enroll] do csp async calling
+3044 : [csp_enroll] ENROLLMENT Sucess. Transition calling for %d
+3045 : [__csp_cloud_respond_client_enroll_cb] callback called
+3046 : [__csp_cloud_respond_client_enroll_cb] response code %d response data %s
+3047 : [__csp_cloud_respond_client_enroll_cb] http response OK
+3048 : [__csp_cloud_respond_client_enroll_cb] response code %d response data %s.State CSP ENROLLMENT Execution failed. Will re-transit to same state
+3049 : [__csp_cloud_respond_client_enroll_cb] CSP ENROLLMENT Success. Transition calling for %d
+3050 : [__csp_cloud_respond_client_enroll_cb] store_enrollment_data failed
+3051 : [get_csp_service_discovery_urls] CSP Sucess. Transition calling for next state
+3052 : [get_csp_service_discovery_urls] SHP Sucess. Transition calling for next state
+3053 : [get_service_url] called
+3054 : [get_service_url] ttl for csp enrollment from db : %s
+3055 : [get_service_url] ttl is NULL or expired
+3056 : [get_service_url] TTL is valid. fetching enrollment url
+3057 : [get_enrolled_client_id] called 
+3058 : [get_enrolled_client_id] ttl for client_id from db : %s
+3059 : [get_enrolled_client_id] ttl is NULL or expired
+3060 : [get_enrolled_client_id] TTL is valid. fetching client_id  
+3061 : [store_enrollment_data] ttl is %s
+3062 : [store_enrollment_data] shgw_json_object_get_string failed for ttl
+ 
+#####
+# csp_sqlite_wrapper.c range: 3100 - 3199
+#####
+3100 : Failed to Allocate memory for delete query
+3101 : Failed to allocate memory to query sd ttl from db
+3102 : Failed to allocate memory to query enrollment url from db
+3103 : Failed to allocate memory to query enrollment nonce from db
+3104 : Failed to allocate memory to query client id from db
+3105 : Failed to allocate memory to query enrollment ttl from db
+3106 : Failed to allocate memory for callback data
+3107 : Return data is null after sqlite query for service disc
+3108 : Return data is null after sqlite query for Enrollment ttl
+3109 :
+3110 : sqlite callback is called
+3111 : delete_csp_data_from_db called
+3112 : get_sd_ttl_from_db called
+3113 : get_server_url_from_db called
+3114 : get_enrollment_nonce_from_db called
+3115 : get_client_id_from_db called
+3116 : get_enrollment_ttl_from_db called
+3117 : [update_shp_ttl_in_db] service recvd : %s ttl recvd : %s
+3118 : [update_shp_ttl_in_db] query failed
+
+#####
+# form_data_for_token_generation.c range: 3200 - 3299
+#####
+3200 : Failed to allocate memory to store hostname
+3201 : Failed to get the hostname
+3202 : [get_request_date_in_header] Failed to Allocate Memory for req date in token
+3203 : Failed to get the ip address
+3204 : Failed to allocate memory for storing ip
+3205 : Host name : %s
+3206 : req date in token : %s
+3207 : Ip Address : %s
+3208 : get_hostname called
+3209 : get_request_data_in_header called
+3210 : get_request_date_in_token called
+3211 : get_ip_address called
+3212 : Length of data : %d
+3213 : Failed to allocate memory for data
+3214 : get_data called
+3215 : encode_to_base64 called
+3216 : bio formed is NULL
+3217 : bio write failed
+3218 : [get_request_date_in_token] Failed to Allocate Memory for req date in token
+
+#####
+# generate_security_tokens.c range: 3300 - 3399
+#####
+3300 :
+3301 : Failed to generate pkdbf2 for AES key
+3302 : Failed to generate pkdbf2 for Initialization Vector
+3303 : [base64encode] malloc() failed, input buffer size %d
+3304 :
+3305 :
+3306 :
+3307 : Random string generated : %s
+3308 : Failed to Allocate memory for plain text generated after appending random number
+3309 : call to evp context init failed
+3310 : Call to evp init ex failed
+3311 : Call to EVP encrypt update failed
+3312 : Call to EVP Encrypt Final ex failed
+3313 : Failed to get data
+3314 : Data to be encrypted : %s
+3315 : Failed to generate hash
+3316 : Hash generated : %s
+3317 : Failed to Append Random number
+3318 : Plain text to be sent after appending random number : %s
+3319 : Failed to get keys for Encryption
+3320 : Failed to Encrypt Data
+3321 : Verification Token : %s
+3322 : get_aes_keys called
+3323 : generate_random_number called
+3324 : append_random_number called
+3325 : Appended string length : %d
+3326 : encrypt_data called
+3327 : Ciphertext len : %d
+3328 : CSP - free_data called
+3329 : generate_security_token called
+3330 : Length of data : %d
+3331 : Failed to Allocate memory for buffer to store the base64 encoded data
+
+#####
+# service_discovery_client.c range: 3400 - 3499
+#####
+3400 : Request received to prepare csp sd request data
+3401 : Request received to parse and store sd response
+3402 : Failed to Allocate memory for insert query
+3403 : Service Discovery Response Insert Query : %s
+3404 : Request received to perform service discovery
+3405 : Service Discovery Request data : 
+3406 : [parse_and_store_sd_response]CJSON Parse failed
+3407 : [service_discovery] SD response: 
+3408 : get_cjson_child_object called
+3409 : The object or the child is NULL
+3410 : The value : %s
+3411 : The client id : %s
+3412 : delete_csp_data_from_db failed
+3413 : [parse_and_store_sd_response] ttl : %s
+3414 : [service_discovery] prepare_sd_request_data returned NULL
+3415 : [service_discovery] do_csp_async failed for %d
+3416 : [service_discovery] parse_and_store_sd_response failed!!
+3417 : [parse_and_store_sd_response] Retrieval of 0th element failed!
+3418 : [parse_and_store_sd_response] Retrieval of ttl element failed!
+3419 : [parse_and_store_sd_response] Retrieval of urls failed!
+3420 : [parse_and_store_sd_response] zero URLs from CSP
+3421 : [parse_and_store_sd_mgt_cloud_response] Request received to parse and store sd mgt cloud response
+3422 : [parse_and_store_sd_mgt_cloud_response] CJSON Parse failed
+3423 : [parse_and_store_sd_mgt_cloud_response] ttl : %s
+3424 : Failed to get data at index 0 from CSP repsonse
+3425 : Failed to get the array for services from the response
+3426 : [prepare_sd_query] Failed to Allocate memory for insert query
+3427 : 
+3428 : The number of services in the array is %d
+3429 : Number of services less than one or type is not array
+3430 : iterate_services_update_db failed
+3431 : get_urls_from_service failed
+3438 : Unidentified type of service. Key is %s 
+3439 : iterate_services_update_db called
+3440 : get_urls_from_service called
+3441 : Failed to get service object at index %d
+3442 : Failed to get service name from service object
+3443 : Failed to get primary URL from service object
+3444 : get_both_urls called
+3445 : form_and_fill_urls_in_db called
+3446 : asprintf failed while appending data for primay url
+3447 : asprintf failed while appending data for secondary url
+3448 : [service_discovery] do_shp_async failed!!
+3449 : [__csp_cloud_respond_csp_cb] callback called
+3450 : [__csp_cloud_respond_csp_cb] response code %d response data %s
+3451 : [__csp_cloud_respond_csp_cb] http response OK
+3452 : [__csp_cloud_respond_csp_cb] parse_and_store_sd_response failed
+3453 : [__csp_cloud_respond_csp_cb] CSP Success. Transition calling for %d
+3454 : [__csp_cloud_respond_csp_cb] response code %d response data %s. State CSP Execution failed. Will re-transit to same state
+3455 : [__csp_cloud_respond_shp_cb] callback called
+3456 : [__csp_cloud_respond_shp_cb] response code %d response data %s
+3457 : [__csp_cloud_respond_shp_cb] http response OK
+3458 : [__csp_cloud_respond_shp_cb] parse_and_store_sd_mgt_cloud_response failed
+3459 : [__csp_cloud_respond_shp_cb] SHP Success. Transition calling for %d
+3460 : [__csp_cloud_respond_shp_cb] response code %d response data %s. State SHP Execution failed. Will re-transit to same state
+3461 : [__csp_cloud_respond_shp_cb] on_shp_url_change failed
+
+#####
+# request_csp.c range: 3500 - 3599
+#####
+3502 : [do_csp_async]return val of http request async : %d
+3504 : form_request_headers called
+3505 : generate_security_token failed
+3506 : get_request_date_in_header failed
+3507 : form_request_csp_service called
+3508 : Failed to get current time
+3509 : free_request_data called
+3510 : get_current_time called
+3511 : form_request_header called
+3512 : Headers are NULL
+3513 : [form_request_headers_csp] content-type curl_slist_append failed
+3514 : [form_request_headers_csp] AppKey curl_slist_append failed
+3515 : [form_request_headers_csp] IPAddress curl_slist_append failed
+3516 : [form_request_headers_csp] MachineName curl_slist_append failed
+3517 : [form_request_headers_csp] RequstDate curl_slist_append failed
+3518 : [form_request_headers_csp] VerificationToken curl_slist_append failed
+3520 : [form_request_headers_csp] cURL header: 
+3546 : [do_csp_async] form headers failed
+3547 : [do_csp_async] http request failed
+3548 : [do_csp_async] called
+3549 : [form_request_headers_csp] cURL header: AppKey: %s
+3550 : [form_request_headers_csp] cURL header: IPAddress: %s
+3551 : [form_request_headers_csp] cURL header: MachineName: %s
+3552 : [form_request_headers_csp] cURL header: RequestDate: %s
+3553 : [form_request_headers_csp] cURL header: VerificationToken: %s
+3554 : [form_request_headers_csp] cURL header: VendorId: %s
+#####
+# main.c range: 3600 - 3699
+#####
+3600 : Config init failed
+3601 : CSP Config Store deinit failed
+3602 : run_csp_sd called
+3603 : [state_run_csp] get csp service discovery urls failed. Re-transit to same state 
+3604 : [state_run_client_enroll] state run client enroll called
+3605 : [state_run_client_enroll] get_device_id failed. Re-transit to  same state
+3606 : [state_run_shp_sd] state_run_shp_sd called
+3607 : [state_run_shp_sd] get shp service discovery urls failed. Re-transit to same state
+3608 : [state_run_shp_sd] client id failed. Re-transit to previous state
+3609 : [state_run_csp_sd] Already in progress state
+3610 : [state_run_csp_enroll] Already in progress state
+3611 : [state_run_shp_sd] Already in progress state
+3612 : CSP init
+
+#####
+# report_event.c range: 3700 - 3799
+#####
+3700 : csp_security_store_init() failed.
+3701 : malloc() for event_info failed.
+3702 : csp_event_header_isvalid() failed.
+3703 : malloc() for csp_event failed.
+3704 : csp_event_isvalid() failed.
+3705 : csp_event_info_tojson() failed.
+3706 : cJSON_Print() failed.
+3707 : _mk_analytics_url() failed.
+3708 : service_discovery() failed.
+3709 : _get_url_from_cache() failed.
+3710 : get_server_url_from_db() failed.
+3711 : report_event_init called
+3712 : report_event_deinit called
+3713 :  req cjson : %s
+3714 : _get_epoch_str called
+3715 : _post_report_event called
+3716 : _mk_analytics_url called
+3717 : Analytics url : %s
+3718 : _get_url_from_cache called
+3719 : [__csp_cloud_respond_data_analyt_cb] callback called
+3720 : [__csp_cloud_respond_data_analyt_cb] response code %d response data %s
+3721 : [__csp_cloud_respond_data_analyt_cb] http response OK
+3722 : [__csp_cloud_respond_data_analyt_cb] response code %d response data %s
+
+###############################################################################
+# Device Discovery - [4000 ~ 4999]
+###############################################################################
+#####
+# shgw_dd.c range: 4000 - 4099
+#####
+4000 : [shgw_discover_devices] about to init global vars
+4001 : [shgw_discover_devices] error: from shgw_dd_init_global_variables
+4002 : The object being inserted is %s
+4004 : [shgw_discover_devices] about to init curl
+4005 : [shgw_discover_devices] error: from shgw_dd_init_curl
+4006 : [shgw_discover_devices] about to init ev
+4007 : [shgw_discover_devices] error: from shgw_dd_init_ev
+4008 : [shgw_discover_devices] about to init rpc
+4009 : [shgw_discover_devices] error: from shgw_dd_init_rpc
+4010 : [shgw_discover_devices] about to run ev
+4011 : [shgw_discover_devices] clean up!
+4012 : [shgw_discover_devices] error: from shgw_http_async_init
+4013 : [shgw_discover_devices] about to init protos
+4014 : [shgw_discover_devices] error: from shgw_dd_init_protos
+
+4015 : [shgw_dd_merge] entering
+4016 : [shgw_dd_merge] update device list failed!
+4018 : [shgw_dd_merge] update db failed
+4019 : [shgw_dd_merge] notifying subscribers failed
+4021 : [parse_upload_device_features_flag] upload device flags %s
+4022 : [parse_upload_device_features_flag] json parse upload device flags  %s failed
+4023 : [parse_upload_device_features_flag] json array length is 0 
+4024 : [parse_upload_device_features_flag] json array length %d
+4025 : [parse_upload_device_features_flag] json array index %d
+4026 : [parse_upload_device_features_flag] json array element is NULL continue to fetch other element 
+4027 : [parse_upload_device_features_flag] ip_change_flag %s device_flag %s
+4028 : [shgw_discover_devices] parse_upload_device_features_flag failed
+4029 : [shgw_dd_merge] notify wd for inbound security failed
+#####
+# shgw_dd_init.c range: 4100 - 4199
+#####
+4100 : [shgw_dd_init_logger] leaving
+
+4101 : [shgw_dd_init_global_variables] entering
+4102 : [shgw_dd_init_global_variables] no cfg data given
+4103 : [shgw_dd_init_global_variables] version mismatch
+4104 : [shgw_dd_init_global_variables] DB init failed with code %d
+4105 : [shgw_dd_init_global_variables] Global data init failed with code %d
+4106 : [shgw_dd_init_global_variables] error in router id
+4107 : [shgw_dd_init_global_variables] router id:
+4108 : [shgw_dd_init_global_variables] leaving
+4109 : [shgw_dd_init_global_variables] parse device discovery protocols features flag failed
+
+4110 : [__init_protos] entering
+4111 : [__init_protos] ARP-SCAN is supported
+4112 : [__init_protos] DHCP lease file is supported
+4113 : [__init_protos] leaving
+4114 : [__init_protos] NDP SCAN is supported
+
+4120 : [shgw_dd_init_db] entering
+4121 : [shgw_dd_init_db] mprintf failed
+4122 : [shgw_dd_init_db] Query:
+4123 : [shgw_dd_init_db] Query failed
+4124 : [shgw_dd_init_db] leaving
+
+4125 : [shgw_dd_deinit_global_variables] entering
+4126 : [shgw_dd_deinit_global_variables] mac to device id hashmap cleanup
+4127 : [shgw_dd_deinit_global_variables] discovered devices cjson cleanup
+4128 : [shgw_dd_deinit_global_variables] free router id memory
+4129 : [shgw_dd_deinit_global_variables] leaving
+
+4130 : [__deinit_protos] entering
+4131 : [__deinit_protos] leaving
+
+4132 : [shgw_dd_init_curl] entering
+4133 : [shgw_dd_init_curl] http init failed
+4134 : [shgw_dd_init_curl] leaving
+
+4135 : [shgw_dd_init_ev] entering
+4136 : 
+4137 : 
+4138 : [shgw_dd_init_ev] failed to init the event base
+4139 : [shgw_dd_init_ev]
+4140 : [shgw_dd_init_ev] leaving
+
+4141 : [shgw_dd_deinit_curl] entering
+4142 : [shgw_dd_deinit_curl] leaving
+
+4143 : [shgw_dd_init_rpc] entering
+4144 : [shgw_dd_init_rpc] uds registration failed!
+4145 : [shgw_dd_init_rpc] leaving
+
+4150 : [__timer_cb] entering
+4151 : [__timer_cb] error: __discover_and_update failed!
+4152 : [__timer_cb] error: shgw_dd_upload_data_to_cloud failed!
+4153 : [__timer_cb] leaving
+
+4154 : [__stat_cb] entering
+4155 : [__stat_cb] error: __discover_and_update failed!
+4156 : [__stat_cb] leaving
+
+4157 : [__discover_and_update] entering
+4158 : [__discover_and_update] error: shgw_dd_run_discovery failed
+4159 : [__discover_and_update] error: shgw_dd_upsert_db_all_devices failed!
+4161 : [__discover_and_update] leaving
+
+4162 : 
+4163 : [__get_client_id_from_db] mprintf failed
+4164 : [__get_client_id_from_db] query failed
+4165 : [__get_client_id_from_db] leaving
+
+4166 : [__sqlite_callback] entering
+4167 : [__sqlite_callback] strdup failed
+4168 : [__sqlite_callback] leaving
+4169 : [__sqlite_callback] no data
+
+4175 : [shgw_dd_update_devices_list] notify the subscribers
+
+4180 : [_init_global_ds] entering
+4181 : [shgw_dd_init_global_variables] hashmap init failed!
+4182 : [shgw_dd_init_global_variables] Json creation failed!
+4183 : [shgw_dd_init_global_variables] DB read failed with code %d!
+4184 : [shgw_dd_init_global_variables] DB upsert failed with code %d!
+4185 : [shgw_dd_init_global_variables] Current global state: %s
+
+4190 : [shgw_dd_init_protos] Protocol init failed for proto id: %d
+4191 : [shgw_dd_init_protos] All protocols initialized!
+
+4192 : [shgw_dd_deinit_protos] All protocols de-initialized!
+4193 : [discover_timer_cb] Freeing the timer as its not empty
+4194 : [discover_timer_cb] Failed to re-add the event to the loop
+4195 : [discover_timer_cb] Entering
+
+4196 : [_parse_dd_protocols_features_flag] device discovery protocol flags %s
+4197 : [_parse_dd_protocols_features_flag] json parse device discovery protocol flags  %s failed
+4198 : [_parse_dd_protocols_features_flag] json array length is 0
+4186 : [_parse_dd_protocols_features_flag] json array length %d
+4187 : [_parse_dd_protocols_features_flag] json array index %d
+4188 : [_parse_dd_protocols_features_flag] json array element is NULL continue to fetch other element
+4189 : [_parse_dd_protocols_features_flag] All supported dd Protocols %d
+4176 : [_parse_dd_protocols_features_flag] unsupported dd Protocols %d
+4177 : 
+
+
+#####
+# shgw_dd_run_discovery.c range: 4200 - 4299
+#####
+4200 : [shgw_dd_run_discovery] entering
+4201 : [shgw_dd_run_discovery] Executing prototype:
+4202 : [shgw_dd_run_discovery] error: run failed for prototype:
+4203 : [shgw_dd_run_discovery] leaving
+
+4206 : [__discover] entering
+4207 : [__discover] Protocol not defined -
+4208 : [__discover] error: __merge_with_existing failed!
+4209 : [__discover] leaving
+
+4210 : [shgw_merge_with_existing] entering
+4211 : 
+4213 : [shgw_merge_with_existing] not following our format
+4215 : [shgw_merge_with_existing] add to existing failed for mac:%s, proto:%s
+4216 : [shgw_merge_with_existing] leaving
+
+4217 : [__add_to_existing] entering
+4218 : [__add_to_existing] New device found! Mac: %s
+4219 : [__add_to_existing] Json creation failed when processing mac:%s!
+
+#####
+# shgw_dd_ipv4_arp.c range: 4300 - 4399
+#####
+4300 : [shgw_dd_ipv4_arp] entering
+4301 : [shgw_dd_ipv4_arp] arp scan shell script is a success
+4302 : [shgw_dd_ipv4_arp] lan ip not found
+4303 : [shgw_dd_ipv4_arp] lan interface not found
+4304 : [shgw_dd_ipv4_arp] arp scan failed
+4305 : [shgw_dd_ipv4_arp] arp scan script exit code - %d
+4306 : [shgw_dd_ipv4_arp] leaving
+4307 : [shgw_dd_ipv4_arp] system command failed!
+
+4310 : [__read_arp_scan_result_file] entering
+4311 : [__read_arp_scan_result_file] create object failed
+4312 : [__read_arp_scan_result_file] opening scan result failed
+4313 : [__read_arp_scan_result_file] empty line
+4314 : [__read_arp_scan_result_file] leaving
+
+#####
+# shgw_dd_ipv4_dhcp.c range: 4400 - 4499
+#####
+4400 : [shgw_dd_ipv4_dhcp_run] entering
+4401 : [shgw_dd_ipv4_dhcp_run] lan interfaces %s
+4402 : [shgw_dd_ipv4_dhcp_run] dhcpfile fopen failed
+4403 : [shgw_dd_ipv4_dhcp_run] empty line
+4405 : [shgw_dd_ipv4_dhcp_run] no hostname present
+4406 : [shgw_dd_ipv4_dhcp_run] leaving
+4407 : [shgw_dd_ipv4_dhcp_run] Unable to get device id for mac: %s
+4408 : [shgw_dd_ipv4_dhcp_run] New device found. Dev id: %s
+4409 : [shgw_dd_ipv4_dhcp_run] Memory allocation failed for Dev id: %s
+4410 : [shgw_dd_ipv4_dhcp_run] Add to hashmap failed for Dev id: %s
+
+4411 : [shgw_dhcp_hm_free] Freeing hashmap entry for key: %s
+
+4412 : [shgw_dhcp_init_proto] Memory allocation failed for hashmap!
+
+4413 : [shgw_dhcp_rescan_and_add] Dev id:%s not found in rescan.
+4414 : [shgw_dhcp_rescan_and_add] Memory Allocation failed for Dev id: %s
+4415 : [shgw_dhcp_rescan_and_add] Add to hashmap failed for Dev id: %s
+
+4416 : [shgw_dhcp_get_data] Dev id:%s not found in-memory hash.
+
+4417 : [shgw_dhcp_fill_for_db] Dev id:%s not found in-memory hash. Returning dummy data!
+4418 : [shgw_dhcp_fill_for_db] Dev id:%s Host_name: %s
+
+4419 : [shgw_dhcp_fill_from_db] Memory Allocation failed for Dev id:%s
+4420 : [shgw_dhcp_fill_from_db] Add to hashmap failed for Dev id: %s
+
+4421 : [shgw_dd_ipv4_dhcp_run] Failed to get the IP of the interface: %s
+
+4422 : [shgw_dd_ipv4_dhcp_run] Failed to parse dhcp leasefile %s
+
+4423 : [shgw_dd_ipv4_dhcp_run] asprintf failed to form dhcp leasefile name for lantiq or openwrt platform
+4424 : [shgw_dd_ipv4_dhcp_run] Interface IP %s
+4425 : [shgw_dd_ipv4_dhcp_run] Lease filename %s
+4426 : [shgw_dd_ipv4_dhcp_run] asprintf failed to form dhcp leasefile name
+4427 : [shgw_dhcp_leasefile_parse] Lease filename %s
+4428 : [shgw_dhcp_leasefile_parse] LANTIQ MAC=%s IP=%s Lease TTl=%d Hostname=%s 
+4429 : [shgw_dhcp_leasefile_parse] PUMA MAC=%s IP=%s Lease TTl=%d Hostname=%s
+4430 : [shgw_dhcp_leasefile_parse] ARRIS MAC=%s IP=%s Lease TTl=%d Hostname=%s  
+4431 : [shgw_dhcp_leasefile_parse] HOSTNAME= %s
+4432 : [shgw_dhcp_leasefile_parse] shgw_dd_get_device_id
+4433 : [shgw_dhcp_leasefile_parse] hm_get_from_strmap
+4434 : [shgw_dhcp_leasefile_parse] DEVICE INFO IP address=%s Hostname =%s
+4435 : [shgw_dhcp_leasefile_parse] hm_add_to_strmap
+4436 : [shgw_dhcp_leasefile_parse] Checking for the SHGW_DD_NO_HOSTNAME_PRESENT Condition
+4437 : [shgw_dd_ipv4_dhcp_run] Failed to parse dhcp leasefile %s
+#####
+# shgw_dd_update_globals.c range: 4500 - 4599
+#####
+4500 : [_update_device_attributes] entering
+4501 : [_update_device_attributes] Marking dev_id: %s inactive
+4502 : [_update_device_attributes] Marking dev_id: %s with status: %d
+4503 : [_update_device_attributes] leaving
+
+4504 : [shgw_dd_get_device_id] entering
+
+4505 : [__update_mac_to_device_id_hashmap] entering
+4506 : [__update_mac_to_device_id_hashmap] mac is NULL
+4507 : [shgw_dd_get_device_id] leaving
+4508 : [__update_mac_to_device_id_hashmap] dev_id mapping is available for mac: %s
+4509 : [__update_mac_to_device_id_hashmap] calculate dev_id failed for mac: %s
+4510 : [__update_mac_to_device_id_hashmap] add to hashmap failed for mac: %s
+4511 : [__update_mac_to_device_id_hashmap] Mac: %s, Devid: %s
+
+4512 : [__add_item_to_dev_obj] Bad Json!
+4513 : [__add_item_to_dev_obj] proto %s not present in new object
+4514 : [__add_item_to_dev_obj] Json duplication failed! proto %s addition failed!
+4515 : [__add_item_to_dev_obj] Proto %s addition success!
+
+4521 : [shgw_dd_update_devices_list] entering
+4522 : [shgw_dd_update_devices_list] input json is NULL
+4523 : [shgw_dd_update_devices_list] not following our format
+4524 : [shgw_dd_update_devices_list] dev_id not found for mac: %s!
+4525 : [shgw_dd_update_devices_list] update_device_data failed for dev_id: %s
+4526 : [shgw_dd_update_devices_list] db upsert failed for dev_id: %s
+4527 : [shgw_dd_update_devices_list] leaving
+
+4530 : [_update_device_data] dev_id: %s exists in global data
+4531 : [_update_device_data] dev_id: %s is a new device
+4532 : [_update_device_data] Json duplication failed for dev_id: %s
+4533 : [__update_mac_to_device_id_hashmap] Failed to the duplicate the mac string of %d len to add entry to the hashmap
+
+4540 : [shgw_dd_update_devices_list] entering
+4541 : [shgw_dd_update_devices_list] malloc failed when processing dev id:%s
+4542 : [shgw_dd_update_devices_list] leaving
+4543 : [shgw_dd_update_devices_list] Add to hashmap failed when processing dev id:%s
+
+4550 : [shgw_dd_get_mac_addr] found mac=%s for dev_id=%s
+4551 : [shgw_dd_get_mac_addr] dev_id=%s not found.
+4552 : [shgw_dd_update_devices_list] uploading to cloud when device status or ip change or new device addwith reason code  %d
+
+#####
+# shgw_dd_db.c range: 4600 - 4699
+#####
+4600 : [__populate_device_data] entering
+4601 : [__populate_device_data] Malloc failed!!
+4602 : [__populate_device_data] %s:%s
+4603 : [__populate_device_data] dev_id is NULL!
+4604 : [__populate_device_data] Leaving!
+4605 : [__populate_device_data] Add to hashmap failed for Dev id: %s
+
+4606 : [shgw_dd_read_db_data] entering
+4607 : [shgw_dd_read_db_data] query creation failed!
+4608 : [shgw_dd_read_db_data] query execution failed with code %d!
+4609 : [shgw_dd_read_db_data] leaving!
+
+4610 : [_update_single_device] query creation failed for dev_id: %s
+
+4611 : [_insert_single_device] query creation failed for dev_id: %s
+
+4612 : [shgw_dd_upsert_db_single_device] Skip insert for dev_id: %s
+4613 : [shgw_dd_upsert_db_single_device] Insert success for dev_id: %s
+4614 : [shgw_dd_upsert_db_single_device] Insert failed for dev_id: %s
+4615 : [shgw_dd_upsert_db_single_device] Update failed for dev_id: %s
+4616 : [shgw_dd_upsert_db_single_device] Leaving!
+
+4617 : [shgw_dd_upsert_db_all_devices] devices NULL!
+4618 : [shgw_dd_upsert_db_all_devices] upsert failed for dev_id : %s
+4619 : [shgw_dd_upsert_db_all_devices] Leaving!
+
+4620 : [shgw_dd_upsert_db_single_device] invalid dev:
+4621 : [__populate_device_data] Add to hashmap failed for mac: %s
+
+4622 : Dev_id: %s, Default Ipv4: %s
+4623 : Dev_id: %s, Default Hostname: %s
+4624 : Dev_id: %s, Default Ipv6: %s
+#####
+# shgw_dd_upload_data_to_cloud.c range: 4700 - 4799
+#####
+4700 : [__upload_to_cloud] entering
+4701 : [__upload_to_cloud] about to get devices
+4702 : [__upload_to_cloud] no devices
+4703 : [__upload_to_cloud] __prepare_payload failed!
+4704 : [__upload_to_cloud] curl hdrs failed!
+4705 : [__upload_to_cloud] upload success!
+4706 : [__upload_to_cloud] upload failed!
+4707 : [__upload_to_cloud] leaving
+#4708 : [__upload_to_cloud] 
+4709 : [__upload_to_cloud] Devices upload Success!
+
+4711 : [__prepare_payload] empty discovered devices
+4712 : [__prepare_payload] cJSON create object failed
+4713 : [__prepare_payload] cJSON create array failed
+4714 : [__prepare_payload] no status field
+4715 : [__prepare_payload] not online
+4716 : [__prepare_payload] payload creation failed!
+4717 : [__prepare_payload] devices:
+4718 : [__prepare_payload] leaving
+4719 : [__prepare_payload] devices (before):
+4720 : [__prepare_payload] Json create failed when processing dev_id: %s
+4721 : [__prepare_payload] cJSON create object failed
+
+4722 : [__device_upload_cloud_response_cb] Cloud Auth Error: http resp - %d. Setting up event to retry the device upload
+#4723 :
+4724 : [__device_upload_cloud_response_cb] Failed in creating the event to retry device upload.
+
+4725 : [__prepare_payload] entering
+
+4726 : [__device_upload_cloud_response_cb] HTTP error code - %d. Setting up event to retry the device upload
+
+4727 : __dd_upload_retry_cb() called
+4728 : __dd_upload_retry_cb() failed
+4729 : Timer event was already added for retry. Ignoring current one.
+4730 : Adding new event for retry posting devices to cloud
+4731 : [shgw_dd_upload_data_to_cloud] timer execution pending! skipping HTTP POST
+4732 : [shgw_dd_upload_data_to_cloud] add_timer() failed.
+4733 : [shgw_dd_upload_data_to_cloud] scheduled a timer after %d seconds later.
+4734 : [shgw_dd_upload_data_to_cloud] reason code is SHGW_DD_RPC will not upload to cloud
+#####
+# shgw_dd_rpc.c range: 4800 - 4899
+#####
+4800 : [shgw_dd_rpc_handler] entering
+4801 : [shgw_dd_rpc_handler] about to stop
+4802 : [shgw_dd_rpc_handler] update log-level
+4803 : [shgw_dd_rpc_handler] set trusted
+4804 : [shgw_dd_rpc_handler] set untrusted
+4805 : [shgw_dd_rpc_handler] update config
+4806 : [shgw_dd_rpc_handler] bad command -
+4807 : [shgw_dd_rpc_handler] leaving
+4809 : [shgw_dd_rpc_handler] discover and update and upload
+
+4810 : [__stop_dd] entering
+4811 : [__stop_dd] leaving
+
+4812 : [__update_log_level] entering
+4813 : [__update_log_level] read cmd failed!
+4814 : [__update_log_level] remove quotes failed!
+4815 : [__update_log_level] about to update log level -
+4816 : [__update_log_level] leaving
+
+4817 : [__set_trusted] entering
+4818 : [__set_trusted] __modify_trusted_status failed!
+4819 : [__set_trusted] leaving
+
+4820 : [__set_untrusted] entering
+4821 : [__set_untrusted] __modify_trusted_status failed!
+4822 : [__set_untrusted] leaving
+
+4823 : [__modify_trusted_status] entering
+4824 : [__modify_trusted_status] read cmd failed!
+4825 : [__modify_trusted_status] bad json failed!
+4826 : [__modify_trusted_status] about to "for-loop"
+4827 : [__modify_trusted_status] bad dev id
+4828 : [__modify_trusted_status] dev_id not found -
+4829 : [__modify_trusted_status] about to update status
+4830 : [__modify_trusted_status] unable to update db for dev_id:%s
+4831 : [__modify_trusted_status] leaving
+
+4832 : [__update_cfg] entering
+4833 : [__update_cfg] error deinit config store
+4834 : [__update_cfg] error init config store
+4835 : [__update_cfg] leaving
+4836 : [__update_cfg] about to update log level -
+4837 : [__update_cfg] about to free an existing global timer
+4838 : [__update_cfg] failed to add global timer - leaving and stopping dd
+4839 : [shgw_dd_rpc_handler] about to free an existing global timer
+4840 : [shgw_dd_rpc_handler] failed to add global timer - leaving and stopping dd
+
+#####
+# shgw_dd_ipv6_ndp.c range: 4900 - 4999
+#####
+4900 : [__insert_if_not_found] entering
+4901 : [__insert_if_not_found] get string failed
+4902 : [__insert_if_not_found] insert into json array failed
+4903 : [__insert_if_not_found] leaving
+
+4905 : [__read_from_scan_file] entering
+4906 : [__read_from_scan_file] fopen failed
+4907 : [__read_from_scan_file] about to fscanf
+4908 : [__read_from_scan_file] does not find 2 entries.
+4909 : [__read_from_scan_file] unable to find dev id
+4910 : [__read_from_scan_file] new device
+4911 : [__read_from_scan_file] unable to allocate memory
+4912 : [__read_from_scan_file] unable to create json array
+4913 : [__read_from_scan_file] insert into json array failed
+4914 : [__read_from_scan_file] new device insert failed
+4915 : [__read_from_scan_file] new device; add to str map
+4916 : [__read_from_scan_file] add to strmap failed
+4917 : [__read_from_scan_file] leaving
+4918 : [__read_from_scan_file] new IP for 
+4919 : [__read_from_scan_file] merge failed for 
+
+4920 : [__run_ndp_scan] entering
+4921 : [__run_ndp_scan] run ndp scan failed.
+4922 : [__run_ndp_scan] leaving
+
+4923 : [shgw_ndp_hm_free] entering
+4924 : [__read_from_scan_file] new device merge failed.
+
+4925 : [__timer_cb] entering
+4926 : [__timer_cb] run failed
+4927 : [__timer_cb] unable to stop the timer event
+4928 : [__timer_cb] unable to re-add the timer event
+4929 : [__timer_cb] leaving
+
+4930 : [shgw_dd_ipv6_ndp_run] entering
+
+4931 : [shgw_dd_ipv6_ndp_init] entering
+4932 : [shgw_dd_ipv6_ndp_init] init strmap failed
+4933 : [shgw_dd_ipv6_ndp_init] event_new failed
+4934 : [shgw_dd_ipv6_ndp_init] event_add failed
+4935 : [shgw_dd_ipv6_ndp_init] leaving
+
+4938 : [shgw_dd_ipv6_ndp_deinit] entering
+4939 : [shgw_dd_ipv6_ndp_deinit] leaving
+
+4940 : [__ndp_get_data] entering; dev_id: 
+4941 : [__ndp_get_data] get from strmap failed
+4942 : [__ndp_get_data] leaving
+
+4943 : [shgw_dd_ipv6_ndp_fill_for_db] entering
+4944 : [shgw_dd_ipv6_ndp_fill_for_db] get data failed
+4945 : [shgw_dd_ipv6_ndp_fill_for_db] leaving; ip6 address:
+4946 : [shgw_dd_ipv6_ndp_fill_for_db] limiting ip6 address in array failed:
+
+4947 : [__ndp_get_data] get from strmap succeeded: 
+
+4950 : [shgw_dd_ipv6_ndp_fill_from_db] entering
+4951 : [shgw_dd_ipv6_ndp_fill_from_db] malloc failed
+4952 : [shgw_dd_ipv6_ndp_fill_from_db] json parse failed
+4953 : [shgw_dd_ipv6_ndp_fill_from_db] add to strmap failed
+4954 : [shgw_dd_ipv6_ndp_fill_from_db] leaving
+
+4955 : [__run_ndp_scan] entering
+4956 : [__run_ndp_scan] run script failed
+4957 : [__run_ndp_scan] leaving
+
+4960 : [__ndp_read_timer_cb] entering
+4961 : [__ndp_read_timer_cb] read from scan file failed!
+4962 : [__ndp_read_timer_cb] leaving
+
+4965 : [__init_delayed_read_timer] entering
+4966 : [__init_delayed_read_timer] malloc failed!
+4967 : [__init_delayed_read_timer] unable to set event
+4968 : [__init_delayed_read_timer] leaving
+4969 : [__ndp_run] init delayed read timer failed
+4970 : [__ndp_run] already running
+4971 : [__read_from_scan_file] dev_id: %s -- ip: %s -- retval: %d -- to_be_merged: %d
+
+4972 : [__ndp_get_data] unable to allocate memory for dev-id: %s
+4973 : [__ndp_get_data] unable to create json array for dev-id: %s
+4974 : [__ndp_get_data] unable to push into hashmap for dev-id: %s
+
+4975 : [_trim_json_array] entering
+4976 : [_trim_json_array] failed to insert in json array %s
+4977 : [_trim_json_array] leaving
+4978 : [_trim_json_array] len of json array less than config value. so continuing filling
+4979 : [_trim_json_array] failed because of start index value
+4980 : [_trim_json_array] json array create failed
+
+###############################################################################
+# Device Isolation - [5000 ~ 5999]
+###############################################################################
+
+#####
+# shgw_arp_sniffer.c , log range : 5000 - 5099
+#####
+5000 : Entering shgw_arp_sniffer
+5001 : Local MAC unavailable!
+5002 : Socket Error!
+5003 : About to ev_io_init
+5004 : Leaving shgw_arp_sniffer
+
+5006 : Entering shgw_raw_sock_read_cb
+5007 : Malloc failed!
+5008 : No data from recvfrom: %d
+5009 : Leaving shgw_raw_sock_read_cb
+
+5010 : Entering shgw_bind_to_interface
+5011 : Unable to get the interface index - %s
+5012 : Index: %d
+5013 : Unable to bind - %s
+5014 : Leaving shgw_bind_to_interface
+
+5016 : Entering shgw_get_MAC_from_device_name
+5017 : Socket open failed!
+5018 : Leaving shgw_get_MAC_from_device_name - Success
+5019 : Leaving shgw_get_MAC_from_device_name - Failure
+
+5020 : Entering shgw_spoof_if_required
+5021 : Not an ARP packet!
+5022 : Not an ARP request packet!
+5023 : I am the sender!
+5024 : I am the target!
+5025 : Sender is blacklisted!
+5026 : Leaving shgw_spoof_if_required
+
+5030 : Entering shgw_is_eth_packet_arp
+5031 : Entering shgw_is_eth_packet_arp - Not an ARP
+5032 : Entering shgw_is_packet_arp_request
+5033 : Entering shgw_is_packet_arp_request - Not an ARP Request
+5034 : Entering shgw_is_self_the_sender
+5035 : Entering shgw_is_self_the_target
+5036 : Entering shgw_send_spoofed_arp_reply
+5037 : Leaving shgw_send_spoofed_arp_reply
+5038 : Entering shgw_send_spoofed_arp_request
+5039 : Leaving shgw_send_spoofed_arp_request
+5040 : Entering shgw_modify_eth_packet
+5041 : Leaving shgw_modify_eth_packet
+5042 : Entering shgw_modify_arp_packet_for_reply
+5043 : Leaving shgw_modify_arp_packet_for_reply
+5044 : Entering shgw_print_arp_details
+5045 : Leaving shgw_print_arp_details - %s
+
+5046 : No memory: %d
+
+5050 : Entering shgw_send_arp_response
+5051 : Unable to malloc timer!
+5052 : Unable to open raw socket!
+5053 : Unable to get the interface index: %s
+5054 : No memory to create sock_addr!
+5055 : Send to failed: %d -- %s!
+5056 : Leaving shgw_send_arp_response
+
+5060 : Entering shgw_one_millisec_cb
+5061 : Send to failed: %d -- %s!
+5062 : Entering shgw_one_millisec_cb
+
+5065 : Entering evtimer_cb
+5066 : Send to failed: %d -- %s!
+5067 : Leaving evtimer_cb
+5068 : No data from recvfrom: %d
+5069 : Entering shgw_one_millisec_cb
+#####
+# shgw_utils.c , log range : 5100 - 5199
+#####
+5100 : Entering shgw_print_arp_details
+5101 : Leaving shgw_print_arp_details
+5102 : Entering shgw_print_eth_details
+5103 : Leaving shgw_print_eth_details
+
+5110 : Entering shgw_is_ip_same
+5111 : Leaving shgw_is_ip_same - True
+5112 : Leaving shgw_is_ip_same - False
+5113 : Entering shgw_is_mac_same
+5114 : Leaving shgw_is_mac_same - True
+5115 : Leaving shgw_is_mac_same - False
+5116 : Entering shgw_is_sender_target_queued
+5117 : Leaving shgw_is_sender_target_queued -- True
+5118 : Leaving shgw_is_sender_target_queued -- False
+
+5120 : Entering shgw_queue_it_again
+5121 : Leaving shgw_queue_it_again
+5122 : Entering shgw_store_ip_mac_mapping
+5123 : Leaving shgw_store_ip_mac_mapping
+5124 : Entering shgw_add_ip_mac_to_map
+5125 : Leaving shgw_add_ip_mac_to_map
+5126 : Entering shgw_is_this_valid_mac
+5127 : Leaving shgw_is_this_valid_mac -- False
+5128 : Leaving shgw_is_this_valid_mac -- True
+5129 : Entering shgw_is_ip_stored
+5130 : Leaving shgw_is_ip_stored -- Success
+5131 : Leaving shgw_is_ip_stored -- Failure
+5132 : Entering shgw_get_mac_for_ip
+5133 : Leaving shgw_get_mac_for_ip -- Success
+5134 : Leaving shgw_get_mac_for_ip -- Failure
+
+5141 : MAC: %.2X-%.2X-%.2X-%.2X-%.2X-%.2X
+5142 : IP: %d.%d.%d.%d
+
+5146 : Entering shgw_retrieve_MAC_of_local_device
+5147 : Socket open failed!
+5148 : Leaving shgw_retrieve_MAC_of_local_device -- Success
+5149 : Leaving shgw_retrieve_MAC_of_local_device -- Failure
+5150 : Entering shgw_retrieve_IP_of_local_device
+5151 : Socket open failed!
+5152 : Leaving shgw_retrieve_IP_of_local_device -- Success
+5153 : Leaving shgw_retrieve_IP_of_local_device -- Failure
+
+
+#####
+# shgw_blacklist.c , log range : 5200 - 5299
+#####
+5200 : Entering shgw_is_blacklisted
+5201 : Leaving shgw_is_blacklisted - TRUE
+5202 : Leaving shgw_is_blacklisted - FALSE
+
+5206 : Entering shgw_read_blacklist
+5207 : File not available for read: %s
+5208 : Leaving shgw_read_blacklist
+
+5211 : Entering shgw_dump_blacklist
+5212 : Leaving shgw_dump_blacklist
+
+5213 : Entering shgw_init_blacklist
+5214 : No memory!
+5215 : No memory for internal vars!
+5216 : Leaving shgw_init_blacklist
+
+5217 : Entering shgw_empty_list
+5218 : Leaving shgw_empty_list
+
+###############################################################################
+# Command manager : [7000 - 7999]
+###############################################################################
+
+###
+# FREE 6000 - 6999 and 7000 - 7099
+###
+
+#####
+# comm_mgr_events.c , log range 7100 - 7199
+#####
+
+7100 : Transition already in progress or done. Returning
+7101 : free all commands called
+7102 : fetching commands from cloud failed. Status: %d, Http_Status: %d
+7103 : parse commands failed.
+7104 : No commands received from cloud.
+7105 : commands get invoked and got %s
+7106 : Transitioned to State: Command Manager Init!
+7107 : cURL operation failed with err_code=%d
+7108 : [timeout_cb] Entering
+7109 : [loop_for_commands] event_new() failed for edns cm.
+7110 : fill_end_point_details called
+7111 : parse_and_check_edns_resp called
+7112 : Recv_data failed
+7113 : Failed to get packet details
+7114 : Commands are availale, going to fetch commands
+7115 : No commands are available
+7116 : edns_resp_cb called
+7117 : init_edns_cm_event called
+7118 : Failed to do a event_new
+7119 : Failed to do a event_add
+7120 : form_and_send_edns_to_check_for_cmd called
+7121 : Failed to get router id from DB
+7122 : Failed to send DNS query
+7123 : init_edns_cm_event failed
+7125 : Failed to do event_add for CM. Will Retry 
+7126 : Failed to add event for direct GET of commands
+7127 : HTTP get for comamnds is already in progress. Ignoring this one
+7128 : eDNS command ping timed out! Falling back to https.
+7129 : get_control_channel_details called
+7130 : verify_policy_response failed
+7131 : The answer count is less that one. Invalid packet
+7132 : Failed to allocate memory for Answer records.
+7133 : parse_dns_response failed
+7134 : the number of IPs in the resp is %d
+7136 : Control Channel - POD Failover IP received
+7137 : Control Channel - POD Re-discovery IP received
+7138 : Control Channel - Unsupported Opcode Received. Value - %d
+7139 : No commands are available on control channel
+7140 : Failed to parse resp data of command manager
+7141 : Freeing edns cm ping timer
+
+#####
+# commands.c , log range 7201 - 7299
+#####
+
+7201 : [hard_blk_unblock] run_caltest_get_and_set failed
+7202 : 
+7203 : 
+7204 : 
+7205 : 
+7206 : log setting : %s estimated command size %d
+7207 : command shgw_cloud_start invoked
+7208 : command shgw_cloud_stop invoked
+7209 : command upload_config invoked
+7210 : command update_config invoked
+7211 : failed to parse the command provided by the cloud. json type : %d
+7212 : failed to get the item %d from the parsed json
+7213 : unable to parse the key or value from the provided configs for %d item
+7214 : unable to update the database for the item %d
+7215 : failed to allocate a string to hold the query to sqlite
+7216 : failed to read key value pairs from the database
+7217 : failed to post the key value pairs to the cloud
+7218 : failed to force start the shgw. system command returned with %d
+7219 : failed to force stop the shgw. system command returned with %d
+7220 : key's valuestring %s, value's valuestring %s
+7221 : key recvd : %s value recvd : %s
+7222 : shgw_upload_debug_files Entering
+7223 : Failed to upload the files. return code : %d
+7224 : Failed to update shgw_stop status to false
+7225 : Failed to update shgw_stop status to true
+7226 : shgw_reset_router called
+7227 : init_timer_for_router_reset failed
+7228 : Failed to perform shgw stop as a part of reset
+7229 : init_timer_for_router_reset called with timer %d
+7230 : [shgw_update_config] shgw_update_dnsproxy_config() returned %d
+7231 : [shgw_update_config] shgw_update_device_disc_config() returned %d
+7232 : [shgw_update_config] shgw_update_httpd_config() returned %d
+7233 : init_timer_for_router_reset called with delay of %d seconds
+7234 : Event_new failed for router reset
+7235 : Event_add failed for router reset
+7236 : _reset_timer_cb called 
+7237 : shgw_update_wd_config called
+7238 : Failed to init config after deinit.
+7239 : shgw_update_wd_config returned status = %d
+7240 : Failed to get details of potential EDNS IPs
+7241 : The IPs details are NULL. Re-initiating IP discovery
+7242 : Failed to parse string into a JSON. Re-initiating IP  discovery
+7243 : The number of IPs are zero. Re-initiating IP discovery
+7244 : Failed to create new JSON array for remaining EDNS IPs
+7245 : Failed to iterate nd update remaining EDNS server IPs
+7247 : Failed to update the new selected EDNS IP in DB
+7248 : SHP service rediscovery from cloud called
+7249 : SHP service_discovery() failed.
+7250 : Command receied to check subscription details
+7251 : [shgw_update_wd_config] Failed to init the edns cm ping timer
+7252 : [shgw_update_wd_config] Failed to init the stats timer
+7253 : Starting SHP without altering DB flag
+7254 : Startup script failed
+7255 : Stoping SHP without altering DB flag
+7256 : Stoping script failed
+7257 : manage_access_based_on_param called
+7258 : Invalid Service type received
+7259 : script execution failed to manage access
+7260 : shgw_manage_access called
+7261 : shgw_json_parse_string failed
+7262 : shgw_json_object_get_string failed for service
+7263 : shgw_json_object_get_string failed for value
+7264 : manage_whitelist_based_on_params called
+7265 : fetch_inbound_security_from_cloud called
+7267 : Number of device IDs received is less than 0
+7268 : asprintf failed for script %s
+7269 : system command failed for system command for script %s
+7270 : whitelist_services_access called
+7271 : shgw_json_parse_string failed
+7272 : shgw_json_object_get_string failed
+7273 : shgw_json_object_get_object failed
+7274 : shgw_json_type is not equal to array
+7275 : fetch_ipv4_ipv6_addresses failed 
+7276 : fetch_ipv4_ipv6_addresses called
+7277 : shgw_get_ips_for_dev_id failed for IPv4
+7278 : asprintf failed for adding IPv4 address %s
+7279 : Success in parsing json for IPv6 addresses
+7280 : The type of data if IPv6 addresses is type array
+7281 : Failed to do asprintf of IPv6 address %s
+7282 : Print json duplicate failed for device id
+7283 : [shgw_shp_rerun_service_discovery] update_shp_ttl_in_db failed
+7284 : [shgw_shp_rerun_service_discovery] transition calling for SHP SD
+7285 : [shgw_dev_hard_block] dev info is NULL
+7286 : [shgw_dev_hard_block] command json type %d
+7287 : [shgw_dev_hard_block] json object get string status %d
+7288 : [shgw_dev_hard_block] device list is NULL
+7289 : [shgw_dev_hard_block] number of device in device list %d
+7290 : [shgw_dev_hard_block] num of device is less than 0 or json type is not array
+7291 : [hard_blk_unblock] temp_devid is NULL
+7292 : [hard_blk_unblock] json get string dev %s
+7293 : [hard_blk_unblock] get device mac from db failed
+7294 : [hard_blk_unblock] mac %s
+7295 : [hard_blk_unblock] final appended macs %s
+7296 : [hard_blk_unblock] asprintf failed 
+7297 : [hard_blk_unblock] buf %s
+7298 : [shgw_dev_hard_block] temp_devid is NULL at index %d
+7299 : [shgw_dev_hard_block] get json string  failed dev is NULL
+
+#####
+# utils.c , log range 7300 - 7399
+#####
+
+7301 : Failed to initialize curl. Exiting!
+7302 : Successfully completed the command manager setup
+7303 : Transitioned to State: Watchdog Read Conf!
+7304 : shgw_comm_mgr_store_init() failed to read command manager config.
+7305 : Version Mismatch
+7306 : Failed to read config of watchdog
+7307 : About to transition to State: Router Registration
+7308 : CSP Failed. Re-run in %s seconds
+7309 : Failed to get client id from DB
+7310 : Resp code from cloud is 401 for, will re-register
+7311 : RR Failed. Re-run in %s seconds
+7312 : Resp code for subscription is 401 for, will re-register
+7313 : run_rr_and_retry_if_fail called
+7314 : Will retry uploading properties
+7315 : Failed to add timer for property upload retry
+7316 : timer callback for property upload retry called
+7317 : Property retry timer already added
+7318 : Failed to fetch details of dns cache flag from JSON
+7319 : [_handle_dns]Failed to fetch details of dns flags from JSON
+7320 : Failed to update db for dns cache flag  from JSON
+7321 : Failed to update db for policy cache flag  from JSON
+7323 : Curl failed. Error code %d
+7324 : EDNS server IP received is %s
+7325 : [shgw_wd_upload_version_to_cloud] entering
+7326 : [shgw_wd_upload_version_to_cloud] JSON create failed
+7327 : [shgw_wd_upload_version_to_cloud] JSON Print failed
+7328 : [shgw_wd_upload_version_to_cloud] cURL Headers failed
+7329 : [shgw_wd_upload_version_to_cloud] HTTP Async POST succeeded
+7330 : [shgw_wd_upload_version_to_cloud] HTTP Async POST failed
+7331 : [shgw_wd_upload_version_to_cloud] leaving
+7332 : [__cb] Success: HTTP Response:
+7333 : [__cb] Failure: HTTP Response:
+7338 : _on_edns_ip_disc_cb called
+7342 : Transitioned to State: EDNS Ip Discovery!
+7343 : shgw_json_parse_string failed to parse edns disc response
+7344 : shgw_json_object_get_object failed for servers
+7345 : shgw_json_array_get_at failed to get IP from first index
+7346 : shgw_json_get_string failed to fetch value 
+7347 : Failed to update the received parameter in DB
+7348 : [cloud_auth_error_handler] Making the rr_details in the db as null
+7349 : [cloud_auth_error_handler] Calling router registration
+7350 : [cloud_auth_error_handler] Updating db with rr_detail values as null failed
+7351 : Failed to update all EDNS IPs in database
+7352 : shgw_json_print failed for the retrieved IP
+7353 : Failed to insert string into array EDNS IP
+7354 : Failed to update the details in the DB. EDNS IPs
+7355 : get_csp_clientid_from_db called
+7356 : sqlite3_mprintf failed to form query
+7357 : sqlite3 query failed for client id
+7358 : Failed to identify the EDNS IPs. Will retry
+7359 : Failed to identify the EDNS Ports. Will retry
+7360 : The type of data received for servers is not JSON_ARRAY
+7361 : Type of the data in ports is not JSON_ARRAY
+7362 : Transitioned to State: Subscription Check!
+7363 : Subscription check has already 
+7364 : _subscription_check_cb called
+7365 : Curl failed for subscription check with code %d
+7366 : Failed to parse JSON string
+7367 : shgw_get_is_shgw_stopped failed to get valur from DB
+7368 : fetch_details_from_resp called
+7369 : Failed to fetch TTL from JSON
+7370 : Failed to fetch feature set object from JSON.
+7371 : Failed to fetch details of shp enable flag from JSON.
+7372 : check_subscription_flag_and_act called
+7373 : Shp enable is set to false, calling SHGW stop
+7374 : Shp enable is set to true, calling SHGW start
+7375 : Shp enable value is %s. Same in DB. Ignoring
+7376 : _retry_subscription_check called
+7377 : _shp_subscription_ttl_cb called
+7378 : setup_timer_for_subscription_check called
+7379 : Failed to add timer for subscription check
+7380 : Failed to check subscription and act
+7381 : Failed to do shgw stop
+7382 : Failed to do shgw start
+7383 : Failed to do a HTTP GET for subscription check
+7384 : Failed to do a HTTP GET for EDNS IPs
+7385 : Reset and proceed
+7386 : Failed to open subscription file
+7387 : Failed to update subscription flag in DB
+7388 : Strdup failed for subscription TTL
+7389 : Strdup failed for subscription host reputation
+7390 : About to transition to State: EDNS Ip Discovery
+7391 : RR is already in progress. Returing after 401
+7392 : check_error_parse_json called
+7393 : check_error_parse_json failed
+7394 : [_subscription_check_cb] shgw_update_dnsproxy_config() returned %d
+7395 : [_subscription_check_cb] shgw_update_device_disc_config() returned %d
+7396 : [_handle_inbound_security] Transition state to Inbound Security
+7397 : [_subscription_check_cb] shgw_update_wd_config() returned %d
+7398 : [_handle_dns] Failed %s
+7445 : [_handle_dns] Failed to fetch json string.
+7446 : [_handle_dns] Failed to update db for dns feature flags.
+7447 : Failed to update db for policy control flag disable from JSON.
+7448 : Failed to fetch details of inbound security flag from JSON
+7449 : Failed to update db for inbound security flag from JSON.
+7450 : Failed to fetch details of device block flag from JSON.
+7451 : Failed to update device block flag in database.
+7452 : Failed to fetch device discovery object from JSON. 
+7453 : Type of the data in device discovery is not JSON_ARRAY.
+7454 : Failed to update all device discovery protocols in database.
+7455 : Failed to get and update feature details.
+7456 : Failed to fetch router config object from JSON.
+7457 : [_handle_inbound_security] Failed %s
+7458 : Failed to get and update router config details.
+7459 : Failed to fetch upload trigger object from JSON %s
+7460 : Type of the data in upload trigger is not JSON_ARRAY.
+7461 : Failed to update potential upload tiggers in database.
+7462 : [_handle_dd] Failed %s 
+7463 : [get_feature_flags_update_db] entering
+7464 : [get_feature_flags_update_db] exiting
+7465 : [get_router_config_update_db] entering
+7466 : [get_router_config_update_db] exiting
+7467 : [get_edns_ports_update_db] shgw_json_object_get_object failed for ports
+7368 : Failed to update all potential_edns_ports in database
+7369 : Failed to update is_subscription_valid in database
+
+#####
+# parse_commands_json.c 7400 - 7499
+#####
+
+7400 : Response data recived from cloud: %s
+7402 : %s key not found or it does not have appropriate value type
+7403 : command guid : %s
+7404 : command name : %s
+7405 : command opcode : %s
+7406 : command data : %s
+7407 : Failed to allocate memory for command structure's field
+7408 : Response : %s. Command %d can't be parsed see previous logs
+7409 : Response: %s. Received json is not legal or it is not array
+7410 : 0 commands are obtained from cloud
+7411 : %d commands received from cloud
+7412 : Response: %s. Failed to allocate memory for the commands array
+7413 : failed to get the data from commands json
+7414 : Response : %s. Command %d can't be parsed
+7415 : Filled the command data successfully
+
+#####
+# process_commands.c 7501-7550
+#####
+
+7501 : process_commands recieved called with %d commands
+7502 : failed to execute the command for guid %s
+7503 : free_all_commands called
+7504 : HTTP status code for delete commands async call is 200
+7505 : delete commands invoked
+7506 : about to execute command with opcode %d
+7507 : command handler returned %d for opcode %d
+7508 : command not supported. opcode %d
+7509 : cJSON_Print failed
+7510 : failed to allocate memory to hold the delete commands json
+7511 : add_to_delete_commands_json invoked guid : %s
+7512 : Failed to create cJSON object guid : %s
+7513 : Failed to remove the quotes from the string to create the json object
+7514 : Failed to post command status to the cloud. failed with curl error %d
+7515 : Failed to post command status with HTTP error %d
+7516 : commands delete body : %s
+7517 : malloc() failed to allocate command manager context.
+7518 : malloc() failed to allocate command context.
+7519 : RPC call failed for opcode %d
+7520 : Processed all commands.
+7521 : RPC command with opcode %d returned %d
+7522 : Processed all commands.
+7523 : Resp 401 received for delete commands, will re-register router
+7524 : json command status empty check
+7525 : CACHE_INVALIDATION:command handler returned %d for opcode %d
+7526 : DEVICE_D_RM_FROM_TRUSTED_OP:command handler returned %d for opcode %d
+7527 : DEVICE_D_ADD_TO_TRUSTED_OP:command handler returned %d for opcode %d
+7528 : DEVICE_D_STOP_OP:command handler returned %d for opcode %d
+7529 : DEVICE_D_UPDATE_LOG_LEVEL_OP:command handler returned %d for opcode %d
+7530 : DNSPROXY_STOP_OP:command handler returned %d for opcode %d
+7531 : DNSPROXY_UPDATE_LOG_LEVEL_OP:command handler returned %d for opcode %d
+7532 : BLOCK_DEVICE:command handler returned %d for opcode %d
+7533 : UNBLOCK_DEVICE:command handler returned %d for opcode %d
+7534 : NETWORK_UNPAUSE:command handler returned %d for opcode %d
+7535 : HTTPD_STOP_OP:command handler returned %d for opcode %d
+7536 : HTTPD_UPDATE_LOG_LEVEL_OP:command handler returned %d for opcode %d
+
+#####
+# shgw_run_inbound_security.c 7551-7699
+#####
+
+7551 : Failed to write files and functions to runtime script
+7552 : read_db_prepare_script_run_inbound_sec failed
+7553 : run_inbound_security SHGW_IS_FLUSH failed
+7600 : inbound_security_start_handler called
+7601 : Retry Inbound Security called
+7602 : Fetch_whitelist_devices called
+7603 : Failed to get object data from proto_info
+7604 : Type of data is not array
+7605 : Print json_duplicate failied
+7606 : form_sqlite_query called
+7607 : asprintf failed for query
+7608 : check_json_array_and_get_count called
+7609 : Json type is not array
+7610 : Count in the array is %d
+7611 : check_ports_and_get_count called
+7612 : shgw_json_object_get_object failed - ports
+7613 : check_json_array_and_get_count failed
+7614 : Port count is less than 1
+7615 : handle_individual_protocols called
+7616 : shgw_json_object_get_string failed - protocol
+7617 : shgw_json_object_get_string failed - src
+7618 : shgw_json_object_get_int failed - status
+7619 : fetch_whitelist_devices failed
+7620 : check_ports_and_get_count failed
+7621 : shgw_json_array_get_at failed at index %d
+7622 : form_sqlite_query failed
+7623 : write_access_restriction_into_db called
+7624 : shgw_query_sqlite failed
+7625 : handle_mgt_data_update_db called
+7626 : shgw_json_array_get_at falied at index %d
+7627 : handle_individual_protocols failed
+7628 : write_access_restriction_into_db failed
+7629 : check_and_run_script called
+7630 : script is NULL
+7631 : system command failed for script %s
+7632 : state is done and inbound security is enabled
+7634 : run_inbound_security called
+7635 : check_and_run_script failed for run inbound
+7636 : create_rule called
+7637 : asprintf failed for ipv4 rule
+7638 : asprintf failed for ipv6 rule
+7639 : write_rule_to_script called
+7640 : fopen failed for temp script file
+7641 : add_ipv4_and_ipv6_addresses called
+7642 : inet_pton failed for ipv4
+7643 : shgw_ipset_set_add failed
+7644 : shgw_json_parse_string failed for whitelist ipset6
+7645 : check_json_array_and_get_count failed
+7646 : check_json_array_and_get_count failed at index %d
+7647 : inet_pton failed for ipv6
+7648 : shgw_ipset_set_add6 failed
+7649 : add_devices_to_whitelist_ipset called
+7650 : check_json_array_and_get_count failed
+7651 : shgw_json_array_get_at failed at index %d
+7652 : shgw_get_ips_for_dev_id failed
+7653 : IPv4 abd IPv6 addresses are %s %s
+7654 : add_ipv4_and_ipv6_addresses failed
+7655 : generate_inbound_security_script. Proto, port, src %s %d %s
+7656 : create_rule failed for port 80/443 WAN
+7657 : create_rule failed for other port WAN
+7658 : asprintf failed for lan ipv4
+7659 : asprintf failed for lan ipv6
+7660 : add_devices_to_whitelist_ipset failed
+7661 : write_rule_to_script failed 
+7662 : inbound_securit_sqlite_cb called
+7663 : column name and data %s %s
+7664 : status is allow. Returning
+7665 : failed to strdup protocol
+7666 : failed to strdup src
+7667 : failed to strdup device
+7668 : read_db_and_generate_script called
+7669 : sqlite3_mprintf failed
+7670 : shgw_query_sqlite failed
+7671 : _on_cloud_inbound_sec_cb called
+7672 : check_error_parse_json failed
+7673 : shgw_json_object_get_object failed - rules
+7674 : check_json_array_and_get_count failed
+7675 : number of protocol is less than one
+7676 : handle_mgt_data_update_db failed
+7677 : run_inbound_security SHGW_IS_HALT failed
+7678 : read_db_prepare_script_run_is called
+7679 : read_db_prepare_script_run_is failed
+7680 : state_sync_access_rest_cloud called (Inboud Security)
+7681 : State execution done - Inbound Security
+7682 : shgw_http_async_GET failed for inbound security
+7683 : IPv4 or IPv6 address fetched from db is NULL.
+7684 : shgw_check_if_inbound_sec_impacted called
+7685 : shgw_rpc_read_cmd_data failed
+7686 : check_if_dev_id_whitelisted is true
+7687 : clear_ipset_read_db_run_security failed
+7688 : clear_ipset_read_db_run_security called
+7689 : add_to_whitelist_hashmap failed
+7690 : clear_ipset_read_db_run_security failed
+7691 : check_if_dev_id_whitelisted called
+7692 : device id found in whitelisted hashmap
+7693 : hm_init_strmap failed for whitelisted hashmap
+7694 : add_to_whitelist_hashmap called
+7695 : dev id already found in hashmap. Not adding
+7696 : The entry received from the hashmap is %s
+7697 : Failed to start IS services
+7698 : read_db_and_generate_script failed
+7699 : run_inbound_security add rules failed
+
+#####
+# shgw_cloud_data_sync.c 7700-7799
+#####
+7700 : _retry_fetch_whitelisted_domains called. Will retry in 60 seconds
+7701 : _whitelist_domain_timer_cb. Will re-fetch whitelisted domains
+7702 : fetch_ttl_add_timer called. Will get ttl and add timer for it
+7703 : shgw_json_object_get_int failed. TTL not found
+7704 : add_timer failed to set timer for TTL %d
+7705 : update_details_in_db called. Will update whitelisted domains and redirector map
+7706 : update_config_db failed for whitelisted domains
+7707 : update_config_db failed for redirector domains
+7708 : _on_cloud_sync_cb called. 
+7709 : check_error_parse_json failed for %s
+7710 : Failed to get whitelisted domains or redirector map
+7711 : update_details_in_db failed
+7712 : fetch_ttl_add_timer failed
+7713 : shgw_update_whitelisted_domains failed
+7714 : state_fetch_whitelisted_domains_cloud called. Transition to whitelist domain fetch
+7715 : State execution done or in progress. Will transition to next state
+7716 : shgw_http_async_GET failed for whitelisted domain fetch
+7717 : set_timer_for_cloud_fetch called
+7718 : asprintf failed to convert ttl to string
+7719 : update_config_db failed for whitelisted_domain_epoch
+7720 : set_timer_for_whitelisted_domain failed
+7721 : is_cloud_ttl_valid called
+7722 : shgw_get_whitelisted_domain_epoch failed
+7723 : ttl expired for %s. Current epoch %ld. Epoch in DB %ld 
+7724 : set_timer_for_whitelisted_domain failed while ttl is valid in DB
+7725 : _retry_tld_fetch_from_cloud called
+7726 : get_tld_data_write_file called
+7727 : shgw_json_object_get_string failed for tld_data
+7728 : fopen failed for TLD file
+7729 : _tld_timer_cb called
+7730 : whitelisted_domain_data_handler called
+7731 : tld_data_handler called
+7732 : get_tld_data_write_file failed
+7733 : Parser function for data failed
+7734 : SHGW_CALLOC failed for cloud data sync
+7735 : shgw_sync_TLD_with_cloud called
+7736 : TLD state is done or in progress
+7737 : shgw_http_async_GET failed
+7738 : The TTL for TLD is still valid. Marking state as done and progressing
+7739 : The TTL for whitelisted domains is still valid. Marking state as done and progressing
+7740 : update_etag_in_db called
+7741 : get_header_value_for_param failed
+7742 : update_config_db failed for %s
+7743 : get_etag_and_form_header called
+7744 : shgw_get_etag failed for %s
+7745 : asprintf failed for etag
+7746 : curl_slist_append failed for etag header %s
+7747 : get_etag_and_form_header failed for whitelisted domains
+7748 : get_etag_and_form_header failed for TLD
+7749 : Resp code 304. No change in cloud status. Field - %s
+7750 : SHGW_CALLOC failed for cloud_sync_data
+7751 : update_epoch_ttl_set_timer called. TTL - %ld
+7752 : asprintf failed for TTL of %s
+7753 : update_config_db for %s
+7754 : update_epoch_ttl_set_timer failed for update_epoch_ttl_set_timer
+7755 : handle_cloud_304_response called
+7756 : shgw_get_cloud_ttl failed for %s
+7757 : update_epoch_ttl_set_timer failed for 
+7758 : handle_cloud_304_response failed
+7759 : TTL fetched for DB for %s field is less that 0. Value = %ld
+
+
+###############################################################################
+# Router Registration - [8000 ~ 8999]
+###############################################################################
+
+#####
+# generate_router_id.c , log range : 8000 - 8099
+#####
+8000 : Received request to get the router mac address
+8001 : Failed to open mac file : %s
+8003 : Router Mac Id : %s
+8004 : The mac without colons : %s
+8005 : get_mac_without_colons called
+8006 : Failed to read the mac id from file : %s
+8007 :
+8008 : Received request to generate the router id
+8009 : Failed to allocate memory to mac without colons
+8010 :
+8011 : Failed to generate sha256 hash of router mac
+8012 : Hash generated : %s
+8013 : The nic identifier : %s
+8014 : Router id generated : %s
+
+#####
+# main.c , log range : 8100 - 8199
+#####
+8100 : config deinit failed
+8101 : Status not success or router_id is NULL
+8102 : Router Id is : %s
+8103 : Transitioned to State: Router Registration.
+8104 : Run Router Registration Failed
+8105 : Rerun Router Registration after %ld seconds
+8106 : HTTP POST Successful
+8107 : HTTP POST Failed
+8108 : __rr_cloud_resp_cb called
+8109 : HTTP response code is %d. Data is %s
+8110 : Valid access token found in DB. Time is %ld
+8111 : cJSON Parse Failed
+8112 : parse_resp_update_db called
+8113 : Failed to get value from cJSON for key %s
+8114 : Failed during cJSON_Print
+8115 : Failed to get value for refresh token
+8116 : Failed to get value for access token
+8117 : cJSON_GetObjectItem Failed for key expiry_time
+8118 : Refresh token is %s
+8119 : Access token is %s
+8120 : Expiry in seconds - %d
+8121 : Router Id is NULL even after generation
+8123 : Failed to allocate memory
+8124 : Failed to get refresh token
+8125 : form_and_send_rr_request_to_cloud failed
+8126 : HTTP Post Successful for Router Registration
+8127 : [state_run_rr] rr_timer has already been set. Freeing this timer.
+8128 : [state_run_rr] init_rr_timer failed.
+8129 : [init_rr_timer] add_timer returned null
+8130 : [__rr_cb] Callback received
+8131 : Run Router Registration Called
+8132 : Status not success or access_token_expiry is NULL
+8133 : token_expiry is less than epoch plus before token expiry
+8134 : init router registration timer called
+8135 : do_rr called
+8136 : form_and_send_rr_request_to_cloud called
+8137 : [__rr_cloud_resp_cb] resp_code %d resp_data %s
+8138 : About to transition to State: Subscription check!
+8139 : Received success response for router registration!
+8140 : [check_nonce_and_retry] Failed to add RR timer for 401 handling
+8141 : [check_nonce_and_retry] Adding RR timer for doing RR immediately with corrected nonce
+8142 : [__rr_cloud_resp_cb] De-allocating RR 401 response handling timer
+
+#####
+# register_router_with_cloud.c , log range : 8200 - 8299
+#####
+8200 : Request received to prepare request data for cloud registration
+8201 : Failed to allocate memory for json request object
+8202 : cjson print failed
+8203 : form_request_header called
+8204 : Failed to form headers for http post request
+8205 : Failed to allocate memory for router mac
+8206 : get_router_mac failed
+8207 : get_router_id failed
+8208 : store_router_id failed
+8209 : send_registration_request_to_cloud failed
+8210 : send_registration_request_to_cloud called
+8211 : RR - free_data called
+8212 : perform_router_registration called
+8213 : The data being sent to cloud is %s
+8214 : [check_nonce_in_resp] Entering
+8215 : [check_nonce_in_resp] Failed to parse the response data
+8216 : [check_nonce_in_resp] nonce sent by the cloud is %s
+8219 : [prepare_request_data] shgw_calc_partner_secret failed
+8220 : [form_and_send_rr_request_to_cloud] prepare_request_data failed
+8221 : [prepare_request_data] fill_additional_regestraion_details failed
+
+#####
+# sqlite_wrapper.c , log range : 8300 - 8399
+#####
+
+8301 : form_insert_query called
+8302 : store_router_id called
+8303 : form_insert_query failed for routerid
+8304 : sqlite_query failed for routerid
+8305 : update_db_with_rr_details called
+8306 : form_insert_query failed for refresh token
+8307 : sqlite_query failed for refresh token
+8308 : form_insert_query failed for access token
+8309 : sqlite_query failed for access token
+8310 : form_insert_query failed for token expiry
+8311 : sqlite_query failed for token expiry
+8312 : form_insert_query failed for router_reset
+8313 : sqlite_query failed for router_reset
+8314 : Trying to update the router_reset flag - %s
+
+###############################################################################
+# tools/utils range : 9000 - 9999
+###############################################################################
+
+###
+# query_sqlite.c range : 9000 - 9099
+###
+9000 : [shgw_query_sqlite] Executing query : %s
+9001 : [shgw_query_sqlite] Failed to open db : %s
+9002 : [shgw_query_sqlite] SQL error : %s
+9003 : Received callback from sqlite
+9004 : Failed to allocate memory for storing the data from sqlite
+9005 : [shgw_query_sqlite] null or empty argument received.
+9006 : [shgw_query_sqlite] SQL (constraint) error : %s
+9007 : asprintf() failed.
+9009 : [__read_stats_from_db] Entering
+9010 : [__read_stats_from_db] malloc failed!
+9011 : [__read_stats_from_db] sqlite3_mprintf failed!
+9012 : [__read_stats_from_db] shgw_query_sqlite failed!
+9013 : [__read_stats_from_db] stats
+9014 : [__read_stats_from_db] Leaving
+9015 : [__retrieve_data_cb] Entering
+9016 : [__retrieve_data_cb] Error while creating cJSON object
+9017 : [__retrieve_data_cb] Error parsing the cJSON object. argc: %d, i: %d
+9018 : [__retrieve_data_cb] Leaving
+9019 : [__retrieve_data_cb_for_non_json_kvp] Entering
+9020 : [__retrieve_data_cb_for_non_json_kvp] got empty content or haven't received 2 params exactly
+9021 : [__retrieve_data_cb_for_non_json_kvp] failed to create json string for %s
+9022 : [__retrieve_data_cb_for_non_json_kvp] Leaving
+9023 : [shgw_query_sqlite] Failed to register sqlite3_busy_handler
+9024 : [shgw_query_sqlite] called
+9025 : [shgw_query_sqlite] leaving
+
+
+###
+# shgw_http_request.c : 9100 - 9199
+###
+9100 : [basic_http_request] invalid arguments received.
+9101 : [shgw_http_init] curl_global_init() failed, curl error: 
+9102 : [basic_http_request] curl_easy_init() failed.
+9103 : [basic_http_request] curl_easy_perform() failed, curl error: 
+9104 : [basic_http_request] SHGW_REALLOC() failed.
+9105 : [_curl_cb] SHGW_REALLOC() failed.
+9106 : [_shgw_http_request] shgw_get_router_id() failed.
+9107 : [_shgw_http_request] asprintf() failed.
+9108 : [basic_http_request] called
+9109 : [shgw_http_init] called
+9110 : [shgw_http_init] leaving
+9111 : [basic_http_request] leaving
+9112 : [_shgw_http_request] entering
+9113 : [_shgw_http_request] leaving
+9114 : [_curl_cb] entering
+9115 : [_curl_cb] no user data
+9116 : [_curl_cb] leaving
+9117 : [basic_http_request] CURLOPT_NAME curl_easy_setopt() failed, curl error: 
+9118 : [basic_http_request] CURLOPT_SSL_VERIFYPEER curl_easy_setopt() failed, curl error: 
+9119 : [basic_http_request] CURLOPT_CUSTOMREQUEST curl_easy_setopt() failed, curl error: 
+9120 : [basic_http_request] CURLOPT_URL curl_easy_setopt() failed, curl error: 
+9121 : [basic_http_request] CURLOPT_HTTPHEADER curl_easy_setopt() failed, curl error: 
+9122 : [basic_http_request] CURLOPT_POSTFIELDS curl_easy_setopt() failed, curl error: 
+9123 : [basic_http_request] CURLOPT_WRITEFUNCTION curl_easy_setopt() failed, curl error: 
+9124 : [basic_http_request] CURLOPT_WRITEDATA curl_easy_setopt() failed, curl error: 
+9125 : [basic_http_request] HTTP Status Code: 
+9126 : [basic_http_request] resp.data is _NOT_ NULL
+9127 : [_curl_hdr_cb] response hdr: 
+9128 : [basic_http_request] CURLOPT_HEADERFUNCTION curl_easy_setopt() failed, curl error: 
+
+###
+# shgw_digest.c : 9200 - 9299
+###
+9200 : [shgw_digest_sha256] invalid arguments received.
+9201 : [shgw_digest_sha256] SHA256 Init failed.
+9202 : [shgw_digest_sha256] SHA256 Init failed.
+9203 : [shgw_digest_sha256] SHA256 Finalize failed.
+9204 : [shgw_encode_base16] SHGW_MALLOC() failed.
+9205 : [shgw_digest_sha256] entering
+9206 : [shgw_digest_sha256] leaving
+9207 : [shgw_encode_base16] entering
+9208 : [shgw_encode_base16] leaving
+9209 : [shgw_calc_partner_secret] Entering
+9210 : [shgw_calc_partner_secret] Using the current nonce
+9211 : [shgw_calc_partner_secret] 
+9212 : [shgw_calc_partner_secret] 
+9213 : [shgw_calc_partner_secret] Using the nonce set by the caller %s
+9214 : [shgw_calc_partner_secret] Failed to get router_id
+9215 : [shgw_calc_partner_secret] Failed to get secret
+9216 : [shgw_calc_partner_secret] asprintf failed
+9217 : [shgw_calc_partner_secret] _string_to_byte_array Failed
+9218 : [shgw_calc_partner_secret] _get_secret_key_bits failed
+9219 : [shgw_calc_partner_secret] _calc_key_for_hmac failed
+9220 : [shgw_calc_partner_secret] shgw_encode_base16 failed
+9221 : [shgw_calc_partner_secret] partner_secret = %s , nonce = %s
+9222 : [shgw_calc_partner_secret] Leaving
+9223 : [_calc_key_for_hmac] Entering
+9224 : [_calc_key_for_hmac] Bad argument
+9225 : [_calc_key_for_hmac] Memory alloc failed for hmac_key
+9226 : [_calc_key_for_hmac] Invalid random bit %d
+9227 : [_calc_key_for_hmac] hmac_key = %s
+9228 : [_calc_key_for_hmac] Leaving
+9229 : [_string_to_bit_array] Entering
+9230 : [_string_to_bit_array] data is null
+9231 : [_string_to_bit_array] Failed to alloc memory for data_bits
+9232 : [_string_to_bit_array] byte_array = %s
+9233 : [_string_to_bit_array] Leaving
+9234 : [shgw_calc_partner_secret] HMAC returned null digest
+
+
+###
+# shgw_get_router_id.c : 9300 - 9399
+###
+9300 : [shgw_get_router_id] entering
+9301 : [shgw_get_router_id] sqlite3_mprintf() failed
+9302 : [shgw_get_router_id] leaving
+
+9303 : [shgw_get_refresh_token] entering
+9304 : [shgw_get_refresh_token] sqlite3_mprintf() failed
+9305 : [shgw_get_refresh_token] leaving
+
+9306 : [_sqlite_cb] entering
+9307 : [_sqlite_cb] NULL data
+9308 : [_sqlite_cb] leaving
+
+9309 : [shgw_get_access_token] entering
+9310 : [shgw_get_access_token] sqlite3_mprintf() failed
+9311 : [shgw_get_access_token] leaving
+
+9312 : [shgw_get_access_token_expiry] entering
+9313 : [shgw_get_access_token_expiry] sqlite3_mprintf() failed
+9314 : [shgw_get_access_token_expiry] leaving
+
+9315 : [shgw_get_refresh_token] entering
+9316 : [shgw_get_refresh_token] sqlite3_mprintf() failed
+9317 : [shgw_get_refresh_token] leaving
+
+9318 : [shgw_get_base_mac] entering
+9319 : [shgw_get_base_mac] sqlite3_mprintf() failed
+9320 : [shgw_get_base_mac] leaving
+
+9321 : [shgw_get_edns_port] entering
+9322 : [shgw_get_edns_port] sqlite3_mprintf() failed
+9323 : [shgw_get_edns_port] leaving
+
+9324 : [shgw_get_edns_ip] entering
+9325 : [shgw_get_edns_ip] sqlite3_mprintf() failed
+9326 : [shgw_get_edns_ip] leaving
+
+9327 : [shgw_get_potential_edns_ips] entering
+9328 : [shgw_get_potential_edns_ips] sqlite3_mprintf() failed
+9329 : [shgw_get_potential_edns_ips] leaving
+
+9330 : [shgw_get_is_shgw_stopped] entering
+9331 : [shgw_get_is_shgw_stopped] sqlite3_mprintf() failed
+9332 : [shgw_get_is_shgw_stopped] leaving
+9333 : [shgw_get_is_shgw_stopped] string returned by sqlite query is NULL
+
+9334 : [shgw_get_ips_for_dev_id] entering
+9335 : [shgw_get_ips_for_dev_id] sqlite3_mprintf() failed ipv4
+9336 : [shgw_get_ips_for_dev_id] sqlite3_mprintf() failed ipv6
+9337 : [shgw_get_ips_for_dev_id] query sqlite failed for IPv4. Returing
+9338 : [shgw_get_ips_for_dev_id] query sqlite failed for IPv6.
+
+9339 : [shgw_get_secret_key_bits] entering
+9340 : [shgw_get_secret_key_bits] sqlite3_mprintf() failed for %s
+9341 : [shgw_get_secret_key_bits] leaving
+
+9342 : [shgw_get_partner_secret] entering
+9343 : [shgw_get_partner_secret] sqlite3_mprintf() failed for %s
+9344 : [shgw_get_partner_secret] leaving
+
+9345 : [shgw_get_secret_key_bits] JSON parse failed for %s
+9346 : [shgw_get_secret_key_bits] Num of bits for partner secret key = %d
+9347 : [shgw_get_secret_key_bits] Not an integer
+9348 : [shgw_get_secret_key_bits] query sqlite is failed or random indices is null
+
+9349 : [get_device_mac_from_db] entering
+9350 : [get_device_mac_from_db] sqlite3_mprintf() failed table
+9351 : [get_device_mac_from_db] query sqlite failed . Returing
+9352 : [get_device_mac_from_db] leaving
+
+9353 : [shgw_get_ipv4_addr_from_db] Entering
+9354 : [shgw_get_ipv4_addr_from_db] sqlite3_mprintf() failed
+9355 : [shgw_get_ipv4_addr_from_db] leaving
+
+9356 : [shgw_get_cloud_ttl] Entering
+9357 : [shgw_get_cloud_ttl] sqlite3_mprintf() failed
+9358 : [shgw_get_cloud_ttl] shgw_query_sqlite successful but data is empty
+9359 : [shgw_get_cloud_ttl] leaving
+
+9360 : [shgw_get_inbound_security_flag] Entering
+9361 : [shgw_get_inbound_security_flag] sqlite3_mprintf() failed
+9362 : [shgw_get_inbound_security_flag] leaving
+9363 : [shgw_get_inbound_security_flag] string returned by sqlite query is NULL
+
+9364 : [shgw_get_etag] Entering
+9365 : [shgw_get_etag] sqlite3_mprintf() failed
+9366 : [shgw_get_etag] leaving
+
+
+###
+# shgw_rpc_server_impl.c : 9400 - 9499
+###
+9400 : [shgw_rpc_read_cmd_data] called
+9401 : [shgw_rpc_read_cmd_data] Failed to read the size of the incoming data. Error: %s
+9402 : [shgw_rpc_read_cmd_data] Failed to read the actual data. Error:%s
+9403 : [shgw_uds_server_init_reg_event] called
+9404 : [shgw_uds_server_init_reg_event] shgw_dnsproxy_uds_init failed:
+9405 : [shgw_uds_server_init_reg_event] Failed to allocate memory for rpc watcher
+9406 : [shgw_uds_server_init] called
+9407 : [shgw_uds_server_init] Failed to establish UDS. socket failed
+9408 : [shgw_uds_server_init] Failed to establish UDS. bind failed to
+9409 : [shgw_uds_server_init] Failed to establish UDS. listen failed
+9410 : [shgw_accept_cb] called
+9411 : [shgw_accept_cb] Failed to accept and add watcher
+9412 : [register_to_recv_cmd_data] called
+9413 : [register_to_recv_cmd_data] Failed to allocate memory for cmd_read watcher
+9414 : [shgw_rpc_stub_cb] called
+9415 : [shgw_rpc_stub_cb] Failed to read cmd_fid. Error: %s
+9416 : [shgw_uds_server_init] leaving
+9417 : [shgw_rpc_read_cmd_data] Failed to allocate memory for data
+9421 : [shgw_rpc_read_cmd_data] leaving
+9422 : [shgw_uds_server_init_reg_event] leaving
+9423 : [register_to_recv_cmd_data] leaving
+9424 : [shgw_accept_cb] leaving
+9426 : [shgw_rpc_stub_cb] leaving
+9427 : [write_rpc_cmd_status] called
+9428 : [write_rpc_cmd_status] write failed with error %s
+9429 : [write_rpc_cmd_status] leaving
+9430 : [register_to_recv_cmd_data] event_add() failed with retcode=%d
+9431 : [register_to_recv_cmd_data] event_assign() failed with retcode=%d
+9432 : [register_to_recv_cmd_data] event_add() failed with retcode=%d
+
+###
+# shgw_rpc_client_impl.c : 9500 - 9699
+###
+9500 : [shgw_uds_init] called
+9501 : [shgw_uds_init] Failed to create socket with rpc_server
+9502 : [shgw_uds_init] Failed to connect to rpc_server:
+9503 : [shgw_send_data_to_peer] called
+9504 : [shgw_send_data_to_peer] Failed to init UDS:
+9505 : [shgw_send_data_to_peer] Failed to write cmd_fid: %s
+9506 : [shgw_send_data_to_peer] Failed to write data_size and data %s
+9509 : [shgw_uds_init] leaving
+9510 : [shgw_send_data_to_peer] no command data
+9511 : [shgw_send_data_to_peer] leaving
+9512 : [get_rpc_return_status] entering
+9513 : [get_rpc_return_status] read() failed with error %s
+9514 : [get_rpc_return_status] leaving
+9515 : [get_rpc_return_status] RPC return value not requested
+9516 : [get_rpc_return_status] calloc() failed.
+9517 : [get_rpc_return_status] event_new() failed.
+9518 : [get_rpc_return_status] event_add() failed with %d
+9519 : [_on_rpc_status_cb] timeout in collecting RPC return status
+9520 : [_on_rpc_status_cb] uncollected RPC return status %d
+9521 : [_on_rpc_status_cb] arg: %p
+9522 : [get_rpc_return_status] context: %p
+
+###
+# shgw_resilience.c : 9600 - 9699
+###
+9600 : invalid arguments received.
+9601 : socket creation failed with error %d
+9602 : socket bind failed with error %d
+9603 : socket listen failed with error %d
+9604 : uds server socket creation successful.
+9605 : Error in uds accept callback
+9606 : uds accept callback called again! Something is wrong.
+9607 : accept failed with error %d
+9608 : connection with watchdogd successful.
+
+###
+# shgw_utils.c : 9700-9799
+###
+9701 : shgw_get_time_since_epoch called
+9702 : shgw_touch_file called
+9703 : Failed to open file : %s. Reason %s
+9705 : [shgw_check_version] Entered
+9706 : [shgw_check_version] Leaving - Success
+9707 : [shgw_check_version] Leaving - Failure
+
+9712 : [shgw_calc_hashed_mac] entering
+9713 : [shgw_calc_hashed_mac] get mac without colon failed
+9714 : [shgw_calc_hashed_mac] sha digest failed
+9715 : [shgw_calc_hashed_mac] asprintf failed
+9716 : [shgw_calc_hashed_mac] device id:
+9717 : [shgw_calc_hashed_mac] entering
+
+9718 : [__get_mac_without_colon] entering
+9719 : [__get_mac_without_colon] malloc failed!
+9720 : [__get_mac_without_colon] leaving
+
+9721 : [retrieve_IP_of_local_device] Retrieving ip of the interface : %s
+9722 : [retrieve_IP_of_local_device] Failed to open socket. Error %s
+9723 : [retrieve_IP_of_local_device] Failed to perform ioctl. Error %s
+9724 : [retrieve_IP_of_local_device] Local interface ip %d %d %d %d
+
+9725 : [retrieve_MAC_of_local_device] Retrieving mac of the interface : %s
+9726 : [retrieve_MAC_of_local_device] Failed to open socket. Error %s
+9727 : [retrieve_MAC_of_local_device] Failed to perform ioctl. Error %s
+9728 : [retrieve_MAC_of_local_device] Local interface mac %.2X %.2X %.2X %.2X %.2X %.2X
+
+9731 : [get_csp_clientid_from_db] called
+9732 : [get_csp_clientid_from_db] sqlite3_mprintf failed
+9733 : [get_csp_clientid_from_db] shgw_query_sqlite failed
+9734 : [on_shp_url_change] called`
+9735 : [on_shp_url_change] failed to update token expiry
+9736 : [on_shp_url_change] failed to update whitelisted domain TTL
+9737 : [on_shp_url_change] failed to update TLD TTL
+
+9738 : [shgw_check_ip_for_all_zeros] ip has all zeros
+
+9739 : [sqlite_callback] called
+9740 : [sqlite_callback] strdup failed
+
+###
+# shgw_http_async.c : 9800-9899
+###
+9800 : [shgw_http_async_init] curl_global_init() failed!
+9801 : [_setup_easy_curl] curl_easy_init() failed!
+9802 : [_setup_easy_curl] SHGW_CALLOC() failed!
+9803 : [_ev_timeout_cb] async http timeout
+9804 : [_ev_timeout_cb] curl_multi_socket_action() returned running_handles=%d
+9805 : [_on_curl_perform_cb] activity on cURL owned sockfd=%d
+9806 : [_on_curl_perform_cb] curl_multi_socket_action() returned running_handles=%d
+9807 : [_read_curl_socket] curl_multi_info_read() returned pending=%d
+9808 : [_read_curl_socket] CURLMSG_DONE, resp_ptr is NULL
+9809 : [_read_curl_socket] CURLMSG_DONE http_status_code=%d
+9810 : [_read_curl_socket] CURLMSG_DONE cURL error=%d
+9811 : [_read_curl_socket] unknown CURLMSG %d
+9812 : [_curl_timeout_cb] timeout_ms=%ld
+9813 : [_curl_socket_activity_cb] sockfd=%d action=%d
+9814 : [_curl_socket_activity_cb] unknown action=%d
+9815 : [_curl_write_cb] ++not interested in response
+9816 : [_curl_write_cb] SHGW_HTTP_RESPOPT_NO_ALLOC set, response will be ignored
+9817 : [_setup_easy_curl] shgw_get_access_token() failed.
+9818 : [_setup_easy_curl] asprintf() failed.
+9819 : [_curl_socket_activity_cb] SHGW_MALLOC() failed.
+9820 : [_curl_write_cb] SHGW_REALLOC() failed.
+9821 : [shgw_http_async_init] entering
+9822 : [shgw_http_async_init] leaving
+9823 : [_do_http_async] entering
+9824 : [_do_http_async] setup easy curl failed
+9825 : [_do_http_async] leaving
+9826 : [_setup_easy_curl] entering
+9827 : [_setup_easy_curl] leaving
+9828 : [_read_curl_socket] entering
+9829 : [_read_curl_socket] CURLMSG_DONE
+9830 : [_read_curl_socket] leaving
+9831 : [_curl_socket_activity_cb] CURL_POLL_REMOVE
+9832 : [_curl_socket_activity_cb] leaving
+9833 : [_curl_write_cb] entering
+9834 : [_curl_write_cb] leaving
+9835 : [shgw_http_async_init] evtimer_new() failed.
+9836 : [_curl_socket_activity_cb] event_del() failed with retcode=%d
+9837 : [_curl_socket_activity_cb] event_assign() failed with retcode=%d
+9838 : [_curl_socket_activity_cb] event_add() failed with retcode=%d
+9839 : [get_header_value_for_param] called with header %s and field %s
+9840 : [get_header_value_for_param] Current header being iterated is %s
+9841 : [get_header_value_for_param] Name Param of header is %s
+9842 : [get_header_value_for_param] strdup failed
+9843 : [get_header_value_for_param] leaving. Header not found
+9844 : File path not provided for uploading
+9845 : req_data = [----%s----]
+9846 : File uploaded = [%s]
+9847 : [_setup_easy_curl] Default post element = [%s]
+9848 : [_setup_easy_curl] Failed to open the file to upload to cloud
+
+###############################################################################
+# Watchdog - [10000 - 11000]
+###############################################################################
+
+###
+# watchdogd_impl.c 10000-10099
+###
+10000 : run_all_wd_states failed.
+10001 : about to start the event loop
+10002 : watchdogd exiting.
+10003 : Failed to create the base event
+10004 : wd_conf_init() failed.
+10005 : Transitioned to State: Watchdog Init!
+10006 : shgw_uds_server_init_reg_event() failed.
+10007 : shgw_wd_stats_init() failed in watchdog_init.
+10008 : _on_process_dead() process with pid=%d exited.
+10009 : watchdog_deinit() invoked
+10010 : spawned child process pid=%d command=%s argument=%s.
+10011 : evsignal_new() failed.
+10012 : evsignal_new() failed.
+10013 : evsignal_new() failed.
+10014 : read() failed with errno=%d.
+10015 : request to report critical error err_code=%d
+10016 : shgw_http_POST() failed, url=%s sc=%d
+10017 : Failed to add timer for upload
+10018 : asprintf() failed.
+10019 : vfork() failed with errno=%d
+10020 : received SIGUSR1
+10021 : [_launch_all_processes] kill() for pid=%d returned %d
+10022 : received SIGUSR2
+10023 : _spawn_process() process failed.
+10024 : _launch_all_processes() returned SUCCESS
+10025 : _launch_all_processes() failed with sc=%d
+10026 : shgw_http_async_init failed
+10027 : already in stopped state, ignoring SIGUSR1 stop request.
+10028 : already in started state, ignoring SIGUSR2 start request.
+10030 : shgw_wd_stats_init() failed with sc=%d. killed all processes.
+10031 : _on_report_error() using url %s
+10032 :
+10033 : exceeded max attempts for command=%s argc=%s. going to stopped state.
+10034 : _spawn_process() failed for command=%s arg=%s
+10035 : _on_awake_timer() bringing to started state.
+10036 : read() failed with errno=%d.
+10037 : About to transition to State: CSP Execution
+10038 : shgw_stop is true. Not starting processes
+10039 : failed to identify a port to contact the edns cloud server. watchdog will run only as command manager
+10040 : edns port not identified. SIGUSR2 start ignored.
+10041 : edns port not identified. SIGUSR1 stop ignored.
+10042 : evtimer_new() failed.
+10043 : failed to init the event loop.
+10044 : run_all_wd_states called
+10045 : Calling transition to state for %d
+10047 : reaped child %d
+10048 : stop mode, checking if the child should always run %d
+10049 : my_config.comm_mgr_api_endpoint 
+10050 : my_config.comm_mgr_status_endpoint
+10051 : my_config.wd_stats_url
+10052 : my_config.wd_critical_url
+10053 : my_config.wd_version_url
+10054 : shgw_wd_config_deinit free start
+10055 : shgw_wd_config_deinit free end
+10056 : shgw_wd_config_deinit free called
+10057 : _release_device_discovery_data free start
+10058 : _release_device_discovery_data free ends
+10059 : _release_device_discovery_data free called
+10060 : _release_data_router registration free start
+10061 : _release_data_router registration free end
+10062 : _release_data_router registration free called
+10063 : [_on_rpc_call] Received an rpc call to handle cloud auth 401 error
+10064 : SHGW is already started. Not launching processes.
+10065 : asprintf failed in upload files
+10066 : upload debug files failed
+10067 : The error codes that are being posted are %s
+10068 : Skipping the spawn of processes that shouldn't always run
+10069 : Killing the process that is spawned before the shgw stop - pid = %d
+10070 : Not killing process that should always run - pid = %d
+10071 :
+10074 : Transitioned to State: Watchdog Events!
+10075 : [_on_rpc_call] Received an rpc call to handle pod failover
+10076 : [_on_rpc_call] Failed to create timer for pod discovery retry
+10077 : [_pod_rediscovery_retry_cb] Entering
+10078 : [state_watchdog_init] csp init failed
+10079 : Stoping inbound security
+10080 : inbound_security_start_handler failed. Will retry inbound security
+10081 : [_kill_all] kill() for pid=%d returned %d
+10082 : csp_init failed during WD init
+10083 : Failed to init IPset for WD
+10084 : RPC received for checking inbound security
+10085 : shgw_check_if_inbound_sec_impacted failed
+10086 : event_new failed for logrotate timer
+10087 : event_add failed for logrotate timer
+10088 : logrotate timer event triggered
+10089 : [state_watchdog_init] shgw_ipset_wd_init failed!
+
+###
+# wd_conf.c 10100-10199
+###
+10100 : JSON syntax error: %s
+10101 : 0 entries in configuration
+10102 : calloc() failed in _load_configuration.
+10103 : bad config format.
+10104 : probably missing attribute from process block.
+10105 : fopen() failed with errno %d
+10106 : fseek() failed with errno %d
+10107 : config file size %d more than max allowed size of %d
+10108 : malloc() failed.
+10109 : read %d bytes, expected %d.
+10110 : wd_conf_init invoked
+10111 : _read_file invoked
+10112 : _conf_data_free invoked
+10113 : _conf_data_from_json invoked
+10114 : failed to read %s, probably doesn't exist in configuration.
+10115 : wd_conf_deinit invoked
+10116 : _load_configuration invoked
+10117 : uds_path not found in configuration
+10118 : calloc() failed in _load_configuration.
+10119 : cJSON_GetObjectItem() failed.
+
+###
+# shgw_wd_stats.c 10200 - 10299
+###
+10200 : [shgw_wd_stats_init] Entering
+10201 : [shgw_wd_stats_init] Leaving
+10202 : [shgw_wd_stats_deinit] Entering
+10203 : [shgw_wd_upload_stats] Entering
+10204 : [shgw_wd_upload_stats] JSON object create failed
+10205 : [shgw_wd_upload_stats] using url %s
+10206 : [shgw_wd_upload_stats] Error while uploading stats
+10207 : [shgw_wd_upload_stats] No error from cURL while uploading
+10208 : [__stats_cloud_response_cb] http_resp is %d
+10209 : [upload_json]upload_json called
+10210 : [upload_json]bad argument provided to upload_json method
+10211 : [upload_json]unable to print the json in char* hence quitting in upload_json
+10212 : [upload_json]failed to create the headers to upload json to the cloud
+10213 : [upload_json]posted the provided json to the cloud successfully
+10214 : [upload_json]couldn't post the json to the cloud
+10224 : [shgw_wd_stats_init] event_new() failed.
+10225 : [__stats_cloud_response_cb] Cloud Auth Error: http_resp is %d: Calling cloud_auth_error_handler
+10226 : [__stats_cloud_response_cb] FAILURE: http_resp is %d
+10227 : [shgw_wd_stats_init] event_new() failed for watchdog sys stats timer.
+10228 : [shgw_wd_stats_init] evtimer_add() failed for watchdog sys stats timer.
+10229 : [get_free_mem] Failed to open /proc/meminfo file.
+10230 : [get_load_avg] Failed to open /proc/loadavg file.
+10231 : [get_proc_stat] Failed to open /proc/ dir.
+10232 : [get_proc_stat] Failed to open file
+10233 : [get_proc_stat] fscanf failed to get proc name.
+10234 : [get_proc_stat] fscanf failed to get cpu ticks and rss.
+10235 : [shgw_wd_sys_stats] Failed to get system load average information.
+10236 : [shgw_wd_sys_stats] Failed to get system memory information.
+10237 : [shgw_wd_sys_stats] Failed to open /proc/uptime file.
+10238 : [shgw_wd_sys_stats] fscanf failed to get cpu uptime.
+10239 : [shgw_update_sys_stats_in_db] stats updation query creation failed.
+10240 : [shgw_update_sys_stats_in_db] stats updation in db failed.
+10241 : [shgw_wd_sys_stats] Failed in updating sys_stats in db.
+10242 : [get_proc_stat] getting process stats for
+10243 : [get_proc_stat] process details from cmdline:
+10244 : [get_proc_stat] reading process stats successfully for process:
+
+###
+# shgw_states.c 10000-10099
+###
+
+10300 : transition_to_state called with state %d to be executed after time %d
+10301 : allocation of memory failed for context
+10302 : event_base_once failed
+10303 : _immediate_transition_cb called with state = %d
+10304 : Form execution sequence called
+10305 : Transition to state called for an invalid state
+
+###
+# shgw_logrotate.c 10400-10499
+###
+10400 : [get_log_file_size] fopen() failed with error:
+10401 : [clear_log_file] fopen() failed with error:
+10402 : [clear_log_file] ftruncate() failed with error:
+10403 : [remove_log_file] clear_log_file() failed
+10404 : [remove_log_file] remove() failed with error:
+10405 : [parse_log_file] fopen() failed with error:
+10406 : [parse_log_file] fopen() failed with error:
+10407 : [rotate_log_file] failed to rotate to next version
+10408 : [handle_stale_file] parse_log_file() failed
+10409 : [handle_stale_file] upload_log_file() failed
+10410 : [handle_stale_file] remove_log_file() failed
+10411 : [handle_stale_file] remove() failed with error:
+10412 : [copy_log_file] open() failed with error:
+10413 : [copy_log_file] fstat() failed with error:
+10414 : [copy_log_file] open() failed with error:
+10415 : [copy_log_file] sendfile() failed with error:
+10416 : [rotate_log_file] handle_stale_file() failed
+10417 : [rotate_log_file] copy_log_file() failed
+10418 : [rotate_log_file] copy_log_file() failed
+10419 : [rotate_log_file] handle_stale_file() failed
+10420 : [shgw_logrotate] clear_log_file() failed
+10421 : [shgw_logrotate] Skipping log rotate for insufficient size
+10422 : [shgw_logrotate] Uploading log files to server
+10423 : [__wd_logrotate_upload_cb] callback called
+10424 : [__wd_logrotate_upload_cb] response code %d response data %s
+10425 : [__wd_logrotate_upload_cb] http response OK
+10426 : [__wd_logrotate_upload_cb] response code %d response data %s.Log uploading failed.
+10427 : [rotate_log_file] Failed to open directory.
+10428 : [shgw_logrotate] unable to retrieve the log-file size
+
+###
+# shgw_diagnostics.c 10500-10599
+###
+10501 : Critical Diagnostics was called
+10502 : [SHGWDiagnostics_initialize] Improper Argument provided
+10503 : [SHGWDiagnostics_ping] socket() API failed with error - (%d) (%s)
+10504 : Initialisation failed
+10505 : File Op failed
+10506 : Socket Op failed
+10507 : Memory allocation failed
+10508 : HTTP op failed
+10509 : FAILURE - %s %d
+10510 : SUCCESS - %s %d
+10511 : 
+10512 : [__wd_diagnostics_upload_cb] Entered
+10513 : [__wd_diagnostics_upload_cb] resp_code = %d resp_data = %d
+10514 : [__wd_diagnostics_upload_cb] http response OK
+10515 : [__wd_diagnostics_upload_cb] Callback failed. resp_code = %d resp_data = %d
+10516 : [SHGWDiagnostics_dumpAllProcData] Failed to dump file %s
+10517 : [SHGWDiagnostics_getSHGWProcessDetails] __shgwDiagnostics_readAndWrite failed for status
+10518 : [SHGWDiagnostics_collectDiagData] Failed to dump all /proc/ data
+10519 : [SHGWDiagnostics_collectDiagData] Failed to ping
+10520 : [SHGWDiagnostics_collectDiagData] Failed to collect route info from CPE
+10521 : [SHGWDiagnostics_collectDiagData] Failed to get tmp FS contents from CPE
+10522 : [SHGWDiagnostics_collectDiagData] Failed to get all SHGW process details
+10523 : [SHGWDiagnostics_collectDiagData] Failed to get all processes on CPE
+10524 : [SHGWDiagnostics_uploadFilesCollected] Failed to collect persistent DB info
+10525 : [SHGWDiagnostics_uploadFilesCollected] Failed to extract access_token info from persistent DB
+10526 : [SHGWDiagnostics_uploadFilesCollected] Improper access token extracted from persistent DB
+10527 : [SHGWDiagnostics_uploadFilesCollected] Improper critical URL extracted
+10528 : [shgw_wd_diagnostics] Improper Argument provided
+10529 : [SHGWDiagnostics_ping] setsockopt API failed with error - (%d) (%s)
+10530 : [SHGWDiagnostics_ping] sendto API failed with error - (%d) (%s)
+10531 : [SHGWDiagnostics_ping] recvfrom API failed with error - (%d) (%s)
+10532 : [__shgwDiagnostics_readAndWrite] fopen API failed with error - (%d) (%s)
+10533 : [__shgwDiagnostics_readAndWrite] fputs API failed with error - (%d) (%s)
+10534 : [SHGWDiagnostics_getRouteInfo] fopen API failed with error - (%d) (%s)
+10535 : [SHGWDiagnostics_dumpAllProcData] asprintf API failed with error - (%d) (%s)
+10536 : [SHGWDiagnostics_getSHGWProcessDetails] opendir API failed with error - (%d) (%s)
+10537 : [SHGWDiagnostics_getAllProcessesOnCPE] opendir API failed with error - (%d) (%s)
+10538 : [SHGWDiagnostics_getTMPFSContents] opendir API failed with error - (%d) (%s)
+10539 : [SHGWDiagnostics_getTMPFSContents] opendir API failed with error - (%d) (%s)
+10540 : [SHGWDiagnostics_uploadFilesCollected] stat API failed with error - (%d) (%s)
+10541 : [SHGWDiagnostics_uploadFilesCollected] stat API failed with error - (%d) (%s)
+10542 : [SHGWDiagnostics_uploadFilesCollected] fopen API failed with error - (%d) (%s)
+10543 : [SHGWDiagnostics_uploadFilesCollected] fwrite API failed with error - (%d) (%s)
+10544 : [SHGWDiagnostics_initialize] fopen API failed with error - (%d) (%s)
+10545 : [shgw_wd_diagnostics] fopen API failed with error - (%d) (%s)
+10546 : [SHGWDiagnostics_getSHGWProcessDetails] Failed to dump file %s
+
+###############################################################################
+# HTTPD : 11000 - 11999
+###############################################################################
+
+###
+# utils.c
+###
+
+11001 : Completed the init successfully
+11002 : Starting the teardown process for httpd
+11003 : Got more than one rows as result for the select device id query
+11004 : Entering the sqlite_call_back, argv[0] :%s
+11005 : 
+11006 : Failed to allocate memory for holding the sqlite3 query
+11007 : Returning the device id : %s
+11008 : Failed to duplicate the device id string
+
+###
+# shgw_server.c
+###
+
+11101 : Starting the setup connection
+11102 : Failed to get the router id from the database. Quitting.
+11103 : Failed to setup the UDS. Quitting.
+11104 : Failed to create event loop to run the process
+
+###
+# http_ops.c
+###
+
+11200 : [_on_get_ids] enter
+11201 : [_on_get_ids] servicing client %s on port %u
+11202 : [_on_get_ids] get_device_id() failed.
+11203 : [_on_get_ids] evbuffer_new() failed.
+11204 : [_on_get_ids] evbuffer_add_printf() returned %d.
+11205 : [_on_get_ids] responding HTTP 200.
+11206 : [_on_request_cb] won't respond to non-GET request.
+11207 : [http_init] evhttp_new() failed.
+11208 : [http_init] evhttp_set_cb() failed for ids.js
+11209 : [http_init] evhttp_bind_socket() failed ip=%s interface=%s
+11210 : [_on_get_ids] evhttp_add_header() failed.
+11211 : [_on_get_ids] evhttp_request_get_connection() returned NULL, perhaps lost connection with peer.
+11212 : [_bind_to_interfaces] Bad JSON %s, expected JSON array.
+11213 : [_bind_to_interfaces] 0 interfaces to listen.
+11214 : [_bind_to_ip_addr] retrieve_IP_of_local_device() failed for %s.
+11215 : [_bind_to_ip_addr] binding ip=%s for interface=%s
+11216 : [_bind_to_ip_addr] asprintf() failed.
+11217 : [_on_get_cts] enter
+11218 : [_on_get_cts] evhttp_request_get_connection() returned NULL, perhaps lost connection with peer.
+11219 : [_on_get_cts] servicing client %s on port %u
+11220 : [_on_get_cts] evbuffer_new() failed.
+11221 : [_on_get_cts] evhttp_parse_query_str() failed.
+11222 : [_on_get_cts] asprintf failed while appending data for cont_to_site_data
+11223 : [_on_get_cts] cont_to_site_data %s
+11224 : [_on_request_cts_cb] won't respond to non-GET request.
+11225 : [http_init] evhttp_set_gencb() failed.
+11226 : 
+11227 : [_on_get_cts] evhttp_find_header domain name NULL
+11228 : [http_init] evhttp_set_cb() failed for cmd.js
+11229 : [_on_fetch_cmd_cb] called
+11230 : [_on_fetch_cmd_cb] The request type is not get for cmd.
+11231 : [_on_get_cts] get_device_id() failed.
+
+###
+# rpc.c
+###
+
+11301 : Entering the rpc handler
+11302 : Stopping the HTTPD event loop
+11303 : Changing the HTTPD log level
+11304 : Updating the config data read from db
+11305 : Failed to refresh the database after receiving refresh command
+11306 : Unsupported fid %d sent to the HTTPD
+
+###
+# shgw_dd_arp.c
+###
+12001 : [shgw_arp_init_globals] Failed to create lan_interfaces_map
+12002 : [send_arp_ping_to_all_devices] Skipping arp-scan for the gateway ip - %s 
+12003 : Packet Validation Failed. Destination IP is same or different subnet. IP is %d.%d.%d.%d
+12004 : The IP address of the interface which received ARP is %d.%d.%d.%d
+12005 : 
+12006 : 
+12007 : Marking Mac %s as inactive
+12008 : Failed to open socket. Error %s
+12009 : Failed to perform ioctl. Error %s
+12010 : Preparing raw socket to send arp pings to all devices failed.
+12011 : Failed to send. Error %s
+12012 : Sending an Arp ping to ip %d %d %d %d
+12013 : Sending an Arp ping to ip %s
+12014 : Failed to perform ioctl. Error %s
+12015 : Failed to bind. Error %s
+12016 : Ip change. Mac: %s Old ip: %s, New ip: %s
+12017 : Failed to create JSON Object.
+12018 : cJSON add failed. Failing the new device object creation!
+12019 : hashmap add failed. Failing the new device object creation for mac %s!
+12020 : New device found. Mac: %s, Ip: %s
+12021 : Packet Validation Failed. Source IP is same or different subnet. IP is %d.%d.%d.%d
+12022 : Memory allocation failed when processing Dev id: %s
+12023 : Failed to recvfrom socket. Error %s
+12024 : Failed to open socket. Error %s
+12026 : Failed to create device map.
+12027 : Preparing raw socket to send arp pings to active devices failed.
+12028 : Json create failed!
+12029 : Json duplication failed!
+12030 : Changes for device with mac:%s notified to dd!
+12031 : Error in notifying dd for device with mac:%s
+12032 : Error in notifying dd for device with mac:%s
+12033 : Failed to init Arp watcher!
+12034 : Failed to init Arp timer!
+12035 : Failed to allocate memory to store the mac key entry for hashmap
+12036 : shgw_arp_hm_free called for entry %s
+12037 : Dev_id: %s not found. Returning sentinel data.
+12038 : Dev_id: %s, Ip: %s, Status: %d
+12039 : Memory Allocation Failed for Dev_id: %s
+12040 : Marking Dev_id: %s as offline
+12041 : Adding to hashmap failed for Dev_id: %s
+12042 : Failed to get Dev id for mac: %s
+12043 : [init_periodic_scan_timer] Failed to add the scan timer event to the loop
+12044 : Got an ARP packet from dev_id:%s with ip: %s
+12045 : Got an ARP packet!
+12046 : Got an ARP Reply/Request packet!
+12047 : Timer callback received.
+12048 : Current timestamp: %ld
+12049 : Updating status for dev_id:%s with ip:%s, status:%d, last_seen:%ld
+12050 : [shgw_arp_get_env_info] The lan interfaces identified: %s
+12051 : [retrieve_env_info_local_device] Failed in adding the %s entry details to hash map
+12052 : [shgw_arp_get_env_info] Failed to get the env info of the interface: %s
+12053 : [shgw_arp_get_env_info] Failed to get the env info of atleast one lan interface
+12054 : [shgw_arp_start_interception] Starting arp interception on the interface : %s
+12055 : [send_arp_ping_to_active_devices] Send arp ping to active devices on the interface : %s
+12056 : [send_arp_ping_to_all_devices] Send arp ping to all devices on the interface : %s
+12057 : [shgw_arp_get_env_info] Working on the interface : %s
+12058 : [shgw_arp_start_interception] Failed in allocation of memory for g_arp watcher
+12059 : [shgw_arp_start_interception] Failed in allocation of memory for g_arp raw sockets
+12060 : [shgw_lan_interface_hm_free] shgw_lan_interface_hm_free called for entry %s
+12061 : Failed to add event for arp watcher at index %d
+12065 : [shgw_arp_start_interception] Failed to add the scan timer event to the loop
+12066 : [retrieve_env_info_local_device] Failed allocate the memory for the interface_info
+12067 : [shgw_arp_get_env_info] failed for the interfaces : %s
+###############################################################################
+# Port_config : 13000 - 13999
+###############################################################################
+
+###
+# port_config.c
+###
+13001 : identify_and_update_port invoked. potential ports : %s , server_ip : %s
+13002 : update_port_in_db invoked with ports %d
+13003 : identify_port invoked with potential ports : %s, server_ip : %s
+13004 : failed to parse json array string %s
+13005 : item in array not of integer(port) type
+13007 : identified %d entries in the array of ports provided
+13008 : processing port of index %d
+13009 : received invalid argumets for identify_port
+13010 : Transitioned to State: EDNS Port Discovery!
+13013 : Failed to identify EDNS port. Will Retry.
+
+###
+# ev_ops.c
+###
+13101 : probe_edns_port invoked with port %d
+13102 : failed to send some packets to the edns server. good_packet_status : %d bad_packet_status : %d
+13103 : closing fd for good_packet_fd : %d bad_packet_fd : %d
+13104 : init_events invoked
+13105 : timer callback invoked with events %d
+13106 : Failed to allocate memory Good packet
+13107 : Failed to allocate memory for bad packet
+13108 : bad packet callback invoked with flags %d
+13109 : edns_response_cb invoked with events %d
+13110 : failed to get packet details
+13111 : good_packet_result : %d and bad_packet_result : %d
+13112 : failed to receive data from the cloud
+13113 : event_add() failed for good packet, retcode=%d
+13114 : event_add() failed for bad packet, retcode=%d
+13115 : All responces received. No port identified. Will retry discovery
+13119 : For a bad packet on port %d, the result is %d
+13120 : For a good packet on port %d, the result is %d 
+13123 : Request has timed out for port %d
+13124 : failed to allocate memory for ev_result
+13125 : Port identified successfully. Port - %d
+13126 : Failed to update EDNS port in DB. Will retry 
+
+#####
+# Utils.c , range 1800 - 1828 && 13127 - 13135
+#####
+13127 : [_retrieve_local_lan_ips] SHGW_CALLOC() failed for size %d.
+13128 : [_retrieve_local_lan_ips] failed to retrieve ip for atleast one interface
+13129 : 
+13130 : [_retrieve_interface_ip] The resolved ip is all of zeros for the interface %s
+13131 : 
+13132 : [_retrieve_interface_ip] if_nametoindex() failed.
+13133 : [_retrieve_local_lan_ips] no interfaces found in the lan interface json array
+13134 : [_retrieve_local_lan_ips] Interface is null at %d index in the json array
+13135 : [_retrieve_local_lan_ips] strdup failed
+13136 : [_retrieve_local_lan_ips] Destination IPv4 is NULL
+13137 : [_retrieve_local_lan_ips] memory allocation failed!
+
+
+#####
+# shgw_pod_watcher.c , range 13200 - 13250
+13200 : [shgw_init_pod_watcher] Entering
+13201 : [shgw_init_pod_watcher] Failed to add timer
+13202 : [shgw_create_pod_stat_arrays] Entering
+13203 : [shgw_create_pod_stat_arrays] Memory allocation failed!
+13204 : [shgw_create_pod_stat_arrays] Memory allocation failed!
+13205 : [shgw_create_pod_stat_arrays] Memory allocation failed!
+13206 : [pod_watcher_cb] Entering
+13207 : [pod_watcher_cb] Watcher index = %d
+13208 : [pod_watcher_cb] Fraction of pol timeouts observed in the last %d seconds = %.3f
+13209 : [pod_watcher_cb] Fraction of isp timeouts observed in the last %d seconds = %.3f
+13210 : [pod_watcher_cb] sum of fractions of pol timeouts in the past %d seconds = %.3f
+13211 : [pod_watcher_cb] sum of fractions of isp timeouts in the past %d seconds = %.3f
+13212 : [pod_watcher_cb] Number of policy requests sent in the last %d seconds = %.3f
+13213 : [pod_watcher_cb] Total number of policy requests sent in the past %d seconds = %.3f
+13214 : [check_pod_condition] Entering
+13215 : [check_pod_condition] Fraction of policy timeouts is greater than the max limit - %.3f
+13216 : [check_pod_condition] Fractionof isp timeouts is less than the min limit - %.3f - Calling POD failover handler
+13217 : [check_pod_condition] Fractionof isp timeouts are greater than the min limit - %.3f - Seems like a network issue
+13218 : [shgw_reset_pod_stats_window] Resetting the pod stats
+13219 : [shgw_deinit_pod_watcher] Deiniting pod watcher
+13220 : [shgw_free_pod_stat_arrays] Freeing pod stat arrays
+13221 : [shgw_reset_pod_stat_counters] Resetting pod stat counters
+13222 : [shgw_free_pod_stat_arrays] Entering
+13223 : [shgw_reset_pod_stat_counters] Entering
+13224 : [shgw_reset_pod_stats_window] Entering
+13225 : [shgw_deinit_pod_watcher] Entering
+
+######
+# SHGW_IPSET shgw_ipset_context_store.c, range 13226 - 13399
+13226 : [shgw_get_domain_ip_info] Leaving
+13251 : [print_ipset_context]  Domain info or domain name is NULL 
+13299 : [shgw_ipset_ipv4_del_context] Failed to get device id
+13300 : [shgw_init_ipset_context_store] Entering
+13301 : [shgw_init_ipset_context_store] Memory allocation failed for devdomain hashmap
+13302 : [shgw_init_ipset_context_store] Failed to add timer
+13303 : [shgw_init_ipset_context_store] Leaving
+13304 : [shgw_ipset_ipv4_add_context] Entering
+13305 : [shgw_ipset_ipv4_add_context] SRC IP is null
+13306 : [shgw_ipset_ipv4_add_context] Failed to get device id
+13307 : [shgw_ipset_ipv4_add_context] devdomain info is null for devid %s
+13308 : [shgw_ipset_ipv4_add_context] Memory allocation failed for devdomain_info->addr4
+13309 : [shgw_ipset_ipv4_add_context] domain_ip_info is null for domain %s
+13310 : [shgw_ipset_ipv4_add_context] Memory allocation failed for new ip
+13311 : [shgw_ipset_ipv4_add_context] Added %s and %s for the domain %s
+13312 : [set_and_get_device_domain_info] Entering
+13313 : [set_and_get_device_domain_info] Found device domain info for devid %s
+13314 : [set_and_get_device_domain_info] strdup failed for %s
+13315 : [set_and_get_device_domain_info] SHGW_CALLOC failed 
+13316 : [set_and_get_device_domain_info] Failed to init hashmap
+13317 : [set_and_get_device_domain_info] Failed to add %s key to the hashmap
+13318 : [set_and_get_domain_ip_info] Entering
+13319 : [set_and_get_domain_ip_info] Found domain_ip infor for domain %s
+13320 : [set_and_get_domain_ip_info] strdup failed for domain %s
+13321 : [set_and_get_domain_ip_info] SHGW_CALLOC failed
+13322 : [set_and_get_domain_ip_info] Failed to add %s key to the strmap
+13323 : [set_and_get_domain_ip_info] Leaving
+13324 : [context_check_timer_cb] Entering
+13325 : [context_check_timer_cb] Timed out! Freeing %s
+13326 : [context_check_timer_cb] Leaving
+13327 : [free_domain_ip_map] Entering
+13328 : [free_domain_ip_map] Freeing the ip : %s 
+13329 : [free_domain_ip_map] Leaving
+13330 : [free_device_domain_map] Entering
+13331 : [free_device_domain_map] Leaving
+13332 : [shgw_ipset_ipv4_add_context] Ip is already added in the context
+13333 : [shgw_ipset_ipv4_del_context] Entering
+13334 : [shgw_ipset_ipv4_del_context] Failed to get devid for the src ip %s
+13335 : [shgw_ipset_ipv4_del_context] Device to domain info is null for devid %s
+13336 : [shgw_ipset_ipv4_del_context] Deleted %s for the ip  %s
+13337 : [get_ipv4_address_from_ipset_cs] Entering
+13338 : [get_ipv4_address_from_ipset_cs] Ipv4 address in the context store %s
+13339 : [get_ipv4_address_from_ipset_cs] Failed to get ipv4 address for the devid %s
+13340 : [free_domain_ip_map] Freeing the domain: %s
+13341 : [free_domain_ip_map] Freeing the ipv6 address: %s
+13342 : [shgw_get_domain_ip_info] Entering
+13343 : [shgw_get_devdomain_info] Failed to get dev domain info for devid %s
+13344 : [shgw_get_devdomain_info] Entering
+13345 : [shgw_get_domain_ip_info] domain ip info is null for %s
+13346 : [sync_ipset_context] Entering 
+13347 : [sync_ipset_context] Device id %s  ip_addr %s
+13348 : [sync_ipset_context] devdomain_info is NULL
+13349 : [sync_ipset_context] devdomain_map is NULL
+13350 : [sync_ipset_context] devdomain_info->addr4 %s
+13351 : [sync_host_reputation_rules] saved domain name in context map  %s
+13352 : [sync_host_reputation_rules] domain_ip_info->ipv4_chain_head->addr4  %s
+13353 : [sync_host_reputation_rules] Failed to add ipset rules for port  %d
+13354 : [sync_host_reputation_rules] delete old ip from ipset rules %s
+13355 : [sync_host_reputation_rules] Failed to delete ipset rules for  port  %d
+13356 : [sync_ipset_context] copied changed ip to context map %s
+13357 : [print_ipset_context] devid : %s
+13358 : [print_ipset_context] device_info->addr4 : %s
+13359 : [print_ipset_context] domain name : %s
+13360 : [print_ipset_context] device_info->texpiry : %ld
+13361 : [print_ipset_context] domian ipv4 : %s
+13362 : [print_ipset_context] domian ipv6 : %s
+13363 : [shgw_ipset_ipv4_add_context] src ip %s dev_id %s
+13364 : [shgw_ipset_ipv4_del_context] strdup failed for src_ip
+13365 : [shgw_ipset_ipv4_add_context] strdup failed for src_ip
+13366 : [sync_host_reputation_rules] Entering
+13367 : [sync_host_reputation_rules] current time %ld
+13368 : [sync_host_reputation_rules] Leaving
+13369 : [print_ipset_context] device_info->addr6 : %s
+13370 : [sync_ipset_context] ip address is NULL or it is ipv6
+13371 : [print_ipset_context] Entering print ipset context
+13372 : [shgw_ipset_ipv4_del_context] strdup failed for src_ip
+13373 : [shgw_ipset_ipv4_add_context] strdup failed for src_ip
+13374 : [shgw_ipset_ipv4_add_context] domain is null
+13375 : [shgw_ipset_ipv4_add_context] DST ip is null
+13376 : [shgw_ipset_ipv4_del_context] domain is null
+13377 : [shgw_get_devdomain_info] Leaving
+13378 : [sync_device_block_rules] Entering
+13379 : [sync_device_block_rules] Entering
+13380 : [sync_rules_ip_port_set] Entering
+13381 : [sync_rules_ip_port_set] Failed to add ipset rules for port %d in %s
+13382 : [sync_rules_ip_port_set] Delete old ip %s from the set %s
+13383 : [sync_rules_ip_port_set] Failed to delete ipset rules for port %d in %s
+13384 : [shgw_get_domain_ip_info] domain ip map is null while checking the domain %s ips
+13385 : [shgw_init_ipset_context_store] Failed to add whitelist and redirector domains to context store
+13386 : [shgw_add_wl_redir_dom_cs] Entering
+13387 : [shgw_add_wl_redir_dom_cs] Failed to fill whitelist domains in context store
+13388 : [shgw_add_wl_redir_dom_cs] Failed to fill redirector domains in context store
+13389 : [shgw_add_wl_redir_dom_cs] immediate_event_base_once failed
+13390 : [shgw_add_wl_redir_dom_cs] Leaving
+13391 : [fill_whitelist_domains_cs] Entering
+13392 : [fill_whitelist_domains_cs] Whitelist domain is either null or not json array - %s
+13393 : [fill_whitelist_domains_cs] Whitelist domain list is empty
+13394 : [fill_whitelist_domains_cs] Failed to parse the element at index %d in the json array
+13395 : [fill_whitelist_domains_cs] shgw json get string returned null 
+13396 : [fill_whitelist_domains_cs] Going to add whitelist domain %s in cs
+13397 : [fill_whitelist_domains_cs] Leaving
+13398 : [shgw_ipset_ipv4_del_context] Source ip is null
+13399 : [shgw_ipset_ipv4_del_context] Devid is a default one - %s
+
+#####
+# SHGW_IPSET shgw_ipset.c, range 13400 - 13499
+13400 : [shgw_ipset_dnsproxy_init] Entering
+13401 : [shgw_ipset_dnsproxy_init] Failed to open the mfeipset handle
+13402 : [shgw_ipset_dnsproxy_init] DEVICE_BLOCK_SET already exists
+13403 : [shgw_ipset_dnsproxy_init] Failed to create DEVICE_BLOCK_SET
+13404 : [shgw_ipset_dnsproxy_init] HOST_REPUTATION_SET already exists
+13405 : [shgw_ipset_dnsproxy_init] Failed to create HOST_REPUTATION_SET
+13406 : [shgw_ipset_dnsproxy_init] WHITELIST_SET already exists
+13407 : [shgw_ipset_dnsproxy_init] Failed to create WHITELIST_SET
+13408 : [shgw_ipset_dnsproxy_init] Leaving
+13409 : [shgw_ipset_dnsproxy_init] NETWORK_PAUSE_SET already exists
+13410 : [shgw_ipset_dnsproxy_init] Failed to create NETWORK_PAUSE_SET
+13411 : [shgw_ipset_dnsproxy_init] HOST_REPUTATION_DST_SET already exists
+13412 : [shgw_ipset_dnsproxy_init] Failed to create HOST_REPUTATION_DST_SET
+13413 : 
+13414 : [shgw_ipset_set_add] Entering 
+13415 : [shgw_ipset_set_add] Entry already exists in the set %s
+13416 : [shgw_ipset_set_add] Failed to add entry to ipset
+13417 : [shgw_ipset_set_add] Leaving
+13418 : [shgw_ipset_set_delete] Entering
+13419 : [shgw_ipset_set_delete] Failed to delete entry from ipset
+13420 : [shgw_ipset_set_delete] Leaving
+13421 : [shgw_ipset_dnsproxy_deinit] Entering
+13422 : [shgw_ipset_dnsproxy_deinit] Failed to destroy DEVICE_BLOCK_SET
+13423 : [shgw_ipset_dnsproxy_deinit] Failed to destroy HOST_REPUTATION_SET
+13424 : [shgw_ipset_dnsproxy_init] EULA_BLOCK_SET already exists
+13425 : [shgw_ipset_dnsproxy_init] Failed to create EULA_BLOCK_SET
+13426 : [shgw_ipset_dnsproxy_deinit] Failed to destroy EULA_BLOCK_SET
+13427 : [shgw_ipset_dnsproxy_deinit] Failed to destroy NETWORK_PAUSE_SET
+13428 : [shgw_ipset_dnsproxy_deinit] Failed to destroy WHITELIST_SET
+13429 : [shgw_ipset_wd_init] Entering
+13430 : [shgw_ipset_wd_init] Failed to open the mfeipset handle
+13431 : [shgw_ipset_set_add6] Entering 
+13432 : [shgw_ipset_set_add6] Entry already exists in the set %s
+13433 : [shgw_ipset_set_add6] Failed to add entry to ipset
+13434 : [shgw_ipset_set_add6] Leaving
+13435 : [shgw_ipset_set_delete] Entering
+13436 : [shgw_ipset_set_delete] Failed to delete entry from ipset
+13437 : [shgw_ipset_set_delete] Leaving
+13438 : [shgw_ipset_dnsproxy_deinit] Failed to destroy HOST_REPUTATION_DST_SET
+13439 : 
+13440 : [shgw_ipset_wd_deinit] Entering
+13441 : 
+
+#####
+# SHGW_IPSET shgw_ipset_context_store.c, range 13500 - 13550
+13500 : [fill_redirector_domains_cs] Entering
+13501 : [fill_redirector_domains_cs] Redirector domain is either null or not json array - %s
+13502 : [fill_redirector_domains_cs] Redirector domain list is empty
+13503 : [fill_redirector_domains_cs] Failed to parse the element at index %d in the json array
+13504 : [fill_redirector_domains_cs] shgw_json_object_get_string returned null 
+13505 : [fill_redirector_domains_cs] Going to add redirector domain  %s  of code %d in cs
+13506 : [fill_redirector_domains_cs] This reason code %d is not supported by router
+13507 : [fill_redirector_domains_cs] Leaving
+13508 : [get_policy_from_redirector_code] Entering
+13509 : [get_default_dev_id] Entering
+13510 : [get_device_id_for_cs] Ip doesn't match any of the other default dev ids - Leaving
+13511 : [shgw_ipset_ipv4_add_context] Devid is a default one - %s
+13512 : [context_check_timer_cb] whitelisted/redirector domain %s is expired or going to expire in next %d seconds
+13513 : [shgw_del_wl_redir_dom_cs] Entering 
+13514 : [sync_network_pause_rules] Entering
+
+####
+# shgw_ipset_ops.c, range 13551 - 13799
+13594 : [_insert_delete_iptable_rule] asprintf failed
+13595 : [_insert_delete_iptable_rule] Inserted the iptable rule %s
+13596 : [shgw_ipset_unpause_device] Failed to delete the ip %s from NETWORK_PAUSE_SET
+13597 : [shgw_ipset_devblock_allow] Failed to delete the ip %s from DEVICE_BLOCK_SET
+13598 : [shgw_ipset_network_pause] Failed to add rule to NETWORK_PAUSE_SET_SRC_IP
+13599 : [shgw_ipset_device_block] Failed to add rule to DEVICE_BLOCK_SET
+13600 : [shgw_block] Entering
+13601 : [shgw_block] Failed to duplicate dnspacket with AAAA answers removed
+13602 : [shgw_block] Failed to fill ipset data
+13603 : [shgw_block] shgw_ipset_block failed
+13604 : [duplicate_dns_packet_remove_AAAA] Entering
+13605 : [duplicate_dns_packet_remove_AAAA] Memory Allocation Failed for answer records
+13606 : [duplicate_dns_packet_remove_AAAA] Memory Allocation Failed for new packet
+13607 : [duplicate_dns_packet_remove_AAAA] Leaving
+13608 : [free_ipset_data] Entering
+13609 : [fill_ipset_data] Entering
+13610 : [fill_ipset_data] Src address is ipv6 %s
+13611 : 
+13612 : [fill_ipset_data] Got ipv4 address from context store : %s
+13613 : [fill_ipset_data] Failed to get domain name and type
+13614 : [fill_ipset_data] Memory Allocation Failed for answer records
+13615 : [fill_ipset_data] Memory Allocation Failed for dst ipv4 address array
+13616 : [fill_ipset_data] Memory Allocation Failed for dst ipv4 address
+13617 : [fill_ipset_data] Leaving
+13618 : [shgw_ipset_host_reputation_block] Entering
+13619 : [shgw_ipset_host_reputation_block] Failed to perform shgw_ipset_set_add for port %d
+13620 : [shgw_ipset_host_reputation_block] Failed to perform shgw_ipset_ipv4_add_context
+13621 : [shgw_ipset_host_reputation_block] Leaving
+13622 : [shgw_ipset_block] Entering
+13623 : [shgw_ipset_block] Block type not supported! Leaving
+13624 : 
+13625 : [shgw_handle_cts] Entering
+13626 : [shgw_handle_cts] Memory allocation failed for cts_data
+13627 : [shgw_handle_cts] Memory allocation failed for dev id of cts_data
+13628 : [shgw_handle_cts] Memory allocation failed for domain of cts_data
+13629 : 
+13630 : [shgw_handle_cts] Failed to from dns packet
+13631 : [shgw_handle_cts] Failed to contact policy server
+13632 : [shgw_handle_cts] Failed to setup events
+13633 : [shgw_handle_cts] Leaving
+13634 : [format_domain_name] Entering
+13635 : [format_domain_name] Memory Alloc Failed for dns_domain format packet
+13636 : [format_domain_name] Leaving
+13637 : [form_cts_dns_packet] Entering
+13638 : [form_cts_dns_packet] Memory Allocation Failed for dns packet
+13639 : [form_cts_dns_packet] Leaving
+13640 : [shgw_allow] Entering
+13641 : [shgw_allow] Failed to get shgw_get_domain_ip_info
+13642 : [shgw_allow] Failed to do shgw_ipset_allow
+13643 : [shgw_allow] Leaving
+13644 : [shgw_ipset_allow] Entering
+13645 : [shgw_ipset_allow] shgw_ipset_host_reputation_allow failed
+13646 : [shgw_ipset_allow] Leaving
+13647 : [shgw_ipset_host_reputation_allow] Entering
+13648 : [shgw_ipset_host_reputation_allow] Failed to delete the ipset rule for the port %d
+13649 : [shgw_ipset_host_reputation_allow] Failed to delete the context for %s
+13650 : [shgw_ipset_host_reputation_allow] Leaving
+13651 : [duplicate_dns_packet_remove_AAAA] The original dns response has %d AAAA records
+13652 : 
+13653 : [shgw_update_iptable_rule] Entering
+13654 : [shgw_update_iptable_rule] Block type  %d not supported
+13655 : [shgw_update_iptable_rule] op type %d not supported
+13656 : [shgw_update_iptable_rule] System call failed for to insert the rule %s
+13657 : [shgw_ipset_device_block] Entering
+13658 : 
+13659 : [shgw_ipset_device_block] Failed to perform shgw_ipset_ipv4_add_context
+13660 : [shgw_ipset_device_block] Leaving
+13661 : 
+13662 : [fill_ipset_data] Block type is Device Block or Network Pause. SRC IP is sufficient. Leaving
+13663 : [handle_block_response] Answer count is zero 
+13664 : [shgw_handle_ipset_cmd] Entering
+13665 : [shgw_handle_ipset_cmd] devid_json_array = %s
+13666 : [shgw_handle_ipset_cmd] device %s is null or not SHGW_JSON_ARRAY
+13667 : [shgw_handle_ipset_cmd] Empty json array
+13668 : [shgw_handle_ipset_cmd] Null entry at index %d
+13669 : [shgw_handle_ipset_cmd] Json get string returned null
+13670 : [shgw_handle_ipset_cmd] Going to block/unblock the devid %s
+13671 : [shgw_handle_ipset_cmd] Failed to block/unblock the devid %s
+13672 : [_handle_ipset_cmd] Entering
+13673 : [_handle_ipset_cmd] Failed to get the ipv4 addr for the devid %s
+13674 : [_handle_ipset_cmd] shgw_ipset_block failed
+13675 : [_handle_device_block] Leaving
+13676 : [get_ipv4_from_devid] Entering
+13677 : [get_ipv4_from_devid] failed to get ipv4 addr from non per db
+13678 : [get_ipv4_from_devid] ipv4 is null in the non per db for dev id %s
+13679 : [get_ipv4_from_devid] ipv4 addr is %s
+13680 : [get_ipv4_from_devid] ipv4 addr is %s
+13681 : [get_ipv4_from_devid] Leaving
+13682 : [fill_ipset_data] Failed to get ipv4 address from devid
+13683 : [shgw_ipset_devblock_allow] Entering
+13684 : [shgw_ipset_unpause_device] Leaving
+13685 : [shgw_ipset_devblock_allow] Failed to change the block status context for %s
+13686 : [shgw_ipset_devblock_allow] Leaving
+13687 : [shgw_ipset_allow] shgw_ipset_unblock_device failed
+13688 : [shgw_ipset_allow] shgw_ipset_eula_allow failed
+13689 : [_handle_ipset_cmd] Going to block the device 
+13690 : [_handle_ipset_cmd] Going to unblock the device
+13691 : [_handle_ipset_cmd] shgw_ipset_allow failed
+13692 : [shgw_init_redirector_ips] Entering
+13693 : [_handle_ipset_cmd] Going to unpause the device
+13694 : [_handle_ipset_cmd] shgw_ipset_allow failed
+13695 : [shgw_init_redirector_ips] Leaving
+13696 : [_insert_iptable_rule] Entering
+13697 : [_delete_iptable_rule] Entering
+13698 : [shgw_ipset_eula_block] Entering
+13699 : [shgw_ipset_eula_block] Failed to perform shgw_ipset_set_add for port %d
+13700 : [shgw_ipset_eula_block] Failed to perform shgw_ipset_ipv4_add_context
+13701 : [shgw_ipset_eula_block] Leaving
+13702 : [shgw_ipset_allow] shgw_ipset_unpause_device failed
+13703 : [handle_cts_pkt_response] Entering
+13704 : [handle_cts_pkt_response] Not handling this decision %d
+13705 : [handle_cts_pkt_response] shgw_get_devdomain_info failed
+13706 : [handle_cts_pkt_response] shgw_get_domain_ip_info failed
+13707 : [handle_cts_pkt_response] shgw_ipset_allow failed
+13708 : [handle_cts_pkt_response] Edns policy response for eula accept is neither allow or host reputation
+13709 : [handle_cts_pkt_response] Cloud didn't allow to continue to site
+13710 : [handle_eula_to_host_reputation] Entering 
+13711 : [handle_cts_pkt_response] Failed to upsert_redirector_ip for POLICY_HOST_REPUTATION
+13712 : [handle_cts_pkt_response] ttl for the domain is expired in the context store. No need to add host reputation rules
+13713 : [handle_cts_pkt_response] shgw_ipset_set_add failed for port %d
+13714 : [shgw_ipset_whitelist] Entering
+13715 : [shgw_ipset_whitelist] Failed to perform shgw_ipset_set_add
+13716 : [shgw_ipset_whitelist] Leaving 
+13717 : [shgw_ipset_whitelist] Failed to perform shgw_ipset_ipv4_add_context
+13718 : [whitelist_blockpage_http_domains] failed to parse the json array %s
+13719 : [whitelist_blockpage_http_domains] no domain found in the domain json array
+13720 : [whitelist_blockpage_http_domains] domain name is null at %d index in the json array
+13721 : [whitelist_blockpage_http_domains] get sting failed
+13722 : [wait_and_send_shgw_dns_packet] Entering
+13723 : [wait_and_send_shgw_dns_packet] Memory alloc failed for dns_data
+13724 : [wait_and_send_shgw_dns_packet] strdup failed
+13725 : [wait_and_send_shgw_dns_packet] immediate_event_base_once failed
+13726 : [wait_and_send_shgw_dns_packet] Leaving
+13727 : [form_dns_packet] Entering
+13728 : [form_dns_packet] Failed to change the domain name into dns format
+13729 : [form_dns_packet] Failed to form_cts_dns_packet
+13730 : [form_dns_packet] Leaving
+13731 : [shgw_ipset_unpause_device] Entering
+13732 : [shgw_ipset_unpause_device] Failed to delete the ip %s in the context store.
+13733 : [form_and_send_shgw_dns_packet] Entering 
+13734 : [form_and_send_shgw_dns_packet] dns_data shouldn't be null
+13735 : [form_and_send_shgw_dns_packet] Failed to form dns packet
+13736 : [form_and_send_shgw_dns_packet] Failed to send dns
+13737 : [form_and_send_shgw_dns_packet] setup_events failed
+13738 : [form_and_send_shgw_dns_packet] Leaving
+13739 : [retry_send_shgw_dns] Entering 
+13740 : [retry_send_shgw_dns] Failed to add event base once
+13741 : [retry_send_shgw_dns] Will retry to send shgw dns packet for the domain %s after %d seconds
+13742 : [retry_send_shgw_dns] Leaving
+13743 : [_retry_send_shgw_dns_cb] Entering 
+13744 : [cleanup_shgw_dns_data] Entering
+13745 : [shgw_block] shgw_dns for %s successfully resolved
+13746 : [shgw_ipset_whitelist_no_cs] Entering
+13747 : [shgw_ipset_whitelist_no_cs] shgw_ipset_set_add failed
+13748 : [shgw_ipset_whitelist_no_cs] Leaving
+13749 : [shgw_ipset_remove_whitelist_ips] Entering
+13750 : [shgw_ipset_remove_whitelist_ips] Failed to delete entry from the ipset 
+13751 : [shgw_ipset_remove_whitelist_ips] Failed to delete context for domain %s
+13752 : [shgw_ipset_remove_whitelist_ips] Leaving
+13753 : [retry_send_shgw_dns] DNS retry limit exceeded maximum limit for domain %s. Cleaning up dns_data
+13754 : [shgw_iptable_add_redirector] Entering
+13755 : [shgw_iptable_add_redirector] upsert_redirector_ip failed
+13756 : [shgw_iptable_add_redirector] Failed to perform shgw_ipset_ipv4_add_context
+13757 : [shgw_iptable_add_redirector] Leaving
+13758 : [_wait_and_send_shgw_dns_cb] Entering
+13759 : [_wait_and_send_shgw_dns_cb] failed to send shgw dns packet for domain %s
+13760 : [fill_ipset_data] DNS ttl is zero... Adding the default ttl in the ipsets
+13761 : [shgw_ipset_network_pause] Entering
+13762 : [_wait_and_send_shgw_dns_cb] Entering
+13763 : [shgw_ipset_network_pause] Failed to perform shgw_ipset_ipv4_add_context
+13764 : [shgw_ipset_network_pause] Leaving
+13765 : [shgw_ipset_eula_allow] Entering
+13766 : [shgw_ipset_eula_allow] Failed to delete the ipset rule for the port %d
+13767 : [shgw_ipset_eula_allow] Failed to change the eula block status context for %s
+13768 : [shgw_ipset_eula_allow] Leaving
+13769 : [shgw_ipset_allow] shgw_ipset_remove_whitelist_ips failed
+13770 : [shgw_handle_cts_] shgw_get_devdomain_info failed
+13771 : [matched_domain_frm_cntxt] accessed domain name from device dev id %s
+13772 : [lookup_tld_json] array index for all level domain %s
+13773 : [lookup_tld_json] json type %d
+13774 : [lookup_tld_json] sld is empty
+13775 : [shgw_handle_cts_] extracted domain from CTS %s
+13776 : [matched_domain_frm_cntxt] extracted domain from context map %s
+13777 : [matched_domain_frm_cntxt] extracted domain from CTS and extracted domain from context map %s %s
+13778 : [shgw_handle_cts_] matched domain from context map %s %s
+13779 : [shgw_handle_cts_] Memory allocation failed for extrt_domain
+13780 : [matched_domain_frm_cntxt] Memory allocation failed for cxt_domain_extrt
+13781 : [shgw_handle_cts_] failed to get string from json file. domain_str is null 
+13782 : [matched_domain_frm_cntxt] reallocation failed
+13783 : [matched_domain_frm_cntxt] reallocation failed matched domain index
+13784 : [matched_domain_frm_cntxt] strdup failed for dom_frm_context
+13785 : [shgw_block] Failed to add redirector ips to the iptables
+13786 : [_wait_and_send_shgw_dns_cb] Failed to form_and_send_shgw_dns_packet for %s
+13787 : [shgw_add_static_ipset_iptable_rules] Entering
+13788 : [shgw_add_static_ipset_iptable_rules] System Call Failed
+13789 : [shgw_add_static_ipset_iptable_rules] Leaving
+13790 : [shgw_ipset_host_reputation_block] Failed to add entry to HOST_REPUTATION_DST_SET
+
+#####
+# commands.c , range 14000 - 14100
+14000 : [shgw_dev_hard_block] dev %s
+14001 : [shgw_dev_hard_block] final appended dev id %s
+14002 : [caltest_set] asprintf failed
+14003 : [shgw_dev_hard_block] device buf %s
+14004 : [caltest_set] device buf %s
+14005 : [shgw_shp_rerun_service_discovery] Going to delete rr token expiry
+14006 : [shgw_dev_hard_block] hard_blk_unblock failed status %s
+14007 : [shgw_dev_hard_block] hard_blk_unblock failed status %s
+14008 : [hard_blk_unblock] final appended device ids %s
+14009 : [run_caltest_get_and_set] fopen failed
+14010 : [run_caltest_get_and_set] buffer %s status %s
+14011 : [run_caltest_get_and_set] malloc failed for 2.4Ghz
+14012 : [run_caltest_get_and_set] malloc failed for 5GHz
+14013 : [run_caltest_get_and_set] fscanf failed for 2.4GHz
+14014 : [run_caltest_get_and_set] fscanf failed for 5GHz
+14015 : [run_caltest_get_and_set] block mac for 2.4 and 5 add_mac2_4 %s  add_macs5 %s
+14016 : [run_caltest_get_and_set] unblock mac for 2.4 and 5 unblk_mac2_4 %s  unblk_macs5 %s
+14017 : [run_caltest_get_and_set] malloc failed for block mac
+14018 : [run_caltest_get_and_set] block mac list
+14019 : [run_caltest_get_and_set] malloc failed for unblock mac
+14020 : [run_caltest_get_and_set] unblock mac list is empty %s
+14021 : [run_caltest_get_and_set] unblock mac list %s
+14022 : [run_caltest_get_and_set] asprintf get_buf failed
+14023 : [shgw_dev_hard_block] received command %s
+14024 : [shgw_dev_hard_block] json get string status is NULL
+14025 : [run_caltest_get_and_set] get_buf %s
+14026 : [caltest_set] buf %s
+14027 : [appended_mac] blk_mac asprintf failed
+14028 : [appended_mac] malloc failed
+14029 : [appended_mac] malloc failed
+###

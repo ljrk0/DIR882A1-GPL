@@ -1718,6 +1718,14 @@ static struct {
 #ifdef CUT_THROUGH
 	{"CtLowWaterMark",Set_CtLowWaterMark_Proc},
 #endif /*CUT_THROUGH*/
+#ifdef BAND_STEERING_PLUS
+	{"BndStrgEnable", 		Set_BndStrg_Enable},
+	{"BndStrgBssIdx", 		Set_BndStrg_BssIdx},
+	{"BndStrgParam",    Set_BndStrg_Param},
+#ifdef BND_STRG_DBG
+	{"BndStrgMntAddr", 	Set_BndStrg_MonitorAddr},
+#endif /* BND_STRG_DBG */
+#endif /* BAND_STEERING_PLUS */
 #ifdef BAND_STEERING
 	{"BndStrgEnable", 		Set_BndStrg_Enable},
 	{"BndStrgRssiDiff", 	Set_BndStrg_RssiDiff},
@@ -1997,10 +2005,14 @@ static struct {
 #ifdef RED_SUPPORT
 	{"vow_red_info", show_vow_red_info},
 #endif/* RED_SUPPORT */
-#ifdef BAND_STEERING
+#if defined BAND_STEERING || defined BAND_STEERING_PLUS
 	{"BndStrgList", 		Show_BndStrg_List},
 	{"BndStrgInfo", 		Show_BndStrg_Info},
+#ifdef VENDOR_FEATURE5_SUPPORT
+	{"BndStrgNvramtable", 		Show_BndStrg_NvramTable},
+#endif /* VENDOR_FEATURE5_SUPPORT */
 #endif /* BAND_STEERING */
+
 	{"timer_list",show_timer_list},
 	{"wtbl_stat",show_wtbl_state},
 #ifdef SMART_CARRIER_SENSE_SUPPORT
@@ -4026,6 +4038,20 @@ INT RTMPAPSetInformation(
 	case OID_BNDSTRG_MSG:
 		BndStrg_MsgHandle(pAd, wrq);
 		break;
+#endif /* BAND_STEERING */
+#ifdef BAND_STEERING_PLUS
+	case OID_BNDSTRG_MSG:
+		BndStrg_MsgHandle(pAd, wrq, pObj->ioctl_if);
+		break;
+#ifdef VENDOR_FEATURE5_SUPPORT
+	case OID_BNDSTRG_GET_NVRAM:
+		BndStrg_GetNvram(pAd, wrq, pObj->ioctl_if);
+		break;
+
+	case OID_BNDSTRG_SET_NVRAM:
+		BndStrg_SetNvram(pAd, wrq, pObj->ioctl_if);
+		break;
+#endif /* VENDOR_FEATURE5_SUPPORT */
 #endif /* BAND_STEERING */
 
 #ifdef VOW_SUPPORT

@@ -26,13 +26,13 @@
  */
 
 #include "rt_config.h"
-
+#ifdef DLINK_SUPERMESH_SUPPROT
 int dlink_mesh_client_assoc(IE_LISTS *ie_list, struct wifi_dev *wdev, char rssi);
 int dlink_mesh_client_auth(PHEADER_802_11 phdr, struct wifi_dev *wdev);
 int dlink_mesh_client_discon(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry, uint16_t reason);
 extern int (*dlink_hook_chk_client)(unsigned char *mac, unsigned char *mesh_ie, int len);
 extern UCHAR	DLINK_OUI[];
-
+#endif
 extern UCHAR	CISCO_OUI[];
 extern UCHAR	WPA_OUI[];
 extern UCHAR	RSN_OUI[];
@@ -1077,6 +1077,7 @@ BOOLEAN PeerAssocReqCmmSanity(
                 else
                     pEntry->bSupportMWDS = FALSE;
             }
+#ifdef DLINK_SUPERMESH_SUPPROT
 			/* dlink mesh: start */
 			if (NdisEqualMemory(eid_ptr->Octet, DLINK_OUI, 3) && dlink_hook_chk_client)
 			{
@@ -1086,6 +1087,7 @@ BOOLEAN PeerAssocReqCmmSanity(
 				}
 			}
 			/* dlink mesh: end */
+#endif
 #endif /* MWDS */
 #ifdef STA_FORCE_ROAM_SUPPORT
 				if(NdisEqualMemory(MTK_OUI, eid_ptr->Octet, 3))
@@ -1479,10 +1481,11 @@ VOID ap_cmm_peer_assoc_req_action(
 #ifdef GREENAP_SUPPORT
     struct greenap_ctrl *greenap = &pAd->ApCfg.greenap;
 #endif /* GREENAP_SUPPORT */
+#ifdef DLINK_SUPERMESH_SUPPROT
 	/* dlink mesh: start */
 	uint8_t need_disassoc = 0;
 	/* dlink mesh: end */
-
+#endif
 #ifdef WH_EZ_SETUP
 	if(IS_ADPTR_EZ_SETUP_ENABLED(pAd))
 		EZ_DEBUG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_OFF,
@@ -1757,15 +1760,18 @@ VOID ap_cmm_peer_assoc_req_action(
 #endif /* DOT11_VHT_AC */
 					&ie_list->HTCapability,
 					ie_list->ht_cap_len);
+#ifdef DLINK_SUPERMESH_SUPPROT
 	/* dlink mesh: start */
 	if (wdev->dlink_mesh_en && ie_list->vendor_ie.is_dlink_mesh!=TRUE)
 		{
 		//pr_info_ratelimited("[MTWF][%s]: mesh AP(%s) got assoc req that not from mesh client(%pM).\n", __func__, wdev->if_dev->name, ie_list->Addr2);
 		need_disassoc = 1;
+#ifdef DOT11W_PMF_SUPPORT
 		goto SendAssocResponse;
+#endif
 		}
 	/* dlink mesh: end */
-	
+#endif
 
 #ifdef WH_EZ_SETUP
 	if (IS_EZ_SETUP_ENABLED(wdev) &&
@@ -1904,6 +1910,7 @@ SendAssocResponse:
 					("Reject this ASSOC_REQ due to Weak Signal.\n"));
 		bAssocSkip = TRUE;
 	}
+#ifdef DLINK_SUPERMESH_SUPPROT
 	/* dlink mesh: start */
 	if (need_disassoc)
 		{
@@ -1924,7 +1931,7 @@ SendAssocResponse:
 		goto LabelOK;
 		}
 	/* dlink mesh: end */
-	
+#endif	
 
 	if (bACLReject == TRUE || bAssocSkip)
 	{
@@ -2559,6 +2566,7 @@ SendAssocResponse:
 
 	MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
 	MlmeFreeMemory( (PVOID) pOutBuffer);
+#ifdef DLINK_SUPERMESH_SUPPROT
 	/* dlink mesh: start */
 	pr_err("[DLINK_VENDOR_CHECK] STA associated.\n");	//remove this after verified
 	dlink_mesh_client_assoc(ie_list, wdev, rssi);
@@ -2569,7 +2577,7 @@ SendAssocResponse:
 		dlink_mesh_client_auth(phdr, wdev);
 		}
 	/* dlink mesh: end */
-	
+#endif
 
 #ifdef DOT11W_PMF_SUPPORT
 	if (StatusCode == MLME_ASSOC_REJ_TEMPORARILY)
@@ -3156,11 +3164,12 @@ VOID APPeerDisassocReqAction(RTMP_ADAPTER *pAd, MLME_QUEUE_ELEM *Elem)
 		/* send wireless event - for disassociation */
 		RTMPSendWirelessEvent(pAd, IW_DISASSOC_EVENT_FLAG, Addr2, 0, 0);
         ApLogEvent(pAd, Addr2, EVENT_DISASSOCIATED);
+#ifdef DLINK_SUPERMESH_SUPPROT
 		/* dlink mesh: start */
 		pr_err("[DLINK_VENDOR_CHECK] STA DIS-ASSOC.\n");	//remove this after verified
 		dlink_mesh_client_discon(pAd, pEntry, Reason);
 		/* dlink mesh: end */
-
+#endif
 		MacTableDeleteEntry(pAd, Elem->Wcid, Addr2);
 
 #ifdef MAC_REPEATER_SUPPORT

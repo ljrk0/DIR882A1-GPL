@@ -34,7 +34,7 @@
 #endif /* DOT11R_FT_SUPPORT */
 
 extern UCHAR	CISCO_OUI[];
-
+extern UCHAR	APPLE_OUI[]; //20180309, For IOS immediately connect
 extern UCHAR	WPA_OUI[];
 extern UCHAR	RSN_OUI[];
 extern UCHAR	WME_INFO_ELEM[];
@@ -1368,6 +1368,13 @@ BOOLEAN PeerProbeReqSanity(
 	        case IE_VENDOR_SPECIFIC:
 				if (eid_len <= 4)
 					break;
+				//For IOS immediately connect
+				if(!ProbeReqParam->IsFromIos &&
+					NdisEqualMemory(eid_data, APPLE_OUI, 3))
+				{
+					ProbeReqParam->IsFromIos = TRUE;
+					break;
+				}				
 #ifdef RSSI_FEEDBACK
                 if (ProbeReqParam->bRssiRequested &&  
 					 NdisEqualMemory(eid_data, RALINK_OUI, 3) && (eid_len == 7))
@@ -1449,27 +1456,28 @@ BOOLEAN PeerProbeReqSanity(
 				}
 #endif
 				break;
-#ifdef BAND_STEERING
+#if defined BAND_STEERING || defined BAND_STEERING_PLUS
 			case IE_HT_CAP:
-				if (pAd->ApCfg.BandSteering != TRUE)
-					break;
 				if (eid_len >= SIZE_HT_CAP_IE)
 				{
-					ProbeReqParam->IsHtSupport = TRUE;
-					ProbeReqParam->RxMCSBitmask = *(UINT32 *)(eid_data + 3);
+					if (pAd->ApCfg.BandSteering) {
+						ProbeReqParam->IsHtSupport = TRUE;
+						ProbeReqParam->RxMCSBitmask = *(UINT32 *)(eid_data + 3);
+					}
 				}
 				else
 					MTWF_LOG(DBG_CAT_MLME, DBG_SUBCAT_ALL, DBG_LVL_WARN, ("%s() - wrong IE_HT_CAP. eid_len = %d\n", __FUNCTION__, eid_len));
 				break;			
 
 			case IE_VHT_CAP:
-				if (pAd->ApCfg.BandSteering != TRUE)
-					break;
-				if (eid_len >= SIZE_OF_VHT_CAP_IE)
-					ProbeReqParam->IsVhtSupport = TRUE;
+				if (eid_len >= SIZE_OF_VHT_CAP_IE) {
+					if (pAd->ApCfg.BandSteering)
+						ProbeReqParam->IsVhtSupport = TRUE;
+				}
 				else
 					MTWF_LOG(DBG_CAT_MLME, DBG_SUBCAT_ALL, DBG_LVL_WARN, ("%s() - wrong IE_VHT_CAP. eid_len = %d\n", __FUNCTION__, eid_len));
-				break;			
+				break;	
+		
 #endif
             default:
                 break;

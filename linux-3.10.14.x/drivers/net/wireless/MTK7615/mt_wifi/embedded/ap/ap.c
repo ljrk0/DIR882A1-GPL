@@ -1050,7 +1050,8 @@ VOID APStartUpForMbss(RTMP_ADAPTER *pAd,BSS_STRUCT *pMbss)
 #ifdef MT_DFS_SUPPORT    
     if((pAd->Dot11_H.RDMode == RD_SILENCE_MODE)  && (pMbss->wdev.channel > 14)) 
 	{
-    DfsCacNormalStart(pAd);
+    if(pMbss->wdev.channel > 48 && pMbss->wdev.channel < 149 )
+			DfsCacNormalStart(pAd);
     }	
     
 #endif
@@ -1139,10 +1140,14 @@ VOID APStartUpForMbss(RTMP_ADAPTER *pAd,BSS_STRUCT *pMbss)
             {
                 if(pAd->Dot11_H.RDMode == RD_NORMAL_MODE) 
 				{
-					DfsCacNormalStart(pAd);
+					if(pMbss->wdev.channel > 48 && pMbss->wdev.channel < 149 )
+                   		DfsCacNormalStart(pAd);
 			    }	
 		if(pMbss->wdev.channel > 14)
-			WrapDfsRadarDetectStart(pAd);    
+		{
+			if(pMbss->wdev.channel > 48 && pMbss->wdev.channel < 149 )
+                    	WrapDfsRadarDetectStart(pAd);  
+		}			
             }
 #endif /* MT_DFS_SUPPORT */
         } 

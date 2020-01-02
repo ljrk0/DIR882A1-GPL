@@ -25,7 +25,11 @@
 	--------	----------		----------------------------------------------
 */
 #include "rt_config.h"
+#ifdef DLINK_SUPERMESH_SUPPROT
+#include "dlink_mesh.h"
 
+char * dlink_mesh_get_key(void);
+#endif
 VOID SetWdevAuthMode (
     IN struct _SECURITY_CONFIG *pSecConfig, 
     IN RTMP_STRING *arg)
@@ -351,6 +355,11 @@ INT Set_SecAuthMode_Proc (
 {
     POS_COOKIE pObj = (POS_COOKIE) pAd->OS_Cookie;
     struct _SECURITY_CONFIG *pSecConfig = pObj->pSecConfig;
+#ifdef DLINK_SUPERMESH_SUPPROT
+	char *mesh_key = NULL;
+    UCHAR if_idx = pObj->ioctl_if;
+    struct wifi_dev *wdev = get_wdev_by_ioctl_idx_and_iftype(pAd, if_idx, pObj->ioctl_if_type);
+#endif
 #ifdef WH_EZ_SETUP
 	if(IS_EZ_SETUP_ENABLED(&pAd->ApCfg.MBSSID[pObj->ioctl_if].wdev))
 	{
@@ -372,7 +381,15 @@ INT Set_SecAuthMode_Proc (
     }
 
     SetWdevAuthMode(pSecConfig, arg);
+#ifdef DLINK_SUPERMESH_SUPPROT
+    /* only set key on mesh interface */
 
+    if (wdev->dlink_mesh_en == 1)
+    {
+        mesh_key = dlink_mesh_get_key();
+        Set_SecWPAPSK_Proc(pAd, mesh_key);
+    }
+#endif
     return TRUE;
 }
 

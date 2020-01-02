@@ -32,6 +32,7 @@ INT Set_BndStrg_CheckTime5G(PRTMP_ADAPTER pAd, RTMP_STRING *arg);
 INT Set_BndStrg_CheckTime2G(PRTMP_ADAPTER pAd, RTMP_STRING *arg);
 INT Set_BndStrg_FrmChkFlag(PRTMP_ADAPTER pAd, RTMP_STRING *arg);
 INT Set_BndStrg_CndChkFlag(PRTMP_ADAPTER pAd, RTMP_STRING *arg);
+INT Set_BndStrg_OprStrGapTime(PRTMP_ADAPTER pAd, RTMP_STRING *arg);
 #ifdef BND_STRG_DBG
 INT Set_BndStrg_MonitorAddr(PRTMP_ADAPTER	pAd, RTMP_STRING *arg);
 #endif /* BND_STRG_DBG */

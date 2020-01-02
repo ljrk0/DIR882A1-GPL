@@ -12,7 +12,9 @@ EXEC2 = adjtimex
 OBJS1 = ntpclient.o phaselock.o
 OBJS2 = adjtimex.o
 
+ifneq ($(CONFIG_TZ_LOCATION), y)
 NVDIR = ../../lib/libnvram
+endif
 
 ifeq ($(LINUXDIR), linux-3.10.14.x)
 CFLAGS += -D__adjtimex=adjtimex
@@ -20,8 +22,14 @@ endif
 
 CFLAGS += -D__USE_BSD
 
+ifneq ($(CONFIG_TZ_LOCATION), y)
 CFLAGS += -I$(NVDIR)
 LDFLAGS += -lnvram
+endif
+
+ifeq ($(CONFIG_TZ_LOCATION), y)
+	CFLAGS += -DCONFIG_TZ_LOCATION
+endif
 
 all: $(EXEC1) $(EXEC2)
 
