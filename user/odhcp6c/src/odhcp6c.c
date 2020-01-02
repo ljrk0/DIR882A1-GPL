@@ -327,7 +327,11 @@ int main(_unused int argc, char* const argv[])
 
 			while (!signal_usr2 && !signal_term) {
 				signal_usr1 = false;
+			#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+				script_call("informed", 3, true);
+			#else
 				script_call("informed", script_sync_delay, true);
+			#endif
 
 				int res = dhcpv6_poll_reconfigure();
 				odhcp6c_signal_process();
@@ -353,7 +357,19 @@ int main(_unused int argc, char* const argv[])
 
 		case DHCPV6_STATEFUL:
 			bound = true;
+
+		#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+			/*
+			  * 1. The maximum waiting time of 10 seconds is too long.
+			  * 2. IPv6 CE-Router Test assume the maximum time of
+			  *   configuration takes effect is 6 seconds, after the reply.
+			  * 3. So reset it to 3.
+			  * 2017-08-05 --liushenghui
+			*/
+			script_call("bound", 3, true);
+		#else
 			script_call("bound", script_sync_delay, true);
+		#endif
 			syslog(LOG_NOTICE, "entering stateful-mode on %s", ifname);
 
 			while (!signal_usr2 && !signal_term) {
@@ -611,6 +627,9 @@ bool odhcp6c_update_entry(enum odhcp6c_state state, struct odhcp6c_entry *new,
 			x->t1 = new->t1;
 			x->t2 = new->t2;
 			x->iaid = new->iaid;
+		#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+			x->iSysUpTime = new->iSysUpTime;
+		#endif
 		} else {
 			odhcp6c_add_state(state, new, sizeof(*new) + new->auxlen);
 		}

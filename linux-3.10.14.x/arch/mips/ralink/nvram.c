@@ -26,7 +26,7 @@ static  devfs_handle_t devfs_handle;
 /*If index == RT2860, the memory size have to be enlarged since VoIP+AP SoC configuration*/
 #define ENLARGED_DATE_SIZE(i,a,b) (CONFIGFB_MATCH(i))?(a*4-b):(a-b)
 #endif
-
+#include "../../autoconf.h"
 static unsigned long counter = 0;
 
 static int init_nvram_block(int index);
@@ -65,18 +65,30 @@ static block_t fb[FLASH_BLOCK_NUM+EXTEND_BLOCK_NUM] =
 	{
 		.name = FB_2860_BLOCK_NAME,
 		.flash_offset =  0x2000,
+#if (defined CONFIG_DEFAULTS_MEDIATEK_DIR_882) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_882_PARSE_2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_878_PARSE_2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_867) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_853_A2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_853_A1)
+		.flash_max_len = ENV_BLK_SIZE * 8,
+#else
 		.flash_max_len = ENV_BLK_SIZE * 4,
+#endif
 		.valid = 0
 	},
 	{
 		.name = "rtdev",
+#if (defined CONFIG_DEFAULTS_MEDIATEK_DIR_882) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_882_PARSE_2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_878_PARSE_2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_867) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_853_A2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_853_A1)
+		.flash_offset = 0xa000,
+#else
 		.flash_offset = 0x6000,
+#endif
 		.flash_max_len = ENV_BLK_SIZE * 2,
 		.valid = 0
 	},
 	{
 		.name = "wifi3",
+#if (defined CONFIG_DEFAULTS_MEDIATEK_DIR_882) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_882_PARSE_2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_878_PARSE_2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_867) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_853_A2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_853_A1)
+		.flash_offset = 0xc000,
+#else
 		.flash_offset = 0x8000,
+#endif
 		.flash_max_len = ENV_BLK_SIZE * 2,
 		.valid = 0
 	},
@@ -247,6 +259,10 @@ int ralink_nvram_ioctl(struct inode *inode, struct file *file, unsigned int req,
 			return -EFAULT;
 		break;
 	case RALINK_NVRAM_IOCTL_GETALL:
+		if (down_interruptible(nvram_sem)) {
+			printk("%s(%d): get nvram_sem fail\n", __func__, __LINE__);
+			return -EFAULT;
+		}
 		nvr = (nvram_ioctl_t __user *)arg;
 		index = nvr->index;
 #ifdef CONFIG_CONFIG_SHRINK
@@ -256,8 +272,12 @@ int ralink_nvram_ioctl(struct inode *inode, struct file *file, unsigned int req,
 #endif
 		if (nvram_getall(index, fb[index].env.data) == 0) {
 			if (copy_to_user(nvr->value, fb[index].env.data, len))
+			{	
+				up(nvram_sem);
 				return -EFAULT;
+			}
 		}
+		up(nvram_sem);
 		break;
 	case RALINK_NVRAM_IOCTL_SET:
 		nvr = (nvram_ioctl_t *)arg;		
@@ -839,10 +859,6 @@ int nvram_getall(int index, char *buf)
 
 	RANV_CHECK_INDEX(-1);
 	
-	if (down_interruptible(nvram_sem)) {
-		printk("%s(%d): get nvram_sem fail\n", __func__, __LINE__);
-		return -1;
-	}
 	RANV_CHECK_VALID();
 
 
@@ -854,7 +870,6 @@ int nvram_getall(int index, char *buf)
 	if (!fb[index].env.data) {
 		fb[index].env.data = (char *)kmalloc(len, GFP_KERNEL);
 		if (!fb[index].env.data) {
-			up(nvram_sem);
 			return -ENOMEM;
 		}
 	}
@@ -882,7 +897,6 @@ int nvram_getall(int index, char *buf)
 	}
 	*p = '\0'; //ending null
 
-	up(nvram_sem);
 	
 	return 0;
 }

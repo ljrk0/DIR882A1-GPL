@@ -2,9 +2,9 @@ librt/timer_settime.oS: librt/timer_settime.c include/libc-symbols.h \
  include/bits/uClibc_arch_features.h include/errno.h include/features.h \
  include/bits/uClibc_config.h include/sys/cdefs.h include/libc-internal.h \
  include/bits/errno.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
  include/stdlib.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
  include/bits/waitflags.h include/bits/waitstatus.h include/endian.h \
@@ -40,11 +40,11 @@ include/libc-internal.h:
 
 include/bits/errno.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
 
 include/stdlib.h:
 
@@ -133,4 +133,4 @@ include/pthread.h:
 include/sched.h:
 
 include/bits/initspin.h:
-cmd_librt_timer_settime.oS := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c librt/timer_settime.c -o librt/timer_settime.oS -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -DSHARED -DNOT_IN_libc -DIS_IN_librt -MT librt/timer_settime.oS -MD -MP -MF librt/.timer_settime.oS.dep
+cmd_librt_timer_settime.oS := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c librt/timer_settime.c -o librt/timer_settime.oS -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -DSHARED -DNOT_IN_libc -DIS_IN_librt -MT librt/timer_settime.oS -MD -MP -MF librt/.timer_settime.oS.dep

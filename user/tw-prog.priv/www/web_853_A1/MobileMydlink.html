@@ -1,0 +1,410 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+
+<link href="/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/js/bootstrap/css/buttonv2.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/style_mobile.css" media="all" />
+<link href="css/jquery.selectbox.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialValidate.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPMyDLink.js"></script>
+
+<script type="text/javascript">
+//xframeoption
+if(top!=self){top.location=self.location;}
+
+//mobile session
+if (sessionStorage.getItem('PrivateKey') === null){
+	window.location.replace('../info/MobileLogin.html');
+}
+
+	//event
+	var viewportmeta = document.querySelector('meta[name="viewport"]');
+	$(window).on("orientationchange",function(){
+  		adjustLayout();
+	});		
+	$(window).on("focusout", function(){
+		viewportmeta.content = 'width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0';
+		viewportmeta.content = 'width=device-width';
+	});
+
+
+	$(document).ready( function() {
+		//CSS
+		$("input").keydown(function () {	changeTimeoutAction();	});
+
+		$("input[type='radio']").change(function()
+		{
+			$(".radio label>input[type='radio']").each(function(){
+				if($(this).prop("checked"))
+				{
+					$(this).parent().removeClass("unchecked").addClass("checked");
+				}
+				else
+				{
+					$(this).parent().removeClass("checked").addClass("unchecked");
+				}
+			});
+
+		});
+
+		//event
+		$("input[name='radio_exist_account']").change(function(){
+			exist_account_onchange($(this).val());
+			adjustLayout();
+		});
+		register_validation();
+		adjustLayout();
+
+		InitMydlinkSettings();
+		startTimeout();
+	});
+
+	function adjustLayout()
+	{
+		var window_height = $(window).height();
+		var body_height = $("body").height();
+		var padding = 50;
+
+		if(window_height < body_height + padding)
+		{
+			$("#copyright").css("top", body_height + padding);	
+			$(".black_overlay").css("height", body_height + padding+20);		
+		}
+		else
+		{
+			$("#copyright").css("top", window_height - 20);
+			$(".black_overlay").css("height", window_height);
+		}
+	}
+	
+	function InitMydlinkSettings()
+	{
+		var getMyDLinkSettingsResponse = new SOAPGetMyDLinkSettingsResponse();
+		var soapAction = new SOAPAction();
+
+		soapAction.sendSOAPAction("GetMyDLinkSettings", null, getMyDLinkSettingsResponse).done(function(obj)
+		{
+			if(obj.AccountStatus == "true")
+			{
+				$("#mobile_mydlink_ser").html(I18N("j","Registered"));
+				$("#mobile_mydlink_account").html(obj.Email);
+				$("#mobile_mydlink_reginfo").show();
+				$("#mobile_mydlink").hide();
+			}
+			else
+			{
+				$("#mobile_mydlink_reginfo").hide();
+				$("#mobile_mydlink").show();
+			}
+			adjustLayout();
+		});
+	}
+	
+	function SaveMydlinkSettings()
+	{
+		$("#mobile_dlink_btn").addClass("active").prop("disabled", true);
+		var exist_account = $("input[name='radio_exist_account']:checked").val();
+
+		if(exist_account == "false")
+		{
+			RegisterNewAccount();
+		}
+		else
+		{
+			SetDeviceRegister();
+		}
+
+		return;
+	}
+
+	function RegisterNewAccount()
+	{
+		var setMyDLinkSettings = new SOAPSetMyDLinkSettings();
+
+		setMyDLinkSettings.Email = $("#mobile_mydlink_mail").val();
+		setMyDLinkSettings.Password = $("#mobile_mydlink_pwd").val();
+		setMyDLinkSettings.LastName = $("#mobile_mydlink_lname").val();
+		setMyDLinkSettings.FirstName = $("#mobile_mydlink_fname").val();
+		setMyDLinkSettings.AccountStatus = false;
+
+
+		var soapAction = new SOAPAction();
+		soapAction.sendSOAPAction("SetMyDLinkSettings", setMyDLinkSettings, null).done(function(obj)
+		{
+			if(obj.SetMyDLinkSettingsResult.toUpperCase() == "OK")
+			{
+				SetDeviceRegister();
+			}
+			else
+			{
+				alert(obj.SetMyDLinkSettingsResult);
+				$("#mobile_dlink_btn").removeClass("active").prop("disabled", false);
+			}
+			
+		}).fail(function(obj){
+			$("#mobile_dlink_btn").removeClass("active").prop("disabled", false);
+		});
+	
+	}
+	
+	function SetDeviceRegister()
+	{
+		var setMyDLinkSettings = new SOAPSetMyDLinkSettings();
+
+		setMyDLinkSettings.Email = $("#mobile_mydlink_mail").val();
+		setMyDLinkSettings.Password = $("#mobile_mydlink_pwd").val();
+		setMyDLinkSettings.AccountStatus = true;
+
+
+		var soapAction = new SOAPAction();
+		soapAction.sendSOAPAction("SetMyDLinkSettings", setMyDLinkSettings, null).done(function(obj)
+		{
+			if(obj.SetMyDLinkSettingsResult.toUpperCase() == "OK")
+			{
+				$("#mobile_popalert").show();
+			}
+			else
+			{
+				alert(obj.SetMyDLinkSettingsResult);
+				$("#mobile_dlink_btn").removeClass("active").prop("disabled", false);
+			}
+		}).fail(function(){
+			$("#mobile_dlink_btn").removeClass("active").prop("disabled", false);
+		});
+
+	}
+
+	function do_unregister()
+	{
+		$("#unregister_btn").addClass("active").prop("disabled", true);
+
+		var setMyDLinkUnregistration = new SOAPSetMyDLinkUnregistration();
+		var soapAction = new SOAPAction();
+
+		soapAction.sendSOAPAction("SetMyDLinkUnregistration", setMyDLinkUnregistration, null).done(function(obj)
+		{
+			$("#unregister_btn").removeClass("active").prop("disabled", false);
+			InitMydlinkSettings();
+		});
+	}
+
+	function exist_account_onchange(value)
+	{
+		changeTimeoutAction();
+
+		if(value == "true")
+		{
+			$("#mobile_dlink_btn").html(I18N("j", "Sign In"));
+			$("#mobile_register_info").hide();
+
+			$("#mobile_dlink_btn").attr("disabled", false);
+		}
+		else
+		{
+			$("#mobile_dlink_btn").html(I18N("j", "Sign Up"));
+			$("#mobile_register_info").show();
+
+			accept_chkbox_onclick(document.getElementById("accept_chkbox"));
+		}
+
+	}
+
+	function accept_chkbox_onclick(element)	//DOM element, not jQuery
+	{
+		changeTimeoutAction();
+
+		$("#mobile_dlink_btn").attr("disabled", !element.checked);
+	}
+	
+	function returnToHome()
+	{
+		location.href="/MobileHome.html";
+	}
+
+</script>
+
+<style>
+.textsubtitle
+{
+	font-size: 16px;
+}
+.list-group-item-title
+{
+	border-top:0px;
+	border-left:0px;
+	border-right:0px;
+}
+
+</style>
+
+</head>
+
+<body>
+<div style="position:absolute;top:13px">
+<button class="btn_home" onclick="returnToHome()"><script>I18N("h", "Home");</script></button>
+</div>
+
+<div id="logo_padding" style="height:17px"></div>
+	<div class="form-group" style="text-align:center;">
+		<img src="/image/logo_2.png" width="102px" height="20px">
+	</div>
+
+<hr/>
+
+<form role="form" name="mobile_mydlink_form" id="mobile_mydlink_form" method="POST" action="">
+<div style="padding-left: 10px;padding-right: 10px;text-align:left;">
+
+<div style="text-align:left;height:50px">					
+	<img id="mobile_wifi_status" src="image/mydlink.png" width="60" height="29" style="margin-right:10px">
+	<b><span class="textnormal"><script>I18N("h", "mydlink");</script></span></b>
+</div>
+
+<!-- binded -->
+<div id="mobile_mydlink_reginfo" class="container" style="text-align:center;">
+<div class="list-group" style="text-align:left;">
+	<!--<div class="list-group-item list-group-item-title" style="text-align:left;"><h4><script>I18N("h", "mydlink Registration");</script></h4></div>-->
+	<div class="list-group-item">
+		<h4 class="list-group-item-heading titleBlock"><script>I18N("h", "mydlink Service");</script>:</h4>
+		<span id="mobile_mydlink_ser" class="list-group-item-text"><script>I18N("h", "Not Available");</script></span>
+	</div>
+	<div class="list-group-item">
+		<h4 class="list-group-item-heading titleBlock"><script>I18N("h", "mydlink Account");</script>:</h4>
+		<span id="mobile_mydlink_account" class="list-group-item-text"><script>I18N("h", "Not Available");</script></span>
+	</div>
+
+</div>
+
+<div style="text-align:center;margin-top:30px">
+	<button id="unregister_btn" type="button" class="btn btn-lg btn-default" style="width:80%;" onclick="do_unregister();"><script>I18N("h", "Unregister");</script></button>
+</div>
+
+</div>
+
+<!-- not binding -->
+<div id="mobile_mydlink" style="display:none">
+
+<div id="smart_connect" class="form-group">
+	<label class="textnormal"><script>I18N("h", "Do you have an existing mydlink account?");</script>?</label>
+
+	<div class="radio">
+	<label class="textsubtitle unchecked"><input type="radio" name="radio_exist_account" value="true" /><script>I18N("h", "Yes, I have a mydlink account");</script></label>
+	</div>
+
+	<div class="radio">
+	<label class="textsubtitle checked"><input type="radio" name="radio_exist_account" value="false" checked /><script>I18N("h", "No, I want to create a new mydlink account");</script></label>
+	</div>
+
+</div>
+
+	<div class="form-group">
+		<label class="textsubtitle" for="mobile_mydlink_mail"><script>I18N("h", "E-mail Address (Account Name)");</script>:</label>
+		<input type="text" class="form-control" id="mobile_mydlink_mail" name="mobile_mydlink_mail" placeholder="">
+	</div>
+
+	<div class="form-group">
+		<label class="textsubtitle" for="mobile_mydlink_pwd"><script>I18N("h", "Password");</script>:</label>
+		<input type="text" class="form-control" id="mobile_mydlink_pwd" name="mobile_mydlink_pwd" placeholder="">
+	</div>
+
+	<div id="mobile_register_info">
+
+	<div class="form-group">
+		<label class="textsubtitle" for="mobile_mydlink_fname"><script>I18N("h", "First Name");</script>:</label>
+		<input type="text" class="form-control" id="mobile_mydlink_fname" name="mobile_mydlink_fname" placeholder="">
+	</div>
+
+	<div class="form-group">
+		<label class="textsubtitle" for="mobile_mydlink_lname"><script>I18N("h", "Last Name");</script>:</label>
+		<input type="text" class="form-control" id="mobile_mydlink_lname" name="mobile_mydlink_lname" placeholder="">
+	</div>
+
+	<div class="checkbox">
+		<label class="textnormal">
+			<input id="accept_chkbox" type="checkbox" onClick="accept_chkbox_onclick(this)" /><script>I18N("h", "I accept the mydlink");</script>
+		</label>
+	</div>
+
+	</div>
+
+
+<div style="text-align:center;margin-top:30px">
+	<input id="submit_check_data" class="submit" type="submit" value="Submit" style="display:none"/>
+	<button id="mobile_dlink_btn" type="button" class="btn btn-lg btn-default" style="width:80%;" onclick="$('form').submit();changeTimeoutAction();" disabled><script>I18N("h", "Sign Up");</script></button>
+</div>
+
+</div>	<!-- not binding -->
+</div>
+
+</form>
+
+<div id="mobile_popalert" class="black_overlay" style="display:none">
+	<div class="popup_window_border" style="position:relative;top:15%;">
+		<div class="popup_window">
+			<div class="textsmall" style="position:relative;top:40%;width:100%">
+				<script>I18N("h", "You may now use mydlink service with this device.");</script>
+			</div>
+			<div class="textsmall" style="position:absolute;bottom:20px;width:100%">
+				<button class="btn btn-default" style="position:relative;width:80%" onclick="window.location.reload()"><script>I18N("h", "OK");</script></button>
+			</div>
+
+
+		</div>
+	</div>
+</div>
+<div id="copyright" class="copyright">
+	<script>I18N("h", "COPYRIGHT");</script>
+</div>
+
+
+<script type="text/javascript" charset="utf-8">
+function register_validation()
+{
+	$("#mobile_mydlink_form").each(function(index, el)  {
+			$(el).validate({
+			messages: {
+				mobile_mydlink_mail: {
+					required: jQuery.validator.messages.email_AccountName
+				},
+				mobile_mydlink_pwd: {
+					required: jQuery.validator.messages.email_Password
+				}
+			},
+
+			rules: {
+				mobile_mydlink_mail: {
+					required: true
+				},
+
+				mobile_mydlink_pwd: {
+					required: true
+				}
+			},
+			submitHandler: function(form) {
+				SaveMydlinkSettings();
+			},
+		    errorPlacement:function(error, element){
+				error.insertAfter(element).css({"color":"#f00", "font-size":"14px", "font-weight":"normal"});
+				adjustLayout();
+			}
+		});
+	});
+};
+</script>
+</body>
+</html> 

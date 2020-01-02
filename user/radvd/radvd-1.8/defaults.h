@@ -58,6 +58,7 @@
 #define DFLT_AdvAutonomousFlag		1
 #define DFLT_DeprecatePrefixFlag	0
 #define DFLT_DecrementLifetimesFlag	0
+#define DFLT_ReferenceTime 0
 
 /* Each route has an associated: */
 #define DFLT_AdvRouteLifetime(iface)	(3 * (iface)->MaxRtrAdvInterval)

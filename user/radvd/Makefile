@@ -4,6 +4,10 @@ USRSBINDIR=$(ROOTDIR)/romfs/usr/sbin
 
 INSTALL  = install
 
+ifeq ($(CONFIG_IPV6_CE_ROUTER_TEST_DEBUG), y)
+	CFLAGS += -D__CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+endif
+
 all: 
 	[ ! -d radvd-1.8 ] || [ -f radvd-1.8/Makefile ] || ( \
 	    cd radvd-1.8 \

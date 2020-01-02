@@ -1,4 +1,4 @@
-cmd_scripts/sortextable := gcc -Wp,-MD,scripts/.sortextable.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer   -I/home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/tools/include -I/home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/tools/include -o scripts/sortextable scripts/sortextable.c  
+cmd_scripts/sortextable := gcc -Wp,-MD,scripts/.sortextable.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer   -I/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/tools/include -I/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/tools/include -o scripts/sortextable scripts/sortextable.c  
 
 source_scripts/sortextable := scripts/sortextable.c
 
@@ -54,7 +54,7 @@ deps_scripts/sortextable := \
   /usr/include/bits/posix_opt.h \
   /usr/include/bits/environments.h \
   /usr/include/bits/confname.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/tools/include/tools/be_byteshift.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/tools/include/tools/be_byteshift.h \
   /usr/include/linux/types.h \
   /usr/include/asm/types.h \
   /usr/include/asm-generic/types.h \
@@ -66,7 +66,7 @@ deps_scripts/sortextable := \
   /usr/include/linux/stddef.h \
   /usr/include/asm/posix_types.h \
   /usr/include/asm/posix_types_32.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/tools/include/tools/le_byteshift.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/tools/include/tools/le_byteshift.h \
   scripts/sortextable.h \
 
 scripts/sortextable: $(deps_scripts/sortextable)

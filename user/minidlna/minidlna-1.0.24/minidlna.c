@@ -1081,6 +1081,11 @@ main(int argc, char * * argv)
 			/* the comparaison is not very precise but who cares ? */
 			if(timeofday.tv_sec >= (lastnotifytime.tv_sec + runtime_vars.notify_interval))
 			{
+/*modify by taogan for ssdp not receive after a minute 2017-6-1*/
+				SSDP_delete_multicast_membership(sudp);
+				SSDP_add_multicast_membership(sudp);
+/*modify end by taogan 2017-6-1*/
+
 				SendSSDPNotifies2(snotify,
 			                  (unsigned short)runtime_vars.port,
 			                  (runtime_vars.notify_interval << 1)+10);

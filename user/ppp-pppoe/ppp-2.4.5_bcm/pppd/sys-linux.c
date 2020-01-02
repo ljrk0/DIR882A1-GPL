@@ -1618,7 +1618,14 @@ int sifdefaultroute (int unit, u_int32_t ouraddr, u_int32_t gateway)
 {
     struct rtentry rt;
 
-    if (defaultroute_exists(&rt) && strcmp(rt.rt_dev, ifname) != 0) {
+    /*
+      * 1. The dial-on-demand need default route via ppp interface.
+      * 2. The previous default route will exists at this point, if the cleanup of
+      *    previous pppoe session is not complete.
+      * 3. Therefore, the existence of default route is not detected here.
+      * 2017-07-13 --liushenghui
+    */
+    if (0 == demand && defaultroute_exists(&rt) && strcmp(rt.rt_dev, ifname) != 0) {
 	if (rt.rt_flags & RTF_GATEWAY)
 	    error("not replacing existing default route via %I",
 		  SIN_ADDR(rt.rt_gateway));

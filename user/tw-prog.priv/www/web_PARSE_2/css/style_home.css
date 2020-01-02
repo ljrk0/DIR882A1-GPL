@@ -1,0 +1,414 @@
+img { border: 0px}
+
+label {
+	font-weight: normal;
+}
+.myProgressBar {
+	font-size:12pt;
+	padding-top:5px;
+}
+
+#internet_left {
+	position: absolute;
+	top: 10px;
+    left: 40px;
+	width: 430px;
+	/*background-color: #ccf;*/
+}
+#internet_right {
+	position: relative;
+	top: 10px;
+    left: 470px;
+	width: 370px;
+	min-height:210px;
+	/*background-color: #fcc;*/
+}
+#internet_v6_left {
+	position: absolute;
+	top: 10px;
+    left: 40px;
+	width: 430px;
+	/*background-color: #ccf;*/
+}
+#internet_v6_right {
+	position: relative;
+	top: 10px;
+	left: 470px;
+	width: 370px;
+	min-height:210px;
+	/*background-color: #fcc;*/
+}
+#router_left {
+	position: absolute;
+	top: 0px;
+    left: 30px;
+	width: 460px;
+	min-height: 300px;
+	/*background-color: #ccf;*/
+}
+#router_right {
+	position: relative;
+	top: 0px;
+    left: 510px;
+	width: 330px;
+	min-height: 300px;
+	/*background-color: #fcc;*/
+}
+#usb_left {
+	display:inline-block;
+	position: relative;
+	top: 20px;
+    left: 20px;
+	width: 460px;
+	min-height:300px;
+	/*background-color: #ccf;*/
+}
+#usb_right {
+	position: absolute;
+	top: 20px;
+    left: 480px;
+	width: 300px;	
+	/*background-color: #fcc;*/
+}
+.v4_v6_btn {
+	list-style: none;
+	position: relative;
+	display:inline;
+	top: -10px;
+	right: 100px;
+	margin: 0;
+	padding: 0;
+	height: 20px;
+}
+.v4_v6_btn li {
+	float: right;
+	margin: 0;
+	padding: 0;
+	line-height: 20px;
+}
+
+.infor_title {
+	position: absolute;
+	z-index: 500;
+	top: -80px;
+	left:30px;
+	white-space: nowrap;
+
+	font-size: 25pt;
+	font-family: 'Segoe UI', Tahoma, Arial, Helvetica, Sans-Serif;
+	color: #454547;
+}
+
+.myTable_index {
+	width:100%;
+	line-height:30px;
+}
+.myTable_index th {
+	text-align: left;
+	white-space: nowrap;
+	width: 1px;
+}
+.myTable_index td {
+	text-align: left;
+	padding-left: 5px;
+}
+.lanTitle {
+	color: #4598aa;
+ 	font-weight: bold;
+  	font-size: 12pt;
+  	height:40px;
+  	vertical-align: bottom;
+}
+
+.shadowLine {
+	position: absolute;
+	top: 380px;
+	width:100%;
+	height: 70px;
+	background: #fff url(../image/home_shadow.png);
+	z-index: 1;
+}
+
+.usbtable {
+	display:block;
+	position: relative;
+	width: 80%;
+	max-width: 80%;
+	margin-left:31px;
+	margin-bottom: 20px;
+
+	background-color: transparent;
+}
+
+.usbtable>tbody>tr>th,
+.usbtable>tbody>tr>td {
+	text-align: left;
+	white-space: nowrap;
+	padding: 5px;
+	line-height: 1.42857143;
+	vertical-align: top;
+	border: 0px;
+}
+
+.usbtable>tbody>tr>th {	
+	width: 1px;
+}
+.usbtable>tbody>tr>td {
+	padding-left: 10px;
+}
+.usb_warning {
+	color:orange;
+}
+.usb_warning_icon {
+	position:absolute;
+	bottom:15px;
+	right:10px;
+}
+
+.line {
+	width: 100%;
+	height: 120px;
+	min-height: 50px;
+}
+
+.client {
+	padding:5px;
+
+	width: 250px;
+	height: 140px;
+
+	position: relative;
+	display:inline-block;
+}
+
+.client_Tag {
+	margin: 0 auto;
+}
+
+.client_Access {
+	display:inline-block;
+	position:absolute;
+	right:0px;
+	bottom:0px;
+}
+
+.client_signal {
+	display:inline-block;
+	position:absolute;
+	left:0px;
+	bottom:0px;
+}
+
+.QoS {
+	width:700px;
+	position:relative;
+	top:20px;
+	right:30px;
+	display:block;
+
+	padding-left: 20px;
+	padding-bottom: 30px;
+
+	cursor:pointer;
+   	/*background: url(../image/QoS_Card.png) no-repeat;
+	background-size:contain;*/
+	
+	border: 4px solid rgba(230, 230, 230, 1);
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	
+	margin:0 auto;
+	margin-bottom: 30px;
+}
+
+.qos_pointer {
+	display: block;
+	position:absolute;
+	top: -28px;
+}
+
+.QoS_header{
+	position: relative;
+	top:30px;
+	width:100%;
+	height:50px;
+	display:block;
+
+	margin-bottom: 15px;
+}
+
+.QoS_Wifi_band {
+	position:relative;
+	display:inline;
+}
+
+.QoS_Wifi_band > img {
+	vertical-align: middle;
+	margin-right:20px;
+}
+.QoS_Wifi_band > span {
+	margin-right:20px;
+	font-weight: bold;
+	color:#ccc;
+	font-size:15pt;
+	vertical-align: text-top;
+}
+
+span.QoS_Wifi_band_active {
+	color:#333;
+}
+
+.QoS_Content{
+	position: relative;
+	border:0px solid;
+	display:table;
+
+	width:100%;
+	height:70px;
+	
+	margin-bottom:10px;
+}
+
+.QoS_Content > span {
+	margin-right:20px;
+	font-weight:normal;
+	color:#333;
+	font-size:12pt;
+	margin-top: 10px;
+	line-height: 70px;
+}
+.QoS_Content_bar {
+	position:absolute;
+	top:10px;
+	right:20px;
+	display:inline-table;
+	width:400px;
+}
+.QoS_Content_icon {
+
+	margin-right:20px;
+	width:48px;
+	height:47px;
+}
+
+.QoS_Speed{
+	position:absolute;
+	left:250px;
+	display: inline-block;
+}
+
+.QoS_more_icon {
+	position: absolute;
+	right:20px;
+	display: inline-block;
+}
+
+.QoS_foot {
+	position:absolute;
+	bottom:20px;
+	right: 10px;
+	color:#333;
+}
+
+#qosPop {
+	position: fixed;
+	z-index: 500;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height:100%;
+	background:url(../image/black_bg.png);
+	text-align: center;
+	
+	overflow-y: hidden;
+}
+
+.dialogBox {
+	position: relative;
+	top: 80px;
+	margin: 0 auto;
+	border: 2px solid #fff;
+	background-color: #fff;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	padding: 20px 20px 30px 20px;
+	-moz-box-shadow: 3px 3px 25px #000;
+	-webkit-box-shadow: 3px 3px 25px #000;
+	box-shadow: 3px 3px 25px #000;
+	height: 500px;
+	/*background:#fff url('../image/dialog_bg.png') left top repeat-x;*/
+}
+
+.qosPop_table {
+	position: relative;
+	top: 40px;
+	left: 0px;
+	width: 100%;
+	color: #56583f;
+	font-size: 14px;
+	margin: 0px;
+	padding: 0px;
+}
+.qosPop_table th {
+	border:1px solid;
+	border-color:#fff;
+	text-align: left;
+	font-weight: normal;
+	margin: 0px;
+	padding-left: 10px;	
+	height:30px;
+	
+	font-size:12pt;
+	color:#fff;
+	
+	background-color:#4598aa;
+}
+.qosPop_table td {
+	text-align: left;
+	height:30px;
+	
+	padding-left: 10px;	
+}
+
+.closePopBtn {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 26px;
+	height: 26px;
+	margin: 20px;
+	padding: 0px;
+	background: url(../image/closeDialog3.png) left top no-repeat;
+	cursor:pointer;
+	z-index: 100;
+	background-size:contain;
+}
+
+.progress {
+	margin-bottom:10px;
+}
+
+.progress-bar {
+	min-width: 2em;
+}
+
+.progress_value {
+	display:inline-block;
+}
+
+.link_icon{
+	position: absolute;
+	top: 40px;
+	left: 12px;
+	width:32px;
+	height:32px;
+}
+
+.link_icon_band{
+	top:34px;
+	left: 6px;
+	width:45px;
+	height:45px;
+}

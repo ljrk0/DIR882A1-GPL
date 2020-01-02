@@ -40,14 +40,15 @@
 
 #define TRFMSG_INTERVAL 1000000
 
-#define REQ_COUNT 25	// Modified 23 to 25 by PaN
+#define REQ_COUNT 26	// Modified 23 to 25 by PaN
 const char *request[REQ_COUNT]={
   "SYST","QUIT","TYPE","PORT","LIST","CWD","PWD","RETR",
   "USER","PASS","REST","SIZE","MDTM","STOR","CDUP","NOOP","GET",
-  "NLST","PASV","ABOR","MKD","RMD","DELE","RNFR","RNTO"
+  "NLST","PASV","ABOR","MKD","RMD","DELE","RNFR","RNTO","FEAT"
 };	// Added "RNFR" and "RNTO" for rename filename by PaN
 
 static char oldpath[MAXPATHLEN+4] , newpath[MAXPATHLEN+4], cwdpath[MAXPATHLEN+4];	// Added for rename filename by PaN
+
 
 const char *ftp_returnstr[]={
   "150 OK\r\n",
@@ -86,8 +87,25 @@ const char *ftp_returnstr[]={
   "550 not a file.\r\n",
   "350 File exists, ready for destination name.\r\n",
   "250 RNTO command successful.\r\n",
+  "211-Extensions supported:\r\n",
   NULL
 };
+
+
+#define FEAT_COUNT 7
+const char *ftp_FEATstr[]=
+{
+  " SIZE\r\n",
+  " MDTM\r\n",
+  " MDTM YYYYMMDDHHMMSS filename\r\n",
+  " REST STREAM\r\n",
+  " LANG EN;FR;JA;DE;IT;SV;ES;RU;ZH-TW;ZH-CN\r\n",
+  " UTF8\r\n",
+  "211 END\r\n",
+  NULL
+};
+
+
 
 /* prototypes */
 void user_spool(int,int,char *);
@@ -108,6 +126,23 @@ int do_rmdir(int,char *);
 int do_dele(int,char *);
 int do_rnfr(int,char *);	// Added by PaN
 int do_rnto(int,char *);	// Added by PaN
+
+void user_FEAT(int nr)
+{
+	int i = 0 ;
+	char buff[1024] = {0};
+	int offset = 0;
+	
+	
+  	offset += sprintf(buff,ftp_returnstr[RET_211]);
+	
+	for( i = 0 ; i < FEAT_COUNT ; i++)
+	{
+  		offset += sprintf( buff+offset ,ftp_FEATstr[i]);
+	}
+	
+	write(pchild[nr]->sock,buff,strlen(buff));
+}
 
 
 void user_return(int nr,int id)
@@ -1617,11 +1652,16 @@ void serve_child(int nr)
       }
       break;
 // End PaN
+    case REQ_FEAT:
+      pchild[nr]->resume=0;
+	  user_FEAT(nr);
+      break;
     default:
-      if ((unsigned char)buffer[0]>0x7F) {
-	user_return(nr,RET_209);
-	kill_connection(nr);
-	break;
+      if ((unsigned char)buffer[0]>0x7F) 
+	  {
+		user_return(nr,RET_209);
+		kill_connection(nr);
+		break;
       }
       pchild[nr]->resume=0;
 

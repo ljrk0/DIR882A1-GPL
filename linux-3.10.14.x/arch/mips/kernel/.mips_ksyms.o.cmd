@@ -1,4 +1,4 @@
-cmd_arch/mips/kernel/mips_ksyms.o := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -Wp,-MD,arch/mips/kernel/.mips_ksyms.o.d  -nostdinc -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -I/home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include -Iarch/mips/include/generated  -Iinclude -I/home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi -Iarch/mips/include/generated/uapi -I/home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi -Iinclude/generated/uapi -include /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/kconfig.h -D__KERNEL__ -DVMLINUX_LOAD_ADDRESS=0xffffffff80001000 -DDATAOFFSET=0 -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -O2 -mno-check-zero-division -mabi=32 -G 0 -mno-abicalls -fno-pic -pipe -msoft-float -ffreestanding -march=mips32r2 -Wa,-mips32r2 -Wa,--trap -I/home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-ralink -I/home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fomit-frame-pointer -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -Werror    -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(mips_ksyms)"  -D"KBUILD_MODNAME=KBUILD_STR(mips_ksyms)" -c -o arch/mips/kernel/mips_ksyms.o arch/mips/kernel/mips_ksyms.c
+cmd_arch/mips/kernel/mips_ksyms.o := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -Wp,-MD,arch/mips/kernel/.mips_ksyms.o.d  -nostdinc -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -I/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include -Iarch/mips/include/generated  -Iinclude -I/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi -Iarch/mips/include/generated/uapi -I/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi -Iinclude/generated/uapi -include /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/kconfig.h -D__KERNEL__ -DVMLINUX_LOAD_ADDRESS=0xffffffff00000000+0x81001000 -DDATAOFFSET=0 -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -O2 -mno-check-zero-division -mabi=32 -G 0 -mno-abicalls -fno-pic -pipe -msoft-float -ffreestanding -march=mips32r2 -Wa,-mips32r2 -Wa,--trap -I/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-ralink -I/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fomit-frame-pointer -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO -Werror    -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(mips_ksyms)"  -D"KBUILD_MODNAME=KBUILD_STR(mips_ksyms)" -c -o arch/mips/kernel/mips_ksyms.o arch/mips/kernel/mips_ksyms.c
 
 source_arch/mips/kernel/mips_ksyms.o := arch/mips/kernel/mips_ksyms.c
 
@@ -41,7 +41,7 @@ deps_arch/mips/kernel/mips_ksyms.o := \
     $(wildcard include/config/modules.h) \
     $(wildcard include/config/modversions.h) \
     $(wildcard include/config/unused/symbols.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/linkage.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/linkage.h \
   include/linux/stddef.h \
   include/uapi/linux/stddef.h \
   include/linux/types.h \
@@ -50,67 +50,67 @@ deps_arch/mips/kernel/mips_ksyms.o := \
     $(wildcard include/config/phys/addr/t/64bit.h) \
     $(wildcard include/config/64bit.h) \
   include/uapi/linux/types.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/types.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/types.h \
     $(wildcard include/config/64bit/phys/addr.h) \
   include/asm-generic/int-ll64.h \
   include/uapi/asm-generic/int-ll64.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/bitsperlong.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/bitsperlong.h \
   include/asm-generic/bitsperlong.h \
   include/uapi/asm-generic/bitsperlong.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/types.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/posix_types.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/posix_types.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/sgidefs.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/posix_types.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/types.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/posix_types.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/posix_types.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/sgidefs.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/posix_types.h \
   include/linux/bitops.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/bitops.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/bitops.h \
     $(wildcard include/config/cpu/mipsr2.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/barrier.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/barrier.h \
     $(wildcard include/config/cpu/has/sync.h) \
     $(wildcard include/config/cpu/cavium/octeon.h) \
     $(wildcard include/config/sgi/ip28.h) \
     $(wildcard include/config/cpu/has/wb.h) \
     $(wildcard include/config/weak/ordering.h) \
     $(wildcard include/config/weak/reordering/beyond/llsc.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/addrspace.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/addrspace.h \
     $(wildcard include/config/cpu/r8000.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/spaces.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/spaces.h \
     $(wildcard include/config/32bit.h) \
     $(wildcard include/config/kvm/guest.h) \
     $(wildcard include/config/dma/noncoherent.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/const.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/byteorder.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/const.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/byteorder.h \
   include/linux/byteorder/little_endian.h \
   include/uapi/linux/byteorder/little_endian.h \
   include/linux/swab.h \
   include/uapi/linux/swab.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/swab.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/swab.h \
   include/linux/byteorder/generic.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu-features.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu-features.h \
     $(wildcard include/config/sys/supports/micromips.h) \
     $(wildcard include/config/cpu/mipsr2/irq/vi.h) \
     $(wildcard include/config/cpu/mipsr2/irq/ei.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu-info.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu-info.h \
     $(wildcard include/config/mips/mt/smp.h) \
     $(wildcard include/config/mips/mt/smtc.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cache.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cache.h \
     $(wildcard include/config/mips/l1/cache/shift.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/kmalloc.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/kmalloc.h \
     $(wildcard include/config/dma/coherent.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/cpu-feature-overrides.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/war.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/cpu-feature-overrides.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/war.h \
     $(wildcard include/config/cpu/r4000/workarounds.h) \
     $(wildcard include/config/cpu/r4400/workarounds.h) \
     $(wildcard include/config/cpu/daddi/workarounds.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-ralink/war.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-ralink/war.h \
   include/asm-generic/bitops/non-atomic.h \
   include/asm-generic/bitops/fls64.h \
   include/asm-generic/bitops/ffz.h \
   include/asm-generic/bitops/find.h \
     $(wildcard include/config/generic/find/first/bit.h) \
   include/asm-generic/bitops/sched.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/arch_hweight.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/arch_hweight.h \
   include/asm-generic/bitops/arch_hweight.h \
   include/asm-generic/bitops/const_hweight.h \
   include/asm-generic/bitops/le.h \
@@ -130,16 +130,16 @@ deps_arch/mips/kernel/mips_ksyms.o := \
   include/linux/string.h \
     $(wildcard include/config/binary/printf.h) \
   include/uapi/linux/string.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/string.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/string.h \
     $(wildcard include/config/cpu/r3000.h) \
   include/linux/errno.h \
   include/uapi/linux/errno.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/errno.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/errno.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/errno-base.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/errno.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/errno.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/errno-base.h \
   include/uapi/linux/kernel.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/sysinfo.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/div64.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/sysinfo.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/div64.h \
   include/asm-generic/div64.h \
   include/linux/preempt.h \
     $(wildcard include/config/debug/preempt.h) \
@@ -153,20 +153,20 @@ deps_arch/mips/kernel/mips_ksyms.o := \
     $(wildcard include/config/debug/stack/usage.h) \
   include/linux/bug.h \
     $(wildcard include/config/generic/bug.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/bug.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/bug.h \
     $(wildcard include/config/bug.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/break.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/break.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/break.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/break.h \
   include/asm-generic/bug.h \
     $(wildcard include/config/generic/bug/relative/pointers.h) \
     $(wildcard include/config/debug/bugverbose.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/thread_info.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/thread_info.h \
     $(wildcard include/config/page/size/4kb.h) \
     $(wildcard include/config/page/size/8kb.h) \
     $(wildcard include/config/page/size/16kb.h) \
     $(wildcard include/config/page/size/32kb.h) \
     $(wildcard include/config/page/size/64kb.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/processor.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/processor.h \
     $(wildcard include/config/cavium/octeon/cvmseg/size.h) \
     $(wildcard include/config/mips/mt/fpaff.h) \
     $(wildcard include/config/cpu/has/prefetch.h) \
@@ -179,12 +179,12 @@ deps_arch/mips/kernel/mips_ksyms.o := \
     $(wildcard include/config/nr/cpus.h) \
     $(wildcard include/config/base/small.h) \
   include/linux/bitmap.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/cachectl.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mipsregs.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/cachectl.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mipsregs.h \
     $(wildcard include/config/cpu/vr41xx.h) \
     $(wildcard include/config/mips/huge/tlb/support.h) \
     $(wildcard include/config/cpu/micromips.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/hazards.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/hazards.h \
     $(wildcard include/config/cpu/mipsr1.h) \
     $(wildcard include/config/mips/alchemy.h) \
     $(wildcard include/config/cpu/bmips.h) \
@@ -193,7 +193,7 @@ deps_arch/mips/kernel/mips_ksyms.o := \
     $(wildcard include/config/cpu/r5500.h) \
     $(wildcard include/config/cpu/xlr.h) \
     $(wildcard include/config/cpu/sb1.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/prefetch.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/prefetch.h \
   include/linux/list.h \
     $(wildcard include/config/debug/list.h) \
   include/linux/poison.h \
@@ -216,7 +216,7 @@ deps_arch/mips/kernel/mips_ksyms.o := \
     $(wildcard include/config/virt/cpu/accounting/native.h) \
     $(wildcard include/config/virt/cpu/accounting/gen.h) \
     $(wildcard include/config/irq/time/accounting.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/hardirq.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/hardirq.h \
   include/asm-generic/hardirq.h \
   include/linux/cache.h \
     $(wildcard include/config/arch/has/cache/line/size.h) \
@@ -229,19 +229,19 @@ deps_arch/mips/kernel/mips_ksyms.o := \
   include/linux/irqflags.h \
     $(wildcard include/config/irqsoff/tracer.h) \
     $(wildcard include/config/trace/irqflags/support.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/irqflags.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/irqflags.h \
     $(wildcard include/config/irq/cpu.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/smp.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/smp.h \
     $(wildcard include/config/kexec.h) \
   include/linux/atomic.h \
     $(wildcard include/config/arch/has/atomic/or.h) \
     $(wildcard include/config/generic/atomic64.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/atomic.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cmpxchg.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/atomic.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cmpxchg.h \
   include/asm-generic/cmpxchg-local.h \
   include/asm-generic/atomic-long.h \
   include/asm-generic/atomic64.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/smp-ops.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/smp-ops.h \
     $(wildcard include/config/smp/up.h) \
     $(wildcard include/config/mips/cmp.h) \
   arch/mips/include/generated/asm/percpu.h \
@@ -254,9 +254,9 @@ deps_arch/mips/kernel/mips_ksyms.o := \
     $(wildcard include/config/generic/lockbreak.h) \
   include/linux/bottom_half.h \
   include/linux/spinlock_types.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/spinlock_types.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/spinlock_types.h \
   include/linux/rwlock_types.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/spinlock.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/spinlock.h \
   include/linux/rwlock.h \
   include/linux/spinlock_api_smp.h \
     $(wildcard include/config/inline/spin/lock.h) \
@@ -332,10 +332,10 @@ deps_arch/mips/kernel/mips_ksyms.o := \
   include/linux/page-flags-layout.h \
     $(wildcard include/config/sparsemem/vmemmap.h) \
   include/generated/bounds.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/page.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/page.h \
     $(wildcard include/config/cpu/mips32.h) \
   include/linux/pfn.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/io.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/io.h \
     $(wildcard include/config/pci.h) \
   include/asm-generic/iomap.h \
     $(wildcard include/config/has/ioport.h) \
@@ -343,10 +343,10 @@ deps_arch/mips/kernel/mips_ksyms.o := \
   include/asm-generic/pci_iomap.h \
     $(wildcard include/config/no/generic/pci/ioport/map.h) \
     $(wildcard include/config/generic/pci/iomap.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/pgtable-bits.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/pgtable-bits.h \
     $(wildcard include/config/cpu/tx39xx.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/ioremap.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/mangle-port.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/ioremap.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/mangle-port.h \
     $(wildcard include/config/swap/io/space.h) \
   include/asm-generic/memory_model.h \
   include/asm-generic/getorder.h \
@@ -393,12 +393,12 @@ deps_arch/mips/kernel/mips_ksyms.o := \
   include/linux/jiffies.h \
   include/linux/timex.h \
   include/uapi/linux/timex.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/param.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/param.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/param.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/param.h \
   include/asm-generic/param.h \
     $(wildcard include/config/hz.h) \
   include/uapi/asm-generic/param.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/timex.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/timex.h \
   include/linux/topology.h \
     $(wildcard include/config/sched/smt.h) \
     $(wildcard include/config/sched/mc.h) \
@@ -407,13 +407,13 @@ deps_arch/mips/kernel/mips_ksyms.o := \
   include/linux/percpu.h \
     $(wildcard include/config/need/per/cpu/embed/first/chunk.h) \
     $(wildcard include/config/need/per/cpu/page/first/chunk.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/topology.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/topology.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/topology.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/topology.h \
   include/asm-generic/topology.h \
   include/linux/mmdebug.h \
     $(wildcard include/config/debug/vm.h) \
     $(wildcard include/config/debug/virtual.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/irq.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/irq.h \
     $(wildcard include/config/i8259.h) \
     $(wildcard include/config/mips/mt/smtc/irqaff.h) \
     $(wildcard include/config/mips/mt/smtc/im/backstop.h) \
@@ -421,28 +421,28 @@ deps_arch/mips/kernel/mips_ksyms.o := \
     $(wildcard include/config/irq/domain.h) \
     $(wildcard include/config/of/irq.h) \
   include/linux/radix-tree.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mipsmtregs.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/irq.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mipsmtregs.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/irq.h \
     $(wildcard include/config/irq/cpu/rm7k.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/ptrace.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/ptrace.h \
     $(wildcard include/config/cpu/has/smartmips.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/isadep.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/ptrace.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/irq_regs.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/isadep.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/ptrace.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/irq_regs.h \
   include/linux/irqdesc.h \
     $(wildcard include/config/irq/preflow/fasteoi.h) \
     $(wildcard include/config/sparse/irq.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/hw_irq.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/hw_irq.h \
   include/linux/hrtimer.h \
     $(wildcard include/config/high/res/timers.h) \
     $(wildcard include/config/timerfd.h) \
   include/linux/rbtree.h \
   include/linux/timerqueue.h \
   include/linux/kref.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/checksum.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/checksum.h \
   include/linux/in6.h \
   include/uapi/linux/in6.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/uaccess.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/uaccess.h \
   include/linux/mm.h \
     $(wildcard include/config/sysctl.h) \
     $(wildcard include/config/mmu.h) \
@@ -473,7 +473,7 @@ deps_arch/mips/kernel/mips_ksyms.o := \
   include/linux/auxvec.h \
   include/uapi/linux/auxvec.h \
   arch/mips/include/generated/uapi/asm/auxvec.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/auxvec.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/auxvec.h \
   include/linux/page-debug-flags.h \
     $(wildcard include/config/page/poisoning.h) \
     $(wildcard include/config/page/guard.h) \
@@ -481,14 +481,14 @@ deps_arch/mips/kernel/mips_ksyms.o := \
   include/linux/uprobes.h \
     $(wildcard include/config/arch/supports/uprobes.h) \
     $(wildcard include/config/uprobes.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mmu.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mmu.h \
   include/linux/range.h \
   include/linux/bit_spinlock.h \
   include/linux/shrinker.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/pgtable.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/pgtable.h \
     $(wildcard include/config/cpu/supports/uncached/accelerated.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/pgtable-32.h \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/fixmap.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/pgtable-32.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/fixmap.h \
     $(wildcard include/config/eva/3gb.h) \
   include/asm-generic/pgtable-nopmd.h \
   include/asm-generic/pgtable-nopud.h \
@@ -503,7 +503,7 @@ deps_arch/mips/kernel/mips_ksyms.o := \
     $(wildcard include/config/vm/event/counters.h) \
   include/linux/vm_event_item.h \
     $(wildcard include/config/migration.h) \
-  /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/ftrace.h \
+  /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/ftrace.h \
     $(wildcard include/config/dynamic/ftrace.h) \
 
 arch/mips/kernel/mips_ksyms.o: $(deps_arch/mips/kernel/mips_ksyms.o)

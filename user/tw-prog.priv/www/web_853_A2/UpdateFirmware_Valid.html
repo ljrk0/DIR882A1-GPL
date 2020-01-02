@@ -1,0 +1,27 @@
+
+<html>
+	<head>
+  <!-- for browser tab logo -->
+  <link rel="icon" href="/image/dlink-favicon.ico">
+  <link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+		<meta http-equiv="Pragma" content="no-cache"> <!--for HTTP 1.1-->
+		<meta http-equiv="Cache-Control" content="no-cache"> <!--for HTTP 1.0-->
+		<meta http-equiv="Expires" content="0"> <!--prevents caching at the proxy server-->
+		<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>
+		<script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
+		<script type="text/javascript" charset="utf-8" src="/js/initialCSS.js"></script>
+		<script type="text/javascript">
+			self.location.href = "UpdateFirmware.html?UpdateResult=SUCCESS";
+
+			//xframeoption
+			if(top!=self){top.location=self.location;}
+
+			//session
+			if (sessionStorage.getItem('PrivateKey') === null){
+				window.location.replace('../info/Login.html');
+			}
+		</script>
+	</head>
+	<body>
+	</body>
+</html> 

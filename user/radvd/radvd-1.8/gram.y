@@ -97,6 +97,7 @@ static struct in6_addr get_prefix6(struct in6_addr const *addr, struct in6_addr 
 %token		T_AdvPreferredLifetime
 %token		T_DeprecatePrefix
 %token		T_DecrementLifetimes
+%token		T_ReferenceTime
 
 %token		T_AdvRouterAddr
 %token		T_AdvHomeAgentFlag
@@ -377,6 +378,14 @@ prefixdef	: prefixhead optional_prefixplist ';'
 					ABORT;
 				}
 
+				if (prefix->ReferenceTime < 0)
+				{
+					flog(LOG_ERR, "ReferenceTime must be "
+						"not less than 0 in %s, line %d",
+						conf_file, num_lines);
+					ABORT;
+				}
+
 				if ( prefix->if6[0] && prefix->if6to4[0]) {
 					flog(LOG_ERR, "Base6Interface and Base6to4Interface are mutually exclusive at this time.");
 					ABORT;
@@ -631,6 +640,22 @@ prefixparms	: T_AdvOnLink SWITCH ';'
 					prefix->curr_preferredlft = $2;
 			}
 		}
+
+		| T_ReferenceTime number_or_infinity ';'
+		{
+			if (prefix) {
+				if (prefix->AutoSelected) {
+					struct AdvPrefix *p = prefix;
+					do {
+						p->ReferenceTime = $2;
+						p = p->next;
+					} while (p && p->AutoSelected);
+				}
+				else
+					prefix->ReferenceTime = $2;
+			}
+		}
+
 		| T_DeprecatePrefix SWITCH ';'
 		{
 			prefix->DeprecatePrefixFlag = $2;

@@ -166,8 +166,13 @@ static void entry_to_env(const char *name, const void *data, size_t len, enum en
 	size_t buf_len = strlen(name);
 	const struct odhcp6c_entry *e = data;
 	// Worst case: ENTRY_PREFIX with iaid != 1 and exclusion
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	const size_t max_entry_len = (INET6_ADDRSTRLEN-1 + 5 + 43 + 15 + 10 +
+				      INET6_ADDRSTRLEN-1 + 11 + 1);
+#else
 	const size_t max_entry_len = (INET6_ADDRSTRLEN-1 + 5 + 22 + 15 + 10 +
 				      INET6_ADDRSTRLEN-1 + 11 + 1);
+#endif
 	char *buf = realloc(NULL, buf_len + 2 + (len / sizeof(*e)) * max_entry_len);
 	memcpy(buf, name, buf_len);
 	buf[buf_len++] = '=';
@@ -187,7 +192,12 @@ static void entry_to_env(const char *name, const void *data, size_t len, enum en
 				snprintf(&buf[buf_len], 23, ",%u,%u", e[i].valid, e[i].priority);
 				buf_len += strlen(&buf[buf_len]);
 			} else {
+			#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+				snprintf(&buf[buf_len], 44, ",%ld,%u,%u",
+					e[i].iSysUpTime, e[i].preferred, e[i].valid);
+			#else
 				snprintf(&buf[buf_len], 23, ",%u,%u", e[i].preferred, e[i].valid);
+			#endif
 				buf_len += strlen(&buf[buf_len]);
 			}
 
@@ -465,6 +475,17 @@ void script_call(const char *status, int delay, bool resume)
 		int_to_env("RA_MTU", ra_conf_mtu(0));
 		int_to_env("RA_REACHABLE", ra_conf_reachable(0));
 		int_to_env("RA_RETRANSMIT", ra_conf_retransmit(0));
+
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		size_t iRouter_len = 0;
+
+		odhcp6c_get_state(STATE_RA_ROUTER, &iRouter_len);
+		iRouter_len /= sizeof (struct odhcp6c_entry);
+		if (iRouter_len > 1) {
+			iRouter_len = 1;
+		}
+		int_to_env("RA_ROUTER_EXIST", iRouter_len);
+	#endif
 
 		char *buf = malloc(10 + passthru_len * 2);
 		strncpy(buf, "PASSTHRU=", 10);

@@ -194,6 +194,9 @@ include $(srctree)/arch/mips/Kbuild.platforms
 ifdef CONFIG_PHYSICAL_START
 load-y					= $(CONFIG_PHYSICAL_START)
 endif
+ifdef CONFIG_RALINK_MT7621
+load-y = 0xffffffff00000000+$(CONFIG_KERNEL_START_ADDR)
+endif
 entry-y				= 0x$(shell $(NM) vmlinux 2>/dev/null \
 					| grep "\bkernel_entry\b" | cut -f1 -d \ )
 

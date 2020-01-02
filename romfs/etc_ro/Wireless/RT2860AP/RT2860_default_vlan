@@ -2,6 +2,7 @@
 Default
 IcapMode=0
 WebInit=1
+nvram_version=v0.3
 HostName=Mediatek
 Login=admin
 Password=admin
@@ -665,6 +666,7 @@ remotemange_https_port=8081
 https_enable=0
 http_username=Admin
 http_passwd=
+mask_flag=0
 remotemange_https_enable=0
 remotemange_https_port=443
 firewall_filter_max_num=16

@@ -33,6 +33,7 @@ CFLAGS+=-I$(TOPDIR)zlib
 CFLAGS+=-I$(TOPDIR)include
 
 CFLAGS+=-I$(ROOTDIR)/$(LINUXDIR)/include
+CFLAGS+=-I$(ROOTDIR)/
 
 LIBNVRAM=libnvram.a
 LIBNVRAM_SHARED=libnvram.so

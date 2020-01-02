@@ -99,11 +99,11 @@ body{
 				<td id="wlanmac_5"></td>
 			</tr>
 			<tr height=40px>
-				<th>2.4GHZ regulation domain</th>
+				<th>2.4GHz country code</th>
 				<td id="domain_2"></td>
 			</tr>
 			<tr height=40px>
-				<th>5GHZ regulation domain</th>
+				<th>5GHz country code</th>
 				<td id="domain_5"></td>
 			</tr>
 			<tr height=40px>

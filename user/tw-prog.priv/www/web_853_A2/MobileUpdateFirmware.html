@@ -1,0 +1,371 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+
+<link href="/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/js/bootstrap/css/buttonv2.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/style_mobile.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPWanSettings.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPFirmware.js"></script>
+
+<script type="text/javascript">
+//xframeoption
+if(top!=self){top.location=self.location;}
+
+//mobile session
+if (sessionStorage.getItem('PrivateKey') === null){
+	window.location.replace('../info/MobileLogin.html');
+}
+
+	var HNAP = new HNAP_XML();
+
+	var Time_GetPollingFWDownload;
+	var Time_DownloadFail;
+	var Time_GetBackgroundPollingFWDownload;
+	var detectPopWindowAvailable = 0;
+
+	//event
+	$(window).on("orientationchange",function(){
+  		adjustLayout();
+	});
+	
+	$(document).ready(function(){
+		$("#mobile_ckfw_btn").click(function(){
+			GetInternetConnectionStatus();
+		});
+
+		adjustLayout();
+		GetFwInfo();
+		//startTimeout();
+	});
+
+	function adjustLayout()
+	{
+		var window_height = $(window).height();
+		var body_height = $("body").height();
+		var padding = 50;
+
+		//console.log("window_height="+window_height);
+		//console.log("body_height="+body_height);
+		//console.log("html_height="+$("html").height());
+
+
+		if(window_height < body_height + padding)
+		{
+			$("#copyright").css("top", body_height + padding);	
+			$(".black_overlay").css("height", body_height + padding+20);		
+		}
+		else
+		{
+			$("#copyright").css("top", window_height - 20);
+			$(".black_overlay").css("height", window_height);
+		}
+		//$("html").css("height", 0);
+
+	}
+
+	
+	function GetFwInfo()
+	{
+		var xml_GetFirmwareSettings = HNAP.GetXML("GetFirmwareSettings");
+		
+		var getFirmwareVersion = xml_GetFirmwareSettings.Get("GetFirmwareSettingsResponse/FirmwareVersion");
+		document.getElementById("mobile_current_fwver").innerHTML = getFirmwareVersion;
+		
+		var getFirmwareDate = xml_GetFirmwareSettings.Get("GetFirmwareSettingsResponse/FirmwareDate");
+		getFirmwareDate = getFirmwareDate.replace("T", " ");
+		document.getElementById("mobile_current_fwdate").innerHTML = getFirmwareDate;
+		
+		document.getElementById("mobile_ckfw_btn").style.display = "inline";
+	}
+
+	function getInternetStatus(trigger)
+	{
+		var dtd = $.Deferred();
+		var getCurrentInternetStatus = new SOAPGetCurrentInternetStatus();
+		var soapAction = new SOAPAction();
+		getCurrentInternetStatus.InternetStatus = trigger;
+		soapAction.sendSOAPAction("GetCurrentInternetStatus", getCurrentInternetStatus, null).done(function(obj)
+		{
+			var result = obj.GetCurrentInternetStatusResult;
+
+			if (result =="OK_CONNECTED")
+			{
+				dtd.resolve(result);
+			}
+			else if(result.indexOf("OK_DETECTING_") >= 0)
+			{
+				var sec = parseInt(result.substr(13))*1000;
+				sleep(sec).done(function(){
+					getInternetStatus(false).done(function(str){
+						dtd.resolve(str);
+					}).fail(function(){
+						dtd.reject();
+					});				
+				})
+			}
+			else	//not connected
+			{
+				dtd.reject(result);
+			}
+		}).fail(function(){
+			dtd.reject();
+		});		
+	
+		return dtd.promise();	//wait job done
+	}
+	
+	function GetInternetConnectionStatus()
+	{
+		var btn = $("#mobile_ckfw_btn");
+
+		changeTimeoutAction();
+
+		btn.addClass("active").prop("disabled", true);
+		document.getElementById("mobile_new_fwver").innerHTML = "--";
+		document.getElementById("mobile_new_fwdate").innerHTML = "--";		
+
+		getInternetStatus(true).done(function(result){
+			checkNewFirmware();
+		}).fail(function(){
+			btn.removeClass("active").prop("disabled", false);
+
+			btn.html(I18N("j", "Retry"));
+		});
+	}
+
+	function checkNewFirmware()
+	{
+		var getFirmwareStatusResponse = new SOAPGetFirmwareStatusResponse();
+		var soapAction = new SOAPAction();
+
+		soapAction.sendSOAPAction("GetFirmwareStatus", null, getFirmwareStatusResponse).done(function(obj)
+		{
+			var fwVer = obj.CurrentFWVersion;
+			var newVer = obj.LatestFWVersion;
+
+			if (fwVer < newVer)
+			{
+				$("#mobile_newfw_info").show();
+				document.getElementById("mobile_new_fwver").innerHTML = newVer;
+				document.getElementById("mobile_new_fwdate").innerHTML = obj.LatestFWVersionDate;
+				$("#mobile_ckfw_btn").html(I18N("j", "Download New Firmware")).off("click").click(function(){
+					downloadNewFirmware();
+				});
+			}
+			else
+			{
+				$("#mobile_no_new_fw").show();			
+			}
+			adjustLayout();
+			$("#mobile_ckfw_btn").removeClass("active").prop("disabled", false);
+		}).fail(function(){
+			$("#mobile_ckfw_btn").removeClass("active").prop("disabled", false);
+		});
+			
+	}
+
+	function downloadNewFirmware()
+	{
+		$("#mobile_ckfw_btn").addClass("active").prop("disabled", true).html(I18N("j", "Downloading"));
+
+		//stopGetReciprocalTime(); // Time_GetReciprocalTime = window.clearInterval(Time_GetReciprocalTime);
+
+		document.getElementById("mobile_popalert").style.display = "block";
+		$("#mobile_download_status").html(I18N("j", "Downloading") + "...0 %");
+		$("#mobile_download_icon").show();
+		detectPopWindowAvailable = 1;
+
+
+//Time_DownloadFail = self.setTimeout("fwUpgradeSuccess()", 1800);
+//		return;
+
+		var soapAction = new SOAPAction();
+		soapAction.sendSOAPAction("StartFirmwareDownload", null, null).done(function(obj)
+		{
+			if(obj.StartFirmwareDownloadResult == "OK")
+			{
+				Time_GetPollingFWDownload = self.setInterval("GetPollingFirmwareDownloadStatus()",3000);
+				Time_DownloadFail = self.setTimeout("downloadFail()", 180000);
+			}
+			else
+			{
+				downloadFail();
+			}
+		}).fail(function(){
+			downloadFail();
+		});
+	}
+	
+	function GetPollingFirmwareDownloadStatus()
+	{
+
+		var pollingFirmwareDownloadResponse = new SOAPPollingFirmwareDownloadResponse();
+		var soapAction = new SOAPAction();
+		soapAction.sendSOAPAction("PollingFirmwareDownload", null, pollingFirmwareDownloadResponse).done(function(obj)
+		{
+			$("#mobile_download_status").html(I18N("j", "Downloading") + "..."+obj.DownloadPercentage+" %");
+
+			if(obj.DownloadPercentage >= 100)
+			{
+				self.clearInterval(Time_GetPollingFWDownload);
+				self.clearTimeout(Time_DownloadFail);
+				$("#mobile_download_status").html(I18N("j", "Upgrading") + "...0 %");
+
+				var getFirmwareValidationResponse = new SOAPGetFirmwareValidationResponse();
+				var soapAction2 = new SOAPAction();
+				soapAction2.sendSOAPAction("GetFirmwareValidation", null, getFirmwareValidationResponse).done(function(obj)
+				{
+					if(obj.IsValid == "true")
+					{
+						var countdown = parseInt(obj.CountDown, 10)*1000;
+
+						self.setTimeout("fwUpgradeSuccess()",countdown);
+
+						var interval = (countdown-1)/100;
+
+						self.setTimeout("updateProgress(0,"+interval+")", interval);
+					}
+					else
+					{
+						downloadFail();
+					}
+
+				}).fail(function(){
+					downloadFail();
+				});
+			}
+
+		});
+	}
+
+	function updateProgress(counter, interval)
+	{
+		if(counter < 100)
+		{
+			var progress = counter + 1;
+			$("#mobile_download_status").html(I18N("j", "Upgrading") + "..." + progress + " %");
+			self.setTimeout("updateProgress("+ progress +","+interval+")", interval);
+		}		
+	}
+
+	function downloadFail()
+	{
+		self.clearInterval(Time_GetPollingFWDownload);
+
+		$("#mobile_download_status").html(I18N("j", "Firmware Upgrade failed!"));
+		$("#mobile_download_icon").hide();
+		$("#mobile_download_icon_fail").show();
+		$("#mobile_download_note").hide();
+		$("#mobile_download_btn").show();
+		$("#mobile_download_btn").off("click").click(function(){
+			window.location.reload();
+		});
+	}
+
+	function fwUpgradeSuccess()
+	{
+
+		$("#mobile_download_status").html(I18N("j", "Firmware Upgrade success!"));
+		$("#mobile_download_icon").hide();
+		$("#mobile_download_icon_success").show();
+		$("#mobile_download_note").hide();
+		$("#mobile_download_btn").show();
+		$("#mobile_download_btn").off("click").click(function(){
+			location.href="/";
+		});
+	}
+
+	function returnToHome()
+	{
+		location.href="/MobileHome.html";
+	}
+	
+</script>
+</head>
+
+<body>
+<div style="position:absolute;top:13px">
+<button class="btn_home" onclick="returnToHome()"><script>I18N("h", "Home");</script></button>
+</div>
+
+<div id="logo_padding" style="height:17px"></div>
+	<div class="form-group" style="text-align:center;">
+		<img src="/image/logo_2.png" width="102px" height="20px">
+	</div>
+<hr/>
+<div class="container" style="text-align:center;">
+<div style="text-align:left;height:50px">					
+	<img src="image/mobile_update_fw_on.png" width="60" height="45">	
+	<b><span class="textnormal"><script>I18N("h", "Firmware");</script></span></b>
+</div>
+<div class="list-group" style="text-align:left;">
+	<div class="list-group-item">
+		<h5 class="list-group-item-heading titleBlock"><script>I18N("h", "Current Firmware Version");</script>:</h5>
+		<span id="mobile_current_fwver" class="list-group-item-text"></span>
+	</div>
+	<div class="list-group-item">
+		<h5 class="list-group-item-heading titleBlock"><script>I18N("h", "Current Firmware Date");</script>:</h5>
+		<span id="mobile_current_fwdate" class="list-group-item-text"></span>
+	</div>
+	<div id="mobile_newfw_info" style="display:none">
+		<div class="list-group-item">
+			<h5 class="list-group-item-heading titleBlock"><script>I18N("h", "New Firmware Version");</script>:</h5>
+			<span id="mobile_new_fwver" class="list-group-item-text"></span>
+		</div>
+		<div class="list-group-item">
+			<h5 class="list-group-item-heading titleBlock"><script>I18N("h", "New Firmware Date");</script>:</h5>
+			<span id="mobile_new_fwdate" class="list-group-item-text"></span>
+		</div>
+	</div>
+	<div id="mobile_no_new_fw" style="display:none">
+		<div class="list-group-item">
+			<h4 class="list-group-item-heading"><script>I18N("h", "This firmware is the latest version.");</script></h4>
+		</div>
+	</div>
+</div> <!-- class="list-group" -->
+<div style="text-align:center;">
+	<button id="mobile_ckfw_btn" type="button" class="btn btn-lg btn-default" style="width:90%;"><script>I18N("h", "Check for New Firmware");</script></button>
+</div>
+</div> <!-- class="container" -->
+
+<div id="mobile_popalert" class="black_overlay" style="display:none">
+	<div class="popup_window_border">
+		<div class="popup_window">
+			<!-- firmware auto download -->
+			<div id="mobile_download_status" class="popup_window-headline">
+			</div>
+			<div style="position:relative;top:15%;margin:auto">
+				<img id="mobile_download_icon" src="image/loading.gif" width="62px" height="62px">
+				<img id="mobile_download_icon_success" src="image/connected.png" width="62px" height="62px" style="display:none">
+				<img id="mobile_download_icon_fail" src="image/warning.png" width="62px" height="62px" style="display:none">
+			</div>
+
+			<div class="textsmall" style="position:absolute;bottom:20px;width:100%">
+				<span id="mobile_download_note"><script>I18N("h", "Please do not close the browser while the firmware is being downloaded!");</script></span>
+				<button id="mobile_download_btn" class="btn btn-default" style="position:relative;width:80%;display:none"><script>I18N("h", "OK");</script></button>
+			</div>
+		</div>
+	</div>
+</div> <!-- id="mobile_popalert" -->
+
+<div id="copyright" class="copyright">
+	<script>I18N("h", "COPYRIGHT");</script>
+</div>
+</body>
+</html> 

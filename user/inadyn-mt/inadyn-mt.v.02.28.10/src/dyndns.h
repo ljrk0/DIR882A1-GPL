@@ -78,8 +78,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifdef PRODUCT_DIR878
 #define DYNDNS_AGENT_NAME	"D-Link DIR-878"
-#else if defined(PRODUCT_DIR882)
+#elif defined(PRODUCT_DIR882)
 #define DYNDNS_AGENT_NAME	"D-Link DIR-882"
+#elif defined(PRODUCT_DIR867)
+#define DYNDNS_AGENT_NAME	"D-Link DIR-867"
+#elif defined(PRODUCT_DIR853_A2) || defined(PRODUCT_DIR853_A1)
+#define DYNDNS_AGENT_NAME	"D-Link DIR-853"
 #endif
 
 #define DYNDNS_EMAIL_ADDR	"bhoover@wecs.com"

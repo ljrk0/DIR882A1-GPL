@@ -8,7 +8,7 @@
  */
 
 #define NR_PAGEFLAGS 22 /* __NR_PAGEFLAGS	 # */
-#define MAX_NR_ZONES 2 /* __MAX_NR_ZONES	 # */
+#define MAX_NR_ZONES 3 /* __MAX_NR_ZONES	 # */
 #define NR_PCG_FLAGS 3 /* __NR_PCG_FLAGS	 # */
 
 #endif

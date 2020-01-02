@@ -4,8 +4,14 @@ SRCDIR=inadyn-mt.v.02.28.10
 
 ifeq ($(CONFIG_CUSTOM_PRODUCT), "DIR-882")
 CFLAGS += -DPRODUCT_DIR882
-else ifeq($(CONFIG_CUSTOM_PRODUCT), "DIR-878") 
+else ifeq ($(CONFIG_CUSTOM_PRODUCT), "DIR-878") 
 CFLAGS += -DPRODUCT_DIR878
+else ifeq ($(CONFIG_CUSTOM_PRODUCT), "DIR-867") 
+CFLAGS += -DPRODUCT_DIR867
+else ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A2") 
+CFLAGS += -DPRODUCT_DIR853_A2
+else ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A1") 
+CFLAGS += -DPRODUCT_DIR853_A1
 endif
 
 .PHONY: all build clean
@@ -19,8 +25,7 @@ init:
 		--build=i686-linux \
 		--target=$(CROSS_TOOL) \
 		--host=$(CROSS_TOOL) \
-		-disable-sound \ 
-
+		-disable-sound \
 build:
 	cd $(SRCDIR); \
 	make all

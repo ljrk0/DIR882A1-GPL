@@ -33,7 +33,8 @@ PATH: /usr/bin
 PATH: /usr/local/sbin
 PATH: /usr/sbin
 PATH: /sbin
-PATH: /home/guohongliang/work/new882/trunk/GPL_Code/source/tools
+PATH: /home/xieshijing/bin
+PATH: /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/tools
 
 
 ## ----------- ##
@@ -4175,7 +4176,7 @@ configure:18703: $? = 0
 configure:18710: result: yes
 configure:18718: checking for getopt optreset variable
 configure:18735: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  >&5
-/tmp/ccuYjPhY.o: In function `main':
+/tmp/ccGeioDp.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `optreset'
 collect2: ld returned 1 exit status
 configure:18735: $? = 1
@@ -4854,7 +4855,7 @@ configure:20689: $? = 0
 configure:20689: result: yes
 configure:20717: checking for _fstati64
 configure:20717: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  -lpthread >&5
-/tmp/cckcBWma.o: In function `main':
+/tmp/ccMyHVQ7.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `_fstati64'
 conftest.c:(.text.startup+0x18): undefined reference to `_fstati64'
 collect2: ld returned 1 exit status
@@ -4975,7 +4976,7 @@ configure: failed program was:
 configure:20717: result: no
 configure:20717: checking for backtrace
 configure:20717: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  -lpthread >&5
-/tmp/cclAfWt7.o: In function `main':
+/tmp/ccEjiWI9.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `backtrace'
 conftest.c:(.text.startup+0x18): undefined reference to `backtrace'
 collect2: ld returned 1 exit status
@@ -5096,7 +5097,7 @@ configure: failed program was:
 configure:20717: result: no
 configure:20717: checking for backtrace_symbols
 configure:20717: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  -lpthread >&5
-/tmp/cczyb7fc.o: In function `main':
+/tmp/ccNtaVe7.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `backtrace_symbols'
 conftest.c:(.text.startup+0x18): undefined reference to `backtrace_symbols'
 collect2: ld returned 1 exit status
@@ -5217,7 +5218,7 @@ configure: failed program was:
 configure:20717: result: no
 configure:20717: checking for directio
 configure:20717: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  -lpthread >&5
-/tmp/ccJC6c9f.o: In function `main':
+/tmp/cczui8r8.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `directio'
 conftest.c:(.text.startup+0x18): undefined reference to `directio'
 collect2: ld returned 1 exit status
@@ -5391,7 +5392,7 @@ configure:20717: $? = 0
 configure:20717: result: yes
 configure:20717: checking for pstat_getdynamic
 configure:20717: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  -lpthread >&5
-/tmp/ccX2BFTd.o: In function `main':
+/tmp/ccFYfWuc.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `pstat_getdynamic'
 conftest.c:(.text.startup+0x18): undefined reference to `pstat_getdynamic'
 collect2: ld returned 1 exit status
@@ -5529,7 +5530,7 @@ configure:20717: $? = 0
 configure:20717: result: yes
 configure:20717: checking for pthread_yield
 configure:20717: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  -lpthread >&5
-/tmp/ccMkE57g.o: In function `main':
+/tmp/ccBr3Xuk.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `pthread_yield'
 conftest.c:(.text.startup+0x18): undefined reference to `pthread_yield'
 collect2: ld returned 1 exit status
@@ -5706,7 +5707,7 @@ configure:20717: $? = 0
 configure:20717: result: yes
 configure:20717: checking for yield
 configure:20717: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  -lpthread >&5
-/tmp/cc09Ziba.o: In function `main':
+/tmp/ccEIimgW.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `yield'
 conftest.c:(.text.startup+0x18): undefined reference to `yield'
 collect2: ld returned 1 exit status

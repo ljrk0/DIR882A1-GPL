@@ -1,0 +1,452 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+
+<head>
+<title>D-LINK</title>
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link href="/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/css/style_pages.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>	
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/RGraph.common.core.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/RGraph.line.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/excanvas.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPStatistic.js"></script>
+<script type="text/javascript">
+//xframeoption
+if(top!=self){top.location=self.location;}
+
+//session
+if (sessionStorage.getItem('PrivateKey') === null){
+	window.location.replace('../info/Login.html');
+}
+
+var soapAction = new SOAPAction();
+var statisticObj = {};
+var rateObj = {};
+var nowTab = "WAN";
+var cvs_column = 0; //0-17
+
+	$(document).ready(function() {
+ 		LoadHeader();
+		initialMenu();
+		initialDetectRouterConnection();
+		setMenu("menu_Management");
+
+		DrawLine("cvs_table");//line table
+		initRate();
+		GetStatistics();
+		$("#wan_tab").addClass("select");
+		startTimeout();
+	});
+		
+	function LoadHeader()
+		{
+		$("#header").load("header.html");			
+		}
+	
+	function initRate()
+	{
+		rateObj["WAN"] = new RateInfo();
+		rateObj["LAN"] = new RateInfo();
+		rateObj["WLAN2.4G"] = new RateInfo();
+		rateObj["WLAN5G"] = new RateInfo();
+	}
+	
+	function RateInfo_Detail()
+	{
+		this.rate = 0;
+		this.last_byte = 0;
+		this.array = RGraph.array_pad([], 17);
+		this.avg = 0;
+		this.pkt = 0;
+	}
+	
+	function RateInfo()
+	{
+		this.tx_detail = new RateInfo_Detail();
+		this.rx_detail = new RateInfo_Detail();
+		this.top_rate = 100;
+		this.session = 0;
+	};
+	
+	function SwitchTab(whichTab)
+	{
+		$("#wan_tab, #lan_tab, #wifi_tab, #wifi_5g_tab").removeClass("select");
+	
+		switch(whichTab)
+		{
+			case 'wan':
+				nowTab = "WAN";
+				break;
+			case 'lan':
+				nowTab = "LAN";
+				break;
+			case 'wifi':
+				nowTab = "WLAN2.4G";
+				break;
+			case 'wifi_5g':
+				nowTab = "WLAN5G";
+				break;
+	}
+		
+		$("#"+whichTab+"_tab").addClass("select");
+		SetRateRange();
+		showStatistics();
+		DrawGraph();
+		changeTimeoutAction();
+	}
+	
+	function DrawLine(whichCVS)
+	{
+		var line = new RGraph.Line(whichCVS, RGraph.array_pad([]));
+		line.Draw();
+	}
+	
+	function GetStatistics()
+	{
+		var getWANInfo = new SOAPGetInterfaceStatistics();
+		var getWANInfoResponse = new SOAPGetInterfaceStatisticsResponse();
+		getWANInfo.Interface = "WAN";
+		
+		
+		var getLANInfo = new SOAPGetInterfaceStatistics();
+		var getLANInfoResponse = new SOAPGetInterfaceStatisticsResponse();
+		getLANInfo.Interface = "LAN";
+		
+		var getWLAN24gInfo = new SOAPGetInterfaceStatistics();
+		var getWLAN24gInfoResponse = new SOAPGetInterfaceStatisticsResponse();
+		getWLAN24gInfo.Interface = "WLAN2.4G";
+		
+		var getWLAN5gInfo = new SOAPGetInterfaceStatistics();
+		var getWLAN5gInfoResponse = new SOAPGetInterfaceStatisticsResponse();
+		getWLAN5gInfo.Interface = "WLAN5G";
+		
+		soapAction.SetMultipleSOAP("GetInterfaceStatistics", getWANInfo, getWANInfoResponse);
+		soapAction.SetMultipleSOAP("GetInterfaceStatistics", getLANInfo, getLANInfoResponse);
+		soapAction.SetMultipleSOAP("GetInterfaceStatistics", getWLAN24gInfo, getWLAN24gInfoResponse);
+		soapAction.SetMultipleSOAP("GetInterfaceStatistics", getWLAN5gInfo, getWLAN5gInfoResponse);
+
+		soapAction.SendMultipleSOAPAction("GetMultipleHNAPs").done(function(obj){
+				for(var i in obj[0].outputObj){
+					var infoObj = obj[0].outputObj[i];
+					statisticObj[infoObj.Interface] = infoObj.InterfaceStatistics.StatisticInfo;
+				}
+				
+				if(cvs_column<17)	{	cvs_column++;	}
+				
+				getRateObj("WAN");
+				getRateObj("LAN");
+				getRateObj("WLAN2.4G");
+				getRateObj("WLAN5G");
+				
+				SetRateRange();
+				DrawGraph();
+				showStatistics();
+		});
+		
+		setTimeout("GetStatistics()", 1000);
+	}
+
+	// covert number xxxyyy to xxx,yyy format
+	function number_format(n) {
+    	n += "";
+    	var arr = n.split(".");
+    	var re = /(\d{1,3})(?=(\d{3})+$)/g;
+    	return arr[0].replace(re,"$1,") + (arr.length == 2 ? "."+arr[1] : "");
+	}
+
+	function showStatistics()
+	{
+		$("#tx_pkt_info").html(number_format(rateObj[nowTab].tx_detail.pkt));
+		$("#tx_byte_info").html(number_format(rateObj[nowTab].tx_detail.last_byte));
+		$("#tx_rate_info").html(number_format(Math.round(rateObj[nowTab].tx_detail.avg)));
+		$("#rx_pkt_info").html(number_format(rateObj[nowTab].rx_detail.pkt));
+		$("#rx_byte_info").html(number_format(rateObj[nowTab].rx_detail.last_byte));
+		$("#rx_rate_info").html(number_format(Math.round(rateObj[nowTab].rx_detail.avg)));
+		$("#session_info").html(rateObj[nowTab].session);
+	}
+
+	function caculateRateObj(obj, bit)
+	{
+		if (obj.last_byte > 0){
+			obj.rate = Math.abs(Math.ceil(bit / 1024) - obj.last_byte);
+		}else{
+			obj.rate = 0;
+		}
+		obj.last_byte = Math.ceil(bit / 1024);
+
+		if(obj.rate < 0){	
+			obj.rate = 0;
+		}
+		
+		obj.array = [obj.rate].concat(obj.array);
+		var pop = obj.array.pop();
+		
+		if(cvs_column<=1){
+			obj.avg = obj.array[0];
+		}
+		else if (pop == null){  //column<=16 & ==17
+			obj.avg = (obj.avg * (cvs_column-1)+ obj.array[0] ) / cvs_column;
+		}
+		else { //column>=17
+			obj.avg = (obj.avg * cvs_column + obj.array[0] - pop) / cvs_column;
+			}
+	}
+
+	function getRateObj(Tab)
+	{
+		var rx_bit = 0;
+		var tx_bit = 0;
+
+		rateObj[Tab].rx_detail.pkt = parseInt(statisticObj[Tab].RXPackets);
+		rx_bit = parseInt(statisticObj[Tab].Received);
+		rateObj[Tab].tx_detail.pkt = parseInt(statisticObj[Tab].TXPackets);
+		tx_bit = parseInt(statisticObj[Tab].Sent);
+		
+		caculateRateObj(rateObj[Tab].rx_detail, rx_bit);
+		caculateRateObj(rateObj[Tab].tx_detail, tx_bit);
+		
+		rateObj[Tab].session = parseInt(statisticObj[Tab].Session);
+		
+		InitTopRate(Tab);
+	}
+
+	function DrawGraph()
+	{
+		RGraph.Clear(document.getElementById("cvs_table"));
+		RGraph.ObjectRegistry.Clear();
+
+		rateObj[nowTab].tx_detail.array = reverse(rateObj[nowTab].tx_detail.array);
+		rateObj[nowTab].rx_detail.array = reverse(rateObj[nowTab].rx_detail.array);
+		
+		var tx_line = new RGraph.Line("cvs_table", rateObj[nowTab].tx_detail.array);
+		tx_line.Set('chart.colors', ['blue']);
+		tx_line.Set('chart.linewidth', 2);
+		tx_line.Set('chart.filled', false);
+		tx_line.Set('chart.fillstyle', 'rgba(0,0,128,0)');
+		tx_line.Set('chart.ymax', rateObj[nowTab].top_rate);
+		tx_line.Set('chart.numxticks', 5);
+		
+		var rx_line = new RGraph.Line("cvs_table", rateObj[nowTab].rx_detail.array);
+		rx_line.Set('chart.colors', ['red']);
+		rx_line.Set('chart.linewidth', 2);
+		rx_line.Set('chart.filled', false);
+		rx_line.Set('chart.fillstyle', 'rgba(255,0,0,0)');
+		rx_line.Set('chart.ymax', rateObj[nowTab].top_rate);
+		rx_line.Set('chart.numxticks', 5);
+		
+		tx_line.Draw();
+		rx_line.Draw();
+		
+		rateObj[nowTab].tx_detail.array = reverse(rateObj[nowTab].tx_detail.array);
+		rateObj[nowTab].rx_detail.array = reverse(rateObj[nowTab].rx_detail.array);
+	}
+
+	function InitTopRate(Tab)
+	{
+		var new_rx_top = (Math.round(rateObj[Tab].rx_detail.avg) + 50 - (Math.round(rateObj[Tab].rx_detail.avg) % 50))  *2;
+		if(new_rx_top <= 100)	{	new_rx_top = 100;	}
+		
+		var new_tx_top = (Math.round(rateObj[Tab].tx_detail.avg) + 50 - (Math.round(rateObj[Tab].tx_detail.avg) % 50))  *2;
+		if(new_tx_top <= 100)	{	new_tx_top = 100;	}
+		
+		rateObj[Tab].top_rate = Math.max(new_rx_top, new_tx_top);
+	}
+	
+	function SetRateRange()
+	{
+		var whichRate = rateObj[nowTab].top_rate;
+		
+		$("#info_rate1").html(whichRate + " KB/s");
+		$("#info_rate2").html(parseInt(whichRate * 3 / 4) + " KB/s");
+		$("#info_rate3").html(parseInt(whichRate / 2) + " KB/s");
+		$("#info_rate4").html(parseInt(whichRate * 1 / 4) + " KB/s");
+	}
+	
+	function reverse(arr)
+	{
+		var newArr = new Array();
+		
+		for(var i = arr.length - 1; i >= 0; i--)
+		{
+			newArr.push(arr[i]);	
+		}
+		
+		return newArr;
+	}
+	
+	function GetMaxRate(whichRate)
+	{
+		var rate = 0;
+		
+		for(var i = whichRate.length - 1; i >= 0; i--)	
+		{
+			if(whichRate[i] > rate)
+			{
+				rate = whichRate[i];	
+			}
+		}
+		
+		return rate;
+	}
+	
+	function ClearStatistics()
+	{
+		changeTimeoutAction();
+		
+		var soapAction = new SOAPAction();
+		soapAction.sendSOAPAction("ClearStatistics", null);
+	}
+</script>
+<style>
+	/*.nav-tabs.nav-justified > li > a {
+		border-bottom: 0px solid;
+		border-radius: 15px 15px 0 0;
+		color : #fff;
+		background: #88ccdd;
+		border-color: #66b2c2;
+	}
+	.nav-tabs.nav-justified > li >a:hover {
+		border-color: #66b2c2;
+		background: #66b2c2;
+		color : #fff;
+	}
+	.nav-tabs.nav-justified > .select > a {
+		background: #4398ad;
+		border-color: #4398ad;
+	}
+	.nav-tabs.nav-justified > .select > a:hover {
+		background: #35889d;
+		border-color: #35889d;
+	}*/
+	#main {
+		font: 11pt/normal Arial;
+		font-size-adjust: none;
+		font-stretch: normal;
+		margin-top : 20px;
+	}
+	.nav-tabs > li > a {
+		border-bottom: 0px solid;
+		/*border-radius: 15px 15px 0 0;*/
+		border-top-left-radius: 0px;
+		border-top-right-radius: 15px;
+		color : #fff;
+		background: #88ccdd;
+		border-color: #66b2c2;
+		cursor: pointer;
+	}
+	.nav-tabs > li > a:hover {
+		border-color: #66b2c2;
+		background: #66b2c2;
+		color : #fff;
+	}
+	.nav-tabs > .select > a {
+		background: #4398ad;
+		border-color: #4398ad;
+	}
+	.nav-tabs > .select > a:hover {
+		background: #35889d;
+		border-color: #35889d;
+	}
+</style>
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header"></div>
+		<div id="menu"></div>
+		<div id="menu_edge"></div>
+		<!-- Content --> 
+		<div id="content">
+			<!-- info --> 
+	  		<div id="info"> 
+				<div id="FunctionName"><script>I18N("h", "Statistics");</script></div>
+				<div id="wallimage"><img width="195" height="119" src="image/page_Statistic.png"></div>
+		    	<div id="directions">
+		    		<script>I18N("h", "This page gives you various statistics about data transmitted and received by your router through the Internet, on your wired network (LAN), and through your wireless networks.");</script>
+		    	</div>
+			</div>
+			<div id="funcBar">		
+				<div id="pagePath"><script>I18N("h", "Management");</script> >> <script>I18N("h", "Statistics");</script></div>
+				<ul id="rightFunc">
+					<li style="display:block"><div id="Save_btn" onclick="ClearStatistics()" style="cursor:pointer"><script>I18N("h", "Clear");</script></div></li> 
+					<li style="display:block"><div id="Save_Disable_btn" style="display:none"><script>I18N("h", "Clear");</script></div></li>
+				</ul>
+			</div>
+			<!-- main --> 
+			<div id="main">
+				<div id="tab_switch">
+					<!-- <ul class="nav nav-tabs nav-justified"> -->
+					<ul class="nav nav-tabs">
+						<li id="wan_tab" onclick="SwitchTab('wan');"><a><script>I18N("h", "Internet");</script></a></li>
+						<li id="lan_tab" onclick="SwitchTab('lan');"><a><script>I18N("h", "LAN");</script></a></li>
+						<li id="wifi_tab" onclick="SwitchTab('wifi');"><a><script>I18N("h", "Wi-Fi 2.4GHz");</script></a></li> 
+						<li id="wifi_5g_tab" onclick="SwitchTab('wifi_5g');"><a><script>I18N("h", "Wi-Fi 5GHz");</script></a></li>
+					</ul>		
+				</div>
+				<div id="chart_section">
+					<table class="" ondragstart="return false" onselectstart="return false">
+						<tbody>
+							<tr>
+								<td><canvas id="cvs_table" width="750" height="300">[No canvas support]</canvas></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="sta_unit" id="wf_unit"><script>I18N("h", "Sec");</script></div>
+				<center><div id="NotSupport_Message" style="display:none"><label style="color:#FF0000"><script>I18N("h", "Information: Your browser is not support HTML5, please upgrade your browser.");</script></label></div></center>
+				<div>
+					<table id="statistic_info" bordercolor="#66b2c2" border="0" width="800" style="border-collapse: collapse;">
+					<tr>
+						<td></td>
+							<td><font color="#4598aa"><script>I18N("h", "Total Packets");</script></font></td>
+							<td><font color="#4598aa"><script>I18N("h", "Total KByte(s)");</script></font></td>
+							<td><font color="#4598aa"><script>I18N("h", "KByte/sec");</script></font></td>
+						</tr>
+						<tr id="tx_info" style="height:35px;">
+							<td style="text-align: left; width : 100px;"><font color="#0000ff"><script>I18N("h", "Sent (Tx)");</script>:</font></td>
+							<td style="border: 1px solid #66b2c2;"><span id="tx_pkt_info">0</span></td>
+							<td style="border: 1px solid #66b2c2;"><span id="tx_byte_info">0</span></td>
+							<td style="border: 1px solid #66b2c2;"><span id="tx_rate_info">0</span></td>
+							<td>
+								<table bordercolor="#66b2c2" border="0" width="80" height="35" align="center" style="text-align: center;"><td><font color="#4598aa"><script>I18N("h", "Session");</script></font></td></table>
+							</td>
+						</tr>
+						<tr id="rx_info" style="height:35px;">
+							<td style="text-align: left; width : 100px;" nowrap><font color="#ff0000"><script>I18N("h", "Received (Rx)");</script>:</font></td>
+							<td style="border: 1px solid #66b2c2;"><span id="rx_pkt_info">0</span></td>
+							<td style="border: 1px solid #66b2c2;"><span id="rx_byte_info">0</span></td>
+							<td style="border: 1px solid #66b2c2;"><span id="rx_rate_info">0</span></td>
+							<td style="float: center;"	>
+								<table bordercolor="#66b2c2" border="0" width="80" height="35" align="center" style="text-align: center;"><td td style="border: 1px solid #66b2c2;"><span id="session_info">0</span></td></table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<!-- Rate -->
+				<div id="info_rate1"><span id="info_rate1_tab">100</span> KB/s</div>
+				<div id="info_rate2"><span id="info_rate2_tab">75</span> KB/s</div>
+				<div id="info_rate3"><span id="info_rate3_tab">50</span> KB/s</div>
+				<div id="info_rate4"><span id="info_rate4_tab">25</span> KB/s</div>
+			</div>
+		</div>
+		<br />
+		<br />
+		<br />
+		<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+		<div id="DetectRouterConnection" style="display:none"></div>
+		<div id="footer" border="0">
+			<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>
+		</div>
+		<br>
+	</div>
+</body>
+</html> 

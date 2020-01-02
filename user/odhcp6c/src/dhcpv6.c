@@ -35,6 +35,9 @@
 #include "odhcp6c.h"
 #include "md5.h"
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+#include <sys/sysinfo.h>
+#endif
 
 #define ALL_DHCPV6_RELAYS {{{0xff, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,\
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x02}}}
@@ -72,10 +75,29 @@ static reply_handler dhcpv6_handle_rebind_reply;
 static reply_handler dhcpv6_handle_reconfigure;
 static int dhcpv6_commit_advert(void);
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+static long getSysUpTime(void);
+static void replace_one_state_with_another(
+							enum odhcp6c_state state1,
+							enum odhcp6c_state state2);
+static void update_one_state_to_another(
+							enum odhcp6c_state state1,
+							enum odhcp6c_state state2,
+							uint32_t safe,
+							bool filterexcess);
+#endif
+
 #ifdef TW_DHCPV6_EXT
 // 保存最新的dhcpv6 reply信息，作为本次初始值永久保存。原来state里面的值会动态更新，导致无法把初始值写到环境变量中。
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+struct odhcp6c_entry g_dhcpv6replyentry = {IN6ADDR_ANY_INIT, 0, 0, 0,
+		IN6ADDR_ANY_INIT, 0, 0, 0, 0, 0, 0};
+#else
 struct odhcp6c_entry g_dhcpv6replyentry = {IN6ADDR_ANY_INIT, 0, 0, 0,
 		IN6ADDR_ANY_INIT, 0, 0, 0, 0, 0};
+#endif
+
 #endif
 
 // RFC 3315 - 5.5 Timeout and Delay values
@@ -933,6 +955,21 @@ static int dhcpv6_handle_reply(enum dhcpv6_msg orig, _unused const int rc,
 		odhcp6c_clear_state(STATE_IA_PD);
 	}
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	/*
+	  * 1. The 'renew' packet will carry all PDs have received.
+	  * 2. In order to discard those PDs, which in renew packet but not in reply,
+	  *   move all local PDs to backup here.
+	  * 3. solve the problem that old PD is still in use when the delegated prefix
+	  *   changes after renew.
+	  * 2017-08-11 --liushenghui
+	*/
+	if (DHCPV6_MSG_RENEW == orig) {
+		replace_one_state_with_another(STATE_IA_PD_BAK, STATE_IA_PD);
+		odhcp6c_clear_state(STATE_IA_PD);
+	}
+#endif
+
 	if (opt) {
 		odhcp6c_clear_state(STATE_DNS);
 		odhcp6c_clear_state(STATE_SEARCH);
@@ -1134,6 +1171,26 @@ static int dhcpv6_handle_reply(enum dhcpv6_msg orig, _unused const int rc,
 
 		t1 = refresh;
 	}
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	/*
+	  * 1. It need to restore the previous PDs from backup if
+	  *   a error occurs in parsing of PDs in reply packet.
+	  * 2. the next 'renew' need the previous PDs.
+	  * 2017-08-11 --liushenghui
+	*/
+	if (DHCPV6_MSG_RENEW == orig && ret <= 0) {
+		const uint8_t * prefix = NULL;
+		size_t prefix_len = 0;
+
+		prefix = odhcp6c_get_state(STATE_IA_PD_BAK, &prefix_len);
+
+		if (prefix_len > 0) {
+			odhcp6c_clear_state(STATE_IA_PD);
+			odhcp6c_add_state(STATE_IA_PD, prefix, prefix_len);
+		}
+	}
+	odhcp6c_clear_state(STATE_IA_PD_BAK);
+#endif
 
 	return ret;
 }
@@ -1155,8 +1212,13 @@ static int dhcpv6_parse_ia(void *opt, void *end)
 
 	// Update address IA
 	dhcpv6_for_each_option(&ia_hdr[1], end, otype, olen, odata) {
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		struct odhcp6c_entry entry = {IN6ADDR_ANY_INIT, 0, 0, 0,
+				IN6ADDR_ANY_INIT, 0, 0, 0, 0, 0, 0};
+	#else
 		struct odhcp6c_entry entry = {IN6ADDR_ANY_INIT, 0, 0, 0,
 				IN6ADDR_ANY_INIT, 0, 0, 0, 0, 0};
+	#endif
 
 		entry.iaid = ia_hdr->iaid;
 
@@ -1223,6 +1285,9 @@ static int dhcpv6_parse_ia(void *opt, void *end)
 			}
 
 			if (ok) {
+			#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+				entry.iSysUpTime = getSysUpTime();
+			#endif
 				odhcp6c_update_entry(STATE_IA_PD, &entry, 0, false);
 				parsed_ia++;
 			}
@@ -1364,8 +1429,28 @@ static void dhcpv6_handle_ia_status_code(const enum dhcpv6_msg orig,
 		switch (orig) {
 		case DHCPV6_MSG_RENEW:
 		case DHCPV6_MSG_REBIND:
+		#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+			/*
+			  * 1. It need to restore the previous PDs from backup and
+			  *   update PDs have been parsed success if a error occurs
+			  *   in parsing of PDs in reply packet.
+			  * 2. the next 'request' need these PDs.
+			  * 2017-08-11 --liushenghui
+			*/
+			if ((*ret > 0) && !handled_status_codes[code]) {
+				if (DHCPV6_MSG_RENEW == orig) {
+					update_one_state_to_another(STATE_IA_PD,
+						STATE_IA_PD_BAK, 0, false);
+					replace_one_state_with_another(STATE_IA_PD,
+						STATE_IA_PD_BAK);
+					odhcp6c_clear_state(STATE_IA_PD_BAK);
+				}
+				*ret = dhcpv6_request(DHCPV6_MSG_REQUEST);
+			}
+		#else
 			if ((*ret > 0) && !handled_status_codes[code])
 				*ret = dhcpv6_request(DHCPV6_MSG_REQUEST);
+		#endif
 			break;
 
 		default:
@@ -1470,3 +1555,65 @@ int dhcpv6_promote_server_cand(void)
 
 	return ret;
 }
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+static long getSysUpTime(void)
+{
+    struct sysinfo info;
+
+    if (sysinfo(&info) < 0) {
+        fprintf(stderr, "sysinfo fail, errno=%d, err: %s\n",
+            errno, strerror(errno));
+
+	return 0;
+    }
+
+    return info.uptime;
+}
+
+/*
+  * 1. replace contents of a state with another's 
+  *     which hold the same type of data.
+  * 2017-08-11 --liushenghui
+*/
+static void replace_one_state_with_another(
+							enum odhcp6c_state state1,
+							enum odhcp6c_state state2)
+{
+	const uint8_t * prefix = NULL;
+	size_t prefix_len = 0;
+
+	prefix = odhcp6c_get_state(state2, &prefix_len);
+	odhcp6c_clear_state(state1);
+	odhcp6c_add_state(state1, prefix, prefix_len);
+}
+
+/*
+  * 1. used to update contents of a state to another 
+  *     which hold the same type of data.
+  * 2. only apply to those states without auxiliary data.
+  * 2017-08-11 --liushenghui
+*/
+static void update_one_state_to_another(
+							enum odhcp6c_state state1,
+							enum odhcp6c_state state2,
+							uint32_t safe,
+							bool filterexcess)
+{
+	struct odhcp6c_entry * pEntry = NULL;
+	size_t IEntryNum = 0;
+	size_t i = 0;
+
+	pEntry = odhcp6c_get_state(state1, &IEntryNum);
+	if (NULL == pEntry)
+		return;
+
+	IEntryNum /= sizeof (struct odhcp6c_entry);
+
+	for (i = 0 ; i < IEntryNum ; ++i) {
+		odhcp6c_update_entry(state2, &pEntry[i], safe, filterexcess);
+	}
+}
+
+#endif
+

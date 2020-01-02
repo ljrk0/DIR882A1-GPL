@@ -17,17 +17,17 @@ ldso/ldso/ldso.oS: ldso/ldso/ldso.c include/libc-symbols.h \
  include/bits/uClibc_page.h include/sys/param.h include/limits.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
  include/bits/posix1_lim.h include/bits/local_lim.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
  include/bits/uClibc_local_lim.h include/bits/posix2_lim.h \
  include/bits/xopen_lim.h include/bits/stdio_lim.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
  ldso/include/dl-syscall.h include/sys/syscall.h include/bits/sysnum.h \
  include/bits/syscalls.h include/errno.h include/bits/errno.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
  include/bits/syscalls-common.h ldso/ldso/mips/dl-syscalls.h \
  include/bits/mman.h include/bits/kernel_stat.h ldso/include/dl-string.h \
  ldso/ldso/mips/dl-sysdep.h include/elf.h include/stdint.h \
@@ -122,7 +122,7 @@ include/bits/posix1_lim.h:
 
 include/bits/local_lim.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
 
 include/bits/uClibc_local_lim.h:
 
@@ -132,11 +132,11 @@ include/bits/xopen_lim.h:
 
 include/bits/stdio_lim.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
 
 ldso/include/dl-syscall.h:
 
@@ -150,11 +150,11 @@ include/errno.h:
 
 include/bits/errno.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
 
 include/bits/syscalls-common.h:
 
@@ -205,4 +205,4 @@ ldso/ldso/dl-array.c:
 ldso/ldso/dl-hash.c:
 
 ldso/ldso/dl-elf.c:
-cmd_ldso_ldso_ldso.oS := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c ldso/ldso/ldso.c -o ldso/ldso/ldso.oS -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -DSHARED -DNOT_IN_libc -DIS_IN_rtld -fno-stack-protector -fno-omit-frame-pointer -Ildso/ldso/mips -Ildso/include -Ildso/ldso -DUCLIBC_RUNTIME_PREFIX=\"/home/guohongliang/work/new882/trunk/GPL_Code/source/romfs/\" -DUCLIBC_LDSO=\"ld-uClibc.so.0\" -DLDSO_ELFINTERP=\"mips/elfinterp.c\" -DNOT_IN_libc -DIS_IN_rtld -fno-stack-protector -fno-omit-frame-pointer -Ildso/ldso/mips -Ildso/include -Ildso/ldso -DUCLIBC_RUNTIME_PREFIX=\"/home/guohongliang/work/new882/trunk/GPL_Code/source/romfs/\" -DUCLIBC_LDSO=\"ld-uClibc.so.0\" -MT ldso/ldso/ldso.oS -MD -MP -MF ldso/ldso/.ldso.oS.dep
+cmd_ldso_ldso_ldso.oS := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c ldso/ldso/ldso.c -o ldso/ldso/ldso.oS -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -DSHARED -DNOT_IN_libc -DIS_IN_rtld -fno-stack-protector -fno-omit-frame-pointer -Ildso/ldso/mips -Ildso/include -Ildso/ldso -DUCLIBC_RUNTIME_PREFIX=\"/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/romfs/\" -DUCLIBC_LDSO=\"ld-uClibc.so.0\" -DLDSO_ELFINTERP=\"mips/elfinterp.c\" -DNOT_IN_libc -DIS_IN_rtld -fno-stack-protector -fno-omit-frame-pointer -Ildso/ldso/mips -Ildso/include -Ildso/ldso -DUCLIBC_RUNTIME_PREFIX=\"/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/romfs/\" -DUCLIBC_LDSO=\"ld-uClibc.so.0\" -MT ldso/ldso/ldso.oS -MD -MP -MF ldso/ldso/.ldso.oS.dep

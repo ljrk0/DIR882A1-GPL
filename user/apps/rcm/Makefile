@@ -9,14 +9,20 @@ ifeq ($(CONFIG_USER_STUPID_FTPD), y)
 CFLAGS += -D__CONFIG_FTP__
 endif 
 NVDIR = $(ROOTDIR)/lib/libnvram
-CFLAGS += -I$(NVDIR) -I$(ROOTDIR)/$(LINUXDIR)/drivers/char -I$(ROOTDIR)/user/apps/include -I$(ROOTDIR)/$(LINUXDIR)/include -I$(ROOTDIR)/user/apps/rcm -I$(ROOTDIR)/user/openssl-1.0.2j/include
+CFLAGS += -I$(NVDIR) -I$(ROOTDIR)/$(LINUXDIR)/drivers/char -I$(ROOTDIR)/user/apps/include -I$(ROOTDIR)/$(LINUXDIR)/include -I$(ROOTDIR)/config -I$(ROOTDIR)/user/apps/rcm -I$(ROOTDIR)/user/openssl-1.0.2j/include
 CFLAGS +=  -fPIC
 LDFLAGS += -lnvram -L$(ROOTDIR)/user/openssl-1.0.2j/ -lssl -lcrypto
 
 ifeq ($(CONFIG_CUSTOM_PRODUCT), "DIR-882")
 CFLAGS += -DPRODUCT_DIR882
-else ifeq($(CONFIG_CUSTOM_PRODUCT), "DIR-878") 
+else ifeq ($(CONFIG_CUSTOM_PRODUCT), "DIR-878") 
 CFLAGS += -DPRODUCT_DIR878
+else ifeq ($(CONFIG_CUSTOM_PRODUCT), "DIR-867") 
+CFLAGS += -DPRODUCT_DIR867
+else ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A2")
+CFLAGS += -DPRODUCT_DIR853_A2
+else ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A1")
+CFLAGS += -DPRODUCT_DIR853_A1
 endif
 
 OBJS += ../ifaddrs.o
@@ -64,7 +70,7 @@ librcm.so: $(OBJS)
 %.o: .%.depend
 .%.depend: %.c
 	$(CC) $(CFLAGS) -M $< > $@
-
+	
 romfs:
 	#$(RM) $(ROOTDIR)/lib/lib/librcm.so
 	$(ROMFSINST) librcm.so /lib/librcm.so
@@ -73,5 +79,5 @@ romfs:
 clean: 
 	$(Q)rm -f $(OBJS)
 	$(Q)rm -f *.o *.so
-	$(Q)find ./ -name librcm.so | xargs rm -rf
+	$(Q)find ./ -name librcm.so | xargs rm -rf	
 	

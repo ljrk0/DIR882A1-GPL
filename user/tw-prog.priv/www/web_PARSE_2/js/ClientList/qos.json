@@ -1,0 +1,58 @@
+{
+	"cmd":"QosData",
+	"action":"update",
+	"mac":"aabbcc112233",
+	"SignalStrength":4,
+	"upload":400,
+	"download":1000,
+	"detail":[
+				{
+					"category":"streamming",
+					"application":"Youtube",
+					"upload":100,
+					"download":30
+				},
+				{
+					"category":"web",
+					"application":"facebook.com",
+					"upload":1,
+					"download":10
+				},
+				{
+					"category":"file",
+					"application":"lalala",
+					"upload":300,
+					"download":880
+				},
+				{
+					"category":"others",
+					"application":"N/A",
+					"upload":0,
+					"download":500
+				},
+				{
+					"category":"game",
+					"application":"Warcraft",
+					"upload":4,
+					"download":30
+				},
+				{
+					"category":"game",
+					"application":"Diablo",
+					"upload":80,
+					"download":200
+				},
+				{
+					"category":"chat",
+					"application":"Skype",
+					"upload":3,
+					"download":20
+				}
+			]
+}
+
+
+	
+	
+	
+	

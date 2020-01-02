@@ -71,6 +71,7 @@ AdvValidLifetime	{ return T_AdvValidLifetime; }
 AdvPreferredLifetime	{ return T_AdvPreferredLifetime; }
 DeprecatePrefix		{ return T_DeprecatePrefix; }
 DecrementLifetimes	{ return T_DecrementLifetimes; }
+ReferenceTime		{ return T_ReferenceTime; }
 
 AdvRouterAddr		{ return T_AdvRouterAddr; }
 AdvHomeAgentFlag	{ return T_AdvHomeAgentFlag; }
