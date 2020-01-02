@@ -70,6 +70,10 @@ static struct mtd_partition g_pasStatic_Partition[] = {
                 name:           "Factory",
                 size:           MTD_FACTORY_PART_SIZE,
                 offset:         MTDPART_OFS_APPEND
+       }, {
+				name:			"Config2",
+				size:			(MTD_CONFIG_PART_SIZE + 0x20000),
+				offset: 		MTDPART_OFS_APPEND
 #ifdef CONFIG_RT2880_ROOTFS_IN_FLASH
         }, {
                 name:           "Kernel",
@@ -92,7 +96,23 @@ static struct mtd_partition g_pasStatic_Partition[] = {
 #else //CONFIG_RT2880_ROOTFS_IN_RAM
         }, {
                 name:           "Kernel",
-                size:           MTD_KERN_PART_SIZE,
+                size:           0x2800000,//wwzh MTD_KERN_PART_SIZE,
+                offset:         MTDPART_OFS_APPEND
+          }, {
+                name:           "Private",
+                size:           0x2000000,//wwzh 
+                offset:         MTDPART_OFS_APPEND
+         }, {
+                name:           "Kernel2",
+                size:           0x2800000,//wwzh MTD_KERN_PART_SIZE,
+                offset:         MTDPART_OFS_APPEND
+         },{
+		name:           "mydlink",
+		size:           0x600000,
+		offset:         MTDPART_OFS_APPEND 
+	 },{
+                name:           "Reserved",
+                size:           0x900000, //wwzh MTD_PRIVATE_PART_SIZE,
                 offset:         MTDPART_OFS_APPEND,
 #endif
 #ifdef CONFIG_DUAL_IMAGE

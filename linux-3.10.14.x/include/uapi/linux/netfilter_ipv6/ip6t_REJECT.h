@@ -9,6 +9,16 @@ enum ip6t_reject_with {
 	IP6T_ICMP6_NOT_NEIGHBOUR,
 	IP6T_ICMP6_ADDR_UNREACH,
 	IP6T_ICMP6_PORT_UNREACH,
+#ifdef CONFIG_IPV6_CE_ROUTER_TEST_DEBUG
+	/*
+	  * IPv6 CE-Router Test Debug:
+	  * 1. Add the code value 5 "source address failed ingress/egress policy"
+	  *   for ICMPv6 type 1 "Destination Unreachable".
+	  * 2. It has been assigned in RFC4443 section 3.1.
+	  * 2017-10-16 --liushenghui
+	*/
+	IP6T_ICMP6_SRCADDR_FAIL,
+#endif
 	IP6T_ICMP6_ECHOREPLY,
 	IP6T_TCP_RESET
 };

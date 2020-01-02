@@ -133,6 +133,11 @@ config BAND_STEERING
 	bool "Band Steering"
 	depends on MT_AP_SUPPORT
 	default n
+	
+config BAND_STEERING_PLUS
+	bool "Band Steering Plus"
+	depends on MT_AP_SUPPORT
+	default n
 
 config LED_CONTROL_SUPPORT
         bool "LED Control Support"

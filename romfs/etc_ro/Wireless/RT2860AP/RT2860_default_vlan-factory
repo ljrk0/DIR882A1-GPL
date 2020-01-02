@@ -47,6 +47,7 @@ wan_wan0_clone_mac=
 wan_wan0_mac_clone_enable=0
 wan_wan0_dns_manual=0
 wan_wan0_connect_status=0
+wan_wan0_pppoe_static=0
 wan_wan0_pppoe_detect=0
 wan_wan0_pppoe_ifname=ppp0
 wan_wan0_pppoe_username=

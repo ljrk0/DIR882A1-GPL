@@ -264,4 +264,16 @@ config IPV6_PIMSM_V2
 	  Support for IPv6 PIM multicast routing protocol PIM-SMv2.
 	  If unsure, say N.
 
+#
+# IPv6 CE-Router Test Debug:
+# 1. Add for IPv6 CE-Router Test Debug in IPv6 protocol stack.
+# 2017-10-16 --liushenghui
+#
+config IPV6_CE_ROUTER_TEST_DEBUG
+	bool "IPv6: Enable IPv6 CE Router Test Debug"
+	---help---
+	  Enable IPv6 CE Router Test Debug.
+
+	  If unsure, say N.
+
 endif # IPV6

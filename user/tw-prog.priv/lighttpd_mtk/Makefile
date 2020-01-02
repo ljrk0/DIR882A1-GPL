@@ -37,5 +37,8 @@ install:
 
 romfs:
 	make -C lighttpd-1.4.20 romfs
+ifeq ($(CONFIG_MYDLINK_SUPPORT), y)
+	$(ROMFSINST) conf/lighttpd.conf.mtk.mydlink /etc_ro/lighttpd/lighttpd.conf
+else
 	$(ROMFSINST) conf/lighttpd.conf.mtk /etc_ro/lighttpd/lighttpd.conf
-
+endif

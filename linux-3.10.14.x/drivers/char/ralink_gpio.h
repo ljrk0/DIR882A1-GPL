@@ -35,7 +35,7 @@
 #define __RALINK_GPIO_H__
 
 #include <asm/rt2880/rt_mmap.h>
-
+#include "../../../autoconf.h"
 
 #if defined (CONFIG_RALINK_RT3052)
 #define RALINK_GPIO_HAS_5124            1
@@ -51,6 +51,12 @@
 #define RALINK_GPIO_HAS_9532            1
 #elif defined (CONFIG_RALINK_RT5350)
 #define RALINK_GPIO_HAS_2722            1
+#endif
+
+#if defined (CONFIG_DEFAULTS_MEDIATEK_DIR_853_A1) || defined (CONFIG_DEFAULTS_MEDIATEK_DIR_853_A2)
+#define RALINK_GPIO_DIR_853    			1
+#elif defined (CONFIG_DEFAULTS_MEDIATEK_DIR_1360) 
+#define RALINK_GPIO_DIR_1360   			1
 #endif
 
 #if ! defined (CONFIG_RALINK_RT5350)
@@ -564,7 +570,11 @@ typedef struct {
 
 /* T&W vvv */
 #define PROCREG_DIR			"gpio"
+#if defined (RALINK_GPIO_DIR_853) ||defined (RALINK_GPIO_DIR_1360) 
+#define RALINK_GPIO_RESET	8 //JTAG JTMS
+#else
 #define RALINK_GPIO_RESET	15 //JTAG JTMS
+#endif
 #define RALINK_GPIO_WPS		18 //WDT_RST_N
 #define RALINK_GPIO_WLAN    7
 #define WLAN_ONOFF_SIG_NUM      (SIGRTMIN + 0)

@@ -1,1 +1,0 @@
-/usr/sbin/prog.cgi

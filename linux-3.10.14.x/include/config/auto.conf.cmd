@@ -66,6 +66,7 @@ deps_config := \
 	fs/logfs/Kconfig \
 	fs/ubifs/Kconfig \
 	fs/jffs2/Kconfig \
+	fs/yaffs2/Kconfig \
 	fs/efs/Kconfig \
 	fs/bfs/Kconfig \
 	fs/befs/Kconfig \

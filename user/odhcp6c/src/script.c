@@ -45,6 +45,10 @@ static char *argv[4] = {NULL, NULL, action, NULL};
 static volatile pid_t running = 0;
 static time_t started;
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+static char sLast_action[16] = "";
+#endif
+
 #ifdef TW_DHCPV6_EXT
 // 保存最新的dhcpv6 reply信息，作为本次初始值永久保存。原来state里面的值会动态更新，导致无法把初始值写到环境变量中。
 extern struct odhcp6c_entry g_dhcpv6replyentry;
@@ -391,8 +395,29 @@ void script_call(const char *status, int delay, bool resume)
 	bool running_script = false;
 
 	if (running) {
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		/*
+		  * IPv6 CE-Router Test Debug:
+		  * 1. The mechanism for concurrent execution of scripts is
+		  *   as follows:
+		  *   1.1. Parent process does not wait for the child process to exit.
+		  *   1.2. Try to avoid the concurrent execution of child processes.
+		  *   1.3. If there is a child process is running, and the action is
+		  *      'ra-updated', then kill it, otherwise wait for some time.
+		  *      Because ra updates are periodic, the interval is generally
+		  *      only a few seconds.
+		  *   1.4. In general, 'ra-updated' is most probably executed
+		  *      concurrently with other actions.
+		  * 2018-01-20 --liushenghui
+		*/
+		if (0 == strcmp(sLast_action, "ra-updated")) {
+			kill(running, SIGTERM);
+			delay -= now - started;
+		}
+	#else
 		kill(running, SIGTERM);
 		delay -= now - started;
+	#endif
 		running_script = true;
 	}
 
@@ -406,6 +431,10 @@ void script_call(const char *status, int delay, bool resume)
 
 		if (!resume)
 			action[0] = 0;
+
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		snprintf(sLast_action, sizeof (sLast_action), "%s", status);
+	#endif
 	} else if (pid == 0) {
 		size_t dns_len, search_len, custom_len, sntp_ip_len, ntp_ip_len, ntp_dns_len;
 		size_t sip_ip_len, sip_fqdn_len, aftr_name_len, cer_len, addr_len;

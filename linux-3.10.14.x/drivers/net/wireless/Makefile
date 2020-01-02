@@ -58,6 +58,7 @@ obj-$(CONFIG_MWIFIEX)	+= mwifiex/
 obj-$(CONFIG_BRCMFMAC)	+= brcm80211/
 obj-$(CONFIG_BRCMSMAC)	+= brcm80211/
 
+ifneq ($(CONFIG_MT_DRIVER_4411),)
 ifneq ($(CONFIG_WIFI_PKT_FWD),)
 ifneq ($(CONFIG_WIFI_PKT_FWD_V1),)
 obj-y                   += wifi_forward/wifi_hook_v1/
@@ -65,11 +66,28 @@ else
 obj-y                   += wifi_forward/wifi_hook/
 endif
 endif
+else ifneq ($(CONFIG_MT_DRIVER_4421),)
+ifneq ($(CONFIG_WIFI_PKT_FWD),)
+ifneq ($(CONFIG_WIFI_PKT_FWD_V1),)
+obj-y                   += wifi_forward_4421/wifi_hook_v1/
+else
+obj-y                   += wifi_forward_4421/wifi_hook/
+endif
+endif
+endif
 
+ifneq ($(CONFIG_MT_DRIVER_4411),)
 ifneq ($(CONFIG_WIFI_PKT_FWD_V1),)
 obj-$(CONFIG_WIFI_PKT_FWD)       += wifi_forward/wifi_fwd_v1/
 else
 obj-$(CONFIG_WIFI_PKT_FWD)       += wifi_forward/wifi_fwd/
+endif
+else ifneq ($(CONFIG_MT_DRIVER_4421),)
+ifneq ($(CONFIG_WIFI_PKT_FWD_V1),)
+obj-$(CONFIG_WIFI_PKT_FWD)       += wifi_forward_4421/wifi_fwd_v1/
+else
+obj-$(CONFIG_WIFI_PKT_FWD)       += wifi_forward_4421/wifi_fwd/
+endif
 endif
 
 ifneq ($(CONFIG_RLT_AP_SUPPORT),)
@@ -78,9 +96,21 @@ endif
 ifneq ($(CONFIG_RLT_STA_SUPPORT),)
 obj-$(CONFIG_RLT_STA_SUPPORT)      += rlt_wifi_sta/
 endif
+
 ifneq ($(CONFIG_MT_AP_SUPPORT),)
+ifneq ($(CONFIG_MT_DRIVER_4411),)
+ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A2")
+obj-$(CONFIG_MT_AP_SUPPORT)       += MT7615D/mt_wifi_ap/
+else ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A1")
+obj-$(CONFIG_MT_AP_SUPPORT)       += MT7615D/mt_wifi_ap/
+else
 obj-$(CONFIG_MT_AP_SUPPORT)       += MTK7615/mt_wifi_ap/
 endif
+else ifneq ($(CONFIG_MT_DRIVER_4421),)
+obj-$(CONFIG_MT_AP_SUPPORT)       += MT7615_LinuxAP_V4.4.2.1_20170829/mt_wifi_ap/
+endif
+endif
+
 ifneq ($(CONFIG_MT_STA_SUPPORT),)
 obj-$(CONFIG_MT_STA_SUPPORT)      += mt_wifi_sta/
 endif

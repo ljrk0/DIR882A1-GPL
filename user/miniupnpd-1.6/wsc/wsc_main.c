@@ -33,6 +33,22 @@ static int wscUPnPDevInit = FALSE;
 static int wscK2UMInit = FALSE;
 static int wscU2KMInit = FALSE;
 static int wscMsgQInit = FALSE;
+#if defined(PRODUCT_DIR853_A1)||defined(PRODUCT_DIR853_A2)||defined(PRODUCT_DIR1360)
+#define INTERFACE_2G			"rax0"
+#define INTERFACE_5G			"ra0"
+#define APCLI_IF_2G 			"apclix0"
+#define APCLI_IF_5G 			"apcli0"
+#define INTERFACE_2G_GUEST1		"rax1"
+#define	INTERFACE_5G_GUEST1		"ra1"
+#else
+#define INTERFACE_2G			"ra0"
+#define INTERFACE_5G			"rai0"
+#define APCLI_IF_2G 			"apcli0"
+#define APCLI_IF_5G 			"apclii0"
+#define INTERFACE_2G_GUEST1		"ra1"
+#define	INTERFACE_5G_GUEST1		"rai1"
+#endif
+
 
 
 int WscUPnPOpMode;
@@ -250,7 +266,7 @@ int WPSInit(int argc, char **argv)
 				if (strlen(infName))
 					strncpy(&WSC_IOCTL_IF[0], infName, IFNAMSIZ);
 				else
-					strcpy(&WSC_IOCTL_IF[0], "ra0");
+					strcpy(&WSC_IOCTL_IF[0], INTERFACE_2G);
 				break;
 			case 'w':
 				webRootDir = optarg;

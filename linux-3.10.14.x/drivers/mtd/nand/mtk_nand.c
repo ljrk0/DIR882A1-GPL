@@ -4848,8 +4848,8 @@ int mtk_nand_probe()
 #endif
 
 #else	//CONFIG_RT2880_ROOTFS_IN_RAM
-	g_pasStatic_Partition[4].size = IMAGE1_SIZE - (LARGE_MTD_BOOT_PART_SIZE + LARGE_MTD_CONFIG_PART_SIZE \
-			                    + LARGE_MTD_FACTORY_PART_SIZE);
+	//g_pasStatic_Partition[4].size = IMAGE1_SIZE - (LARGE_MTD_BOOT_PART_SIZE + LARGE_MTD_CONFIG_PART_SIZE \
+	//		                    + LARGE_MTD_FACTORY_PART_SIZE);
 #endif
 #ifdef CONFIG_DUAL_IMAGE
 	g_pasStatic_Partition[5].size = g_pasStatic_Partition[4].size;

@@ -36,6 +36,9 @@ function CommonDeviceInfo()
 
 
 	this.helpVer = "";
+	this.okcount = 0;
+	this.wizardcount = 40;
+	this.rebootcount = 120;
 }
 
 $.getScript("/config/deviceinfo.js", function(){

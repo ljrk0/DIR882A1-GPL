@@ -17,13 +17,13 @@ smbtorture4_path=
 LIBS= -lcrypt -lresolv -ldl
 CC=/opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc
 SHLD=${CC} ${CFLAGS}
-CFLAGS= -O2 -fomit-frame-pointer -pipe -Dlinux -D__linux__ -Dunix -DEMBED -I/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include -I/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include -DCONFIG_UCLIBC_0_9_33_2 -I/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source -D_SAMBA_BUILD_
+CFLAGS= -O2 -fomit-frame-pointer -pipe -Dlinux -D__linux__ -Dunix -DEMBED -I/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include -I/home/xieshijing/trunk/GPL_Code/source/lib/include -DCONFIG_UCLIBC_0_9_33_2 -I/home/xieshijing/trunk/GPL_Code/source -D_SAMBA_BUILD_
 CPPFLAGS=-DHAVE_CONFIG_H 
 EXEEXT=
-LDFLAGS= -L/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/lib -L/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/lib
+LDFLAGS= -L/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/xieshijing/trunk/GPL_Code/source/lib/lib -L/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/xieshijing/trunk/GPL_Code/source/lib/lib
 AR=/opt/buildroot-gcc463/usr/bin/mipsel-linux-ar
-LDSHFLAGS=-shared  -L/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/lib -L/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/lib
-WINBIND_NSS_LDSHFLAGS=-shared  -L/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/lib -L/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/lib
+LDSHFLAGS=-shared  -L/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/xieshijing/trunk/GPL_Code/source/lib/lib -L/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/xieshijing/trunk/GPL_Code/source/lib/lib
+WINBIND_NSS_LDSHFLAGS=-shared  -L/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/xieshijing/trunk/GPL_Code/source/lib/lib -L/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/xieshijing/trunk/GPL_Code/source/lib/lib
 AWK=gawk
 DYNEXP=
 PYTHON=
@@ -47,8 +47,8 @@ UNINSTALLLIBCMD_SH=:
 UNINSTALLLIBCMD_A=rm -f
 
 
-srcdir=/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/user/samba-3.0.24/source
-builddir=/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/user/samba-3.0.24/source
+srcdir=/home/xieshijing/trunk/GPL_Code/source/user/samba-3.0.24/source
+builddir=/home/xieshijing/trunk/GPL_Code/source/user/samba-3.0.24/source
 SHELL=/bin/sh
 DESTDIR=/
 

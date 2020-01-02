@@ -57,5 +57,8 @@ struct in6_rtmsg {
 
 #define IP6_RT_PRIO_USER	1024
 #define IP6_RT_PRIO_ADDRCONF	256
+#ifdef CONFIG_IPV6_CE_ROUTER_TEST_DEBUG
+#define IP6_RT_PRIO_KERN	512
+#endif
 
 #endif /* _UAPI_LINUX_IPV6_ROUTE_H */

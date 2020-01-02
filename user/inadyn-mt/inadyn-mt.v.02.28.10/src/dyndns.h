@@ -82,6 +82,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define DYNDNS_AGENT_NAME	"D-Link DIR-882"
 #elif defined(PRODUCT_DIR867)
 #define DYNDNS_AGENT_NAME	"D-Link DIR-867"
+#elif defined(PRODUCT_DIR1935)
+#define DYNDNS_AGENT_NAME	"D-Link DIR-1935"
 #elif defined(PRODUCT_DIR853_A2) || defined(PRODUCT_DIR853_A1)
 #define DYNDNS_AGENT_NAME	"D-Link DIR-853"
 #endif

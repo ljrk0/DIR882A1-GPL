@@ -91,7 +91,12 @@ ifeq ($(CONFIG_LIB_NL_FORCE),y)
 endif
 ifeq ($(CONFIG_LIB_LIBSQLITE3_FORCE),y)
 #    DIRS += libsqlite3
+ifneq ($(CONFIG_MCAFEE_SUPPORT), y)
 	DIRS += sqlite-3.7.2-src   
+endif
+ifeq ($(CONFIG_MCAFEE_SUPPORT), y)
+	DIRS += sqlite-3.21.0 
+endif
 endif
 ifeq ($(CONFIG_LIB_LIBEXIF_FORCE),y)
     DIRS += libexif
@@ -115,7 +120,7 @@ ifeq ($(CONFIG_LIB_LIBPCAP_FORCE),y)
     DIRS += libpcap-1.0.0
 endif
 ifeq ($(CONFIG_LIB_LIBEVENT_FORCE),y)
-     DIRS += libevent-2.0.2-alpha
+     DIRS += libevent-2.0.22-stable
 endif
 ifeq ($(CONFIG_LIB_NCURSE_FORCE),y)
     DIRS += libncurses-5.7
@@ -233,7 +238,12 @@ ifeq ($(CONFIG_LIB_NL_FORCE),y)
 endif
 ifeq ($(CONFIG_LIB_LIBSQLITE3_FORCE),y)
 #	@$(MAKE) -C libsqlite3 shared
+ifneq ($(CONFIG_MCAFEE_SUPPORT), y)
 	@$(MAKE) -C sqlite-3.7.2-src shared
+endif
+ifeq ($(CONFIG_MCAFEE_SUPPORT), y)
+	@$(MAKE) -C sqlite-3.21.0 shared
+endif
 endif
 ifeq ($(CONFIG_LIB_LIBEXIF_FORCE),y)
 	@$(MAKE) -C libexif shared
@@ -257,7 +267,7 @@ ifeq ($(CONFIG_LIB_LIBJPEG_TURBO_FORCE),y)
 	@$(MAKE) -C libjpeg-turbo-1.4.0 shared
 endif
 ifeq ($(CONFIG_LIB_LIBEVENT_FORCE),y)
-	@$(MAKE) -C libevent-2.0.2-alpha shared
+	@$(MAKE) -C libevent-2.0.22-stable shared
 endif
 ifeq ($(CONFIG_LIB_NCURSE_FORCE),y)
 	@$(MAKE) -C libncurses-5.7 shared
@@ -386,6 +396,7 @@ headers: include/bits/uClibc_config.h
 	fi
 	$(MAKE) -C libc/sysdeps/linux/common headers
 	$(MAKE) -C libc/sysdeps/linux/$(TARGET_ARCH) headers
+	touch libevent-2.0.22-stable/configure 
 
 # Command used to download source code
 WGET:=wget --passive-ftp
@@ -413,6 +424,12 @@ tags:
 	ctags -R
 
 install: install_runtime install_dev finished2
+
+%_only:
+	touch $(@:_only=)/.sgbuilt_user && $(MAKE) -j1 -C $(@:_only=)
+
+%_clean:
+	$(MAKE) -j1 -C $(@:_clean=) clean; rm -f $(@:_clean=)/.sgbuilt_user; true
 
 #added by Steven Liu
 romfs: install_runtime
@@ -671,7 +688,12 @@ ifeq ($(CONFIG_LIB_NL_FORCE),y)
 endif
 ifeq ($(CONFIG_LIB_LIBSQLITE3_FORCE),y)
 #	@$(MAKE) -C libsqlite3 clean
+ifneq ($(CONFIG_MCAFEE_SUPPORT), y)
 	@$(MAKE) -C sqlite-3.7.2-src clean
+endif
+ifeq ($(CONFIG_MCAFEE_SUPPORT), y)
+	@$(MAKE) -C sqlite-3.21.0 clean
+endif
 endif
 ifeq ($(CONFIG_LIB_LIBEXIF_FORCE),y)
 	@$(MAKE) -C libexif clean
@@ -695,7 +717,7 @@ ifeq ($(CONFIG_LIB_LIBPCAP_FORCE),y)
 	$(MAKE) -C libpcap-1.0.0 clean
 endif
 ifeq ($(CONFIG_LIB_LIBEVENT_FORCE),y)
-	$(MAKE) -C libevent-2.0.2-alpha clean
+	$(MAKE) -C libevent-2.0.22-stable clean
 endif
 ifeq ($(CONFIG_LIB_NCURSE_FORCE),y)
 	$(MAKE) -C libncurses-5.7 clean

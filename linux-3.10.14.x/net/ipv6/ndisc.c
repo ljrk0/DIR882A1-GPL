@@ -978,6 +978,15 @@ static void ndisc_recv_rs(struct sk_buff *skb)
 	/* Don't accept RS if we're not in router mode */
 	if (!idev->cnf.forwarding)
 		goto out;
+#ifdef CONFIG_IPV6_CE_ROUTER_TEST_DEBUG
+	/*
+	  * IPv6 CE-Router Test Debug:
+	  * 1. Don't accept RS if we're in hybrid mode.
+	  * 2017-11-14 --liushenghui
+	*/
+	else if (ipv6_accept_ra(idev))
+		goto out;
+#endif
 
 	/*
 	 * Don't update NCE if src = ::;

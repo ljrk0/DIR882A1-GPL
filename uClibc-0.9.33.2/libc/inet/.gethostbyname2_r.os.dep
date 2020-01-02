@@ -17,9 +17,9 @@ libc/inet/gethostbyname2_r.os: libc/inet/gethostbyname2_r.c \
  include/bits/siginfo.h include/bits/sigaction.h \
  include/bits/sigcontext.h include/sgidefs.h include/bits/sigstack.h \
  include/sys/ucontext.h include/errno.h include/bits/errno.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
  include/sys/poll.h include/bits/poll.h include/sys/socket.h \
  include/sys/uio.h include/sys/types.h include/endian.h \
  include/bits/endian.h include/byteswap.h include/bits/byteswap.h \
@@ -28,22 +28,22 @@ libc/inet/gethostbyname2_r.os: libc/inet/gethostbyname2_r.c \
  include/bits/socket.h include/limits.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
  include/bits/posix1_lim.h include/bits/local_lim.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
  include/bits/uClibc_local_lim.h include/bits/posix2_lim.h \
  include/bits/xopen_lim.h include/bits/sockaddr.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h \
  include/sys/time.h include/netinet/in.h include/stdint.h \
  include/bits/in.h include/arpa/inet.h include/stdlib.h \
  include/bits/waitflags.h include/bits/waitstatus.h include/alloca.h \
  include/bits/stackinfo.h include/unistd.h include/bits/posix_opt.h \
  include/bits/environments.h include/bits/confname.h \
  include/bits/getopt.h include/resolv.h include/sys/param.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
  include/arpa/nameser.h include/sys/bitypes.h \
  include/arpa/nameser_compat.h include/netdb.h include/rpc/netdb.h \
  include/bits/netdb.h include/ctype.h include/bits/uClibc_touplow.h \
@@ -137,11 +137,11 @@ include/errno.h:
 
 include/bits/errno.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
 
 include/sys/poll.h:
 
@@ -181,7 +181,7 @@ include/bits/posix1_lim.h:
 
 include/bits/local_lim.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
 
 include/bits/uClibc_local_lim.h:
 
@@ -191,13 +191,13 @@ include/bits/xopen_lim.h:
 
 include/bits/sockaddr.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
 
 include/sys/time.h:
 
@@ -233,11 +233,11 @@ include/resolv.h:
 
 include/sys/param.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
 
 include/arpa/nameser.h:
 
@@ -276,4 +276,4 @@ include/bits/sysnum.h:
 include/bits/syscalls.h:
 
 include/bits/syscalls-common.h:
-cmd_libc_inet_gethostbyname2_r.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/inet/gethostbyname2_r.c -o libc/inet/gethostbyname2_r.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -DRESOLVER="\"resolv.c\"" -MT libc/inet/gethostbyname2_r.os -MD -MP -MF libc/inet/.gethostbyname2_r.os.dep
+cmd_libc_inet_gethostbyname2_r.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/inet/gethostbyname2_r.c -o libc/inet/gethostbyname2_r.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -DRESOLVER="\"resolv.c\"" -MT libc/inet/gethostbyname2_r.os -MD -MP -MF libc/inet/.gethostbyname2_r.os.dep

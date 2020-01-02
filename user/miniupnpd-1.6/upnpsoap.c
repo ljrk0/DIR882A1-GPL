@@ -65,12 +65,17 @@ static int SavePortMapInfoToFILE(char *strePort,char *strProto,
 	char *pszTmp=NULL;
 	char *t;
 	
-	syslog(LOG_ERR, "[LCC] %s %d : savefilemode add info:%s,%s,%s,%s,%s\n" , __FUNCTION__ , __LINE__ ,strePort,strProto,striPort,strIP,strDes );
+	//syslog(LOG_ERR, "[LCC] %s %d : savefilemode add info:%s,%s,%s,%s,%s\n" , __FUNCTION__ , __LINE__ ,strePort,strProto,striPort,strIP,strDes );
 	
     char strPortMapInfo[256] = "\0";
 	char strSrc[100]={0};
 	unsigned short iflag = 0;
 	char strTemp[UPNP_STRING_MAXLEN] = "\0";
+	if(!strDes)
+	{
+		strDes = "Unknown";
+	}
+	
 	if(strlen(strDes) > (UPNP_STRING_MAXLEN-1))
 	{
 	   strncpy(strTemp,strDes,(UPNP_STRING_MAXLEN - 4));

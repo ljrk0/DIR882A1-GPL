@@ -1792,8 +1792,19 @@ static struct host_conf *construct_pd_dynamic_host_conf(pd_info *args)
 	struct dhcp6_poolspec *pool;
 	struct pd_conf *pd;
 
+/*
+  * IPv6 CE-Router Test Debug:
+  * 1. The way of 'Host_conf' reference to the 'pd_conf' has changed.
+  * 2. So modify some codes Correspondingly.
+  * 2018-01-20 --liushenghui
+*/
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	if(client_conf != NULL && client_conf->pd_conf_name != NULL)
+		return client_conf;
+#else
 	if(client_conf != NULL && client_conf->pd != NULL)
 		return client_conf;
+#endif
 
 	//choose pd for client
 	if((pd = find_pdconf("default")) == NULL)
@@ -1808,9 +1819,60 @@ static struct host_conf *construct_pd_dynamic_host_conf(pd_info *args)
 	   (client_conf = create_dynamic_hostconf(args->client_id , pool)) == NULL)
 		return client_conf; //no memory to do this	
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	client_conf->pd_conf_name = strdup("default");
+#else
 	client_conf->pd = pd;
+#endif
+
 	return client_conf;
 }
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+/*
+  * IPv6 CE-Router Test Debug:
+  * 1. The way of 'Host_conf' reference to the 'pd_conf' has changed.
+  * 2. So modify some codes Correspondingly.
+  * 2018-01-20 --liushenghui
+*/
+static int aquire_pd_prefix(pd_info *args , struct dhcp6_list *conflist)
+{
+	struct dhcp6_prefix segment_prefix;
+	struct host_conf *client_conf = args->client_conf;
+	struct pd_conf * pd = NULL;
+	int result , seg_idx;
+
+	if(client_conf == NULL || client_conf->pd_conf_name == NULL)
+		return -EINVAL;
+
+	pd = find_pdconf(client_conf->pd_conf_name);
+	if (NULL == pd) {
+		dprintf(LOG_DEBUG, FNAME,"%s is not found in "
+			"configuration file, and configuration file may "
+			"has been changed.", client_conf->pd_conf_name);
+		return -1;
+	}
+
+	if((result = get_segment_prefix(pd , &segment_prefix)) < 0)
+		return result;
+
+	if(add_prefix(conflist , pd->name , DHCP6_LISTVAL_PREFIX6 , &segment_prefix) < 0)
+		goto err_release_segment;
+
+	if(add_prefix(&client_conf->prefix_list , pd->name , DHCP6_LISTVAL_PREFIX6 , &segment_prefix) < 0)
+		goto err_release_segment;
+
+	set_gateway_for_segment(args , &segment_prefix);
+
+	return 0;
+err_release_segment:
+	if((seg_idx = get_segment_index(pd ,  &segment_prefix)) >= 0)
+		release_segment(pd , seg_idx);
+
+	return -EPERM;
+}
+
+#else
 
 //return negative error number when error
 static int aquire_pd_prefix(pd_info *args , struct dhcp6_list *conflist)
@@ -1840,6 +1902,8 @@ err_release_segment:
 
 	return -EPERM;
 }
+
+#endif
 
 static int
 react_solicit(ifp, dh6, len, optinfo, from, fromlen, relayinfohead)
@@ -3119,6 +3183,179 @@ react_informreq(ifp, dh6, len, optinfo, from, fromlen, relayinfohead)
 	return (-1);
 }
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+
+static const struct dhcp6_prefix *
+find_match_prefix(const struct dhcp6_list * pHead,
+					const struct dhcp6_prefix * pPrefix)
+{
+	struct in6_addr addr1;
+	struct in6_addr addr2;
+	const struct dhcp6_listval * pLv = NULL;
+
+	if (!pPrefix || !pHead) {
+		dprintf(LOG_ERR, FNAME, "Null pointer parameter!");
+		return (NULL);
+	}
+
+	for (pLv = TAILQ_FIRST(pHead) ; pLv ; pLv = TAILQ_NEXT(pLv, link)) {
+
+		if (DHCP6_LISTVAL_PREFIX6 != pLv->type)
+			continue;
+
+		if (pLv->val_prefix6.plen < 0 && pLv->val_prefix6.plen > 128)
+			continue;
+
+		memcpy(&addr1, &pLv->val_prefix6.addr, sizeof (addr1));
+		prefix6_mask(&addr1, pLv->val_prefix6.plen);
+
+		memcpy(&addr2, &pPrefix->addr, sizeof (addr2));
+		prefix6_mask(&addr2, pLv->val_prefix6.plen);
+
+		if (0 == memcmp(&addr1, &addr2, sizeof (struct in6_addr))) {
+			return &pLv->val_prefix6;
+		}
+	}
+
+	return (NULL);
+}
+
+static int
+is_iapd_in_conf_file(struct dhcp6_prefix * pPrefix,
+						struct dhcp6_optinfo * pOptinfo)
+{
+	const struct host_conf * pClient_conf = NULL;
+	const struct host_conf * pStatic_client_conf = NULL;
+	const struct pd_conf * pPd = NULL;
+	const struct dhcp6_list * pHead = NULL;
+	const struct dhcp6_prefix * pMatch_Prefix = NULL;
+
+	if (!pPrefix || !pOptinfo) {
+		dprintf(LOG_ERR, FNAME, "Null pointer parameter!");
+		return -1;
+	}
+
+	pClient_conf = find_hostconf(&pOptinfo->clientID);
+	if (!pClient_conf)
+		return -1;
+
+	if (pClient_conf->pd_conf_name) {
+		pPd = find_pdconf(pClient_conf->pd_conf_name);
+		if (pPd)
+			pHead = &pPd->prefix_list;
+		if (pPd->name)
+		dprintf(LOG_ERR, FNAME, "name=%s.", pPd->name);
+	} else
+		pHead = NULL;
+
+	pMatch_Prefix = find_match_prefix(pHead, pPrefix);
+	if (pMatch_Prefix) {
+		/*
+		  * The prefix lifetime in configuration file maybe has been changed.
+		*/
+		pPrefix->pltime = pMatch_Prefix->pltime;
+		pPrefix->vltime = pMatch_Prefix->vltime;
+		return 1;
+	}
+
+
+	pStatic_client_conf = find_static_hostconf(&pOptinfo->clientID);
+	if (!pStatic_client_conf)
+		return 0;
+
+	pHead = &pStatic_client_conf->prefix_list;
+
+	pMatch_Prefix = find_match_prefix(pHead, pPrefix);
+	if (pMatch_Prefix) {
+		/*
+		  * The prefix lifetime in configuration file maybe has been changed.
+		*/
+		pPrefix->pltime = pMatch_Prefix->pltime;
+		pPrefix->vltime = pMatch_Prefix->vltime;
+		return 1;
+	}
+
+	return 0;
+}
+
+static const struct dhcp6_statefuladdr *
+find_match_address(const struct dhcp6_list * pHead,
+					const struct dhcp6_statefuladdr * pAddr)
+{
+	const struct dhcp6_listval * pLv = NULL;
+
+	if (!pAddr || !pHead) {
+		dprintf(LOG_ERR, FNAME, "Null pointer parameter!");
+		return (NULL);
+	}
+
+	for (pLv = TAILQ_FIRST(pHead) ; pLv ; pLv = TAILQ_NEXT(pLv, link)) {
+
+		if (DHCP6_LISTVAL_STATEFULADDR6 != pLv->type)
+			continue;
+
+		if (IN6_ARE_ADDR_EQUAL(&pLv->val_statefuladdr6.addr,
+			&pAddr->addr)) {
+			return &pLv->val_statefuladdr6;
+		}
+	}
+
+	return (NULL);
+}
+
+static int
+is_iana_in_conf_file(struct dhcp6_statefuladdr * pAddr,
+						struct dhcp6_optinfo * pOptinfo)
+{
+	const struct host_conf * pClient_conf = NULL;
+	const struct host_conf * pStatic_client_conf = NULL;
+	const struct dhcp6_list * pHead = NULL;
+	const struct dhcp6_statefuladdr * pMatch_addr = NULL;
+	struct pool_conf * pPool = NULL;
+
+	if (!pAddr || !pOptinfo) {
+		dprintf(LOG_ERR, FNAME, "Null pointer parameter!");
+		return -1;
+	}
+
+	pClient_conf = find_hostconf(&pOptinfo->clientID);
+	if (!pClient_conf)
+		return -1;
+
+	pPool = find_pool(pClient_conf->pool.name);
+	if (pPool) {
+		if (1 == is_address_in_pool(pPool, &pAddr->addr)) {
+			/*
+			  * The iana lifetime in configuration file maybe has been changed.
+			*/
+			pAddr->pltime = pClient_conf->pool.pltime;
+			pAddr->vltime = pClient_conf->pool.vltime;
+			return 1;
+		}
+	}
+
+
+	pStatic_client_conf = find_static_hostconf(&pOptinfo->clientID);
+	if (!pStatic_client_conf)
+		return 0;
+
+	pHead = &pStatic_client_conf->addr_list;
+
+	pMatch_addr = find_match_address(pHead, pAddr);
+	if (pMatch_addr) {
+		/*
+		  * The iana lifetime in configuration file maybe has been changed.
+		*/
+		pAddr->pltime = pMatch_addr->pltime;
+		pAddr->vltime = pMatch_addr->vltime;
+		return 1;
+	}
+
+	return 0;
+}
+
+#endif
+
 static int
 update_ia(msgtype, iap, retlist, optinfo)
 	int msgtype;
@@ -3190,6 +3427,9 @@ update_ia(msgtype, iap, retlist, optinfo)
 		struct dhcp6_prefix prefix;
 		struct dhcp6_statefuladdr saddr;
 		struct dhcp6_ia ia;
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		int iRemove_ia_flag = 0;
+	#endif
 
 		TAILQ_INIT(&ialist);
 		update_binding(binding);
@@ -3221,6 +3461,32 @@ update_ia(msgtype, iap, retlist, optinfo)
 					    blv->val_prefix6.vltime;
 				}
 
+			#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+
+				/*
+				  * IPv6 CE-Router Test Debug:
+				  * 1. Check whether the configuration has changed.
+				  * 2. Disable previous prefix if the prefix has changed.
+				  * 2018-01-20 --liushenghui
+				*/
+				if (blv) {
+					if (1 != is_iapd_in_conf_file(&prefix, optinfo)) {
+						prefix.pltime = 0;
+						prefix.vltime = 0;
+
+						iRemove_ia_flag = 1;
+
+						dprintf(LOG_DEBUG, FNAME,
+						    "%s/%d does not match the prefixes "
+						    "defined in configuration file, and "
+						    "configuration file has been changed.",
+						    in6addr2str(&prefix.addr, 0),
+						    prefix.plen);
+					}
+				}
+
+			#endif
+
 				if (dhcp6_add_listval(&ialist,
 				    DHCP6_LISTVAL_PREFIX6, &prefix, NULL)
 				    == NULL) {
@@ -3251,6 +3517,32 @@ update_ia(msgtype, iap, retlist, optinfo)
 					    blv->val_statefuladdr6.vltime;
 				}
 
+			#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+
+				/*
+				  * IPv6 CE-Router Test Debug:
+				  * 1. Check whether the configuration has changed.
+				  * 2. Disable previous address if the address pool has
+				  *   changed.
+				  * 2018-01-20 --liushenghui
+				*/
+				if (blv) {
+					if (1 != is_iana_in_conf_file(&saddr, optinfo)) {
+						saddr.pltime = 0;
+						saddr.vltime = 0;
+
+						iRemove_ia_flag = 1;
+
+						dprintf(LOG_DEBUG, FNAME,
+						    "%s is not matched with the address pool "
+						    "defined in configuration file, and "
+						    "configuration file had been changed.",
+						    in6addr2str(&saddr.addr, 0));
+					}
+				}
+
+			#endif
+
 				if (dhcp6_add_listval(&ialist,
 				    DHCP6_LISTVAL_STATEFULADDR6, &saddr, NULL)
 				    == NULL) {
@@ -3270,6 +3562,17 @@ update_ia(msgtype, iap, retlist, optinfo)
 		ia.iaid = binding->iaid;
 		/* determine appropriate T1 and T2 */
 		calc_ia_timo(&ia, &ialist, client_conf);
+
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		/*
+		  * IPv6 CE-Router Test Debug:
+		  * 1. Remove the previous binding if the configuration changes.
+		  * 2018-01-22 --liushenghui
+		*/
+		if (1 == iRemove_ia_flag) {
+			remove_binding(binding);
+		}
+	#endif
 
 		if (dhcp6_add_listval(retlist, iap->type,
 		    &ia, &ialist) == NULL) {

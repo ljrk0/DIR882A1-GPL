@@ -184,7 +184,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 		
 		clearTimeout(timer);
     	timer = setTimeout(function(){
-			document.forms['dlcfgbin'].action = "/HNAP1/prog.fcgi?method=/HNAP1/GetQuickVPNProfile";
+			document.forms['dlcfgbin'].action = "/HNAP1/dlquickvpnsettings.cgi";
 		    document.forms['dlcfgbin'].submit(); //changeTimeoutAction();
 		},500);
 	}

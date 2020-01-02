@@ -1,0 +1,145 @@
+server.modules              = (
+                              "mod_setenv",
+                                "mod_fastcgi",
+                                "mod_cgi",
+                              )
+
+server.document-root        = "/etc_ro/lighttpd/www/web"
+
+## where to send error-messages to
+#server.errorlog             = "/var/log/lighttpd_error.log"
+#server.errorlog             = "/dev/console"
+
+index-file.names            = ( "index.php", "index.html", "Index.html", "index.htm", "default.htm" )
+
+mimetype.assign             = (
+  ".pdf"          =>      "application/pdf",
+  ".sig"          =>      "application/pgp-signature",
+  ".spl"          =>      "application/futuresplash",
+  ".class"        =>      "application/octet-stream",
+  ".ps"           =>      "application/postscript",
+  ".torrent"      =>      "application/x-bittorrent",
+  ".dvi"          =>      "application/x-dvi",
+  ".gz"           =>      "application/x-gzip",
+  ".pac"          =>      "application/x-ns-proxy-autoconfig",
+  ".swf"          =>      "application/x-shockwave-flash",
+  ".tar.gz"       =>      "application/x-tgz",
+  ".tgz"          =>      "application/x-tgz",
+  ".tar"          =>      "application/x-tar",
+  ".zip"          =>      "application/zip",
+  ".mp3"          =>      "audio/mpeg",
+  ".m3u"          =>      "audio/x-mpegurl",
+  ".wma"          =>      "audio/x-ms-wma",
+  ".wax"          =>      "audio/x-ms-wax",
+  ".ogg"          =>      "application/ogg",
+  ".wav"          =>      "audio/x-wav",
+  ".gif"          =>      "image/gif",
+  ".jar"          =>      "application/x-java-archive",
+  ".jpg"          =>      "image/jpeg",
+  ".jpeg"         =>      "image/jpeg",
+  ".png"          =>      "image/png",
+  ".xbm"          =>      "image/x-xbitmap",
+  ".xpm"          =>      "image/x-xpixmap",
+  ".xwd"          =>      "image/x-xwindowdump",
+  ".css"          =>      "text/css",
+  ".html"         =>      "text/html",
+  ".htm"          =>      "text/html",
+  ".js"           =>      "text/javascript",
+  ".asc"          =>      "text/plain",
+  ".c"            =>      "text/plain",
+  ".cpp"          =>      "text/plain",
+  ".log"          =>      "text/plain",
+  ".conf"         =>      "text/plain",
+  ".text"         =>      "text/plain",
+#  ".txt"          =>      "text/plain",
+  ".txt"          =>      "text/html",
+  ".dtd"          =>      "text/xml",
+  ".xml"          =>      "text/xml",
+  ".mpeg"         =>      "video/mpeg",
+  ".mpg"          =>      "video/mpeg",
+  ".mov"          =>      "video/quicktime",
+  ".qt"           =>      "video/quicktime",
+  ".avi"          =>      "video/x-msvideo",
+  ".asf"          =>      "video/x-ms-asf",
+  ".asx"          =>      "video/x-ms-asf",
+  ".wmv"          =>      "video/x-ms-wmv",
+  ".bz2"          =>      "application/x-bzip",
+  ".tbz"          =>      "application/x-bzip-compressed-tar",
+  ".tar.bz2"      =>      "application/x-bzip-compressed-tar",
+  ""              =>      "application/octet-stream",
+ )
+
+url.access-deny             = ( "~", ".inc" )
+
+server.upload-dirs = ( "/var/run" )
+server.max-request-size = 16384
+static-file.exclude-extensions = ( ".php", ".pl", ".fcgi" )
+
+
+## bind to port (default: 80)
+#server.port                = 81
+server.use-ipv6             = "enable"
+server.port = 80
+$SERVER["socket"] == "0.0.0.0:80" {
+# listen on all ipv4 interfaces.
+}
+
+
+server.pid-file            = "/var/run/lighttpd.pid"
+
+fastcgi.debug = 1
+fastcgi.server = ( 
+	"/HNAP1/" => 
+	((
+		"socket" => "/var/prog.fcgi.socket-0",
+		"check-local" => "enable",
+		"bin-path" => "/etc_ro/lighttpd/www/web/HNAP1/prog.fcgi",
+		"idle-timeout" => 10,
+		"min-procs" => 1,
+		"max-procs" => 1
+	)), 
+	".fcgi" => 
+	((
+		"socket" => "/var/prog.fcgi.socket-0",
+		"check-local" => "enable",
+		"bin-path" => "/etc_ro/lighttpd/www/web/HNAP1/prog.fcgi",
+		"idle-timeout" => 10,
+		"min-procs" => 1,
+		"max-procs" => 1
+	)),
+	"/common/" => 
+	((
+		"socket" => "/var/myinfo.fcgi.socket-0",
+		"check-local" => "disable",
+		"bin-path" => "/sbin/myinfo.cgi",
+		"idle-timeout" => 10,
+		"min-procs" => 1,
+		"max-procs" => 1
+	))
+)
+fastcgi.map-extensions = ( ".htm" => ".fcgi", ".html" => ".fcgi" )
+
+
+$SERVER["socket"] == "0.0.0.0:443" {
+       ssl.engine = "enable"
+       ssl.pemfile = "/var/private/lighttpd.pem"
+       server.document-root = "/etc_ro/lighttpd/www/web"
+}
+
+
+
+server_root = "/var/web"
+cgi.assign = (
+                ".cgi" => "",
+                ".htm" => "/etc_ro/lighttpd/www/web/HNAP1/prog.cgi",
+                ".html" => "/etc_ro/lighttpd/www/web/HNAP1/prog.cgi",
+
+                )
+alias.url += ( "/cgi-bin" => "/etc_ro/lighttpd/www/web/cgi-bin", 
+                "/HNAP1" => "/etc_ro/lighttpd/www/web/HNAP1" )
+
+
+
+$SERVER["socket"] == ":49152" {
+server.document-root = "/etc/linuxigd0"
+}

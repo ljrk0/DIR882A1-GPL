@@ -82,7 +82,7 @@ void mld_handle(struct mrib_querier *mrib, const struct mld_hdr *hdr, size_t len
 	inet_ntop(AF_INET6, &hdr->mld_addr, addrbuf, sizeof(addrbuf));
 
 	struct querier_iface *q = container_of(mrib, struct querier_iface, mrib);
-	if (enable_flag & 0x2 == 0)
+	if ((enable_flag & 0x2) == 0)
 	{
 		return;
 	}	

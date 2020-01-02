@@ -151,6 +151,7 @@ dir_$(CONFIG_USER_P910ND)                   += p910nd-0.91
 dir_$(CONFIG_USER_PROFTPD)                  += proftpd
 dir_$(CONFIG_USER_RADVD)                    += radvd
 dir_y+=apps
+dir_y+=wget-1.13
 dir_$(CONFIG_RALINKAPP)		    	    += rt2880_app
 dir_$(CONFIG_USER_RALINKIAPPD)	    	    += ralinkiappd
 dir_$(CONFIG_USER_MTKIAPPD)	    	    += mtkiappd
@@ -171,7 +172,14 @@ dir_$(CONFIG_USER_WIRELESS_TOOLS)           += wireless_tools
 dir_$(CONFIG_USER_WATCHDOG)           	    += watchdog-5.6
 dir_$(CONFIG_USER_WPA_SUPPLICANT)	    += wpa_supplicant-2.0
 dir_$(CONFIG_USER_WSC)			    += wsc_upnp
+ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A2")
+dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg_plus
+else ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A1")
+dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg_plus
+else
 dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg
+endif
+
 dir_$(CONFIG_USER_ETHTOOL)		    += ethtool
 dir_$(CONFIG_USER_ZEBRA)		    += zebra-0.95a_ripd
 dir_$(CONFIG_USER_USBMODESWITCH)	    += usb_modeswitch-0.9.5
@@ -189,6 +197,9 @@ dir_$(CONFIG_USER_MOCAD2)		    += MocaApi-1.0.0
 dir_$(CONFIG_USER_HOSTAPD)          += hostapd-2.2/hostapd
 dir_$(CONFIG_USER_XL2TPD)               += xl2tpd-1.3.2
 #dir_$(CONFIG_USER_NBTSAN)               += nbtscan-1.5.1a 
+dir_$(CONFIG_DLINKAPP_ONETOUCH)               += onetouch
+dir_$(CONFIG_USER_QUAGGA)			+= quagga
+dir_$(CONFIG_USER_IPSET)               += ipset-6.35
 
 dir_y+=rc
 dir_y+=stad/src
@@ -196,8 +207,12 @@ dir_y+=tw-prog.priv/lighttpd_mtk
 dir_y+=tw-prog.priv/prog-cgi/src
 dir_y+=tw-prog.priv/www
 dir_y+=tw_hotplug
-
+#dir_y+=kstreamer
+dir_$(CONFIG_MYDLINK_SUPPORT)+= mydlink
+dir_$(CONFIG_OOKLA_SUPPORT)+=ookla
+dir_$(CONFIG_KWILT_SUPPORT)+=kwilt
 dir_y+=odhcp6c
+dir_$(CONFIG_MCAFEE_SUPPORT)+= McAfee
 
 dir_$(CONFIG_USER_USB_FW) += ufsd_driver
 dir_$(CONFIG_USER_USB_FW) += sxuvlplus
@@ -207,6 +222,9 @@ dir_$(CONFIG_TIME_MACHINE)+=netatalk
 dir_y+=mld
 
 dir_$(CONFIG_TWGJ_TR069)  +=  tr69c_with_dm
+
+#one touch
+dir_$(CONFIG_DLINKAPP_ONETOUCH)         += onetouch
 
 #TEST
 dir_$(CONFIG_USER_HELLO_WORLD)		    += hello_world
@@ -220,6 +238,7 @@ endif
 
 #test
 #dir_y=cpe_app
+dir_$(CONFIG_MCAFEE_SUPPORT)+=curl-7.57.0
 
 
 all: config

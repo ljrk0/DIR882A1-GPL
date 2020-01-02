@@ -56,6 +56,12 @@ static char if_name[IF_NAMESIZE] = {0};
 static volatile int rs_attempt = 0;
 static struct in6_addr lladdr = IN6ADDR_ANY_INIT;
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+
+int iReceive_ra_flag = 0;
+
+#endif
+
 struct {
 	struct icmp6_hdr hdr;
 	struct icmpv6_opt lladdr;
@@ -348,6 +354,14 @@ bool ra_process(void)
 
 	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
 		odhcp6c_update_entry(STATE_RA_ROUTER, entry, 0, true);
+		/*
+		  * IPv6 CE-Router Test Debug:
+		  * 1. 'odhcp6c_update_entry' don't add the entries with the
+		  *   member 'valid' of the value 0.
+		  * 2. So use a flag to indicate we receive a RA.
+		  * 2017-11-06 --liushenghui
+		*/
+		iReceive_ra_flag = 1;
 	#endif
 		// Parse hoplimit
 		ra_conf_hoplimit(adv->nd_ra_curhoplimit);

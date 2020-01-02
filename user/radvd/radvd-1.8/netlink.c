@@ -65,7 +65,22 @@ void process_netlink_msg(int sock)
                 else {
                         dlog(LOG_DEBUG, 3, "%s, ifindex %d, flags is *NOT* running", ifname, ifinfo->ifi_index);
                 }
+
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		/*
+		  * IPv6 CE-Router Test Debug:
+		  * 1. There is a way via 'usr1' signal to inform radvd to
+		  *   update the configuration.
+		  * 2. One RA packet will be send after updating the configuration.
+		  * 3. Netlink messages is very frequent and can be reached
+		  *   several times in one second.
+		  * 4. So to update configuration in here will lead to many RA
+		  *   be send irregularly to the network.
+		  * 2018-01-19 --liushenghui
+		*/
+	#else
 		reload_config();
+	#endif
 	}
 }
 
