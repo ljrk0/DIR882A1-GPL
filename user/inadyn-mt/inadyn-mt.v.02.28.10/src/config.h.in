@@ -15,11 +15,18 @@
 /* Define to 1 if you have the `fork' function. */
 #undef HAVE_FORK
 
+/* Define to 1 if you have the <ifaddrs.h> header file. */
+//#undef HAVE_IFADDRS_H
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
 /* Define to 1 if you have the <locale.h> header file. */
 #undef HAVE_LOCALE_H
+
+/* Define to 1 if your system has a GNU libc compatible `malloc' function, and
+   to 0 otherwise. */
+#undef HAVE_MALLOC
 
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
@@ -29,6 +36,10 @@
 
 /* Define to 1 if you have the <netinet/in.h> header file. */
 #undef HAVE_NETINET_IN_H
+
+/* Define to 1 if your system has a GNU libc compatible `realloc' function,
+   and to 0 otherwise. */
+#undef HAVE_REALLOC
 
 /* Define to 1 if stdbool.h conforms to C99. */
 #undef HAVE_STDBOOL_H
@@ -84,9 +95,6 @@
 /* Define to 1 if `vfork' works. */
 #undef HAVE_WORKING_VFORK
 
-/* Define to 1 if you have the <\> header file. */
-#undef HAVE__
-
 /* Define to 1 if the system has the type `_Bool'. */
 #undef HAVE__BOOL
 
@@ -132,8 +140,14 @@
 /* Version number of package */
 #undef VERSION
 
+/* Define to rpl_malloc if the replacement function should be used. */
+//#undef malloc
+
 /* Define to `int' if <sys/types.h> does not define. */
 #undef pid_t
+
+/* Define to rpl_realloc if the replacement function should be used. */
+//#undef realloc
 
 /* Define as `fork' if `vfork' does not work. */
 #undef vfork

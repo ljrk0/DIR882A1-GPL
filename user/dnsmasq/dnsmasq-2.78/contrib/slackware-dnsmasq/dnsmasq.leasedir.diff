@@ -1,0 +1,22 @@
+--- ./src/config.h.orig	2004-07-26 10:36:57.000000000 -0700
++++ ./src/config.h	2004-07-27 22:26:33.000000000 -0700
+@@ -35,7 +35,7 @@
+ #if defined(__FreeBSD__) || defined (__OpenBSD__)
+ #   define LEASEFILE "/var/db/dnsmasq.leases"
+ #else
+-#   define LEASEFILE "/var/lib/misc/dnsmasq.leases"
++#   define LEASEFILE "/var/state/dnsmasq/dnsmasq.leases"
+ #endif
+ #if defined(__FreeBSD__)
+ #   define CONFFILE "/usr/local/etc/dnsmasq.conf"
+--- ./dnsmasq.conf.example.orig	2004-06-22 12:52:20.000000000 -0700
++++ ./dnsmasq.conf.example	2004-07-27 22:25:40.000000000 -0700
+@@ -247,7 +247,7 @@
+ # The DHCP server needs somewhere on disk to keep its lease database.
+ # This defaults to a sane location, but if you want to change it, use
+ # the line below.
+-#dhcp-leasefile=/var/lib/misc/dnsmasq.leases
++#dhcp-leasefile=/var/state/dnsmasq/dnsmasq.leases
+ 
+ # Set the cachesize here.
+ #cache-size=150

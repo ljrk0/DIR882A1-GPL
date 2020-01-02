@@ -208,6 +208,7 @@ dir_y+=tw-prog.priv/prog-cgi/src
 dir_y+=tw-prog.priv/www
 dir_y+=tw_hotplug
 #dir_y+=kstreamer
+#dir_$(CONFIG_IMG_CRYPT)+=tw-prog.priv/imgcrypt
 dir_$(CONFIG_MYDLINK_SUPPORT)+= mydlink
 dir_$(CONFIG_OOKLA_SUPPORT)+=ookla
 dir_$(CONFIG_KWILT_SUPPORT)+=kwilt

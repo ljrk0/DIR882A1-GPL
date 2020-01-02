@@ -1684,7 +1684,7 @@
 #define PACKAGE_NAME "wget"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "wget "
+#define PACKAGE_STRING "wget 1.13"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "wget"
@@ -1693,7 +1693,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION ""
+#define PACKAGE_VERSION "1.13"
 
 /* Define to the type that is the result of default argument promotions of
    type mode_t. */
@@ -1807,7 +1807,7 @@
 /* #undef USE_WIN32_THREADS */
 
 /* Version number of package */
-#define VERSION ""
+#define VERSION "1.13"
 
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type
    'wchar_t'. */

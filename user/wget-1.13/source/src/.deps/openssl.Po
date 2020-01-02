@@ -67,11 +67,11 @@ openssl.o: openssl.c wget.h config.h sysdep.h ../lib/alloca.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/environments.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/confname.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/getopt.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/e_os2.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/opensslconf.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/comp.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/crypto.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/e_os2.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/opensslconf.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/comp.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/crypto.h \
  ../lib/stdlib.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/stdlib.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/waitflags.h \
@@ -87,46 +87,46 @@ openssl.o: openssl.c wget.h config.h sysdep.h ../lib/alloca.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/initspin.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_pthread.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdarg.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/stack.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/safestack.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/opensslv.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ossl_typ.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/symhacks.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/bio.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/buffer.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/evp.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/objects.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/obj_mac.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/asn1.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/bn.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ec.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ecdsa.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ecdh.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/rsa.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dsa.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dh.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/sha.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509_vfy.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/lhash.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pkcs7.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pem.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pem2.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/hmac.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/kssl.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl2.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl3.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/tls1.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dtls1.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pqueue.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/stack.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/safestack.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/opensslv.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ossl_typ.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/symhacks.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/bio.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/buffer.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/evp.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/objects.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/obj_mac.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/asn1.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/bn.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ec.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ecdsa.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ecdh.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/rsa.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dsa.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dh.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/sha.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509_vfy.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/lhash.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pkcs7.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pem.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pem2.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/hmac.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/kssl.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl2.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl3.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/tls1.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dtls1.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pqueue.h \
  ../lib/sys/time.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/time.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl23.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/srtp.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509v3.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/conf.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/err.h \
- /home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/rand.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl23.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/srtp.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509v3.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/conf.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/err.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/rand.h \
  utils.h connect.h host.h ../lib/netdb.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/netdb.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/netinet/in.h \
@@ -308,15 +308,15 @@ iri.h:
 
 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/getopt.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/e_os2.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/e_os2.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/opensslconf.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/opensslconf.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/comp.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/comp.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/crypto.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/crypto.h:
 
 ../lib/stdlib.h:
 
@@ -348,85 +348,85 @@ iri.h:
 
 /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdarg.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/stack.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/stack.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/safestack.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/safestack.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/opensslv.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/opensslv.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ossl_typ.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ossl_typ.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/symhacks.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/symhacks.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/bio.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/bio.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/buffer.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/buffer.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/evp.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/evp.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/objects.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/objects.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/obj_mac.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/obj_mac.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/asn1.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/asn1.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/bn.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/bn.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ec.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ec.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ecdsa.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ecdsa.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ecdh.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ecdh.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/rsa.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/rsa.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dsa.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dsa.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dh.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dh.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/sha.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/sha.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509_vfy.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509_vfy.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/lhash.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/lhash.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pkcs7.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pkcs7.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pem.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pem.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pem2.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pem2.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/hmac.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/hmac.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/kssl.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/kssl.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl2.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl2.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl3.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl3.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/tls1.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/tls1.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dtls1.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dtls1.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pqueue.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pqueue.h:
 
 ../lib/sys/time.h:
 
 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/time.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl23.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl23.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/srtp.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/srtp.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509v3.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509v3.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/conf.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/conf.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/err.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/err.h:
 
-/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/rand.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/rand.h:
 
 utils.h:
 

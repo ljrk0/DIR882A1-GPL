@@ -60,7 +60,7 @@ rndlinux.lo: rndlinux.c ../config.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/fcntl.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uio.h \
  ../src/types.h ../src/g10lib.h ../src/visibility.h ../src/gcrypt.h \
- /home/xieshijing/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/socket.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/uio.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/socket.h \
@@ -211,7 +211,7 @@ rndlinux.lo: rndlinux.c ../config.h \
 
 ../src/gcrypt.h:
 
-/home/xieshijing/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h:
 
 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/socket.h:
 

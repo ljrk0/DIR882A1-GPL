@@ -33,8 +33,8 @@ PATH: /usr/bin
 PATH: /usr/local/sbin
 PATH: /usr/sbin
 PATH: /sbin
-PATH: /home/xieshijing/bin
-PATH: /home/xieshijing/trunk/GPL_Code/source/tools
+PATH: /home/zhangtianchuan/bin
+PATH: /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/tools
 
 
 ## ----------- ##
@@ -63,7 +63,7 @@ configure:2963: result: mipsel-unknown-linux-gnu
 configure:2987: autobuild project... libgpg-error
 configure:2989: autobuild revision... 1.10
 configure:2993: autobuild hostname... wireless
-configure:3002: autobuild timestamp... 20180703-170103
+configure:3002: autobuild timestamp... 20190301-011429
 configure:3016: checking for mipsel-linux-gcc
 configure:3043: result: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc
 configure:3312: checking for C compiler version
@@ -452,18 +452,18 @@ configure:11300: result: cc
 configure:11327: checking whether NLS is requested
 configure:11336: result: yes
 configure:11377: checking for msgfmt
-configure: trying /usr/bin/msgfmt...
+configure: trying /usr/local/bin/msgfmt...
 0 translated messages.
-configure:11409: result: /usr/bin/msgfmt
+configure:11409: result: /usr/local/bin/msgfmt
 configure:11418: checking for gmsgfmt
-configure:11449: result: /usr/bin/msgfmt
+configure:11449: result: /usr/local/bin/msgfmt
 configure:11500: checking for xgettext
-configure: trying /usr/bin/xgettext...
-/usr/bin/xgettext: warning: file `/dev/null' extension `' is unknown; will try C
-configure:11532: result: /usr/bin/xgettext
+configure: trying /usr/local/bin/xgettext...
+/usr/local/bin/xgettext: warning: file '/dev/null' extension '' is unknown; will try C
+configure:11532: result: /usr/local/bin/xgettext
 configure:11578: checking for msgmerge
-configure: trying /usr/bin/msgmerge...
-configure:11609: result: /usr/bin/msgmerge
+configure: trying /usr/local/bin/msgmerge...
+configure:11609: result: /usr/local/bin/msgmerge
 configure:11666: checking for ld used by GCC
 configure:11730: result: /opt/buildroot-gcc463/usr/bin/mipsel-linux-ld
 configure:11737: checking if the linker (/opt/buildroot-gcc463/usr/bin/mipsel-linux-ld) is GNU ld
@@ -859,12 +859,12 @@ ac_cv_host=mipsel-unknown-linux-gnu
 ac_cv_objext=o
 ac_cv_path_EGREP='/bin/grep -E'
 ac_cv_path_FGREP='/bin/grep -F'
-ac_cv_path_GMSGFMT=/usr/bin/msgfmt
+ac_cv_path_GMSGFMT=/usr/local/bin/msgfmt
 ac_cv_path_GREP=/bin/grep
-ac_cv_path_MSGFMT=/usr/bin/msgfmt
-ac_cv_path_MSGMERGE=/usr/bin/msgmerge
+ac_cv_path_MSGFMT=/usr/local/bin/msgfmt
+ac_cv_path_MSGMERGE=/usr/local/bin/msgmerge
 ac_cv_path_SED=/bin/sed
-ac_cv_path_XGETTEXT=/usr/bin/xgettext
+ac_cv_path_XGETTEXT=/usr/local/bin/xgettext
 ac_cv_path_install='/usr/bin/install -c'
 ac_cv_path_mkdir=/bin/mkdir
 ac_cv_prog_AR='"/opt/buildroot-gcc463/usr/bin"/mipsel-linux-ar'
@@ -923,16 +923,16 @@ lt_cv_sys_max_cmd_len=1966080
 ## Output variables. ##
 ## ----------------- ##
 
-ACLOCAL='${SHELL} /home/xieshijing/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run aclocal-1.10'
+ACLOCAL='${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run aclocal-1.10'
 AMDEPBACKSLASH='\'
 AMDEP_FALSE='#'
 AMDEP_TRUE=''
-AMTAR='${SHELL} /home/xieshijing/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run tar'
+AMTAR='${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run tar'
 AR='"/opt/buildroot-gcc463/usr/bin"/mipsel-linux-ar'
 AS='"/opt/buildroot-gcc463/usr/bin"/mipsel-linux-as '
-AUTOCONF='${SHELL} /home/xieshijing/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run autoconf'
-AUTOHEADER='${SHELL} /home/xieshijing/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run autoheader'
-AUTOMAKE='${SHELL} /home/xieshijing/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run automake-1.10'
+AUTOCONF='${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run autoconf'
+AUTOHEADER='${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run autoheader'
+AUTOMAKE='${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run automake-1.10'
 AWK='gawk'
 BUILD_FILEVERSION=''
 BUILD_TIMESTAMP=''
@@ -955,8 +955,8 @@ EGREP='/bin/grep -E'
 EXEEXT=''
 FGREP='/bin/grep -F'
 GETTEXT_MACRO_VERSION='0.17'
-GMSGFMT='/usr/bin/msgfmt'
-GMSGFMT_015='/usr/bin/msgfmt'
+GMSGFMT='/usr/local/bin/msgfmt'
+GMSGFMT_015='/usr/local/bin/msgfmt'
 GPG_ERROR_CONFIG_CFLAGS=''
 GPG_ERROR_CONFIG_ISUBDIRAFTER=''
 GPG_ERROR_CONFIG_LIBS='-lgpg-error'
@@ -991,11 +991,11 @@ LTLIBOBJS=''
 MAINT='#'
 MAINTAINER_MODE_FALSE=''
 MAINTAINER_MODE_TRUE='#'
-MAKEINFO='${SHELL} /home/xieshijing/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run makeinfo'
+MAKEINFO='${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run makeinfo'
 MKDIR_P='/bin/mkdir -p'
-MSGFMT='/usr/bin/msgfmt'
-MSGFMT_015='/usr/bin/msgfmt'
-MSGMERGE='/usr/bin/msgmerge'
+MSGFMT='/usr/local/bin/msgfmt'
+MSGFMT_015='/usr/local/bin/msgfmt'
+MSGMERGE='/usr/local/bin/msgmerge'
 NM='link -dump -symbols'
 NMEDIT=''
 OBJDUMP='objdump'
@@ -1019,8 +1019,8 @@ SHELL='/bin/sh'
 STRIP='"/opt/buildroot-gcc463/usr/bin"/mipsel-linux-strip'
 USE_NLS='no'
 VERSION='1.10'
-XGETTEXT='/usr/bin/xgettext'
-XGETTEXT_015='/usr/bin/xgettext'
+XGETTEXT='/usr/local/bin/xgettext'
+XGETTEXT_015='/usr/local/bin/xgettext'
 XGETTEXT_EXTRA_OPTIONS=''
 ac_ct_CC=''
 ac_ct_DUMPBIN='link -dump -symbols'
@@ -1051,7 +1051,7 @@ host_vendor='unknown'
 htmldir='${docdir}'
 includedir='${prefix}/include'
 infodir='${datarootdir}/info'
-install_sh='$(SHELL) /home/xieshijing/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/install-sh'
+install_sh='$(SHELL) /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/install-sh'
 libdir='${exec_prefix}/lib'
 libexecdir='${exec_prefix}/libexec'
 localedir='${datarootdir}/locale'

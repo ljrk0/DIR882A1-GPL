@@ -1,5 +1,5 @@
 
-#line 3 "<stdout>"
+#line 3 "scan.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -1973,7 +1973,7 @@ extern const char *escaped_qstart, *escaped_qend;
 
 
 
-#line 1977 "<stdout>"
+#line 1977 "scan.c"
 
 #define INITIAL 0
 #define SECT2 1
@@ -2093,7 +2093,7 @@ static int input (void );
 /* This used to be an fputs(), but since the string might contain NUL's,
  * we now use fwrite().
  */
-#define ECHO do { if (fwrite( yytext, yyleng, 1, yyout )) {} } while (0)
+#define ECHO fwrite( yytext, yyleng, 1, yyout )
 #endif
 
 /* Gets input and stuffs it into "buf".  number of characters read, or YY_NULL,
@@ -2104,7 +2104,7 @@ static int input (void );
 	if ( YY_CURRENT_BUFFER_LVALUE->yy_is_interactive ) \
 		{ \
 		int c = '*'; \
-		unsigned n; \
+		int n; \
 		for ( n = 0; n < max_size && \
 			     (c = getc( yyin )) != EOF && c != '\n'; ++n ) \
 			buf[n] = (char) c; \
@@ -2200,7 +2200,7 @@ YY_DECL
 	Char nmdef[MAXLINE];
 
 
-#line 2204 "<stdout>"
+#line 2204 "scan.c"
 
 	if ( !(yy_init) )
 		{
@@ -4107,7 +4107,7 @@ YY_RULE_SETUP
 #line 969 "scan.l"
 YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
-#line 4111 "<stdout>"
+#line 4111 "scan.c"
 			case YY_STATE_EOF(INITIAL):
 			case YY_STATE_EOF(SECT2):
 			case YY_STATE_EOF(CODEBLOCK):

@@ -3,16 +3,16 @@ libc/termios/tcgetsid.os: libc/termios/tcgetsid.c include/libc-symbols.h \
  include/bits/uClibc_config.h include/sys/cdefs.h include/libc-internal.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
  include/bits/errno.h \
- /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
- /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
- /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
  include/termios.h include/bits/types.h include/bits/wordsize.h \
  include/bits/kernel_types.h include/bits/typesizes.h \
  include/bits/pthreadtypes.h include/bits/sched.h include/bits/termios.h \
  include/sys/ttydefaults.h include/sys/ioctl.h include/bits/ioctls.h \
- /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/ioctls.h \
- /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
- /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/ioctls.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
+ /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h \
  include/bits/ioctl-types.h include/sys/types.h include/time.h \
  include/endian.h include/bits/endian.h include/byteswap.h \
  include/bits/byteswap.h include/bits/byteswap-common.h \
@@ -40,11 +40,11 @@ include/libc-internal.h:
 
 include/bits/errno.h:
 
-/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
 
-/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
 
-/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
 
 include/termios.h:
 
@@ -68,11 +68,11 @@ include/sys/ioctl.h:
 
 include/bits/ioctls.h:
 
-/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/ioctls.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/ioctls.h:
 
-/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
 
-/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
+/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
 
 include/bits/ioctl-types.h:
 
@@ -113,4 +113,4 @@ include/bits/getopt.h:
 include/ctype.h:
 
 include/bits/uClibc_touplow.h:
-cmd_libc_termios_tcgetsid.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/termios/tcgetsid.c -o libc/termios/tcgetsid.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/termios/tcgetsid.os -MD -MP -MF libc/termios/.tcgetsid.os.dep
+cmd_libc_termios_tcgetsid.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/termios/tcgetsid.c -o libc/termios/tcgetsid.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/termios/tcgetsid.os -MD -MP -MF libc/termios/.tcgetsid.os.dep
