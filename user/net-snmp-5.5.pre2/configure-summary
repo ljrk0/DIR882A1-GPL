@@ -1,0 +1,12 @@
+  SNMP Versions Supported:    1 2c 3
+  Building for:               linux
+  Net-SNMP Version:           5.5.pre2
+  Network transport support:  Callback Alias UDP
+  SNMPv3 Security Modules:     usm
+  Agent MIB code:             default_modules =>  mibII/snmp_mib mibII/system_mib mibII/sysORTable mibII/vacm_vars mibII/vacm_conf utilities/execute
+  MYSQL Trap Logging:         unavailable
+  Embedded Perl support:      disabled
+  SNMP Perl modules:          disabled
+  SNMP Python modules:        disabled
+  Authentication support:     MD5
+  Encryption support:         

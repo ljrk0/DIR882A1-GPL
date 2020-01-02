@@ -1,0 +1,353 @@
+./page.c:35:	return (wp->docfd = gopen(lpath, mode, perm));
+./page.c:49:	websRomPageClose(wp->docfd);
+./page.c:51:	if (wp->docfd >= 0) {
+./page.c:52:		close(wp->docfd);
+./page.c:53:		wp->docfd = -1;
+./page.c:121:	return read(wp->docfd, buf, nBytes);
+./page.c:137:	lseek(wp->docfd, offset, SEEK_CUR);
+./websda.c:144:		wp->realm); 
+./websda.c:196:	fmtAlloc(&a1, 255, T("%s:%s:%s"), wp->userName, wp->realm, wp->password);
+./websda.c:206:	fmtAlloc(&a2, 255, T("%s:%s"), method, wp->uri);
+./websda.c:215:	a_assert(wp->nonce);
+./websda.c:218:	if (!wp->qop) {
+./websda.c:219:		fmtAlloc(&preDigest, 255, T("%s:%s:%s"), a1prime, wp->nonce, a2prime);
+./websda.c:223:			wp->nonce,
+./websda.c:224:			wp->nc,
+./websda.c:225:			wp->cnonce,
+./websda.c:226:			wp->qop,
+./goahead.c.bak:865:	}else if(wp && (wp->flags & WEBS_CGI_FIRMWARE_UPLOAD) ){
+./default.c:129:		if (sbuf.mtime <= wp->since) {
+./default.c:210:	if (wp->flags & WEBS_SECURE) {
+./goahead.c:837:	}else if(wp && (wp->flags & WEBS_CGI_FIRMWARE_UPLOAD) ){
+./cgi.c:232:	fmtAlloc(envp+n, FNAMESIZE, T("%s=%s"),T("REMOTE_USER"), wp->userName);
+./cgi.c:234:	fmtAlloc(envp+n, FNAMESIZE, T("%s=%s"),T("AUTH_TYPE"), wp->authType);
+./cgi.c:237:	for (s = symFirst(wp->cgiVars); s != NULL; s = symNext(wp->cgiVars)) {
+./cgi.c:255:	if (wp->flags & WEBS_CGI_UPLOAD){
+./cgi.c:257:		fmtAlloc(envp+n, FNAMESIZE, T("%s=%s"), T("UPLOAD_FILENAME"), wp->cgiStdin);
+./cgi.c:268:	if (wp->cgiStdin == NULL) {
+./cgi.c:269:		wp->cgiStdin = websGetCgiCommName(wp);
+./cgi.c:271:	stdIn = wp->cgiStdin;
+./cgi.c:433:					if(wp->has_firmware_upload_clean)
+./cgi.c:479: *				The stdin file name (wp->cgiStdin) gets freed as
+./cgi.c:492:				if(wp->has_firmware_upload_clean){
+./rom.c:86:	return (wp->docfd = wip - websRomPageIndex);
+./rom.c:135:	a_assert(wp->docfd >= 0);
+./rom.c:137:	wip = &websRomPageIndex[wp->docfd];
+./rom.c:157:	a_assert(wp->docfd >= 0);
+./rom.c:159:	wip = &websRomPageIndex[wp->docfd];
+./rom.c:166:	if (wp->docfd < 0) {
+./asp.c:92:	wp->flags |= WEBS_HEADER_DONE;
+./asp.c:98:	ejid = ejOpenEngine(wp->cgiVars, websAspFunctions);
+./webs.c:184:		socketCloseConnection(wp->sid);
+./webs.c:302:	wp->listenSid = listenSid;
+./webs.c:304:	ascToUni(wp->ipaddr, ipaddr, min(sizeof(wp->ipaddr), strlen(ipaddr) + 1));
+./webs.c:313:	gstrncpy(wp->ifaddr, pString, gstrlen(pString));
+./webs.c:319:	if (gstrcmp(wp->ipaddr, T("127.0.0.1")) == 0 || 
+./webs.c:320:			gstrcmp(wp->ipaddr, websIpaddr) == 0 || 
+./webs.c:321:			gstrcmp(wp->ipaddr, websHost) == 0) {
+./webs.c:322:		wp->flags |= WEBS_LOCAL_REQUEST;
+./webs.c:333:	wp->timeout = emfSchedCallback(WEBS_TIMEOUT, websTimeout, (void *) wp);
+./webs.c:334:	//trace(8, T("webs: ipaddr : %s,port : %d,listenSid : %d,accept request\n"),wp->ipaddr,port,listenSid);
+./webs.c:335:	//trace(3,T("webs: ipaddr : %s,port : %d,listenSid : %d,accept request\n"),wp->ipaddr,port,listenSid);
+./webs.c:360:		if (websValid(wp) && wp->writeSocket) {
+./webs.c:361:			(*wp->writeSocket)(wp);
+./webs.c:446:        if(1==wp->has_firmware_upload_clean)
+./webs.c:451:        if(wp->flags & WEBS_CGI_TORRENT_UPLOAD)
+./webs.c:453:            if(checkTorrentValid(wp->clen))
+./webs.c:461:        if(wp->flags & WEBS_CGI_SETTINGS_UPLOAD)
+./webs.c:463:           if(checkSettingsValid(wp->clen))
+./webs.c:527:		switch(wp->state) {
+./webs.c:536:			wp->state = WEBS_HEADER;
+./webs.c:544:			if (ringqLen(&wp->header) > 0) {
+./webs.c:545:				ringqPutStr(&wp->header, T("\n"));
+./webs.c:547:			ringqPutStr(&wp->header, text);
+./webs.c:558:			if (wp->flags & WEBS_CGI_REQUEST)
+./webs.c:560:				//trace(3,T("flags : 0x%x, nbytes : %d,clean : %d,%d\n"),wp->flags,nbytes,wp->has_firmware_upload_clean,wp->clen);
+./webs.c:563:					fd = gopen(wp->cgiStdin, O_CREAT | O_WRONLY | O_BINARY | O_APPEND, 0666);
+./webs.c:564:					//trace(3,T("fd : %d ,%s\n"),fd,wp->cgiStdin);
+./webs.c:567:				if( ((wp->flags & WEBS_CGI_FIRMWARE_UPLOAD ) ||
+./webs.c:568:					(wp->flags & WEBS_CGI_SETTINGS_UPLOAD ))					
+./webs.c:572:					//trace(3,T("flags : 0x%x \n"),wp->flags);
+./webs.c:577:			if (wp->query) {
+./webs.c:578:				if (wp->query[0] && !(wp->flags & WEBS_POST_DATA)) {
+./webs.c:585:					len = gstrlen(wp->query);
+./webs.c:586:					wp->query = brealloc(B_L, wp->query, (len + gstrlen(text) +
+./webs.c:588:					wp->query[len++] = '&';
+./webs.c:589:					gstrcpy(&wp->query[len], text);
+./webs.c:598:                  len = gstrlen(wp->query);
+./webs.c:599:                  wp->query = brealloc(B_L, wp->query, (len +	gstrlen(text) +
+./webs.c:601:                  if (wp->query) {
+./webs.c:602:                     gstrcpy(&wp->query[len], text);
+./webs.c:608:				wp->query = bstrdup(B_L, text);
+./webs.c:613:			wp->flags |= WEBS_POST_DATA;
+./webs.c:614:			wp->clen -= nbytes;
+./webs.c:615:			if (wp->clen > 0) {
+./webs.c:643:			if (wp->flags & WEBS_CGI_REQUEST) {
+./webs.c:645:					fd = gopen(wp->cgiStdin, O_CREAT | O_WRONLY | O_BINARY,
+./webs.c:652:			if (wp->query && *wp->query && !(wp->flags & WEBS_POST_DATA)) {
+./webs.c:653:				len = gstrlen(wp->query);
+./webs.c:654:				wp->query = brealloc(B_L, wp->query, (len + gstrlen(text) +
+./webs.c:656:				if (wp->query) {
+./webs.c:657:					wp->query[len++] = '&';
+./webs.c:658:					gstrcpy(&wp->query[len], text);
+./webs.c:662:				wp->query = bstrdup(B_L, text);
+./webs.c:664:			wp->flags |= WEBS_POST_DATA;
+./webs.c:714:	if (wp->state == WEBS_POST_CLEN) {
+./webs.c:715:		len = (wp->clen > WEBS_SOCKET_BUFSIZ) ? WEBS_SOCKET_BUFSIZ : wp->clen;
+./webs.c:723:		if (wp->flags & WEBS_SECURE) {
+./webs.c:724:			nbytes = websSSLRead(wp->wsp, buf, len);
+./webs.c:726:			nbytes = socketRead(wp->sid, buf, len);
+./webs.c:729:		nbytes = socketRead(wp->sid, buf, len);
+./webs.c:752:		if (wp->flags & WEBS_SECURE) {
+./webs.c:753:			nbytes = websSSLGets(wp->wsp, &text);
+./webs.c:755:			nbytes = socketGets(wp->sid, &text);
+./webs.c:758:		nbytes = socketGets(wp->sid, &text);
+./webs.c:767:			if (wp->flags & WEBS_SECURE) {
+./webs.c:772:				if (wp->state == WEBS_BEGIN) {
+./webs.c:775:					eof = websSSLEof(wp->wsp);
+./webs.c:778:				eof = socketEof(wp->sid);
+./webs.c:781:			eof = socketEof(wp->sid);
+./webs.c:790:				if (wp->state == WEBS_POST) {
+./webs.c:817:			if (wp->state == WEBS_HEADER && ringqLen(&wp->header) <= 0) {
+./webs.c:825:			if (wp->state == WEBS_HEADER) {
+./webs.c:830:				//trace(3,T("flags:%d\n"),wp->flags);
+./webs.c:831:				if (wp->flags & WEBS_POST_REQUEST)
+./webs.c:833:					if (wp->flags & WEBS_CLEN) {
+./webs.c:834:						wp->state = WEBS_POST_CLEN;
+./webs.c:835:						clen = wp->clen;
+./webs.c:837:						wp->state = WEBS_POST;
+./webs.c:887:			wp->flags |= WEBS_POST_REQUEST;
+./webs.c:889:			wp->flags |= WEBS_HEAD_REQUEST;
+./webs.c:921:	wp->url = bstrdup(B_L, url);
+./webs.c:925:		wp->flags |= WEBS_CGI_REQUEST;
+./webs.c:929:			wp->flags |= WEBS_CGI_FIRMWARE_UPLOAD;
+./webs.c:933:		        wp->flags |= WEBS_CGI_TORRENT_UPLOAD;
+./webs.c:937:		        wp->flags |= WEBS_CGI_SETTINGS_UPLOAD;
+./webs.c:940:		if (wp->flags & WEBS_POST_REQUEST) {
+./webs.c:941:			wp->cgiStdin = websGetCgiCommName(wp);
+./webs.c:946:			wp->flags |= WEBS_CGI_UPLOAD;
+./webs.c:951:	wp->query = bstrdup(B_L, query);
+./webs.c:952:	wp->host = bstrdup(B_L, host);
+./webs.c:953:	wp->path = bstrdup(B_L, path);
+./webs.c:954:	wp->protocol = bstrdup(B_L, proto);
+./webs.c:955:	wp->protoVersion = bstrdup(B_L, protoVer);
+./webs.c:957:	if ((testPort = socketGetPort(wp->listenSid)) >= 0) {
+./webs.c:958:		wp->port = testPort;
+./webs.c:960:		wp->port = gatoi(port);
+./webs.c:964:		wp->flags |= WEBS_ASP;
+./webs.c:967:		wp->flags |= WEBS_JS;
+./webs.c:971:	websUrlType(url, wp->type, TSZ(wp->type));
+./webs.c:980:	if (gstrstr(wp->url, T("http://")) == NULL || 
+./webs.c:981:		((gstrcmp(wp->host, T("localhost")) == 0 || 
+./webs.c:982:			gstrcmp(wp->host, websHost) == 0) && (wp->port == websPort))) {
+./webs.c:983:		wp->flags |= WEBS_LOCAL_PAGE;
+./webs.c:984:		if (gstrcmp(wp->path, T("/")) == 0) {
+./webs.c:985:			wp->flags |= WEBS_HOME_PAGE;
+./webs.c:990:	ringqFlush(&wp->header);
+./webs.c:1019:	for (lp = (char_t*) wp->header.servp; lp && *lp; ) {
+./webs.c:1054:			wp->userAgent = bstrdup(B_L, value);
+./webs.c:1074:			wp->authType = bstrdup(B_L, authType);
+./webs.c:1077:			if (gstricmp(wp->authType, T("basic")) == 0) {
+./webs.c:1086:                * wp->authType that was allocated just before the if()
+./webs.c:1089:               bfree(B_L, wp->authType);
+./webs.c:1090:					wp->authType = bstrdup(B_L, value);
+./webs.c:1102:					wp->userName = bstrdup(B_L, userAuth);
+./webs.c:1103:					wp->password = bstrdup(B_L, cp);
+./webs.c:1105:					wp->userName = bstrdup(B_L, T(""));
+./webs.c:1106:					wp->password = bstrdup(B_L, T(""));
+./webs.c:1111:				wp->flags |= WEBS_AUTH_BASIC;
+./webs.c:1125:				wp->flags |= WEBS_AUTH_DIGEST;
+./webs.c:1172:						wp->userName = bstrdup(B_L, vp);
+./webs.c:1174:						wp->digest = bstrdup(B_L, vp);
+./webs.c:1176:						wp->opaque = bstrdup(B_L, vp);
+./webs.c:1178:						wp->uri = bstrdup(B_L, vp);
+./webs.c:1180:						wp->realm = bstrdup(B_L, vp);
+./webs.c:1182:						wp->nonce = bstrdup(B_L, vp);
+./webs.c:1184:						wp->nc = bstrdup(B_L, vp);
+./webs.c:1186:						wp->cnonce = bstrdup(B_L, vp);
+./webs.c:1188:						wp->qop = bstrdup(B_L, vp);
+./webs.c:1213:			} /* if (gstrcmp(wp->authType)) */
+./webs.c:1224:         wp->clen = gatoi(value);
+./webs.c:1225:         if (wp->clen > 0)
+./webs.c:1227:			   wp->flags |= WEBS_CLEN;			
+./webs.c:1232:            wp->clen = 0;
+./webs.c:1245:				wp->flags |= WEBS_KEEP_ALIVE;
+./webs.c:1259:				wp->flags |= WEBS_DONT_USE_CACHE;
+./webs.c:1267:			wp->flags |= WEBS_COOKIE;
+./webs.c:1268:			wp->cookie = bstrdup(B_L, value);
+./webs.c:1285:			if ((wp->since = dateParse(tip, cmd)) != 0) {
+./webs.c:1286:				wp->flags |= WEBS_IF_MODIFIED;
+./webs.c:1309:	websSetVar(wp, T("QUERY_STRING"), wp->query);
+./webs.c:1314:	websSetVar(wp, T("REMOTE_HOST"), wp->ipaddr);
+./webs.c:1315:	websSetVar(wp, T("REMOTE_ADDR"), wp->ipaddr);
+./webs.c:1316:	websSetVar(wp, T("PATH_INFO"), wp->path);
+./webs.c:1319:	websSetVar(wp, T("SERVER_ADDR"), wp->ifaddr);
+./webs.c:1323:	websSetVar(wp, T("SERVER_PROTOCOL"), wp->protoVersion);
+./webs.c:1328: *	Note: we rely on wp->decodedQuery preserving the decoded values in the
+./webs.c:1331:	wp->decodedQuery = bstrdup(B_L, wp->query);
+./webs.c:1332:	keyword = gstrtok(wp->decodedQuery, T("&"));
+./webs.c:1386:	symEnter(wp->cgiVars, var, v, 0);
+./webs.c:1404:	if ((sp = symLookup(wp->cgiVars, var)) == NULL) {
+./webs.c:1423:	if ((sp = symLookup(wp->cgiVars, var)) != NULL) {
+./webs.c:1459:	if (wp->timeout >= 0) {
+./webs.c:1460:		emfUnschedCallback(wp->timeout);
+./webs.c:1461:		wp->timeout = -1;
+./webs.c:1480:	wp->flags &= ~WEBS_KEEP_ALIVE;
+./webs.c:1485:	if ( !(wp->flags & WEBS_HEADER_DONE)) {
+./webs.c:1486:		wp->flags |= WEBS_HEADER_DONE;
+./webs.c:1513:			if (!(wp->flags & WEBS_AUTH_DIGEST)) {
+./webs.c:1542:		if (wp->flags & WEBS_KEEP_ALIVE) {
+./webs.c:1564:	if ((wp->flags & WEBS_HEAD_REQUEST) == 0 && message && *message) {
+./webs.c:1596:		if (wp->flags & WEBS_SECURE) {
+./webs.c:1747:   safeUrl = websSafeUrl(wp->url);
+./webs.c:1748:   bfreeSafe(B_L, wp->url);
+./webs.c:1749:   wp->url = safeUrl;
+./webs.c:1887:		if (wp->flags & WEBS_SECURE) {
+./webs.c:1888:			if ((len = websSSLWrite(wp->wsp, pBuf, nChars)) < 0) {
+./webs.c:1892:			websSSLFlush(wp->wsp);
+./webs.c:1894:			if ((len = socketWrite(wp->sid, pBuf, nChars)) < 0) {
+./webs.c:1898:			socketFlush(wp->sid);
+./webs.c:1901:		if ((len = socketWrite(wp->sid, pBuf, nChars)) < 0) {
+./webs.c:1905:		socketFlush(wp->sid);
+./webs.c:1936:	if (wp->flags & WEBS_SECURE) {
+./webs.c:1937:		r = websSSLWrite(wp->wsp, buf, nChars);
+./webs.c:1938:		websSSLFlush(wp->wsp);
+./webs.c:1940:		r = socketWrite(wp->sid, buf, nChars);
+./webs.c:1941:		socketFlush(wp->sid);
+./webs.c:1944:	r = socketWrite(wp->sid, buf, nChars);
+./webs.c:1945:	socketFlush(wp->sid);
+./webs.c:2023:      timeStr, wp->ipaddr, wp->url, code);
+./webs.c:2026:		wp->url, code, wp->written);
+./webs.c:2060:		wp->timeout = -1;
+./webs.c:2081:	socketDeleteHandler(wp->sid);
+./webs.c:2084:		wp->flags &= ~WEBS_KEEP_ALIVE;
+./webs.c:2088:	if (! (wp->flags & WEBS_LOCAL_PAGE)) {
+./webs.c:2094:	if (! (wp->flags & WEBS_REQUEST_DONE)) {
+./webs.c:2108:	if (wp->flags & WEBS_SECURE) {
+./webs.c:2110:		websSSLFlush(wp->wsp);
+./webs.c:2111:		socketCloseConnection(wp->sid);
+./webs.c:2121:	if (wp->flags & WEBS_KEEP_ALIVE) {
+./webs.c:2122:		if (socketFlush(wp->sid) == 0) {
+./webs.c:2123:			wp->state = WEBS_BEGIN;
+./webs.c:2124:			wp->flags |= WEBS_REQUEST_DONE;
+./webs.c:2125:			if (wp->header.buf) {
+./webs.c:2126:				ringqFlush(&wp->header);
+./webs.c:2128:			socketCreateHandler(wp->sid, SOCKET_READABLE, websSocketEvent, 
+./webs.c:2131:			wp->timeout = emfSchedCallback(WEBS_TIMEOUT, websTimeout,
+./webs.c:2137:		socketSetBlock(wp->sid, 1);
+./webs.c:2138:		socketFlush(wp->sid);
+./webs.c:2139:		socketCloseConnection(wp->sid);
+./webs.c:2163:	wp->wid = wid;
+./webs.c:2164:	wp->sid = sid;
+./webs.c:2165:	wp->state = WEBS_BEGIN;
+./webs.c:2166:	wp->docfd = -1;
+./webs.c:2167:	wp->timeout = -1;
+./webs.c:2168:	wp->dir = NULL;
+./webs.c:2169:	wp->authType = NULL;
+./webs.c:2170:	wp->protocol = NULL;
+./webs.c:2171:	wp->protoVersion = NULL;
+./webs.c:2172:	wp->password = NULL;
+./webs.c:2173:	wp->userName = NULL;
+./webs.c:2174:	wp->has_firmware_upload_clean = 0;
+./webs.c:2176:	wp->realm = NULL;
+./webs.c:2177:	wp->nonce = NULL;
+./webs.c:2178:	wp->digest = NULL;
+./webs.c:2179:	wp->uri = NULL;
+./webs.c:2180:	wp->opaque = NULL;
+./webs.c:2181:	wp->nc = NULL;
+./webs.c:2182:	wp->cnonce = NULL;
+./webs.c:2183:	wp->qop = NULL;
+./webs.c:2186:	wp->wsp = NULL;
+./webs.c:2189:	ringqOpen(&wp->header, WEBS_HEADER_BUFINC, WEBS_MAX_HEADER);
+./webs.c:2196:	wp->cgiVars = symOpen(WEBS_SYM_INIT);
+./webs.c:2210:	if (wp->path)
+./webs.c:2211:		bfree(B_L, wp->path);
+./webs.c:2212:	if (wp->url)
+./webs.c:2213:		bfree(B_L, wp->url);
+./webs.c:2214:	if (wp->host)
+./webs.c:2215:		bfree(B_L, wp->host);
+./webs.c:2216:	if (wp->lpath)
+./webs.c:2217:		bfree(B_L, wp->lpath);
+./webs.c:2218:	if (wp->query)
+./webs.c:2219:		bfree(B_L, wp->query);
+./webs.c:2220:	if (wp->decodedQuery)
+./webs.c:2221:		bfree(B_L, wp->decodedQuery);
+./webs.c:2222:	if (wp->authType)
+./webs.c:2223:		bfree(B_L, wp->authType);
+./webs.c:2224:	if (wp->password)
+./webs.c:2225:		bfree(B_L, wp->password);
+./webs.c:2226:	if (wp->userName)
+./webs.c:2227:		bfree(B_L, wp->userName);
+./webs.c:2228:	if (wp->cookie)
+./webs.c:2229:		bfree(B_L, wp->cookie);
+./webs.c:2230:	if (wp->userAgent)
+./webs.c:2231:		bfree(B_L, wp->userAgent);
+./webs.c:2232:	if (wp->dir)
+./webs.c:2233:		bfree(B_L, wp->dir);
+./webs.c:2234:	if (wp->protocol)
+./webs.c:2235:		bfree(B_L, wp->protocol);
+./webs.c:2236:	if (wp->protoVersion)
+./webs.c:2237:		bfree(B_L, wp->protoVersion);
+./webs.c:2238:	if (wp->cgiStdin)
+./webs.c:2239:		bfree(B_L, wp->cgiStdin);
+./webs.c:2243:	if (wp->realm)
+./webs.c:2244:		bfree(B_L, wp->realm);
+./webs.c:2245:	if (wp->uri)
+./webs.c:2246:		bfree(B_L, wp->uri);
+./webs.c:2247:	if (wp->digest)
+./webs.c:2248:		bfree(B_L, wp->digest);
+./webs.c:2249:	if (wp->opaque)
+./webs.c:2250:		bfree(B_L, wp->opaque);
+./webs.c:2251:	if (wp->nonce)
+./webs.c:2252:		bfree(B_L, wp->nonce);
+./webs.c:2253:	if (wp->nc)
+./webs.c:2254:		bfree(B_L, wp->nc);
+./webs.c:2255:	if (wp->cnonce)
+./webs.c:2256:		bfree(B_L, wp->cnonce);
+./webs.c:2257:	if (wp->qop)
+./webs.c:2258:		bfree(B_L, wp->qop);
+./webs.c:2261:	websSSLFree(wp->wsp);
+./webs.c:2263:	symClose(wp->cgiVars);
+./webs.c:2265:	if (wp->header.buf) {
+./webs.c:2266:		ringqClose(&wp->header);
+./webs.c:2269:	websMax = hFree((void***) &webs, wp->wid);
+./webs.c:2336:	return wp->numbytes;
+./webs.c:2348:	if (wp->dir == NULL) {
+./webs.c:2352:	return wp->dir;
+./webs.c:2364:	return wp->flags;
+./webs.c:2376:	return wp->ipaddr;
+./webs.c:2389:	return wp->path;
+./webs.c:2391:	return wp->lpath;
+./webs.c:2404:	if (wp->path == NULL) {
+./webs.c:2408:	return wp->path;
+./webs.c:2420:	return wp->password;
+./webs.c:2432:	return wp->type;
+./webs.c:2444:	return wp->userName;
+./webs.c:2456:	return wp->written;
+./webs.c:2504:	wp->numbytes = bytes;
+./webs.c:2516:	wp->flags = flags;
+./webs.c:2529:	if (wp->lpath) {
+./webs.c:2530:		bfree(B_L, wp->lpath);
+./webs.c:2532:	wp->lpath = bstrdup(B_L, lpath);
+./webs.c:2533:	websSetVar(wp, T("PATH_TRANSLATED"), wp->lpath);
+./webs.c:2548:		tmp = wp->dir;
+./webs.c:2549:		wp->dir = bstrdup(B_L, dir);
+./webs.c:2555:		tmp = wp->path;
+./webs.c:2556:		wp->path = bstrdup(B_L, path);
+./webs.c:2557:		websSetVar(wp, T("PATH_INFO"), wp->path);
+./webs.c:2573:	wp->writeSocket = fn;
+./webs.c:2574:	socketCreateHandler(wp->sid, SOCKET_WRITABLE, websSocketEvent, (int) wp);
+./webs.c:2586:	wp->written = written;
+./webs.c:2663:	wp->timestamp = time(0);
+./webs.c:2673:	return time(0) - wp->timestamp;
+./handler.c:255:	socketDeleteHandler(wp->sid);
+./handler.c:256:	wp->state = WEBS_PROCESSING;
+./handler.c:264: 	websCondenseMultipleChars(wp->path, '/');
+./handler.c:265:	websCondenseMultipleChars(wp->url, '/');
+./handler.c:274:		DBG_MSG("i:%d,websUrlHandlerMax:%d,urlPrefix:%s, path:%s\n",i,websUrlHandlerMax,sp->urlPrefix,wp->path);
+./handler.c:275:		if (sp->handler && gstrncmp(sp->urlPrefix, wp->path, sp->len) == 0) {
+./handler.c:281:					wp->url, wp->path, wp->query)) {
+./handler.c:300:		websError(wp, 200, T("No handler for this URL %s"), wp->url);
+./handler.c:326:	url = bstrdup(B_L, wp->url);
+./handler.c:365:		bfree(B_L, wp->url);
+./handler.c:366:		wp->url = tidyurl;

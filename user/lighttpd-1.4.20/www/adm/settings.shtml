@@ -1,0 +1,128 @@
+<!-- Copyright 2011, MediaTek Inc. All Rights Reserved. -->
+<html>
+<head>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="/style/normal_ws.css" type="text/css">
+<title>Settings Management</title>
+
+<script type="text/javascript" src="/shareFun.js"></script>
+<script language="JavaScript" type="text/javascript">
+var rai = "<!--#exec cmd="web rtdev sys wif2_live"-->";
+
+function submit_export_form(form)
+{
+	var wifi_if = document.ExportSettings.WiFiIF.value;
+	console.log("wifi_if="+wifi_if);
+
+	if ( wifi_if == "RTDEV")
+		//document.ExportSettings.action = "ExportRTDEVSettings.sh";
+		form.action = "/cgi-bin/ExportRTDEVSettings.sh";
+	else if ( wifi_if == "RT2860")
+		//document.ExportSettings.action = "ExportRT2860Settings.sh";
+		form.action = "/cgi-bin/ExportRT2860Settings.sh";
+	else
+		form.action = "/cgi-bin/ExportAllSettings.sh";
+
+	form.submit();
+}
+
+function submit_import_form(form)
+{
+	console.log("RebootLater="+form.RebootLater.value);
+	if (form.RebootLater.value == 1)
+		alert("Please remeber to reboot device manually after finish the setting importing process to apply the new setting.");
+	
+	form.submit();
+}
+
+function initValue()
+{
+	len = document.ExportSettings.WiFiIF.length;
+	console.log("rai=" + rai + " len="+len);
+	if (rai == "1"){
+		document.ExportSettings.WiFiIF.options[len] = new Option("2nd Wi-Fi", "RTDEV", false, false);
+	}
+
+}
+
+</script>
+</head>
+<body onLoad="initValue()">
+<table class="body"><tr><td>
+<h1 id="setmanTitle">Settings Management</h1>
+<p id="setmanIntroduction">You might save system settings by exporting them to a configuration file, restore them by importing the file, or reset them to factory default.</p>
+<hr />
+
+<!-- ================= Export ================= -->
+<br />
+<form method="post" name="ExportSettings" action="/cgi-bin/ExportSettings.sh">
+<table width="540" border="1" cellspacing="1" cellpadding="3" bordercolor="#9BABBD">
+  <tr>
+    <td class="title" colspan="2" id="setmanExpSet">Export Settings</td>
+  </tr>
+  <tr>
+    <td class="head">Select Configuration</td>
+    <td>
+      <select name="WiFiIF" id="WiFiIF">
+        <option value="ALL">All Configuration</option>
+        <option value="RT2860">Platform and 1st Wi-Fi</option>
+<!--        <option value="RTDEV">2nd Wi-Fi</option> -->
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="head" id="setmanExpSetButton">Export Button</td>
+    <td><input value="Export" id="setmanExpSetExport" name="Export" style="{width:120px;}" type="button" onClick="submit_export_form(this.form)"></td>
+  </tr>
+</table>
+</form>
+<br />
+
+<!-- ================= Import ================= -->
+<form method="post" name="ImportSettings" action="/cgi-bin/upload_settings.cgi" enctype="multipart/form-data">
+<table width="540" border="1" cellspacing="1" cellpadding="3" bordercolor="#9BABBD">
+  <tr>
+    <td class="title" colspan="2" id="setmanImpSet">Import Settings</td>
+  </tr>
+  <tr>
+    <td class="head">Reboot After Import Setting</td>
+    <td>
+      <input type=radio name="RebootLater" value="0" checked><font id="DBDCEnabledFone">Immediately</font>
+      <input type=radio name="RebootLater" value="1"><font id="DBDCEnabledFont">Later</font>
+    </td>
+  </tr>
+  <tr>
+    <td class="head" id="setmanImpSetFileLocation">Settings file location</td>
+    <td><input type="File" name="filename" size="20" maxlength="256"></td>
+  </tr>
+</table>
+<table width="540" border="0" cellpadding="2" cellspacing="1">
+  <tr align="center">
+    <td>
+      <input type=button style="{width:120px;}" value="Import" id="setmanImpSetImport" onClick="submit_import_form(this.form)"> &nbsp; &nbsp;
+      <input type=reset  style="{width:120px;}" value="Cancel" id="setmanImpSetCancel">
+    </td>
+  </tr>
+</table>
+</form>
+<br />
+
+<!-- ================= Load FactoryDefaults  ================= -->
+<form method="post" name="LoadDefaultSettings" action="/cgi-bin/adm.cgi">
+<input type=hidden name=page value=loaddefault>
+<table width="540" border="1" cellspacing="1" cellpadding="3" bordercolor="#9BABBD">
+  <tr>
+    <td class="title" colspan="2" id="setmanLoadFactDefault">Load Factory Defaults</td>
+  </tr>
+  <tr>
+    <td class="head" id="setmanLoadFactDefaultButton">Load Default Button</td>
+    <td><input value="Load Default" id="setmanLoadDefault" name="LoadDefault" style="{width:120px;}" type="submit"></td>
+  </tr>
+</table>
+</form>
+
+
+<br>
+</td></tr></table>
+</body></html>

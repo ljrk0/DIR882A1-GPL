@@ -1,0 +1,68 @@
+<SOAP-ENV:Envelope
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <SOAP-ENV:Header>
+        <cwmp:ID SOAP-ENV:mustUnderstand="1">1234</cwmp:ID>
+    </SOAP-ENV:Header>
+    <SOAP-ENV:Body>
+        <cwmp:Inform>
+	    <DeviceID>
+            <Manufacturer>Cisco</Manufacturer>
+            <OUI>001234</OUI>
+            <ProductClass>Cisco class</ProductClass>
+            <SerialNumber>SN001</SerialNumber>
+	    </DeviceID>
+	    <Event SOAP-ENC:arrayType="cwmp:EventStruct[1]">
+            <EventStruct >
+                <EventCode>0 Bootstrap</EventCode>
+                <CommandKey>key001</CommandKey>
+            </EventStruct>
+	    </Event>
+            <MaxEnvelopes>1</MaxEnvelopes>
+	    <CurrentTime>2005-03-31T12:09:10</CurrentTime>
+	    <RetryCount>0</RetryCount>
+	    <ParameterList SOAP-ENC:arrayType="cwmp:ParameterValueStruct[9]">
+            <ParameterValueStruct>
+                 <Name>InternetGatewayDevice.DeviceInfo.SpecVersion </Name>
+                 <Value xsi:type="xsd:string">1</Value>
+            </ParameterValueStruct>
+            <ParameterValueStruct>
+                <Name>InternetGatewayDevice.DeviceInfo.HardwareVersion </Name>
+                <Value xsi:type="xsd:string">CT-536B+</Value>
+            </ParameterValueStruct>
+            <ParameterValueStruct>
+                <Name>InternetGatewayDevice.DeviceInfo.SoftwareVersion </Name>
+                <Value xsi:type="xsd:string">BCM 3.00</Value>
+            </ParameterValueStruct>
+            <ParameterValueStruct>
+                <Name>InternetGatewayDevice.DeviceInfo.ProvisioningCode </Name>
+                <Value xsi:type="xsd:string">COX.CAB</Value>
+            </ParameterValueStruct>
+            <ParameterValueStruct>
+                <Name>InternetGatewayDevice.ManagementServer.ConnectionRequestURL</Name>
+                <Value xsi:type="xsd:string">http://192.168.10.106:12345</Value>
+            </ParameterValueStruct>
+            <ParameterValueStruct>
+                <Name>InternetGatewayDevice.ManagementServer.ConnectionRequestUsername</Name>
+                <Value xsi:type="xsd:string">userabc</Value>
+            </ParameterValueStruct>
+            <ParameterValueStruct>
+                <Name>InternetGatewayDevice.ManagementServer.ConnectionRequestPassword</Name>
+                <Value xsi:type="xsd:string">abc123</Value>
+            </ParameterValueStruct>
+            <ParameterValueStruct>
+                <Name>InternetGatewayDevice.ManagementServer.ParameterKey</Name>
+                <Value xsi:type="xsd:string">dummykey</Value>
+            </ParameterValueStruct>
+            <ParameterValueStruct>
+                <Name>InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1.ExternalIPAddress </Name>
+                <Value xsi:type="xsd:string">192.168.10.106</Value>
+            </ParameterValueStruct>
+        </ParameterList>
+        </cwmp:Inform>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+

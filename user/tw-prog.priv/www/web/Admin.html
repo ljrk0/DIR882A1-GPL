@@ -1,0 +1,469 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+
+<head>
+<title>D-LINK</title>
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="/css/jquery.selectbox.css" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialCSS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.validate.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPLogin.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPDeviceSettings.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAdministrationSettings.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/Login.js"></script>
+<script type="text/javascript">
+//xframeoption
+if(top!=self){top.location=self.location;}
+
+//session
+if (sessionStorage.getItem('PrivateKey') === null){
+	window.location.replace('../info/Login.html');
+}
+
+	var changePassword = false;
+	var _ReciprocalNumber = 25;
+	var getDevice;
+
+	$(document).ready(function(){
+		Load_HTML();
+		Initial();
+		setMenu("menu_Management");
+		GetXML();
+		startTimeout();
+
+		$("input, select").change(function () {	save_button_changed();	});
+		$("input").keydown(function () {	save_button_changed();	});
+
+		$("#password_Admin").on("focus", function(){
+			clearTextField();
+		});
+	});
+	
+	function Load_HTML()	{	$("#header").load("header.html");	}
+	function Initial()
+	{
+		initialMenu();
+		initialDetectRouterConnection();
+	}
+	
+	function GetXML()	{
+		getDeviceSetting();
+		getAdminSetting();
+	}
+	function getDeviceSetting()
+	{
+		var getDeviceResponse = new SOAPGetDeviceSettingsResponse();
+		var soapAction = new SOAPAction();
+		var result_DeviceResponse = soapAction.sendSOAPAction("GetDeviceSettings", null, getDeviceResponse);
+		
+		result_DeviceResponse.done(function(obj)
+		{
+			getDevice = obj;
+			$("#status_enableGraphical").prop("checked", COMM_ToBOOL(obj.CAPTCHA));
+		});
+	}
+	function getAdminSetting()
+	{
+		var getAdminResponse = new SOAPGetAdministrationSettings();
+		var soapAction = new SOAPAction();
+		var result_AdminResponse = soapAction.sendSOAPAction("GetAdministrationSettings", null, getAdminResponse);
+		
+		result_AdminResponse.done(function(obj)
+		{
+			var administrationSettings = COMM_ToBOOL(obj.HTTPS);
+			$("#status_enableHTTPSServer").prop("checked", administrationSettings);
+
+			if (administrationSettings == false)
+			{
+				$("#titleUseHTTPS").hide();
+				$("#checkUseHTTPS").hide();
+			}
+
+			var remoteMgt = COMM_ToBOOL(obj.RemoteMgt);
+			$("#status_enableRemoteManage").prop("checked", remoteMgt);
+			if (remoteMgt == false)
+			{
+				$("#remoteAdminPort").attr("disabled", true);
+				$("#status_enableuseHTTPS").attr("disabled", true);
+			}
+
+			$("#remoteAdminPort").val(obj.RemoteMgtPort);
+
+			$("#status_enableuseHTTPS").prop("checked", COMM_ToBOOL(obj.RemoteMgtHTTPS));
+
+			document.getElementById("main").style.display = "inline";
+		});
+		}
+	
+	function CheckConnectionStatus()
+	{
+		//clearcode
+		$('#remoteAdminPort').val(clearcode($('#remoteAdminPort').val()));
+
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 5000,
+			type : "GET",
+			success : function(data) { SetXML(); },
+			error : function() { document.getElementById("DetectRouterConnection").style.display = "inline"; }
+		});
+	}
+	
+	function SetXML()
+	{
+		document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		saveAdminSetting();
+		saveDeviceSetting();
+		Start_reciprocal_Number_RestoreConfiguration();
+	}
+	function saveAdminSetting()
+	{
+		var soapAction = new SOAPAction();
+		var AdminSettings = new SOAPSetAdministrationSettings();
+		
+		AdminSettings.HTTPS = $("#status_enableHTTPSServer").prop("checked");
+		AdminSettings.RemoteMgt = $("#status_enableRemoteManage").prop("checked");
+		AdminSettings.RemoteMgtPort = document.getElementById("remoteAdminPort").value;
+		AdminSettings.RemoteMgtHTTPS = $("#status_enableuseHTTPS").prop("checked");
+		
+		soapAction.sendSOAPAction("SetAdministrationSettings", AdminSettings, null);
+		}
+	function saveDeviceSetting()
+	{
+		var soapAction = new SOAPAction();
+		var DeviceSettings = new SOAPSetDeviceSettings();
+	
+		DeviceSettings.DeviceName = getDevice.DeviceName;
+		DeviceSettings.PresentationURL = getDevice.PresentationURL;
+
+		if (changePassword)
+		{
+			DeviceSettings.AdminPassword = document.getElementById("password_Admin").value;
+			DeviceSettings.ChangePassword = true;
+		}
+		else
+		{
+			DeviceSettings.AdminPassword = "";
+			DeviceSettings.ChangePassword = false;
+		}
+		DeviceSettings.CAPTCHA = $("#status_enableGraphical").prop("checked");
+		
+		soapAction.sendSOAPAction("SetDeviceSettings", DeviceSettings, null);
+	}
+	
+	function Start_reciprocal_Number_RestoreConfiguration()
+	{
+		if (_ReciprocalNumber >= 0)
+		{
+			document.getElementById("reciprocal_Number").innerHTML = _ReciprocalNumber + " " + I18N("j", "Sec");
+			_ReciprocalNumber --;
+			setTimeout("Start_reciprocal_Number_RestoreConfiguration()", 1000);
+		}
+		else
+		{
+			if (changePassword)
+			{
+				sessionStorage.clear();
+					location.replace('/');
+				}
+			else			{	window.location.reload();	}
+		}
+	}
+	
+	function clearTextField()
+	{
+		document.getElementById("password_Admin").value = "";
+		changePassword = true;
+
+		$("#password_Admin").off("focus");
+	}
+	
+	function ChangeBandStatus(band)
+	{
+		var status = $("#status_"+band).prop("checked");
+		switch(band)
+		{
+			case 'enableHTTPSServer':
+				$("#status_enableuseHTTPS").prop("checked", false);
+				if(status){
+					$("#titleUseHTTPS").show();
+					$("#checkUseHTTPS").show();
+					if ($("#status_enableRemoteManage").prop("checked")){ 
+						$("#status_enableuseHTTPS").prop("checked", true);
+						document.getElementById("remoteAdminPort").value = "8081";
+					} 
+				}
+				else{
+					$("#titleUseHTTPS").hide();
+					$("#checkUseHTTPS").hide();
+					if ($("#status_enableRemoteManage").prop("checked")){
+						document.getElementById("remoteAdminPort").value = "8080";
+					}
+				}
+				break;
+			case 'enableRemoteManage':
+				$("#status_enableuseHTTPS").prop("checked", false);
+				if(status){
+					document.getElementById("remoteAdminPort").disabled = false;
+					document.getElementById("status_enableuseHTTPS").disabled = false;
+					document.getElementById("remoteAdminPort").value = "8080";
+					if ($("#status_enableHTTPSServer").prop("checked")){ 
+						$("#status_enableuseHTTPS").prop("checked", true);
+						document.getElementById("remoteAdminPort").value = "8081";
+					}
+				}
+				else{
+					document.getElementById("remoteAdminPort").disabled = true;
+					document.getElementById("status_enableuseHTTPS").disabled = true;
+					document.getElementById("remoteAdminPort").value = "";
+				}
+				break;
+			case 'enableuseHTTPS':
+				if(status){
+					document.getElementById("remoteAdminPort").value = "8081";
+				}
+				else{
+					document.getElementById("remoteAdminPort").value = "8080";
+				}
+				break;
+		}
+	}
+
+	function save_button_changed()
+	{
+		document.getElementById("Save_Disable_btn").style.display = "none";
+		document.getElementById("Save_btn").style.display = "block";
+		changeFlag = true;
+		changeTimeoutAction();
+	}
+</script>
+<style>
+#advancedBlock1	{	display: none;	}
+</style>
+</head>
+
+<body>
+	<div id="wrapper">
+		<!-- ------------------ Logo ----------------------- -->
+		<div id="header"></div>
+		<!-- ------------------ Menu ----------------------- -->
+		<div id="menu"></div>
+		<div id="menu_edge"></div>
+		<!-- ------------------ Content -------------------- -->
+		<div id="content">
+			<!-- ------------------ info -------------------- -->
+	  		<div id="info">
+			  	<div id="FunctionName"><script>I18N("h", "Admin");</script></div>
+			  	<div id="wall"><img id="page_Admin" src="image/page_Admin.png" alt="" width="195" height="119"/></div>
+			    <div id="directions">
+					<script>I18N("h", "The admin account can change all router settings. To keep your router secure, you should give the admin account a strong password.");</script>
+				</div>
+			</div>
+		    <!-- ------------------ funcBar -------------------- -->
+		    <div id="funcBar">
+				<div id="pagePath"><script>I18N("h", "Management");</script> >> <script>I18N("h", "Admin");</script></div>
+				<ul id="rightFunc">
+					<li style="display:block"><div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click();changeTimeoutAction();" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li>
+					<li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+					<li style="display:block"><a href="javascript:CheckHTMLStatus('System');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "System");</script></div></a></li>
+				</ul>
+			</div>
+	    	<!-- ------------------ main ----------------------- -->
+	     	<div id="main" style="display:none">
+ 		   		<!-- ------------------ general -------------------- -->
+ 		   		<form name="adminpassword_Settings" id="adminpassword_Settings" method="POST" action="">
+ 		   		<input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+				<table class="block" border="0" style="margin: 10px 0 0 0 ;">
+				<tbody>
+					 <tr>
+						<td colspan="2"><div class ="title"><script>I18N("h", "Admin Password");</script></div></td>
+					 </tr>
+				   	 <tr>
+				     	<th><script>I18N("h", "Password");</script>:</th>
+				     	<td><input class="styled-text" type="text" name="password_Admin" size="30" id="password_Admin" value="••••••••"></td>
+				     </tr>
+				     <tr>
+				     	<th><script>I18N("h", "Enable Graphical Authentication (CAPTCHA)");</script>:</th>
+				     	<td>
+							<input type="checkbox" class="chkbox" id="status_enableGraphical" onchange="ChangeBandStatus('enableGraphical')"/><label for="status_enableGraphical"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+						</td>
+				     </tr>
+				</tbody>
+			    </table>
+			    <div class="advButton" onclick="showAdv('advancedBlock1');"><script>I18N("h", "Advanced Settings");</script>...</div>
+			    <!-- ------------------ advaneced  -------------------- -->
+				<div id="advancedBlock1">
+			    <hr />
+				    <table class="block" border="0">
+			    	<tbody>
+						<tr>
+							<td colspan="4"><div class ="title"><script>I18N("h", "Administration");</script></div></td>
+						</tr>
+						<tr>
+					    	<th><script>I18N("h", "Enable HTTPS Server");</script>:</th>
+					    	<td>
+								<input type="checkbox" class="chkbox" id="status_enableHTTPSServer" onchange="ChangeBandStatus('enableHTTPSServer')"/><label for="status_enableHTTPSServer"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+							</td>
+					    </tr>
+					    <tr>
+					       	<th><script>I18N("h", "Enable Remote Management");</script>:</th>
+					       	<td>
+								<input type="checkbox" class="chkbox" id="status_enableRemoteManage" onchange="ChangeBandStatus('enableRemoteManage')"/><label for="status_enableRemoteManage"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+							</td>
+					    </tr>
+					   	<tr>
+					       	<th><script>I18N("h", "Remote Admin Port");</script>:</th>
+					       	<td width="20px"><input class="styled-text" style="width: 90px"type="text" name="remoteAdminPort" maxlength="5" size="5" id="remoteAdminPort" value="8080"></td>
+							<td width="150px" align="right" id="titleUseHTTPS"><script>I18N("h", "Use HTTPS");</script>:</td>
+						   	<td>
+								<div id="checkUseHTTPS"><input type="checkbox" class="chkbox" id="status_enableuseHTTPS" onchange="ChangeBandStatus('enableuseHTTPS')"/><label for="status_enableuseHTTPS"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label></div>
+							</td>
+					    </tr>
+					</tbody>
+				    </table>
+				</div>
+				</form>
+		 	</div> <!-- id="main" -->
+		 <div id="CreatePopAlertMessage" style="display:none">
+			<div id="AlertPopRect">
+			<div id="AlertPopBody">
+				<table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0">
+				   <tbody>
+						 <tr>
+						 	<td>
+								<center><div id="Loading_pop_image2"></div></center>
+							</td>
+						 </tr>
+						 <tr>
+						 	<td><label id="reciprocal_Number"></label></td>
+						 </tr>
+						 <tr>
+						 	<td id="dialog_msg_black2"><script>I18N("h", "Your changes are being saved.");</script></td>
+						 </tr>
+				   </tbody>
+				</table>
+			</div>
+			</div>
+		 </div>
+		 <!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+		 <div id="DetectRouterConnection" style="display:none"></div>
+		 <div id="footer">
+			<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>
+		 </div>
+		</div> <!-- id="content" -->
+	</div> <!-- id="wrapper" -->
+<script type="text/javascript" charset="utf-8">
+	$(document).ready( function() {
+		$.validator.addMethod("checkASCIIChar", function( value, element ) {
+			var ValidHEXRegex = /^[ -~]+$/;
+
+			if(changePassword == false)
+				return true;
+			
+			return COMM_IsASCII(value);
+		}, I18N("j","Text field contains illegal characters."));
+		$.validator.addMethod("requireDevicePassword", function( value, element )
+		{
+			var returnVal = true;
+			if((changePassword == true) && (value.length == 0))
+				returnVal = false;
+
+			return returnVal;
+		}, jQuery.validator.messages.check_Password);
+		$.validator.addMethod("checkDevicePassword", function( value, element )
+		{
+			var returnVal = true;
+			if ((changePassword == true)&&(value.length > 15 || value.length < 6)	)
+			{
+				returnVal = false;	
+			}
+			return returnVal;
+		}, jQuery.validator.messages.check_DeviceAdminPassword);
+
+
+		// Check password whitespace
+		$.validator.addMethod("checkpasswordsp", function( value, element ) {
+			var regexwhitespace = /^\s{1,}$/;
+			var returnVal=true;
+
+			if(regexwhitespace.test(value)){
+				returnVal=false;
+			}
+			
+			return returnVal;
+		}, I18N("j","Text field contains illegal characters."));
+
+
+		$.validator.addMethod("checkPort", function( value, element )
+		{
+			var ValidIpAddressRegex = /(^[0-9]+$)/;
+			var ValidIpAddressRegex2=/^[0]/;
+			var port = parseInt(value, 10);
+			var returnVal = true;
+			
+			if (ValidIpAddressRegex.test(value))
+			{
+				//check range
+				if (port < 1 || port > 65535 || isNaN(port))	
+				{
+					returnVal = false;	
+				}
+				//if start is 0
+				if (ValidIpAddressRegex2.test(value))
+				{
+					returnVal = false;
+				}				
+				//check well-known port
+				if(port == 80)
+				{
+					returnVal = false;
+				}	
+			}
+			else
+			{
+				returnVal = false;
+			}
+			
+			return returnVal;
+		}, jQuery.validator.messages.port_Check);		
+		$('#adminpassword_Settings').validate({
+			rules: {
+				password_Admin:
+				{
+					requireDevicePassword: true,
+					checkDevicePassword: true,
+					checkASCIIChar:true,
+					checkpasswordsp: true
+				},
+				remoteAdminPort: 
+				{
+					required:true,
+					checkPort:true,
+				}
+			},
+			messages: {
+				password_Admin:
+				{
+					required: jQuery.validator.messages.check_Password
+				},
+				remoteAdminPort:
+				{
+					required: jQuery.validator.messages.port
+				}
+			},
+			submitHandler: function(form)	{	CheckConnectionStatus();	}
+		});
+	});
+</script>
+</body>
+</html>

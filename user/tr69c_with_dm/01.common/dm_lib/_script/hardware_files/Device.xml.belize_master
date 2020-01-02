@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Description : The top-level object for a Device.-->
+<Device>
+  <IP>
+    <Interface>
+      <i1>
+        <Name>br0</Name>
+      </i1>
+    </Interface>
+  </IP>
+  <Ethernet>
+    <Interface>
+      <i1>
+        <Name>br0</Name>
+      </i1>
+    </Interface>
+    <Link>
+      <i1>
+        <Name>br0</Name>
+      </i1>
+    </Link>
+  </Ethernet>
+</Device>

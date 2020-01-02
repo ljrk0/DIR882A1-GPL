@@ -1,0 +1,98 @@
+libc/stdlib/canonicalize.os: libc/stdlib/canonicalize.c \
+ include/libc-symbols.h include/bits/uClibc_arch_features.h \
+ include/stdlib.h include/features.h include/bits/uClibc_config.h \
+ include/sys/cdefs.h include/libc-internal.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
+ include/bits/waitflags.h include/bits/waitstatus.h include/endian.h \
+ include/bits/endian.h include/byteswap.h include/bits/byteswap.h \
+ include/bits/byteswap-common.h include/sys/types.h include/bits/types.h \
+ include/bits/wordsize.h include/bits/kernel_types.h \
+ include/bits/typesizes.h include/bits/pthreadtypes.h \
+ include/bits/sched.h include/time.h include/sys/select.h \
+ include/bits/select.h include/bits/sigset.h include/bits/time.h \
+ include/sys/sysmacros.h include/alloca.h include/bits/stackinfo.h \
+ include/limits.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
+ include/bits/posix1_lim.h include/bits/local_lim.h \
+ /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
+ include/bits/uClibc_local_lim.h include/bits/posix2_lim.h \
+ include/bits/xopen_lim.h include/bits/stdio_lim.h
+
+include/libc-symbols.h:
+
+include/bits/uClibc_arch_features.h:
+
+include/stdlib.h:
+
+include/features.h:
+
+include/bits/uClibc_config.h:
+
+include/sys/cdefs.h:
+
+include/libc-internal.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h:
+
+include/bits/waitflags.h:
+
+include/bits/waitstatus.h:
+
+include/endian.h:
+
+include/bits/endian.h:
+
+include/byteswap.h:
+
+include/bits/byteswap.h:
+
+include/bits/byteswap-common.h:
+
+include/sys/types.h:
+
+include/bits/types.h:
+
+include/bits/wordsize.h:
+
+include/bits/kernel_types.h:
+
+include/bits/typesizes.h:
+
+include/bits/pthreadtypes.h:
+
+include/bits/sched.h:
+
+include/time.h:
+
+include/sys/select.h:
+
+include/bits/select.h:
+
+include/bits/sigset.h:
+
+include/bits/time.h:
+
+include/sys/sysmacros.h:
+
+include/alloca.h:
+
+include/bits/stackinfo.h:
+
+include/limits.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h:
+
+include/bits/posix1_lim.h:
+
+include/bits/local_lim.h:
+
+/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
+
+include/bits/uClibc_local_lim.h:
+
+include/bits/posix2_lim.h:
+
+include/bits/xopen_lim.h:
+
+include/bits/stdio_lim.h:
+cmd_libc_stdlib_canonicalize.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/stdlib/canonicalize.c -o libc/stdlib/canonicalize.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/stdlib/canonicalize.os -MD -MP -MF libc/stdlib/.canonicalize.os.dep

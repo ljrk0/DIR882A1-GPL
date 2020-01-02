@@ -1,0 +1,3477 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns= "http://www.w3c.org/1999/xhtml" xml:lang="zh_TW" lang="zh_TW">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link rel=stylesheet type="text/css" href="/css/style_h.css" media="all" />
+<link rel=stylesheet type="text/css" href="/css/jquery.selectbox.css?v=20160524151219" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js?v=20160524151219"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialCSS.js?v=20160524151219"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js?v=20160524151219"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialValidate1.js?v=20160524151219"></script>
+<style>
+.block_new {
+	position: relative;
+	top: 0px;
+	width: 900px;
+	padding: 0px;
+	margin: 0px;	
+	color: #56583f;
+	margin: 0px 0px 0px 0px;
+	font-size: 14px;
+}
+.block_new th {
+	width: 380px;
+	font-weight: normal;
+	text-align: right;
+}
+.block_new td {
+	padding: 3px;
+}
+#page_btn {
+	min-width: 80px;
+}
+</style>
+
+<script type="text/javascript">
+	var HNAP = new HNAP_XML();
+	var init_macaddr;
+	var bootuptime = 70;
+	var timer;
+	var current_wantype;
+	var devicemode_org;
+	var wanaccesstype_org;
+	var wanindex_org;
+	var show_atmencap = "";
+	var	atmencap = "";
+	
+	var lan_IPAddr = "";
+	var redirect_url = lan_IPAddr;
+	var xml_GetNetworkSettings;
+	var xml_GetWanSettings;
+	//var hostname = xml_GetWanSettings.Get("GetWanSettingsResponse/HostName");
+	var hostname = "";
+	
+	var xml_GetIPv6Status = "";
+	
+	//var xml_GetIPv6PppoeSettings = HNAP.GetXML("GetIPv6PppoeSettings");
+	var xml_GetIPv6PppoeSettings = "";
+	//var wan_IPv6type    = xml_GetIPv6Status.Get("GetIPv6StatusResponse/IPv6_ConnectionType");
+	var wan_IPv6type    = "";
+	//var PppoeNewSession = xml_GetIPv6PppoeSettings.Get("GetIPv6PppoeSettingsResponse/IPv6_PppoeNewSession");
+	var PppoeNewSession = "";
+	//var PppoeNewSession = "SharedWithIPv4";
+	
+	//var xml_GetWLanRadioSettings = HNAP.GetXML("GetWLanRadioSettings");
+	var xml_GetWLanRadioSettings = "";
+	//var lan_macaddr = xml_GetWLanRadioSettings.Get("GetWLanRadioSettingsResponse/MacAddress");
+	var lan_macaddr = "";
+	var lanmac = lan_macaddr.split(":");
+	
+	var wanType = "";
+	
+	function GetXML()	
+	{	
+		/*HNAP.GetXMLAsync("GetMultipleHNAPs", null, "GetXML", function(xml)		
+		{	
+			GetResult_1st(xml);
+		});	*/
+		HNAP.GetXMLAsync("GetNetworkSettings", null, "GetValue", function(xml)	{	GetResult_2nd(xml)});	
+		HNAP.GetXMLAsync("GetWanSettings", null, "GetValue", function(xml)	{	GetResult_6th(xml)});	
+	}
+	function GetResult_2nd(result_xml)
+	{
+		var GetResult_2nd = result_xml.Get("GetMultipleHNAPsResponse/GetMultipleHNAPsResult");
+		if (GetResult_2nd == "OK")
+		{
+			xml_GetNetworkSettings = result_xml;
+			lan_IPAddr = result_xml.Get("GetMultipleHNAPsResponse/GetNetworkSettingsResponse/IPAddress");
+			//alert(lan_IPAddr);
+		}
+	}
+	function GetResult_6th(result_xml)
+	{
+		//alert("GetResult_6th");
+		var GetResult_6th = result_xml.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/GetWanSettingsResult");
+		xml_GetWanSettings = result_xml;
+		
+		if (GetResult_6th == "OK")
+		{
+			InitWAN();
+		}
+	}
+	function GetResult_1st(result_xml)
+	{
+		
+		if (result_xml != null)
+		{
+			//result_xml.Set("GetMultipleHNAPs/GetWanSettings");
+			
+			//HNAP.SetXMLAsync("GetNetworkSettings", result_xml, function(xml)	{	GetResult_2nd(xml);	});		
+			//HNAP.SetXMLAsync("GetIPv6Status", result_xml, function(xml)	{	GetResult_3rd(xml);	});		
+			//HNAP.SetXMLAsync("GetIPv6PppoeSettings", result_xml, function(xml)	{	GetResult_4th(xml);	});		
+			//HNAP.SetXMLAsync("GetWLanRadioSettings", result_xml, function(xml)	{	GetResult_5th(xml);	});		
+			//HNAP.SetXMLAsync("GetWanSettings", result_xml, function(xml)	{	GetResult_6th(xml);	});		
+		}
+		else	{	if (DebugMode == 1)	{	alert("[!!GetXML Error!!] Function: GetResult_1st");	}	}
+		
+	}
+	/*function GetResult_2nd(result_xml)	
+	{
+		var GetResult_2nd = result_xml.Get("GetMultipleHNAPsResponse/GetMultipleHNAPsResult");
+		
+		if (GetResult_2nd == "OK")
+		{
+			lan_IPAddr = result_xml.Get("GetMultipleHNAPsResponse/GetNetworkSettingsResponse/IPAddress");
+			redirect_url = lan_IPAddr;
+			alert(redirect_url);
+		}
+	}*/
+	function GetResult_3rd(result_xml)	
+	{
+		alert("GetResult_3rd");
+		var GetResult_3rd = result_xml.Get("GetMultipleHNAPsResponse/GetMultipleHNAPsResult");
+		//alert(GetResult_3rd);
+		xml_GetIPv6Status = result_xml;
+		if (GetResult_3rd == "OK")
+		{
+			wan_IPv6type = result_xml.Get("GetMultipleHNAPsResponse/GetIPv6StatusResponse/IPv6_ConnectionType");
+		}
+	}
+	function GetResult_4th(result_xml)	
+	{
+		alert("GetResult_4th");
+		var GetResult_4th = result_xml.Get("GetMultipleHNAPsResponse/GetMultipleHNAPsResult");
+		//alert(GetResult_4th);
+		xml_GetIPv6PppoeSettings = result_xml;
+		if (GetResult_4th == "OK")
+		{
+			PppoeNewSession = result_xml.Get("GetMultipleHNAPsResponse/GetIPv6PppoeSettingsResponse/IPv6_PppoeNewSession");
+		}
+	}
+	function GetResult_5th(result_xml)	
+	{
+		alert("GetResult_5th");
+		var GetResult_5th = result_xml.Get("GetMultipleHNAPsResponse/GetMultipleHNAPsResult");
+		//alert(GetResult_5th);
+		xml_GetWLanRadioSettings = result_xml;
+		if (GetResult_5th == "OK")
+		{
+			lan_macaddr = result_xml.Get("GetMultipleHNAPsResponse/GetWLanRadioSettingsResponse/MacAddress");
+			lanmac = lan_macaddr.split(":");
+		}
+	}
+
+	function Load_HTML()
+	{
+		$("#header").load("header.html");
+	}
+
+	function Initial()
+	{
+		initialMenu();
+		initialDetectRouterConnection();
+	}
+
+	function StrToUpperCase(str)
+	{
+		str = str.toUpperCase();
+		return str;
+	}
+
+	function InitMACList()
+	{
+		var xml_GetClientinfo = HNAP.GetXML("GetClientInfo");
+		var clone_mac_DynamicIP = document.getElementById("clone_mac_DynamicIP");
+		var clone_mac_StaticIP = document.getElementById("clone_mac_StaticIP");
+		var total_clients = xml_GetClientinfo.Get("GetClientInfoResponse/ClientInfoLists/ClientInfo#");
+
+		for (var i=1; i<=total_clients; i++)
+		{
+			var client_macaddr = StrToUpperCase(xml_GetClientinfo.Get("GetClientInfoResponse/ClientInfoLists/ClientInfo:"+i+"/MacAddress"));
+			clone_mac_DynamicIP.options.add(new Option(client_macaddr, i));
+			clone_mac_StaticIP.options.add(new Option(client_macaddr, i));
+		}
+	}
+
+	function ChangeVlanStatus()
+	{
+		SetCheckBoxEnable("taggedvlan");
+		var status = document.getElementById("taggedvlan_ck").checked;
+		if(status)
+		{
+			document.getElementById("tr_vlanid").style.display = "table-row";
+			document.getElementById("tr_vlanprio").style.display = "none";
+		}
+		else
+		{
+			document.getElementById("tr_vlanid").style.display = "none";
+			document.getElementById("tr_vlanprio").style.display = "none";
+		}
+	}
+
+	function ChangeAutoConfig()
+	{
+		SetCheckBoxEnable("autoconf");
+		var status = document.getElementById("autoconf_ck").checked;
+		if(status)
+		{
+			document.getElementById("dialno_wifi_usb").disabled = true;
+			document.getElementById("apn_wifi_usb").disabled = true;
+			document.getElementById("userName_usb").disabled = true;
+			document.getElementById("password_usb").disabled = true;
+			document.getElementById("pin_code").disabled = true;
+			$("#authp_wifi_usb").selectbox("disable");
+			
+		}
+		else
+		{
+			document.getElementById("dialno_wifi_usb").disabled = false;
+			document.getElementById("apn_wifi_usb").disabled = false;
+			document.getElementById("userName_usb").disabled = false;
+			document.getElementById("password_usb").disabled = false;
+			document.getElementById("pin_code").disabled = false;
+			$("#authp_wifi_usb").selectbox("enable");
+		}
+	}
+
+	function ChangePVC(id)
+	{
+		var wan_id = "WAN-1";
+		if (document.getElementById("wan_access_type").value == "DSL")
+		{
+		/*
+			var xml_GetPVCList = HNAP.GetXML("GetPVCListAlpha");
+			var pvcCount = xml_GetPVCList.Get("GetPVCListAlphaResponse/PVCList/PVC#");
+
+			for (var i=1; i<=pvcCount; i++)
+			{
+				var name = xml_GetPVCList.Get("GetPVCListAlphaResponse/PVCList/PVC:" + i + "/Name");
+				if (name == id)
+				{
+					wan_id = xml_GetPVCList.Get("GetPVCListAlphaResponse/PVCList/PVC:" + i + "/WAN");
+					break;
+				}
+			}
+		*/
+		}
+		else if (document.getElementById("wan_access_type").value == "USB")
+		{
+			wan_id = "WAN-14";
+		}
+		
+		var vlanid = xml_GetWanSettings.Get("GetWanSettingsResponse/VLANID");
+		var vlanprio = xml_GetWanSettings.Get("GetWanSettingsResponse/VLANPriority");
+		show_atmencap = xml_GetWanSettings.Get("GetWanSettingsResponse/ShowATMEncap");
+		atmencap = xml_GetWanSettings.Get("GetWanSettingsResponse/ATMEncap");
+		if (vlanid != "-1" && vlanprio != "-1")
+		{
+			SetCheckBoxEnable("taggedvlan", true, true);
+			document.getElementById("tr_vlanid").style.display = "table-row";
+			document.getElementById("tr_vlanprio").style.display = "none";
+		}
+		else
+		{
+			SetCheckBoxEnable("taggedvlan", true, false);
+			document.getElementById("tr_vlanid").style.display = "none";
+			document.getElementById("tr_vlanprio").style.display = "none";
+		}
+
+		document.getElementById("vlanid").value = vlanid;
+		document.getElementById("vlanprio").value = vlanprio;
+		//document.getElementById("vlanprio").value = "0"; //4320 this platform can not support VLAN Priority,so set it to "0"
+
+		//var wan_type = xml_GetWanSettings.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/Type");
+		//var wan_type = "PPPoE_USB";
+		var wan_type = "StaticBridged";
+		var obj_wantype = document.getElementById("connect_type");
+		var wantype;
+
+		switch (wan_type)
+		{
+			case "Static":
+			case "StaticBridged":
+				wantype = "STATIC";
+
+				var static_ipaddr = xml_GetWanSettings.Get("GetWanSettingsResponse/IPAddress");
+				document.getElementById("iPAddress_StaticIP").value = static_ipaddr;
+
+				var static_mask = xml_GetWanSettings.Get("GetWanSettingsResponse/SubnetMask");
+				document.getElementById("subnetMask_StaticIP").value = static_mask;
+
+				var static_gw = xml_GetWanSettings.Get("GetWanSettingsResponse/Gateway");
+				document.getElementById("defaultGateway_StaticIP").value = static_gw;
+
+				var static_pridns = xml_GetWanSettings.Get("GetWanSettingsResponse/ConfigDNS/Primary");
+				document.getElementById("primaryDNSAddress_StaticIP").value = static_pridns;
+
+				var static_secdns = xml_GetWanSettings.Get("GetWanSettingsResponse/ConfigDNS/Secondary");
+				document.getElementById("secondaryDNSAddress_StaticIP").value = static_secdns;
+
+				var static_mtu_value = xml_GetWanSettings.Get("GetWanSettingsResponse/MTU");
+				document.getElementById("mtu_StaticIP_Input").value = static_mtu_value;
+
+				var static_mtu = "";
+				var obj_static_mtu = document.getElementById("mtu_StaticIP");
+				if (static_mtu_value=="1500")
+				{
+					static_mtu = "AUTO";
+					document.getElementById("mtu_StaticIP_Input").style.display = "none";
+				}
+				else
+				{
+					static_mtu = "MANUAL";
+					document.getElementById("mtu_StaticIP_Input").style.display = "inline";
+				}
+				COMM_SetSelectValue(obj_static_mtu, static_mtu);
+
+				if(wan_type=="Static")
+				{
+					var macaddr = StrToUpperCase(xml_GetWanSettings.Get("GetWanSettingsResponse/MacAddress"));
+					document.getElementById("macAddress_StaticIP").value = macaddr;
+					init_macaddr = macaddr;
+				}
+				if (document.getElementById("wan_access_type").value == "DSL")
+				{
+					if(show_atmencap == "1")
+					{
+						document.getElementById("tr_atm_natcontrol").style.display = "table-row";
+						document.getElementById("tr_atm_encap_select").style.display = "table-row";
+						var obj_atmencap = document.getElementById("atm_encap");
+						COMM_SetSelectValue(obj_atmencap, atmencap);
+					}
+					else
+					{
+						document.getElementById("tr_atm_natcontrol").style.display = "none";
+						document.getElementById("tr_atm_encap_select").style.display = "none";
+					}
+				}
+				else //ethwan
+				{
+					document.getElementById("tr_atm_natcontrol").style.display = "none";
+					document.getElementById("tr_atm_encap_select").style.display = "none";
+				}
+				break;
+			case "DHCP":
+			case "DynamicBridged":
+				wantype = "DHCP";
+
+				document.getElementById("hostName_DynamicIP").value = hostname;
+
+				var dhcp_pridns = xml_GetWanSettings.Get("GetWanSettingsResponse/ConfigDNS/Primary");
+				document.getElementById("primaryDNSAddress_DynamicIP").value = dhcp_pridns;
+
+				var dhcp_secdns = xml_GetWanSettings.Get("GetWanSettingsResponse/ConfigDNS/Secondary");
+				document.getElementById("secondaryDNSAddress_DynamicIP").value = dhcp_secdns;
+
+				var dhcp_mtu_value = xml_GetWanSettings.Get("GetWanSettingsResponse/MTU");
+				document.getElementById("mtu_DynamicIP_Input").value = dhcp_mtu_value;
+
+				var dhcp_mtu = "";
+				var obj_dhcp_mtu = document.getElementById("mtu_DynamicIP");
+				if (dhcp_mtu_value=="1500")
+				{
+					dhcp_mtu = "AUTO";
+					document.getElementById("mtu_DynamicIP_Input").style.display = "none";
+				}
+				else
+				{
+					dhcp_mtu = "MANUAL";
+					document.getElementById("mtu_DynamicIP_Input").style.display = "inline";
+				}
+				COMM_SetSelectValue(obj_dhcp_mtu, dhcp_mtu);
+
+				if(wan_type=="DHCP")
+				{
+					var macaddr = StrToUpperCase(xml_GetWanSettings.Get("GetWanSettingsResponse/MacAddress"));
+					document.getElementById("macAddress_DynamicIP").value = macaddr;
+					init_macaddr = macaddr;
+				}
+				break;
+			case "DHCPPPPoE":
+			case "StaticPPPoE":
+				wantype = "PPPoE";
+
+				var pppoe_username = xml_GetWanSettings.Get("GetWanSettingsResponse/Username");
+				document.getElementById("userName_PPPoE").value = pppoe_username;
+
+				var pppoe_passwd = xml_GetWanSettings.Get("GetWanSettingsResponse/Password");
+				document.getElementById("password_PPPoE").value = pppoe_passwd;
+
+				var addrmode = "";
+				var obj_addrmode = document.getElementById("addressMode_PPPoE");
+				if (wan_type=="DHCPPPPoE")
+				{
+					addrmode = "DYNAMICIP";
+					document.getElementById("ipAddress_PPPoE").value = "";
+				}
+				else if (wan_type=="StaticPPPoE")
+				{
+					addrmode = "STATICIP";
+					var pppoe_ipaddr = xml_GetWanSettings.Get("GetWanSettingsResponse/IPAddress");
+					document.getElementById("ipAddress_PPPoE").value = pppoe_ipaddr;
+				}
+				ChangeAddrMode(addrmode, wantype);
+				COMM_SetSelectValue(obj_addrmode, addrmode);
+
+				var pppoe_servicename = xml_GetWanSettings.Get("GetWanSettingsResponse/ServiceName");
+				document.getElementById("serviceName_PPPoE").value = pppoe_servicename;
+
+				var pppoe_pridns = xml_GetWanSettings.Get("GetWanSettingsResponse/ConfigDNS/Primary");
+				document.getElementById("primaryDNSAddress_PPPoE").value = pppoe_pridns;
+
+				var pppoe_secdns = xml_GetWanSettings.Get("GetWanSettingsResponse/ConfigDNS/Secondary");
+				document.getElementById("secondaryDNSAddress_PPPoE").value = pppoe_secdns;
+
+				var pppoe_mtu_value = xml_GetWanSettings.Get("GetWanSettingsResponse/MTU");
+				document.getElementById("mtu_PPPoE_Input").value = pppoe_mtu_value;
+
+				var pppoe_mtu = "";
+				var obj_pppoe_mtu = document.getElementById("mtu_PPPoE");
+				if (pppoe_mtu_value=="1492")
+				{
+					pppoe_mtu = "AUTO";
+					document.getElementById("mtu_PPPoE_Input").style.display = "none";
+				}
+				else
+				{
+					pppoe_mtu = "MANUAL";
+					document.getElementById("mtu_PPPoE_Input").style.display = "inline";
+				}
+				COMM_SetSelectValue(obj_pppoe_mtu, pppoe_mtu);
+
+				var pppoe_reconnect = xml_GetWanSettings.Get("GetWanSettingsResponse/AutoReconnect");
+				var pppoe_maxidle_t = xml_GetWanSettings.Get("GetWanSettingsResponse/MaxIdleTime");
+
+				var pppoe_recmode = "";
+				var obj_pppoe_recmode = document.getElementById("reconnectMode_PPPoE");
+
+				switch (pppoe_reconnect)
+				{
+					case "true": /*Always On*/
+						pppoe_recmode = "ALWAYSON";
+						document.getElementById("maxIdleTime_PPPoE_tr").style.display = "none";
+						document.getElementById("maximumIdleTime_PPPoE").value = 0;
+						document.getElementById("maximumIdleTime_PPPoE").disabled  = true;
+						break;
+					case "false":
+						if (pppoe_maxidle_t==0) /* Manual */
+						{
+							pppoe_recmode = "MANUAL";
+							document.getElementById("maxIdleTime_PPPoE_tr").style.display = "none";
+							document.getElementById("maximumIdleTime_PPPoE").value = 0;
+							document.getElementById("maximumIdleTime_PPPoE").disabled  = true;
+						}
+						else /*On Demand*/
+						{
+							pppoe_recmode = "ONDEMAND";
+							document.getElementById("maxIdleTime_PPPoE_tr").style.display = "table-row";
+							document.getElementById("maximumIdleTime_PPPoE").value = pppoe_maxidle_t/60; //Maximum idle time in D-Link New GUI is minute unit. However, HNAP SPEC. HNAP Core Specification v1.1 Rev12.pdf uses second for the unit.
+							document.getElementById("maximumIdleTime_PPPoE").disabled  = false;
+						}
+						break;
+				}
+				COMM_SetSelectValue(obj_pppoe_recmode, pppoe_recmode);
+				break;
+			case "DHCPPPPoA":
+			case "StaticPPPoA":
+				wantype = "PPPoA";
+
+				var pppoa_username = xml_GetWanSettings.Get("GetWanSettingsResponse/Username");
+				document.getElementById("userName_PPPoA").value = pppoa_username;
+
+				var pppoa_passwd = xml_GetWanSettings.Get("GetWanSettingsResponse/Password");
+				document.getElementById("password_PPPoA").value = pppoa_passwd;
+
+				var addrmode = "";
+				var obj_addrmode = document.getElementById("addressMode_PPPoA");
+				if (wan_type=="DHCPPPPoA")
+				{
+					addrmode = "DYNAMICIP";
+					document.getElementById("ipAddress_PPPoA").value = "";
+				}
+				else if (wan_type=="StaticPPPoA")
+				{
+					addrmode = "STATICIP";
+					var pppoa_ipaddr = xml_GetWanSettings.Get("GetWanSettingsResponse/IPAddress");
+					document.getElementById("ipAddress_PPPoA").value = pppoa_ipaddr;
+				}
+				ChangeAddrMode(addrmode, wantype);
+				COMM_SetSelectValue(obj_addrmode, addrmode);
+
+				var pppoa_pridns = xml_GetWanSettings.Get("GetWanSettingsResponse/ConfigDNS/Primary");
+				document.getElementById("primaryDNSAddress_PPPoA").value = pppoa_pridns;
+
+				var pppoa_secdns = xml_GetWanSettings.Get("GetWanSettingsResponse/ConfigDNS/Secondary");
+				document.getElementById("secondaryDNSAddress_PPPoA").value = pppoa_secdns;
+
+				var pppoa_reconnect = xml_GetWanSettings.Get("GetWanSettingsResponse/AutoReconnect");
+				var pppoa_maxidle_t = xml_GetWanSettings.Get("GetWanSettingsResponse/MaxIdleTime");
+
+				var pppoa_recmode = "";
+				var obj_pppoa_recmode = document.getElementById("reconnectMode_PPPoA");
+
+				switch (pppoa_reconnect)
+				{
+					case "true": /*Always On*/
+						pppoa_recmode = "ALWAYSON";
+						document.getElementById("maxIdleTime_PPPoA_tr").style.display = "none";
+						document.getElementById("maximumIdleTime_PPPoA").value = 0;
+						document.getElementById("maximumIdleTime_PPPoA").disabled  = true;
+						break;
+					case "false":
+						if (pppoa_maxidle_t==0) /* Manual */
+						{
+							pppoa_recmode = "MANUAL";
+							document.getElementById("maxIdleTime_PPPoA_tr").style.display = "none";
+							document.getElementById("maximumIdleTime_PPPoA").value = 0;
+							document.getElementById("maximumIdleTime_PPPoA").disabled  = true;
+						}
+						else /*On Demand*/
+						{
+							pppoa_recmode = "ONDEMAND";
+							document.getElementById("maxIdleTime_PPPoA_tr").style.display = "table-row";
+							document.getElementById("maximumIdleTime_PPPoA").value = pppoa_maxidle_t/60; //Maximum idle time in D-Link New GUI is minute unit. However, HNAP SPEC. HNAP Core Specification v1.1 Rev12.pdf uses second for the unit.
+							document.getElementById("maximumIdleTime_PPPoA").disabled  = false;
+						}
+						break;
+				}
+				COMM_SetSelectValue(obj_pppoa_recmode, pppoa_recmode);
+				break;
+			case "DynamicPPTP":
+			case "StaticPPTP":
+				wantype = "PPTP";
+
+				var pptp_username = xml_GetWanSettings.Get("GetWanSettingsResponse/Username");
+				document.getElementById("userName_PPTP").value = pptp_username;
+
+				var pptp_passwd = xml_GetWanSettings.Get("GetWanSettingsResponse/Password");
+				document.getElementById("password_PPTP").value = pptp_passwd;
+
+				var addrmode = "";
+				var obj_addrmode = document.getElementById("addressMode_PPTP");
+				if (wan_type=="DynamicPPTP")
+				{
+					addrmode = "DYNAMICIP";
+					document.getElementById("ipAddress_PPTP").value = "";
+				}
+				else if (wan_type=="StaticPPTP")
+				{
+					addrmode = "STATICIP";
+
+					var pptp_ipaddr = xml_GetWanSettings.Get("GetWanSettingsResponse/IPAddress");
+					document.getElementById("ipAddress_PPTP").value = pptp_ipaddr;
+
+					var pptp_mask = xml_GetWanSettings.Get("GetWanSettingsResponse/SubnetMask");
+					document.getElementById("subnetMask_PPTP").value = pptp_mask;
+
+					var pptp_gw = xml_GetWanSettings.Get("GetWanSettingsResponse/Gateway");
+					document.getElementById("gatewayIP_PPTP").value = pptp_gw;
+				}
+				ChangeAddrMode(addrmode, wantype);
+				COMM_SetSelectValue(obj_addrmode, addrmode);
+
+				var pptp_servicename = xml_GetWanSettings.Get("GetWanSettingsResponse/ServiceName");
+				document.getElementById("serverIPAddress_PPTP").value = pptp_servicename;
+
+				var pptp_pridns = xml_GetWanSettings.Get("GetWanSettingsResponse/ConfigDNS/Primary");
+				document.getElementById("primaryDNSAddress_PPTP").value = pptp_pridns;
+
+				var pptp_secdns = xml_GetWanSettings.Get("GetWanSettingsResponse/ConfigDNS/Secondary");
+				document.getElementById("secondaryDNSAddress_PPTP").value = pptp_secdns;
+
+				var pptp_mtu_value = xml_GetWanSettings.Get("GetWanSettingsResponse/MTU");
+				document.getElementById("mtu_PPTP_Input").value = pptp_mtu_value;
+
+				var pptp_mtu = "";
+				var obj_pptp_mtu = document.getElementById("mtu_PPTP");
+				if (pptp_mtu_value=="1400")
+				{
+					pptp_mtu = "AUTO";
+					document.getElementById("mtu_PPTP_Input").style.display = "none";
+				}
+				else
+				{
+					pptp_mtu = "MANUAL";
+					document.getElementById("mtu_PPTP_Input").style.display = "inline";
+				}
+				COMM_SetSelectValue(obj_pptp_mtu, pptp_mtu);
+
+				var pptp_reconnect = xml_GetWanSettings.Get("GetWanSettingsResponse/AutoReconnect");
+				var pptp_maxidle_t = xml_GetWanSettings.Get("GetWanSettingsResponse/MaxIdleTime");
+
+				var pptp_recmode = "";
+				var obj_pptp_recmode = document.getElementById("reconnectMode_PPTP");
+				switch (pptp_reconnect)
+				{
+					case "true": /*Always On*/
+						pptp_recmode = "ALWAYSON";
+						document.getElementById("maxIdleTime_PPTP_tr").style.display = "none";
+						document.getElementById("maximumIdleTime_PPTP").value = 0;
+						document.getElementById("maximumIdleTime_PPTP").disabled  = true;
+						break;
+					case "false":
+						if (pptp_maxidle_t==0) /*Manual*/
+						{
+							pptp_recmode = "MANUAL";
+							document.getElementById("maxIdleTime_PPTP_tr").style.display = "none";
+							document.getElementById("maximumIdleTime_PPTP").value = 0;
+							document.getElementById("maximumIdleTime_PPTP").disabled  = true;
+						}
+						else /*On Demand*/
+						{
+							pptp_recmode = "ONDEMAND";
+							document.getElementById("maximumIdleTime_PPTP").value = pptp_maxidle_t/60; //Maximum idle time in D-Link New GUI is minute unit. However, HNAP SPEC. HNAP Core Specification v1.1 Rev12.pdf uses second for the unit.
+							document.getElementById("maximumIdleTime_PPTP").disabled  = false;
+						}
+						break;
+				}
+				COMM_SetSelectValue(obj_pptp_recmode, pptp_recmode);
+				break;
+			case "DynamicL2TP":
+			case "StaticL2TP":
+				wantype = "L2TP";
+
+				var l2tp_username = xml_GetWanSettings.Get("GetWanSettingsResponse/Username");
+				document.getElementById("userName_L2TP").value = l2tp_username;
+
+				var l2tp_passwd = xml_GetWanSettings.Get("GetWanSettingsResponse/Password");
+				document.getElementById("password_L2TP").value = l2tp_passwd;
+
+				var addrmode = "";
+				var obj_addrmode = document.getElementById("addressMode_L2TP");
+				if (wan_type=="DynamicPPTP")
+				{
+					addrmode = "DYNAMICIP";
+					document.getElementById("ipAddress_PPTP").value = "";
+				}
+				else if (wan_type=="StaticPPTP")
+				{
+					addrmode = "STATICIP";
+
+					var l2tp_ipaddr = xml_GetWanSettings.Get("GetWanSettingsResponse/IPAddress");
+					document.getElementById("ipAddress_L2TP").value = l2tp_ipaddr;
+
+					var l2tp_mask = xml_GetWanSettings.Get("GetWanSettingsResponse/SubnetMask");
+					document.getElementById("subnetMask_L2TP").value = l2tp_mask;
+
+					var l2tp_gw = xml_GetWanSettings.Get("GetWanSettingsResponse/Gateway");
+					document.getElementById("gatewayIP_L2TP").value = l2tp_gw;
+				}
+				ChangeAddrMode(addrmode, wantype);
+				COMM_SetSelectValue(obj_addrmode, addrmode);
+
+				var l2tp_servicename = xml_GetWanSettings.Get("GetWanSettingsResponse/ServiceName");
+				document.getElementById("serverIPAddress_L2TP").value = l2tp_servicename;
+
+				var l2tp_pridns = xml_GetWanSettings.Get("GetWanSettingsResponse/ConfigDNS/Primary");
+				document.getElementById("primaryDNSAddress_L2TP").value = l2tp_pridns;
+
+				var l2tp_secdns = xml_GetWanSettings.Get("GetWanSettingsResponse/ConfigDNS/Secondary");
+				document.getElementById("secondaryDNSAddress_L2TP").value = l2tp_secdns;
+
+				var l2tp_mtu_value = xml_GetWanSettings.Get("GetWanSettingsResponse/MTU");
+				document.getElementById("mtu_L2TP_Input").value = l2tp_mtu_value;
+
+				var l2tp_mtu = "";
+				var obj_l2tp_mtu = document.getElementById("mtu_L2TP");
+				if (l2tp_mtu_value=="1400")
+				{
+					l2tp_mtu = "AUTO";
+					document.getElementById("mtu_L2TP_Input").style.display = "none";
+				}
+				else
+				{
+					l2tp_mtu = "MANUAL";
+					document.getElementById("mtu_L2TP_Input").style.display = "inline";
+				}
+				COMM_SetSelectValue(obj_l2tp_mtu, l2tp_mtu);
+
+				var l2tp_reconnect = xml_GetWanSettings.Get("GetWanSettingsResponse/AutoReconnect");
+				var l2tp_maxidle_t = xml_GetWanSettings.Get("GetWanSettingsResponse/MaxIdleTime");
+
+				var l2tp_recmode = "";
+				var obj_l2tp_recmode = document.getElementById("reconnectMode_L2TP");
+				switch (l2tp_reconnect)
+				{
+					case "true": /*Always On*/
+						l2tp_recmode = "ALWAYSON";
+						document.getElementById("maxIdleTime_L2TP_tr").style.display = "none";
+						document.getElementById("maximumIdleTime_L2TP").value = 0;
+						document.getElementById("maximumIdleTime_L2TP").disabled  = true;
+						break;
+					case "false":
+						if (l2tp_maxidle_t==0) /*Manual*/
+						{
+							l2tp_recmode = "MANUAL";
+							document.getElementById("maxIdleTime_L2TP_tr").style.display = "none";
+							document.getElementById("maximumIdleTime_L2TP").value = 0;
+							document.getElementById("maximumIdleTime_L2TP").disabled  = true;
+						}
+						else /*On Demand*/
+						{
+							l2tp_recmode = "ONDEMAND";
+							document.getElementById("maximumIdleTime_L2TP").value = l2tp_maxidle_t/60; //Maximum idle time in D-Link New GUI is minute unit. However, HNAP SPEC. HNAP Core Specification v1.1 Rev12.pdf uses second for the unit.
+							document.getElementById("maximumIdleTime_L2TP").disabled  = false;
+						}
+						break;
+				}
+				COMM_SetSelectValue(obj_l2tp_recmode, l2tp_recmode);
+				break;
+			case "DsLite":
+				wantype = "DSLite";
+
+				var dlite_config = xml_GetWanSettings.Get("GetWanSettingsResponse/DsLite_Configuration");
+				ChangeDSLiteConfig (dlite_config);
+				var obj_dlite_config = document.getElementById("configuration_DSLite");
+				COMM_SetSelectValue(obj_dlite_config, dlite_config);
+
+				var dslite_aftr_v6addr = xml_GetWanSettings.Get("GetWanSettingsResponse/DsLite_AFTR_IPv6Address");
+				document.getElementById("afterIPv6Address_DSLite").value = dslite_aftr_v6addr;
+
+				var dslite_b4v4addr = xml_GetWanSettings.Get("GetWanSettingsResponse/DsLite_B4IPv4Address");
+				var split_dslite_b4v4addr = dslite_b4v4addr.split(".");
+				var last_elem = split_dslite_b4v4addr[split_dslite_b4v4addr.length-1];
+				document.getElementById("b4IPv4Address_DSLite").value = last_elem;
+
+				var dslite_v6_addr = xml_GetIPv6Status.Get("GetIPv6StatusResponse/IPv6_Address");
+				if (dslite_v6_addr!="")
+					document.getElementById("wanIPv6Address_DSLite").innerHTML = dslite_v6_addr;
+				else
+					document.getElementById("wanIPv6Address_DSLite").innerHTML = "N/A";
+
+				var dslite_gw = xml_GetIPv6Status.Get("GetIPv6StatusResponse/IPv6_DefaultGateway");
+				if (dslite_gw != "")
+					document.getElementById("ipv6WanDefaultGateway_DSLite").innerHTML = dslite_gw;
+				else
+					document.getElementById("ipv6WanDefaultGateway_DSLite").innerHTML = "N/A";
+
+				break;
+			case "BridgedOnly":
+				wantype = "BRIDGE";
+				var bridge_mtu_value = xml_GetWanSettings.Get("GetWanSettingsResponse/MTU");
+				document.getElementById("mtu_Bridge_Input").value = bridge_mtu_value;
+				break;
+			case "PPPoE_USB":
+				wantype = "PPPoE_USB";
+
+				//alert(wantype);
+
+				var pincode = xml_GetWanSettings.Get("GetWanSettingsResponse/SimPinCode");
+				document.getElementById("pin_code").value = pincode;
+
+				var Country = xml_GetWanSettings.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/Country");
+				var ISP = xml_GetWanSettings.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/Isp");
+				var Dialnum = xml_GetWanSettings.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/Dialnum");
+				var APN = xml_GetWanSettings.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/Apn");
+				var Username_USB = xml_GetWanSettings.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/Username");
+				var Password_USB = xml_GetWanSettings.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/Password");
+				var Pcode = xml_GetWanSettings.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/Pincode");
+				
+				document.getElementById("dialno_wifi_usb").value = Dialnum;
+				document.getElementById("apn_wifi_usb").value = APN;
+				document.getElementById("userName_usb").value = Username_USB;
+				document.getElementById("password_usb").value = Password_USB;
+				document.getElementById("pin_code").value = Pcode;
+				var obj_country = document.getElementById("country");
+				var obj_isp_nz = document.getElementById("isp_NZ");
+				var obj_isp_au = document.getElementById("isp_AU");
+				
+				COMM_SetSelectValue(obj_country, Country);
+				ChangeCountry(Country);
+				if(Country == "NZ")
+				{
+					for(var i=0;i<APN_NZ_array.length;i++)
+						if(ISP == APN_NZ_array[i][2])
+						{
+							COMM_SetSelectValue(obj_isp_nz, APN_NZ_array[i][0]);
+							//alert( "2:"+obj_isp_nz.value);
+							ChangeISP_NZ(APN_NZ_array[i][0]);
+						}
+				}
+				else if(Country == "AU")
+				{
+					for(var i=0;i<APN_AU_array.length;i++)
+					if(ISP == APN_AU_array[i][2])
+					{
+						COMM_SetSelectValue(obj_isp_au, APN_AU_array[i][0]);
+						ChangeISP_AU(APN_AU_array[i][0]);
+					}
+				}
+				var pppoe_mtu_value = xml_GetWanSettings.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/MTU");
+				document.getElementById("mtu_USB_Input").value = pppoe_mtu_value;
+
+				var pppoe_mtu = "";
+				var obj_pppoe_mtu = document.getElementById("mtu_USB");
+				if (pppoe_mtu_value == "0" || pppoe_mtu_value == "" )
+				{
+					pppoe_mtu = "AUTO";
+					document.getElementById("mtu_USB_Input").style.display = "none";
+				}
+				else
+				{
+					pppoe_mtu = "MANUAL";
+					document.getElementById("mtu_USB_Input").style.display = "inline";
+				}
+				COMM_SetSelectValue(obj_pppoe_mtu, pppoe_mtu);
+
+				var pppoe_reconnect = "";
+				var pppoe_maxidle_t = xml_GetWanSettings.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/MaxIdleTime");
+				document.getElementById("maximumIdleTime_USB").value = pppoe_maxidle_t/60;
+				
+				var pppoe_reconnect = "";
+				var obj_pppoe_recmode = document.getElementById("reconnect_mode_wifi_usb");
+				if (pppoe_maxidle_t =="0" )
+				{
+					pppoe_reconnect = "AUTO";
+					document.getElementById("maxIdleTime_USB_tr").style.display = "none";
+					document.getElementById("maximumIdleTime_USB").style.display = "none";
+				}
+				else
+				{
+					pppoe_reconnect = "ONDEMAND";
+					document.getElementById("maxIdleTime_USB_tr").style.display = "inline";
+					document.getElementById("maximumIdleTime_USB").style.display = "inline";
+				}
+				COMM_SetSelectValue(obj_pppoe_recmode, pppoe_reconnect);
+
+				$("#authp_wifi_usb").selectbox();
+				$("#reconnect_mode_wifi_usb").selectbox();
+				$("#mtu_USB").selectbox();
+
+				break;
+		}
+		$("#connect_type").selectbox('detach');
+		current_wantype = wantype;
+		ChangeConnectType(wantype);
+		COMM_SetSelectValue(obj_wantype, wantype);
+		$("#connect_type").selectbox('attach');
+	}
+
+	function ChangeConnectType(type)
+	{
+		var staticIP = document.getElementById("generalBlock_staticIP");
+		var DynamicIP = document.getElementById("generalBlock_DynamicIP");
+		var PPPoE = document.getElementById("generalBlock_PPPoE");
+		var PPPoA = document.getElementById("generalBlock_PPPoA");
+		var PPTP = document.getElementById("generalBlock_PPTP");
+		var L2TP = document.getElementById("generalBlock_L2TP");
+		var DSLite = document.getElementById("generalBlock_DSLite");
+		var PPPoE3G = document.getElementById("generalBlock_USB");
+
+		var adv_Block = document.getElementById("advancedBlock");
+		var adv_StaticIP = document.getElementById("advancedBlock_staticIP");
+		var adv_DynamicIP = document.getElementById("advancedBlock_DynamicIP");
+		var adv_PPPoE = document.getElementById("advancedBlock_PPPoE");
+		var adv_PPPoA = document.getElementById("advancedBlock_PPPoA");
+		var adv_PPTP = document.getElementById("advancedBlock_PPTP");
+		var adv_L2TP = document.getElementById("advancedBlock_L2TP");
+		var adv_DSLite = document.getElementById("advancedBlock_DSLite");
+		var adv_Bridge = document.getElementById("advancedBlock_Bridge");
+		var adv_PPPoE3G = document.getElementById("advancedBlock_USB");
+		var adv_Block2 = document.getElementById("advancedBlock2");
+		//alert(type);
+		switch(type)
+		{
+			case "STATIC":
+				staticIP.style.display = "inline";
+				PPPoE.style.display = "none";
+				PPPoA.style.display = "none";
+				PPTP.style.display = "none";
+				L2TP.style.display = "none";
+				PPPoE3G.style.display = "none";
+				adv_Block.style.display = "none";
+				adv_StaticIP.style.display = "inline";
+				adv_DynamicIP.style.display = "none";
+				adv_PPPoE.style.display = "none";
+				adv_PPPoA.style.display = "none";
+				adv_PPTP.style.display = "none";
+				adv_L2TP.style.display = "none";
+				adv_DSLite.style.display = "none";
+				adv_Bridge.style.display = "none";
+				adv_PPPoE3G.style.display = "none";
+				adv_Block2.style.display = "none";
+				break;
+			case "DHCP":
+				staticIP.style.display = "none";
+				PPPoE.style.display = "none";
+				PPPoA.style.display = "none";
+				PPTP.style.display = "none";
+				L2TP.style.display = "none";
+				PPPoE3G.style.display = "none";
+				adv_Block.style.display = "none";
+				adv_StaticIP.style.display = "none";
+				adv_DynamicIP.style.display = "inline";
+				adv_PPPoE.style.display = "none";
+				adv_PPPoA.style.display = "none";
+				adv_PPTP.style.display = "none";
+				adv_L2TP.style.display = "none";
+				adv_DSLite.style.display = "none";
+				adv_Bridge.style.display = "none";
+				adv_PPPoE3G.style.display = "none";
+				adv_Block2.style.display = "none";
+				break;
+			case "PPPoE":
+				staticIP.style.display = "none";
+				PPPoE.style.display = "inline";
+				PPPoA.style.display = "none";
+				PPTP.style.display = "none";
+				L2TP.style.display = "none";
+				PPPoE3G.style.display = "none";
+				adv_Block.style.display = "none";
+				adv_StaticIP.style.display = "none";
+				adv_DynamicIP.style.display = "none";
+				adv_PPPoE.style.display = "inline";
+				adv_PPPoA.style.display = "none";
+				adv_PPTP.style.display = "none";
+				adv_L2TP.style.display = "none";
+				adv_DSLite.style.display = "none";
+				adv_Bridge.style.display = "none";
+				adv_PPPoE3G.style.display = "none";
+				adv_Block2.style.display = "none";
+				break;
+			case "PPPoA":
+				staticIP.style.display = "none";
+				PPPoE.style.display = "none";
+				PPPoA.style.display = "inline";
+				PPTP.style.display = "none";
+				L2TP.style.display = "none";
+				PPPoE3G.style.display = "none";
+				adv_Block.style.display = "none";
+				adv_StaticIP.style.display = "none";
+				adv_DynamicIP.style.display = "none";
+				adv_PPPoE.style.display = "none";
+				adv_PPPoA.style.display = "inline";
+				adv_PPTP.style.display = "none";
+				adv_L2TP.style.display = "none";
+				adv_DSLite.style.display = "none";
+				adv_Bridge.style.display = "none";
+				adv_PPPoE3G.style.display = "none";
+				adv_Block2.style.display = "none";
+				break;
+			case "PPTP":
+				staticIP.style.display = "none";
+				PPPoE.style.display = "none";
+				PPPoA.style.display = "none";
+				PPTP.style.display = "inline";
+				L2TP.style.display = "none";
+				PPPoE3G.style.display = "none";
+				adv_Block.style.display = "none";
+				adv_StaticIP.style.display = "none";
+				adv_DynamicIP.style.display = "none";
+				adv_PPPoE.style.display = "none";
+				adv_PPPoA.style.display = "none";
+				adv_PPTP.style.display = "inline";
+				adv_L2TP.style.display = "none";
+				adv_DSLite.style.display = "none";
+				adv_Bridge.style.display = "none";
+				adv_PPPoE3G.style.display = "none";
+				adv_Block2.style.display = "none";
+				break;
+			case "L2TP":
+				staticIP.style.display = "none";
+				PPPoE.style.display = "none";
+				PPPoA.style.display = "none";
+				PPTP.style.display = "none";
+				L2TP.style.display = "inline";
+				PPPoE3G.style.display = "none";
+				adv_Block.style.display = "none";
+				adv_StaticIP.style.display = "none";
+				adv_DynamicIP.style.display = "none";
+				adv_PPPoE.style.display = "none";
+				adv_PPPoA.style.display = "none";
+				adv_PPTP.style.display = "none";
+				adv_L2TP.style.display = "inline";
+				adv_DSLite.style.display = "none";
+				adv_Bridge.style.display = "none";
+				adv_PPPoE3G.style.display = "none";
+				adv_Block2.style.display = "none";
+				break;
+			case "DSLite":
+				staticIP.style.display = "none";
+				PPPoE.style.display = "none";
+				PPPoA.style.display = "none";
+				PPTP.style.display = "none";
+				L2TP.style.display = "none";
+				PPPoE3G.style.display = "none";
+				adv_Block.style.display = "none";
+				adv_StaticIP.style.display = "none";
+				adv_DynamicIP.style.display = "none";
+				adv_PPPoE.style.display = "none";
+				adv_PPPoA.style.display = "none";
+				adv_PPTP.style.display = "none";
+				adv_L2TP.style.display = "none";
+				adv_DSLite.style.display = "inline";
+				adv_Bridge.style.display = "none";
+				adv_PPPoE3G.style.display = "none";
+				adv_Block2.style.display = "none";
+				break;
+			case "BRIDGE":
+				staticIP.style.display = "none";
+				PPPoE.style.display = "none";
+				PPPoA.style.display = "none";
+				PPTP.style.display = "none";
+				L2TP.style.display = "none";
+				PPPoE3G.style.display = "none";
+				adv_Block.style.display = "none";
+				adv_StaticIP.style.display = "none";
+				adv_DynamicIP.style.display = "none";
+				adv_PPPoE.style.display = "none";
+				adv_PPPoA.style.display = "none";
+				adv_PPTP.style.display = "none";
+				adv_L2TP.style.display = "none";
+				adv_DSLite.style.display = "none";
+				adv_Bridge.style.display = "inline";
+				adv_PPPoE3G.style.display = "none";
+				adv_Block2.style.display = "none";
+				break;
+			case "PPPoE_USB":
+				staticIP.style.display = "none";
+				PPPoE.style.display = "none";
+				PPPoA.style.display = "none";
+				PPTP.style.display = "none";
+				L2TP.style.display = "none";
+				PPPoE3G.style.display = "inline";
+				adv_Block.style.display = "none";
+				adv_StaticIP.style.display = "none";
+				adv_DynamicIP.style.display = "none";
+				adv_PPPoE.style.display = "none";
+				adv_PPPoA.style.display = "none";
+				adv_PPTP.style.display = "none";
+				adv_L2TP.style.display = "none";
+				adv_DSLite.style.display = "none";
+				adv_Bridge.style.display = "none";
+				adv_PPPoE3G.style.display = "inline";
+				adv_Block2.style.display = "none";
+				break;
+		}
+		//alert(type);
+		DisplayMACClone(type);
+	}
+
+	function InitWAN()
+	{
+		//var xml_GetDeviceFeature = HNAP.GetXML("GetDeviceFeatureAlpha");
+		//var xml_GetIPv6Status = HNAP.GetXML("GetIPv6Status");
+		//var xml_GetRouterLanSettings = HNAP.GetXML("GetRouterLanSettings");
+		
+		//var feature_dsl = xml_GetDeviceFeature.Get("GetDeviceFeatureAlphaResponse/FeatureDSL");
+		var feature_dsl = true;
+		//var feature_configwan = xml_GetDeviceFeature.Get("GetDeviceFeatureAlphaResponse/FeatureConfigWANPort");
+		
+		//var feature_ipv6 = xml_GetDeviceFeature.Get("GetDeviceFeatureAlphaResponse/FeatureIPv6");
+		var feature_ipv6 = true;
+		if(feature_ipv6 == true)
+			document.getElementById("FUNC_IPv6").style.display = "block";
+		else
+			document.getElementById("FUNC_IPv6").style.display = "none";
+
+		var obj_wanaccesstype = document.getElementById("wan_access_type");
+		var obj_wanindex = document.getElementById("wan_index");
+
+		wanaccesstype_org = xml_GetWanSettings.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/WANAccessType");
+		//wanaccesstype_org = "ethwan";
+		
+		wanindex_org = xml_GetWanSettings.Get("GetWanSettingsResponse/WANIndex");
+		//var nat_control=xml_GetWanSettings.Get("GetWanSettingsResponse/NATControl");
+		
+		/*var wan_type = xml_GetWanSettings.Get("GetWanSettingsResponse/Type");
+		var bridge_mode = false;
+
+		if(nat_control=="1")
+			SetCheckBoxEnable("nat_control", true, false);
+		else
+			SetCheckBoxEnable("nat_control", true, true);
+		
+		if(wan_type == "StaticBridged" || wan_type == "DynamicBridged" ) bridge_mode = true;
+		else bridge_mode = false;
+		*/
+		hideInfor2_img(wanaccesstype_org);
+		
+		if (feature_dsl == true && (wanaccesstype_org == "AD" || wanaccesstype_org == "VD"))
+		{
+			document.getElementById("FUNC_DSL").style.display = "block";
+			document.getElementById("FUNC_ATM").style.display = "block";
+			document.getElementById("FUNC_PTM").style.display = "block";
+			//document.getElementById("directions").innerHTML = I18N("j", "Use this section to configure your Internet Connection type. There are several connection types to choose from Static IP, DHCP, PPPoE, PPPoA, PPTP, L2TP, and DS-Lite. If you are unsure of your connection method, please contact your Internet Service Provider. Note:  If using the PPPoE option, you will need to remove or disable any PPPoE client software on your computers.");
+			document.getElementById("directions").innerHTML = I18N("j", "Use this section to configure your Internet Connection type. There are several connection types to choose from Static IP, DHCP, PPPoE, PPPoA, PPTP, L2TP, and Bridge. If you are unsure of your connection method, please contact your Internet Service Provider. Note:  If using the PPPoE option, you will need to remove or disable any PPPoE client software on your computers.");
+			devicemode_org = "ROUTER";
+			
+		}
+        else if (wanaccesstype_org == "usbwan")
+		{
+			document.getElementById("FUNC_DSL").style.display = "none";
+			document.getElementById("FUNC_ATM").style.display = "none";
+			document.getElementById("FUNC_PTM").style.display = "none";
+			
+			document.getElementById("directions").innerHTML = I18N("j", "Use this section to configure your Internet Connection settings. If you are unsure of your connection settings, please contact your Internet Service Provider.");
+			devicemode_org = "ROUTER";
+		}
+		else //ETH
+		{
+			document.getElementById("FUNC_DSL").style.display = "none";
+			document.getElementById("FUNC_ATM").style.display = "none";
+			document.getElementById("FUNC_PTM").style.display = "none";
+
+			devicemode_org = "ROUTER";
+			document.getElementById("directions").innerHTML = I18N("j", "Use this section to configure your Internet Connection type. There are several connection types to choose from Static IP, DHCP, PPPoE, PPTP, L2TP, and Bridge. If you are unsure of your connection method, please contact your Internet Service Provider. Note:  If using the PPPoE option, you will need to remove or disable any PPPoE client software on your computers.");
+			
+		}
+
+		COMM_SetSelectValue(obj_wanaccesstype, wanaccesstype_org);
+		//COMM_SetSelectValue(obj_wanindex, wanindex_org);
+		
+		//ConnectTypeList(wanaccesstype_org);
+		DisplayWanOpt(devicemode_org, wanaccesstype_org);
+		ChangeWANAccessType(wanaccesstype_org);
+		$("#device_mode").selectbox();
+		$("#wan_access_type").selectbox();
+		$("#wan_index").selectbox();
+		$("#atm_encap").selectbox();
+		$("#connect_type").selectbox('detach');
+		$("#connect_type").selectbox();
+		$("#mtu_StaticIP").selectbox();
+		$("#clone_mac_StaticIP").selectbox();
+		$("#mtu_DynamicIP").selectbox();
+		$("#clone_mac_DynamicIP").selectbox();
+		$("#addressMode_PPPoE").selectbox();
+		$("#reconnectMode_PPPoE").selectbox();
+		$("#mtu_PPPoE").selectbox();
+		$("#addressMode_PPPoA").selectbox();
+		$("#reconnectMode_PPPoA").selectbox();
+		$("#addressMode_PPTP").selectbox();
+		$("#reconnectMode_PPTP").selectbox();
+		$("#mtu_PPTP").selectbox();
+		$("#addressMode_L2TP").selectbox();
+		$("#reconnectMode_L2TP").selectbox();
+		$("#mtu_L2TP").selectbox();
+		$("#configuration_DSLite").selectbox();
+		$("#mtu_Bridge").selectbox();
+		$("#authp_wifi_usb").selectbox();
+		$("#reconnect_mode_wifi_usb").selectbox();
+		$("#mtu_USB").selectbox();
+		$("#country").selectbox();
+		$("#isp_AU").selectbox();
+		//$("#isp_NZ").selectbox();
+	}
+
+	function CheckConnectionStatus()
+	{
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 2000,
+			type : "GET",
+			success : function(data) { SaveWAN(); },
+			error : function() { //document.getElementById("DetectRouterConnection").style.display = "inline"; 
+			}
+		});
+	}
+
+	function changNatControl()
+	{
+		SetCheckBoxEnable("nat_control");
+	}
+	function showAdvance(id)
+	{
+		if ((document.getElementById("wan_access_type").value == "DSL") && (document.getElementById("connect_type").value=="STATIC") && (show_atmencap=="1"))
+		{
+			
+		}
+	}
+	/*
+	function showATMencap()
+	{
+		if ((document.getElementById("wan_access_type").value == "DSL") && (document.getElementById("connect_type").value=="STATIC") && (show_atmencap=="1"))
+		{
+			document.getElementById("tr_atm_natcontrol").style.display = "table-row";
+			document.getElementById("tr_atm_encap_select").style.display = "table-row";
+		}
+		else
+		{
+			document.getElementById("tr_atm_natcontrol").style.display = "none";
+			document.getElementById("tr_atm_encap_select").style.display = "none";
+		}
+	}*/
+	function showVlantag()
+	{
+		
+		if(document.getElementById("wan_access_type").value == "DSL")
+		{	
+			if(document.getElementById("advancedBlock2").style.display != "none")
+				document.getElementById("advancedBlock2").style.display = "none";
+			else
+				document.getElementById("advancedBlock2").style.display = "";
+				
+			document.getElementById("tr_vlantaged").style.display = "table-row";
+			if(document.getElementById("taggedvlan_ck").checked)
+				document.getElementById("tr_vlanid").style.display = "table-row";
+			else
+				document.getElementById("tr_vlanid").style.display = "none";
+			document.getElementById("tr_vlanprio").style.display = "none";
+		}
+		else
+		{
+			document.getElementById("advancedBlock2").style.display = "none";
+			document.getElementById("tr_vlantaged").style.display = "none";
+			document.getElementById("tr_vlanid").style.display = "none";
+			document.getElementById("tr_vlanprio").style.display = "none";
+		}
+	}
+	function SaveWAN()
+	{
+		document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		document.getElementById("waitSettingFinish").style.display = "inline";
+		HNAP.GetXMLAsync("SetWanSettings", null, "GetXML", function(xml)	{	SetResult_1st(xml)});
+	}
+	function SetResult_1st(result_xml)
+	{
+		var json_DNS = {};
+		//var xml_SetWanSettings = new HNAP_XML();
+		if (result_xml != null)
+		{
+			var json_data = {};
+			var wan_access_type = document.getElementById("wan_access_type").value;
+			//var wan_index = document.getElementById("wan_index").value;
+
+			json_data["WANAccessType"] = wan_access_type;
+			var wan_id = "WAN-1";
+			var id = document.getElementById("interface").value;
+			if (document.getElementById("wan_access_type").value == "DSL")
+			{
+				var xml_GetPVCList = HNAP.GetXML("GetPVCListAlpha");
+				var pvcCount = xml_GetPVCList.Get("GetPVCListAlphaResponse/PVCList/PVC#");
+				for (var i=1; i<=pvcCount; i++)
+				{
+					var name = xml_GetPVCList.Get("GetPVCListAlphaResponse/PVCList/PVC:" + i + "/Name");
+					if (name == id)
+					{
+						wan_id = xml_GetPVCList.Get("GetPVCListAlphaResponse/PVCList/PVC:" + i + "/WAN");
+						break;
+					}
+				}
+			}
+			else if (document.getElementById("wan_access_type").value == "USB")
+			{
+				wan_id = "WAN-14";
+			}
+
+			json_data["WANID"] = wan_id;
+			
+			if (document.getElementById("wan_access_type").value == "DSL")
+			{
+				var vlanStatus = document.getElementById("taggedvlan_ck").checked;
+				if (vlanStatus)
+				{
+					json_data["WANID"] = document.getElementById("vlanid").value;
+					json_data["VLANPriority"] = "0";
+				}
+				else
+				{
+					json_data["VLANID"] = "-1";
+					json_data["VLANPriority"] = "-1";
+				}
+			}
+
+			/* set wan settings */
+			var connect_type = document.getElementById("connect_type").value;
+			var device_mode = document.getElementById("device_mode").value;
+			var static_ipaddr = document.getElementById("iPAddress_StaticIP").value;
+
+			switch(connect_type)
+			{
+				case "STATIC":
+						json_data["Type"] = "Static";
+						json_data["MacAddress"] = document.getElementById("macAddress_StaticIP").value;
+
+					json_data["IPAddress"] = static_ipaddr;
+					json_data["SubnetMask"] = document.getElementById("subnetMask_StaticIP").value;
+					json_data["Gateway"] = document.getElementById("defaultGateway_StaticIP").value;
+					
+					var static_mtu = document.getElementById("mtu_StaticIP").value;
+					if (static_mtu=="AUTO")
+						json_data["MTU"] = "0";
+					else
+						json_data["MTU"] = document.getElementById("mtu_StaticIP_Input").value;
+					
+					json_DNS["Primary"] = document.getElementById("primaryDNSAddress_StaticIP").value;
+					json_DNS["Secondary"] = document.getElementById("secondaryDNSAddress_StaticIP").value;
+					json_data["ConfigDNS"] = json_DNS;
+					if (document.getElementById("wan_access_type").value == "DSL")
+					{
+						if(show_atmencap=="1")
+						{
+							if(document.getElementById("nat_control_ck").checked)
+								xml_SetWanSettings.Set("SetWanSettings/NATControl", "0");
+							else
+								xml_SetWanSettings.Set("SetWanSettings/NATControl", "1");
+							xml_SetWanSettings.Set("SetWanSettings/ATMEncap", document.getElementById("atm_encap").value);
+						}
+					}
+					break;
+				case "DHCP":
+					
+						json_data["Type"] = "DHCP";
+						json_data["MacAddress"] = document.getElementById("macAddress_DynamicIP").value;
+
+					var mtu_dhcp = document.getElementById("mtu_DynamicIP").value;
+					if (mtu_dhcp=="AUTO")
+						//xml_SetWanSettings.Set("SetWanSettings/MTU", "1500");
+						json_data["MTU"] = "1500";
+					else
+						//xml_SetWanSettings.Set("SetWanSettings/MTU", document.getElementById("mtu_DynamicIP_Input").value);
+						json_data["MTU"] = document.getElementById("mtu_DynamicIP_Input").value;
+
+					json_data["HostName"] = document.getElementById("hostName_DynamicIP").value;
+					json_DNS["Primary"] = document.getElementById("primaryDNSAddress_DynamicIP").value;
+					json_DNS["Secondary"] = document.getElementById("secondaryDNSAddress_DynamicIP").value;
+					json_data["ConfigDNS"] = json_DNS;
+					break;
+				case "PPPoE":
+					
+					json_data["Username"] = document.getElementById("userName_PPPoE").value;
+					json_data["Password"] = document.getElementById("password_PPPoE").value;
+					var addrmode = document.getElementById("addressMode_PPPoE").value;
+					if(addrmode=="DYNAMICIP")
+					{
+						json_data["Type"] = "DHCPPPPoE";
+						json_data["IPAddress"] = "";
+					}
+					else if(addrmode=="STATICIP")
+					{
+						json_data["Type"] = "StaticPPPoE";
+						json_data["IPAddress"] = document.getElementById("ipAddress_PPPoE").value;
+					}
+
+					json_data["ServiceName"] = document.getElementById("serviceName_PPPoE").value;
+					
+					var reconnect_mode = document.getElementById("reconnectMode_PPPoE").value;
+					switch(reconnect_mode)
+					{
+						case "ALWAYSON":
+							json_data["AutoReconnect"] = "true";
+							json_data["MaxIdleTime"] = "0";
+							break;
+						case "ONDEMAND":
+							json_data["MaxIdleTime"] = document.getElementById("maximumIdleTime_PPPoE").value * 60;
+							break;
+						case "MANUAL":
+							json_data["AutoReconnect"] = "false";
+							json_data["MaxIdleTime"] = "0";
+							break;
+					}
+
+					var mtu_type = document.getElementById("mtu_PPPoE").value;
+					if(mtu_type=="AUTO")
+						json_data["MTU"] = "1492";
+					else
+						json_data["MTU"] = document.getElementById("mtu_PPPoE_Input").value;
+
+					json_DNS["Primary"] = document.getElementById("primaryDNSAddress_PPPoE").value;
+					json_DNS["Secondary"] = document.getElementById("secondaryDNSAddress_PPPoE").value;
+					json_data["ConfigDNS"] = json_DNS;
+					break;
+				case "PPPoA":
+					json_data["Username"] = document.getElementById("userName_PPPoA").value;
+					json_data["Password"] = document.getElementById("password_PPPoA").value;
+					var addrmode = document.getElementById("addressMode_PPPoA").value;
+					if(addrmode=="DYNAMICIP")
+					{
+						json_data["Type"] = "DHCPPPPoA";
+						json_data["IPAddress"] = "";
+					}
+					else if(addrmode=="STATICIP")
+					{
+						json_data["Type"] = "StaticPPPoA";
+						json_data["IPAddress"] = document.getElementById("ipAddress_PPPoA").value;
+					}
+
+					var reconnect_mode = document.getElementById("reconnectMode_PPPoA").value;
+					switch(reconnect_mode)
+					{		
+						case "ALWAYSON":
+							json_data["AutoReconnect"] = "true";
+							json_data["MaxIdleTime"] = "0";
+							break;
+						case "ONDEMAND":
+							json_data["MaxIdleTime"] = document.getElementById("maximumIdleTime_PPPoA").value * 60;
+							break;
+						case "MANUAL":
+							json_data["AutoReconnect"] = "false";
+							json_data["MaxIdleTime"] = "0";
+							break;
+					}
+					json_DNS["Primary"] = document.getElementById("primaryDNSAddress_PPPoA").value;
+					json_DNS["Secondary"] = document.getElementById("secondaryDNSAddress_PPPoA").value;
+					json_data["ConfigDNS"] = json_DNS;
+					break;
+				case "PPTP":
+					json_data["ServiceName"] = document.getElementById("serverIPAddress_PPTP").value;
+					json_data["Username"] = document.getElementById("userName_PPTP").value;
+					json_data["Password"] = document.getElementById("password_PPTP").value;
+					var addrmode = document.getElementById("addressMode_PPTP").value;
+					if(addrmode=="DYNAMICIP")
+					{
+						json_data["Type"] = "DynamicPPTP";
+						json_data["IPAddress"] = "";
+						json_data["SubnetMask"] = "";
+						json_data["Gateway"] = "";
+					}
+					else if(addrmode=="STATICIP")
+					{
+						json_data["Type"] = "StaticPPTP";
+						json_data["IPAddress"] = document.getElementById("ipAddress_PPTP").value;
+						json_data["SubnetMask"] = document.getElementById("subnetMask_PPTP").value;
+						json_data["Gateway"] = document.getElementById("gatewayIP_PPTP").value;
+					}
+
+					var reconnect_mode = document.getElementById("reconnectMode_PPTP").value;
+					switch(reconnect_mode)
+					{
+						case "ALWAYSON":
+							json_data["AutoReconnect"] = "true";
+							json_data["MaxIdleTime"] = "0";
+							break;
+						case "ONDEMAND":
+							json_data["MaxIdleTime"] = document.getElementById("maximumIdleTime_PPTP").value * 60;
+							break;
+						case "MANUAL":
+							json_data["AutoReconnect"] = "false";
+							json_data["MaxIdleTime"] = "0";
+							break;
+					}
+
+					var mtu_type = document.getElementById("mtu_PPTP").value;
+					if(mtu_type=="AUTO")
+						json_data["MTU"] = "1400";
+					else
+						json_data["MTU"] = document.getElementById("mtu_PPTP_Input").value;
+						
+					json_DNS["Primary"] = document.getElementById("primaryDNSAddress_PPTP").value;
+					json_DNS["Secondary"] = document.getElementById("secondaryDNSAddress_PPTP").value;
+					json_data["ConfigDNS"] = json_DNS;
+					break;
+				case "L2TP":
+					json_data["ServiceName"] = document.getElementById("serverIPAddress_L2TP").value;
+					json_data["Username"] = document.getElementById("userName_L2TP").value;
+					json_data["Password"] = document.getElementById("password_L2TP").value;
+					var addrmode = document.getElementById("addressMode_L2TP").value;
+					if(addrmode=="DYNAMICIP")
+					{
+						json_data["Type"] = "DynamicL2TP";
+						json_data["IPAddress"] = "";
+						json_data["SubnetMask"] = "";
+						json_data["Gateway"] = "";
+					}
+					else if(addrmode=="STATICIP")
+					{
+						json_data["Type"] = "StaticL2TP";
+						json_data["IPAddress"] = document.getElementById("ipAddress_L2TP").value;
+						json_data["SubnetMask"] = document.getElementById("subnetMask_L2TP").value;
+						json_data["Gateway"] = document.getElementById("gatewayIP_L2TP").value;
+					}
+
+					var reconnect_mode = document.getElementById("reconnectMode_L2TP").value;
+					switch(reconnect_mode)
+					{
+						case "ALWAYSON":
+							json_data["AutoReconnect"] = "true";
+							json_data["MaxIdleTime"] = "0";
+							break;
+						case "ONDEMAND":
+							json_data["MaxIdleTime"] = document.getElementById("maximumIdleTime_L2TP").value * 60;
+							break;
+						case "MANUAL":
+							json_data["AutoReconnect"] = "false";
+							json_data["MaxIdleTime"] = "0";
+							break;
+					}
+
+					var mtu_type = document.getElementById("mtu_L2TP").value;
+					if(mtu_type=="AUTO")
+						json_data["MTU"] = "1400";
+					else
+						json_data["MTU"] = document.getElementById("mtu_L2TP_Input").value;
+						
+					json_DNS["Primary"] = document.getElementById("primaryDNSAddress_L2TP").value;
+					json_DNS["Secondary"] = document.getElementById("secondaryDNSAddress_L2TP").value;
+					json_data["ConfigDNS"] = json_DNS;
+					break;
+				case "DSLite":
+					json_data["Type"] = "DsLite";
+
+					var dslite_configvalue = document.getElementById("configuration_DSLite").value;
+					json_data["DsLite_Configuration"] = dslite_configvalue;
+
+					var combine_b4v4addr = document.getElementById("b4IPv4Address_DSLite").value;
+					if (combine_b4v4addr != "")
+					{
+						xml_SetWanSettings.Set("SetWanSettings/DsLite_B4IPv4Address", "192.0.0." + combine_b4v4addr);
+					}
+					xml_SetWanSettings.Set("SetWanSettings/DsLite_AFTR_IPv6Address", document.getElementById("afterIPv6Address_DSLite").value);
+					break;
+				case "BRIDGE":
+					json_data["Type"] = "BridgedOnly";
+					var bridge_mtu = document.getElementById("mtu_Bridge").value;
+					if(bridge_mtu=="AUTO")
+						json_data["MTU"] = "1500";
+					else
+						json_data["MTU"] = document.getElementById("mtu_Bridge_Input").value;
+
+					break;
+
+				case "PPPoE_USB":
+				
+					json_data["enable"] = "1";//enable always be 1
+					json_data["Username"] = document.getElementById("userName_usb").value;
+					json_data["Password"] = document.getElementById("password_usb").value;
+					json_data["WANAccessType"] = "usbwan";
+					json_data["Type"] = "PPPoE_USB";
+					
+					var reconnect_mode = document.getElementById("reconnect_mode_wifi_usb").value;
+					if(reconnect_mode == "ONDEMAND")
+					{
+						json_data["MaxIdleTime"] = document.getElementById("maximumIdleTime_USB").value * 60;
+					}
+					else if(reconnect_mode == "ALWAYSON")
+					{
+						json_data["MaxIdleTime"] = "0";
+					}
+
+					var mtu_type = document.getElementById("mtu_USB").value;
+					if(mtu_type=="AUTO")
+					{
+						json_data["MTU"] = "0";
+					}
+					else
+					{
+						json_data["MTU"] = document.getElementById("mtu_USB_Input").value;
+					}
+					
+					json_data["Country"] = document.getElementById("country").value;
+					if(document.getElementById("country").value == "AU")
+					{
+						for(var i=0;i<APN_AU_array.length;i++)
+						{
+							if(document.getElementById("isp_AU").value == APN_AU_array[i][0])
+								json_data["Isp"] = APN_AU_array[i][2];
+						}
+					}
+					else if(document.getElementById("country").value == "NZ")
+					{
+						for(var i=0;i<APN_NZ_array.length;i++)
+						{
+							if(document.getElementById("isp_NZ").value == APN_NZ_array[i][0])
+								json_data["Isp"] = APN_NZ_array[i][2];
+						}
+					}
+					json_data["Dialnum"] = document.getElementById("dialno_wifi_usb").value;
+					json_data["Apn"] = document.getElementById("apn_wifi_usb").value;
+					json_data["Pincode"] = document.getElementById("pin_code").value;
+					break;
+
+			}
+			
+			HNAP.SetJSONAsync("SetWanSettings", result_xml,json_data,function(xml)	{	SetResult_2nd(xml)	});
+		}
+		else
+		{
+			if (DebugMode == 1)	{	
+				alert("[!!SetXML Error!!] Function: SetResult_1st");	
+				}	
+				window.location.reload();	
+			
+		}
+	}
+	function SetResult_2nd(result_xml)
+	{
+		var result = result_xml.Get("SetWanSettingsResponse/SetWanSettingsResult");
+		//alert(result);
+		if(result=="REBOOT") /* device mode is changed or wan mode is changed ppp4 <-> ipv4 */
+		{
+			document.getElementById("CreatePopAlertMessage").style.display = "inline";
+			document.getElementById("waitSettingFinish").style.display = "none";
+			document.getElementById("waitDeviceReboot").style.display = "inline";
+			document.getElementById("SuccessREBOOT").style.display = "none";
+
+			var msg;
+			if (wan_access_type == wanaccesstype_org)
+			{
+				if(device_mode == devicemode_org) /* WAN mode chang PPP4 <-> IPV4*/
+					msg = I18N("j", "Rebooting");
+				else if(device_mode=="BRIDGE") /* router mode -> bridge mode */
+				{
+					if(connect_type=="STATIC") redirect_url = static_ipaddr;
+					else if(connect_type=="DHCP") redirect_url = hostname + lanmac[4] + lanmac[5] + ".local";
+					msg = I18N("j", "The device is changing to bridge mode.");
+				}
+				else /* bridge mode -> router mode */
+					msg = I18N("j", "The device is changing to router mode.");
+			}
+			else if(wan_access_type == "DSL")
+			{
+				msg = I18N("j", "The device is changing to xDSL Router.");
+			}
+                        else if(wan_access_type == "USB")
+			{
+				msg = I18N("j", "The device is changing to USB Router.");
+			}
+			else
+			{
+				msg = I18N("j", "The device is changing to Residential Gateway.");
+			}
+
+			document.getElementById("Font_Color_Red").innerHTML = msg;
+			document.getElementById("reciprocal_Number_Reboot").innerHTML = bootuptime + " " + I18N("j", "Sec");
+			timer = setTimeout("ReciprocalBootupTime()", 1000);
+			setTimeout("clearTimeout("+timer+");SavingFinishBlock()", bootuptime*1000);
+			Reboot();
+		}
+		else if(result=="OK")
+		{
+			document.getElementById("CreatePopAlertMessage").style.display = "inline";
+			document.getElementById("waitSettingFinish").style.display = "inline";
+			document.getElementById("waitDeviceReboot").style.display = "none";
+			document.getElementById("SuccessREBOOT").style.display = "none";
+
+			if(device_mode=="BRIDGE") /* bridge mode */
+			{
+				if(connect_type=="STATIC") redirect_url = static_ipaddr;
+				else if(connect_type=="DHCP") redirect_url = "192.168.1.50";
+
+				setTimeout("RedirectToURL()", 1000);
+			}
+			else /* router mode */
+				setTimeout("window.location.reload()", 1000);
+		}
+		else//ERROR
+		{
+			;
+		}
+	}
+
+	function Reboot()
+	{
+		var xml_DeviceReboot = HNAP.GetXML("Reboot");
+		HNAP.SetXML("Reboot", xml_DeviceReboot);
+	}
+
+	function ReciprocalBootupTime()
+	{
+		bootuptime--;
+		document.getElementById("reciprocal_Number_Reboot").innerHTML = bootuptime + " " + I18N("j", "Sec");
+		timer = setTimeout("ReciprocalBootupTime()", 1000);
+	}
+
+	function SavingFinishBlock()
+	{
+		document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		document.getElementById("waitSettingFinish").style.display = "none";
+		document.getElementById("waitDeviceReboot").style.display = "none";
+		document.getElementById("SuccessREBOOT").style.display = "inline";
+	}
+
+	function RedirectToURL()
+	{
+		window.location.href = 'http://'+redirect_url;
+	}
+
+	function ListMACAddress(element, status, type)
+	{
+		if(status==0)
+			document.getElementById("macAddress_"+type).value = init_macaddr;
+		else
+			document.getElementById("macAddress_"+type).value = element.options[status].text;
+	}
+
+	function ChangeMTU(status, type)
+	{
+		switch(status)
+		{
+			case "AUTO":
+				document.getElementById("mtu_"+type+"_tr").style.display = "none";
+				document.getElementById("mtu_"+type+"_Input").style.display = "none";
+				break;
+			case "MANUAL":
+				document.getElementById("mtu_"+type+"_tr").style.display = "inline";
+				document.getElementById("mtu_"+type+"_Input").style.display = "inline";
+				break;
+		}
+	}
+
+	function ChangeAddrMode(status, type)
+	{
+		switch(type)
+		{
+			case "PPPoE":
+			case "PPPoA":
+				if(status=="DYNAMICIP")
+					document.getElementById("ipAddress_tr").style.display = "none";
+				else if(status=="STATICIP")
+					document.getElementById("ipAddress_tr").style.display = "table-row";
+				break;
+			case "PPTP":
+			case "L2TP":
+				if(status=="DYNAMICIP")
+				{
+					document.getElementById("ipAddress_"+type+"_tr").style.display = "none";
+					document.getElementById("subnetMask_"+type+"_tr").style.display = "none";
+					document.getElementById("gatewayIP_"+type+"_tr").style.display = "none";
+				}
+				else if(status=="STATICIP")
+				{
+					document.getElementById("ipAddress_"+type+"_tr").style.display = "table-row";
+					document.getElementById("subnetMask_"+type+"_tr").style.display = "table-row";
+					document.getElementById("gatewayIP_"+type+"_tr").style.display = "table-row";
+				}
+				break;
+		}
+	}
+
+	function ChangeReconnectMode(status, type)
+	{
+		switch(status)
+		{
+			case "ALWAYSON":
+			case "MANUAL":
+				document.getElementById("maxIdleTime_"+type+"_tr").style.display = "none";
+				document.getElementById("maximumIdleTime_"+type).value = "0";
+				break;
+			case "ONDEMAND":
+				document.getElementById("maximumIdleTime_"+type).disabled = false;
+				document.getElementById("maximumIdleTime_"+type).value = "5";
+				document.getElementById("maxIdleTime_"+type+"_tr").style.display = "table-row";
+				break;
+		}
+	}
+
+	function ChangeDSLiteConfig(status)
+	{
+		switch(status)
+		{
+			case "Dhcpv6Option":
+				document.getElementById("afterIPv6Address_DSLite_tr").style.display = "none";
+				break;
+			case "Manual":
+				document.getElementById("afterIPv6Address_DSLite_tr").style.display = "table-row";
+				break;
+		}
+	}
+
+	function DisplayMACClone(type)
+	{
+		switch(type)
+		{
+			case "STATIC":
+				document.getElementById("mac_clone_StaticIP_tr").style.display = "table-row";
+				break;
+			case "DHCP":
+				document.getElementById("mac_clone_DynamicIP_tr").style.display = "table-row";
+				break;
+		}
+	}
+
+	function ConnectTypeList(mode)
+	{
+		$("#connect_type").children().remove();
+		//if (mode == "AD" || mode == "VD")
+		if (mode == "DSL")
+		{
+			document.getElementById("access_type_advance").style.display = "";
+			$("#connect_type").append('<option value="STATIC">Static IP</option>');
+			$("#connect_type").append('<option value="DHCP">Dynamic IP (DHCP)</option>');
+			$("#connect_type").append('<option value="PPPoE">PPPoE</option>');
+			$("#connect_type").append('<option value="PPPoA">PPPoA</option>');
+			$("#connect_type").append('<option value="PPTP">PPTP</option>');
+			$("#connect_type").append('<option value="L2TP">L2TP</option>');
+			//$("#connect_type").append('<option value="DSLite">DS-Lite</option>');
+			$("#connect_type").append('<option value="BRIDGE">Bridge</option>');	
+		}
+		else if (mode == "ethwan")
+		{
+			//switch(value)
+			//{
+			//	case "BRIDGE":
+			//		$("#connect_type").append('<option value="STATIC">Static IP</option>');
+			//		$("#connect_type").append('<option value="DHCP">Dynamic IP (DHCP)</option>');
+			//		break;
+			//	case "ROUTER":
+					document.getElementById("access_type_advance").style.display = "none";
+					$("#connect_type").append('<option value="STATIC">Static IP</option>');
+					$("#connect_type").append('<option value="DHCP">Dynamic IP (DHCP)</option>');
+					$("#connect_type").append('<option value="PPPoE">PPPoE</option>');
+					$("#connect_type").append('<option value="PPTP">PPTP</option>');
+					$("#connect_type").append('<option value="L2TP">L2TP</option>');
+					//$("#connect_type").append('<option value="DSLite">DS-Lite</option>');
+					$("#connect_type").append('<option value="BRIDGE">Bridge</option>');
+					//break;
+			//}
+		}
+        else if (mode == "usbwan")
+		{
+			$("#connect_type").append('<option value="PPPoE_USB">PPPoE_USB</option>');
+		}
+	}
+
+	function DisplayWanOpt(device_mode, wan_access_type)
+	{
+		$("#interface").selectbox('detach');
+		/*var xml_GetPVCList = HNAP.GetXML("GetPVCListAlpha");
+		var pvcCount = xml_GetPVCList.Get("GetPVCListAlphaResponse/PVCList/PVC#");
+		$("#interface").children().remove();
+
+		for (var i=1; i<=pvcCount; i++)
+		{
+			var name = xml_GetPVCList.Get("GetPVCListAlphaResponse/PVCList/PVC:" + i + "/Name");
+			var active = xml_GetPVCList.Get("GetPVCListAlphaResponse/PVCList/PVC:" + i + "/Enabled");
+			var vpi = xml_GetPVCList.Get("GetPVCListAlphaResponse/PVCList/PVC:" + i + "/VPI");
+			var vci = xml_GetPVCList.Get("GetPVCListAlphaResponse/PVCList/PVC:" + i + "/VCI");
+			if (active == "Enable")
+			{
+				$("#interface").append('<option value="'+ name +'">'+ name +' (' + vpi + '/' + vci + ')</option>');
+			}
+		}*/
+		var obj_interface = document.getElementById("interface");
+		COMM_SetSelectValue(obj_interface, "PVC-1");
+		ChangePVC("PVC-1");
+		$("#interface").selectbox('attach');
+
+		document.getElementById("layer2_block").style.display = "block";
+
+		if (wan_access_type == "AD" )
+		{
+			document.getElementById("pvc_block").style.display = "block";
+			document.getElementById("devicemode_block").style.display = "none";
+		}
+		else if (wan_access_type == "ethwan")
+		{
+			document.getElementById("pvc_block").style.display = "none";
+		}
+		else if (wan_access_type == "usbwan")
+		{
+			document.getElementById("layer2_block").style.display = "none";
+		}
+	}
+
+	function ChangeWANAccessType(value)
+	{
+		var device_mode = document.getElementById("device_mode").value;
+		DisplayWanOpt(device_mode, value);
+		$("#connect_type").selectbox('detach');
+		ConnectTypeList(value);
+
+		var obj_wantype = document.getElementById("connect_type");
+		if(current_wantype=="STATIC" || current_wantype=="DHCP" || current_wantype=="PPPoE_USB")
+			current_wantype = current_wantype;
+		else
+			current_wantype = "DHCP";
+
+		if (document.getElementById("wan_access_type").value == "usbwan")
+		{
+			current_wantype = "PPPoE_USB";
+		}
+
+		ChangeConnectType(current_wantype);
+		COMM_SetSelectValue(obj_wantype, current_wantype);
+		$("#connect_type").selectbox('attach');
+        hideInfor2_img(value);
+	}
+
+	function hideInfor2_img(value)
+	{
+		if(value=="DSL")
+		{
+			$("#infor2_show").show();
+		}
+		else
+		{
+			$("#infor2_show").hide();
+		}
+	}
+
+	function ReplaceEmpty(element, value)
+	{
+		element.value = element.value.replace(/\s/g, "");
+	}
+	
+	function ChangeEnable_ifaceStatus()
+	{
+		document.getElementById("advancedBlock").style.display = "none";
+		
+		SetCheckBoxEnable("enable_iface");
+		var status = document.getElementById("enable_iface_ck").checked;
+		if(status)
+		{
+			document.getElementById("generalBlock_USB").style.display = "";
+			document.getElementById("WAN_Seting_Advance").style.display = "";
+			
+		}
+		else
+		{
+			document.getElementById("generalBlock_USB").style.display = "none";
+			document.getElementById("WAN_Seting_Advance").style.display = "none";
+		}
+	
+	}
+	
+	function ChangeCountry(value)
+	{
+		$("#isp_AU").selectbox("detach");
+		$("#isp_NZ").selectbox("detach");
+		//alert("country:"+value);
+		switch(value)
+		{
+			case "AU":
+					document.getElementById("isp_NZ").style.display = "none";
+					document.getElementById("isp_AU").style.display = "";
+					ChangeISP_AU("67");
+					$("#isp_AU").selectbox("attach");
+					break;
+			case "NZ":
+					document.getElementById("isp_AU").style.display = "none";
+					document.getElementById("isp_NZ").style.display = "";
+					ChangeISP_NZ("23");
+					$("#isp_NZ").selectbox("attach");
+					break;
+			default:
+				$("#isp_AU").selectbox("attach");
+				ChangeISP_AU("67");	
+		}
+	}
+	var APN_NZ_array = [
+						["16","www.vodafone.net.nz","Vodafone NZ"],
+						["17","internet","2 Degrees"],
+						["18","www.callplus.net.nz","Call Plus"],
+						["19","www.orcon.net.nz","Orcon"],
+						["20","internet.telecom.co.nz"],
+						["23","Not Listed","Not Listed"]
+					];
+	var APN_AU_array = [
+						["19","3netaccess","3 AU"],["20","vfinternet.au","AAPT"],["21","yesinternet","Amaysim (PostPaid)"],["22","internet","Amaysim (PrePaid)"],
+						["23","splns357","Apex Telecom"],["24","splns357","Beagle"],["25","telstra.bigpond","Bigpond"],["26","splns888a1","BLiNK"],
+						["27","connect","BLiNK (services prior to 04/08/09)"],["28","mwb","ClubTelco"],["29","purtona.net","Crazy John's"],["30","WirelessBroadband","Dodo (PostPaid)"],
+						["31","DODOLNS1","Dodo (PrePaid)"],["32","splns357","Escape Net"],["33","connect","Exetel (Newer Optus Based HSPA plans)"],["34","OptusWAP","Exetel (Optus Based CAP Plans)"],
+						["35","exetel1","Exetel (Optus Based HSPA plans)"],["36","splns357","Highway1"],["37","connect","iiNet"],["38","internode","Internode"],
+						["39","splns333a1","Internode (services prior to 26/08/09)"],["40","primuslns1","iPrimus"],["41","internet","Optus (PostPaid)"],["42","connect","Optus (PrePaid)"],
+						["43","pacnet","Pacnet"],["44","purtona.wap","Red Bull Mobile"],["45","MWB","Simtronic Technologies"],["46","MWB","Smelly Black Dog (Business)"],
+						["47","splns357","Smelly Black Dog (PrePaid)"],["48","telstra.internet","Telstra"],["49","internet","TPG Mobile"],["50","VirginBroadband","Virgin"],
+						["51","vfinternet.au","Vodafone (PostPaid)"],["52","vfprepaymbb","Vodafone (PrePaid)"],["53","live.vodafone.com","Vodafone"],["54","splns555a1","WestNet"],
+						["55","yesinternet","Optus (4G LTE)"],["56","live.vodafone.com","Vodafone AU"],["57","Internet","Amaysim (4G LTE)"],["58","telstra.bigpond","Bigpond"],
+						["59","connect","BLiNK (4G LTE)"],["60","4GLTE","Dodo (4G LTE)"],["61","CONNECT","Exetel (4G LTE)"],["62","internet","Internode (4G LTE)"],
+						["63","VirginBroadband","Virgin (4G LTE)"],["64","3services","3 AU (Pre Paid)"],["67","Not Listed","Not Listed"]
+						];
+	function ChangeISP_AU(value)
+	{
+		$("#isp_AU").selectbox("detach");
+		document.getElementById("isp_AU").value = value;
+		$("#isp_AU").selectbox("attach");
+		document.getElementById("userName_usb").value = "";
+		document.getElementById("password_usb").value = "";
+		if(value == '67' )
+		{
+			document.getElementById("dialno_wifi_usb").value = "";
+			document.getElementById("apn_wifi_usb").value = "";
+			$('#dialno_wifi_usb').attr('disabled', false);
+			$('#apn_wifi_usb').attr('disabled', false);
+			$('#userName_usb').attr('disabled', false);
+			$('#password_usb').attr('disabled', false);
+		}
+		else if(value == '50')
+		{
+			document.getElementById("dialno_wifi_usb").value = "*99#";
+			document.getElementById("apn_wifi_usb").value = "VirginBroadband";
+			document.getElementById("userName_usb").value = "guest";
+			document.getElementById("password_usb").value = "guest";
+			$('#dialno_wifi_usb').attr('disabled', true);
+			$('#apn_wifi_usb').attr('disabled', true);
+			$('#userName_usb').attr('disabled', true);
+			$('#password_usb').attr('disabled', true);	
+		}
+		else 
+		{
+			for(var i=0;i<APN_AU_array.length;i++)
+			{
+				if(value == APN_AU_array[i][0])
+				{	
+					document.getElementById("dialno_wifi_usb").value = "*99#";
+					document.getElementById("apn_wifi_usb").value = APN_AU_array[i][1];
+					$('#dialno_wifi_usb').attr('disabled', true);
+					$('#apn_wifi_usb').attr('disabled', true);
+					$('#userName_usb').attr('disabled', true);
+					$('#password_usb').attr('disabled', true);	
+				}
+			}
+		}
+	}
+	function ChangeISP_NZ(value)
+	{
+		//alert("NZ:"+value);
+		$("#isp_NZ").selectbox("detach");
+		document.getElementById("isp_NZ").value = value;
+		$("#isp_NZ").selectbox("attach");
+		document.getElementById("userName_usb").value = "";
+		document.getElementById("password_usb").value = "";
+		if(value == '23' )
+		{
+			document.getElementById("dialno_wifi_usb").value = "";
+			document.getElementById("apn_wifi_usb").value = "";
+			$('#dialno_wifi_usb').attr('disabled', false);
+			$('#apn_wifi_usb').attr('disabled', false);
+			$('#userName_usb').attr('disabled', false);
+			$('#password_usb').attr('disabled', false);
+		}
+		else 
+		{
+			for(var i=0;i<APN_NZ_array.length;i++)
+			{
+				if(value == APN_NZ_array[i][0])
+				{	
+					document.getElementById("dialno_wifi_usb").value = "*99#";
+					document.getElementById("apn_wifi_usb").value = APN_NZ_array[i][1];
+					$('#dialno_wifi_usb').attr('disabled', true);
+					$('#apn_wifi_usb').attr('disabled', true);
+					$('#userName_usb').attr('disabled', true);
+					$('#password_usb').attr('disabled', true);	
+				}
+			}
+		}
+	}
+
+</script>
+<script type="text/javascript">
+
+	$(function() {
+		$("select").change(function () {	save_button_changed();	});
+		$("input").keydown(function () {	save_button_changed();	});
+		$("#interface").unbind();
+	});
+
+</script>
+</head>
+
+<body>
+	<form name="internet_form" id="internet_form" method="POST" action="">
+	<div id="wrapper">
+		<!-------------------- Logo ------------------------->
+		<div id="header"></div>
+		<!-------------------- Menu ------------------------->
+		<div id="menu"></div>
+		<!-------------------- Content ---------------------->
+		<div id="content">
+		<!-------------------- info ---------------------->
+			<div id="info">
+				<div id="FunctionName"><script>I18N("h", "Internet");</script></div>
+				<div id="wallimage"><img src="image/internet_page.png" alt="" width="195" height="119"/></div>
+				<div id="directions">
+				</div>
+			</div>
+			<!-------------------- funcBar ---------------------->
+			<div id="funcBar" style="width:920px">
+				<div id="pagePath">&nbsp;<script>I18N("h", "Settings");</script> >> <script>I18N("h", "Internet");</script>>> <script>I18N("h", "IPv4");</script></div>
+				<ul id="rightFunc">
+					<li style="display:block"><div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click()" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li>
+					<li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+					<input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+					<li id="FUNC_IPv6" style="display:block"><a href="javascript:CheckHTMLStatus('Internet_IPv6');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "IPv6");</script></div></a></li>
+					<li id="FUNC_PTM" style="display:block"><a href="javascript:CheckHTMLStatus('Internet_PTM');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "PTM");</script></div></a></li>
+					<li id="FUNC_ATM" style="display:block"><a href="javascript:CheckHTMLStatus('Internet_ATM');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "ATM");</script></div></a></li>
+					<li id="FUNC_DSL" style="display:block"><a href="javascript:CheckHTMLStatus('Internet_DSL');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "DSL");</script></div></a></li>
+					<li id="FUNC_MultiWAN" style="display:block"><a href="javascript:CheckHTMLStatus('Internet_MultiWAN');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "Multi WAN");</script></div></a></li>
+				</ul>
+			</div>
+			<!-------------------- main ---------------------->
+			<br />
+			<div id="main">
+				<!-------------------- device mode block ---------------------->
+				<div id="wanmode_block">
+					<table class="block_new" border="0">
+						<tbody>
+							<tr>
+								<th><script>I18N("h", "WAN Access Type");</script>:</th>
+								<td width="202px">
+									<div class="styled-select">
+										<select id="wan_access_type" name="wan_access_type" onChange="ChangeWANAccessType(this.value)">
+											<option value="DSL">VDSL/ADSL Router</option>
+											<option value="ethwan">Residential Gateway (Ethernet WAN)</option>
+                      						<option value="usbwan">USB</option>
+										</select>
+									</div>
+								</td>
+								<td align=left>
+								<img src="image/Infor2.png" id="infor2_show" style="cursor:pointer;" onclick="document.getElementById('CreatePopAlertMessage').style.display='inline';document.getElementById('popRect').style.display='';document.getElementById('AlertPopRect').style.display='none';">
+								</td>
+							</tr>
+							<tr id="tr_enable_iface" style="display:none">
+								<th><script>I18N("h", "Enable Interface");</script>:</th>
+								<td>
+									<div id="enable_iface" class="checkbox_on" onclick="ChangeEnable_ifaceStatus()">
+										<input type="checkbox" id="enable_iface_ck" name="enable_iface_ck" checked>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<div id="layer2_block">
+				<!-------------------- pvc block ---------------------->
+				<div id="pvc_block">
+					<table class="block_new" border="0">
+						<tr>
+							<th><script>I18N("h", "PVC");</script>:</th>
+							<td>
+								<div class="styled-select">
+									<select id="interface" name="interface" onChange="ChangePVC(this.value)">
+									</select>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<!-------------------- device mode block ---------------------->
+				<div id="devicemode_block" style="display:none">
+					<table class="block" border="0">
+						<tbody>
+							<tr>
+								<th><script>I18N("h", "Device Mode");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select id="device_mode" name="device_mode" onChange="ChangeDeviceMode(this.value)">
+											<option value="ROUTER">Router Mode</option>
+										</select>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			<!-----------------------------------Advanced Settings------------------------------------------------->
+				<div id="access_type_advance" class="advButton" onclick="showVlantag();"><script>I18N("h", "Advanced Settings");</script>...</div>
+				<hr />
+				<div id="advancedBlock2" style="display:none">
+					<table class="block" border="0">
+						<tbody>
+							<tr id="tr_vlantaged">
+								<th><script>I18N("h", "Enable Tagged Vlan");</script>:</th>
+								<td>
+									<div id="taggedvlan" class="checkbox_on" onclick="ChangeVlanStatus()">
+										<input type="checkbox" id="taggedvlan_ck" name="taggedvlan" checked>
+									</div>
+								</td>
+							</tr>
+							<tr id="tr_vlanid">
+								<th><script>I18N("h", "VLAN ID");</script>:</th>
+								<td><input class="styled-text" type="text" name="vlanid" size="27" maxlength="15" id="vlanid"></td>
+							</tr>
+							<tr id="tr_vlanprio" style="display:none">
+								<th><script>I18N("h", "VLAN Priority");</script>:</th>
+								<td><input class="styled-text" type="text" name="vlanprio" size="27" maxlength="15" id="vlanprio"></td>
+							</tr>
+							<tr id="tr_atm_natcontrol" style="display:none">
+								<th><script>I18N("h", "NAT Control");</script>:</th>
+								<td>
+									<div id="nat_control" class="checkbox_on" onclick="changNatControl()">
+										<input type="checkbox" id="nat_control_ck" name="nat_control">
+									</div>
+								</td>
+							</tr>
+							<tr id="tr_atm_encap_select" style="display:none">
+								<th><script>I18N("h", "ATM Encapsolution");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select id="atm_encap" name="atm_encap">
+											<option value="rfc1483bridge">RFC1483 Bridging</script></option>
+											<option value="rfc1483route">RFC1483 Routing</script></option>
+										</select>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<hr />
+				</div>
+				<table class="block" border="0">
+					<tbody>
+						<tr>
+							<th><script>I18N("h", "My Internet Connection is");</script>:</th>
+							<td>
+								<div class="styled-select">
+									<select id="connect_type" name="connect_type" onChange="ChangeConnectType(this.value);">
+										<option value="STATIC">Static IP</option>
+										<option value="DHCP">Dynamic IP (DHCP)</option>
+										<option value="PPPoE">PPPoE</option>
+										<option value="PPTP">PPTP</option>
+										<option value="L2TP">L2TP</option>
+										<option value="DSLite">DS-Lite</option>
+									</select>
+								</div>
+								<input class="styled-text" type="text" name="value_Session" size="1" id="value_Session" value="1" style="visibility: hidden; position: absolute; width: 0px; height: 0px;">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+				<!-------------------- generalBlock_staticIP ---------------------->
+			  <div id="generalBlock_staticIP" style="display:none">
+					<table  class="block" border="0" >
+						<tbody>
+							<tr>
+								<th><script>I18N("h", "IP Address");</script>:</th>
+								<td><input class="styled-text" type="text" name="iPAddress_StaticIP" size="27" maxlength="15" id="iPAddress_StaticIP" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Subnet Mask");</script>:</th>
+								<td><input class="styled-text" type="text" name="subnetMask_StaticIP" size="27" maxlength="15" id="subnetMask_StaticIP" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Default Gateway");</script>:</th>
+								<td><input class="styled-text" type="text" name="defaultGateway_StaticIP" size="27" maxlength="15" id="defaultGateway_StaticIP" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Primary DNS Server");</script>:</th>
+								<td><input class="styled-text" type="text" name="primaryDNSAddress_StaticIP" size="27" maxlength="15" id="primaryDNSAddress_StaticIP" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-------------------- generalBlock_Dynamic IP (DHCP)-------NONE>
+			<!-------------------- generalBlock_PPPoE ---------------------->
+			<div id="generalBlock_PPPoE" style="display:none">
+				<table  class="block">
+					<tbody>
+						<tr>
+							<th><script>I18N("h", "Username");</script>:</th>
+							<td><input class="styled-text" type="text" name="userName_PPPoE" size="27" maxlength="255" id="userName_PPPoE"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Password");</script>:</th>
+							<td><input class="styled-text" type="password" name="password_PPPoE" size="27" maxlength="255" id="password_PPPoE"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Reconnect Mode");</script>:</th>
+							<td>
+								<div class="styled-select">
+									<select name="reconnectMode_PPPoE" id="reconnectMode_PPPoE" onChange="ChangeReconnectMode(this.value, 'PPPoE')">
+										<option value="ALWAYSON" selected>Always on</option>
+										<option value="ONDEMAND">On demand</option>
+										<option value="MANUAL">Manual</option>
+									</select>
+								</div>
+							</td>
+							<td></td>
+						</tr>
+						<tr id="maxIdleTime_PPPoE_tr" style="display:none">
+							<th><script>I18N("h", "Maximum Idle Time");</script>:</th>
+							<td><input class="styled-text" style="width: 120px;" type="text" name="maximumIdleTime_PPPoE" id="maximumIdleTime_PPPoE" value="5" maxlength="5">&nbsp;&nbsp;<script>I18N("h", "minutes");</script></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-------------------- generalBlock_PPPoA ---------------------->
+			<div id="generalBlock_PPPoA" style="display:none">
+				<table  class="block">
+					<tbody>
+						<tr>
+							<th><script>I18N("h", "Username");</script>:</th>
+							<td><input class="styled-text" type="text" name="userName_PPPoA" size="27" maxlength="255" id="userName_PPPoA"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Password");</script>:</th>
+							<td><input class="styled-text" type="password" name="password_PPPoA" size="27" maxlength="255" id="password_PPPoA"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Reconnect Mode");</script>:</th>
+							<td>
+								<div class="styled-select">
+									<select name="reconnectMode_PPPoA" id="reconnectMode_PPPoA" onChange="ChangeReconnectMode(this.value, 'PPPoA')">
+										<option value="ALWAYSON" selected>Always on</option>
+										<option value="ONDEMAND">On demand</option>
+										<option value="MANUAL">Manual</option>
+									</select>
+								</div>
+							</td>
+							<td></td>
+						</tr>
+						<tr id="maxIdleTime_PPPoA_tr" style="display:none">
+							<th><script>I18N("h", "Maximum Idle Time");</script>:</th>
+							<td><input class="styled-text" style="width: 120px;" type="text" name="maximumIdleTime_PPPoA" id="maximumIdleTime_PPPoA" value="5" maxlength="5">&nbsp;&nbsp;<script>I18N("h", "minutes");</script></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-------------------- generalBlock_PPTP ---------------------->
+			<div id="generalBlock_PPTP" style="display:none">
+				<table  class="block">
+					<tbody>
+						<tr>
+							<th><script>I18N("h", "PPTP Server IP Address");</script>:</th>
+							<td><input class="styled-text" type="text" name="serverIPAddress_PPTP" size="27" maxlength="32" id="serverIPAddress_PPTP" onchange="ReplaceEmpty(this, this.value)"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Username");</script>:</th>
+							<td><input class="styled-text" type="text" name="userName_PPTP" size="27" maxlength="64" id="userName_PPTP"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Password");</script>:</th>
+							<td><input class="styled-text" type="password" name="password_PPTP" size="27" maxlength="64" id="password_PPTP"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Reconnect Mode");</script>:</th>
+							<td>
+								<div class="styled-select">
+									<select name="reconnectMode_PPTP" id="reconnectMode_PPTP" onChange="ChangeReconnectMode(this.value, 'PPTP')">
+										<option value="ALWAYSON" selected>Always on</option>
+										<option value="ONDEMAND">On demand</option>
+										<option value="MANUAL">Manual</option>
+									</select>
+								</div>
+							</td>
+							<td></td>
+						</tr>
+						<tr id="maxIdleTime_PPTP_tr" style="display:none">
+							<th><script>I18N("h", "Maximum Idle Time");</script>:</th>
+							<td><input class="styled-text" style="width: 120px;" type="text" name="maximumIdleTime_PPTP" id="maximumIdleTime_PPTP" value="5" maxlength="5">&nbsp;&nbsp;<script>I18N("h", "minutes");</script></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-------------------- generalBlock_L2TP ---------------------->
+			<div id="generalBlock_L2TP" style="display:none">
+				<table class="block">
+					<tbody>
+						<tr>
+							<th><script>I18N("h", "L2TP Server IP Address");</script>:</th>
+							<td><input class="styled-text" type="text" name="serverIPAddress_L2TP" size="27" maxlength="32" id="serverIPAddress_L2TP" onchange="ReplaceEmpty(this, this.value)"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Username");</script>:</th>
+							<td><input class="styled-text" type="text" name="userName_L2TP" size="27" maxlength="64" id="userName_L2TP"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Password");</script>:</th>
+							<td><input class="styled-text" type="password" name="password_L2TP" size="27" maxlength="64" id="password_L2TP"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Reconnect Mode");</script>:</th>
+							<td>
+							<div class="styled-select">
+								<select name="reconnectMode_L2TP" id="reconnectMode_L2TP" onChange="ChangeReconnectMode(this.value, 'L2TP')">
+									<option value="ALWAYSON" selected>Always on</option>
+									<option value="ONDEMAND">On demand</option>
+									<option value="MANUAL">Manual</option>
+								</select>
+							</div>
+							</td>
+							<td></td>
+						</tr>
+						<tr id="maxIdleTime_L2TP_tr" style="display:none">
+							<th><script>I18N("h", "Maximum Idle Time");</script>:</th>
+							<td><input class="styled-text" style="width: 120px;" type="text" name="maximumIdleTime_L2TP" size="15" id="maximumIdleTime_L2TP" value="5" maxlength="5">&nbsp;&nbsp;<script>I18N("h", "minutes");</script></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-------------------- generalBlock_DSLite------------------NONE---->
+			<!-------------------- generalBlock_USB ---------------------->
+			<div id="generalBlock_USB" style="display:none">
+				<table class="block">
+					<tbody>
+						<tr style="display:none">
+							<th><script>I18N("h", "Auto Config");</script>:</th>
+							<td>
+								<div id="autoconf" class="checkbox_on" onclick="ChangeAutoConfig()">
+									<input type="checkbox" id="autoconf_ck" name="autoconf" checked>
+								</div>
+							</td>
+						</tr>
+						<tr class="row-isp row-usb">
+							<th><script>I18N("h", "Country");</script>:</th>
+							<td>
+								<div class="styled-select">
+									<select id="country" onchange="ChangeCountry(this.value)">
+										<option value="AU">Australia</option>
+										<option value="NZ">New Zealand</option>
+									</select>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th><script>I18N('h','ISP');</script>:</td>
+							<td>
+								<div class="styled-select">
+									<select id="isp_AU" onchange="ChangeISP_AU(this.value)">
+										<option value="19">3 AU</option>
+										<option value="20">AAPT</option>
+										<option value="21">Amaysim (PostPaid)</option>
+										<option value="22">Amaysim (PrePaid)</option>
+										<option value="23">Apex Telecom</option>
+										<option value="24">Beagle</option>
+										<option value="25">Bigpond</option>
+										<option value="26">BLiNK</option>
+										<option value="27">BLiNK (services prior to 04/08/09)</option>
+										<option value="28">ClubTelco</option>
+										<option value="29">Crazy John's</option>
+										<option value="30">Dodo (PostPaid)</option>
+										<option value="31">Dodo (PrePaid)</option>
+										<option value="32">Escape Net</option>
+										<option value="33">Exetel (Newer Optus Based HSPA plans)</option>
+										<option value="34">Exetel (Optus Based CAP Plans)</option>
+										<option value="35">Exetel (Optus Based HSPA plans)</option>
+										<option value="36">Highway1</option>
+										<option value="37">iiNet</option>
+										<option value="38">Internode</option>
+										<option value="39">Internode (services prior to 26/08/09)</option>
+										<option value="40">iPrimus</option>
+										<option value="41">Optus (PostPaid)</option>
+										<option value="42">Optus (PrePaid)</option>
+										<option value="43">Pacnet</option>
+										<option value="44">Red Bull Mobile</option>
+										<option value="45">Simtronic Technologies</option>
+										<option value="46">Smelly Black Dog (Business)</option>
+										<option value="47">Smelly Black Dog (PrePaid)</option>
+										<option value="48">Telstra</option>
+										<option value="49">TPG Mobile</option>
+										<option value="50">Virgin</option>
+										<option value="51">Vodafone (PostPaid)</option>
+										<option value="52">Vodafone (PrePaid)</option>
+										<option value="53">Vodafone</option>
+										<option value="54">WestNet</option>
+										<option value="55">Optus (4G LTE)</option>
+										<option value="56">Vodafone AU</option>
+										<option value="57">Amaysim (4G LTE)</option>
+										<option value="58">Bigpond</option>
+										<option value="59">BLiNK (4G LTE)</option>
+										<option value="60">Dodo (4G LTE)</option>
+										<option value="61">Exetel (4G LTE)</option>
+										<option value="62">Internode (4G LTE)</option>
+										<option value="63">Virgin (4G LTE)</option>
+										<option value="64">3 AU (Pre Paid)</option>
+										<option value="67"selected>Not Listed </option>
+									</select>
+									<select id="isp_NZ" style="display: none;"onchange="ChangeISP_NZ(this.value)">
+										<option value="16">Vodafone NZ</option>
+										<option value="17">2 Degrees</option>
+										<option value="18">Call Plus</option>
+										<option value="19">Orcon</option>
+										<option value="20">Spark Mobile</option>
+										<option value="23" selected>Not Listed </option>
+									</select>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Dial-up Number");</script>:</th>
+							<td><input class="styled-text" type="text" id="dialno_wifi_usb" name="dialno_wifi_usb" size="27"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "APN");</script>:</th>
+							<td><input class="styled-text" type="text" id="apn_wifi_usb" name="apn_wifi_usb" size="27"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Username");</script>:</th>
+							<td><input class="styled-text" type="text" name="userName_usb" size="27" maxlength="255" id="userName_usb"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Password");</script>:</th>
+							<td><input class="styled-text" type="password" name="password_usb" size="27" maxlength="255" id="password_usb"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-----------------------------------Advanced Settings------------------------------------------------->
+			<div class="advButton" id="WAN_Seting_Advance" onclick="showAdv('advancedBlock');"><script>I18N("h", "Advanced Settings");</script>...</div>
+			<hr />
+			<div id="advancedBlock" style="display:none">
+				<!-------------------- advancedBlock_staticIP ---------------------->
+				<div id="advancedBlock_staticIP" style="display:none">
+					<table  class="block" border="0">
+						<tbody>
+							<tr>
+								<th><script>I18N("h", "Secondary DNS Server");</script>:</th>
+								<td width="200px"><input class="styled-text" type="text" name="secondaryDNSAddress_StaticIP" size="27" maxlength="15" id="secondaryDNSAddress_StaticIP" onchange="ReplaceEmpty(this, this.value)"></td>
+								<td></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "MTU");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select name="mtu_StaticIP" id="mtu_StaticIP" onChange="ChangeMTU(this.value, 'StaticIP')">
+											<option value="AUTO" selected>Auto</option>
+											<option value="MANUAL">Manual</option>
+										</select>
+									</div>
+								</td>
+								<td id="mtu_StaticIP_tr"><input class="styled-text" type="text" name="mtu_StaticIP_Input" size="3" maxlength="5" id="mtu_StaticIP_Input" value="1500" style="display: none;" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr id="mac_clone_StaticIP_tr">
+								<th><script>I18N("h", "Mac Address Clone");</script>:</th>
+								<td><input class="styled-text" type="text" name="macAddress_StaticIP" size="27" maxlength="17" id="macAddress_StaticIP" onchange="ReplaceEmpty(this, this.value)"></td>
+								<td>
+									<div class="styled-select">
+										<select name="clone_mac_StaticIP" id="clone_mac_StaticIP" onChange="ListMACAddress(this, this.value, 'StaticIP')">
+											<option value="0">&lt;&lt; MAC Address</option>
+										</select>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-------------------- advancedBlock_Dynamic IP (DHCP)---------------------->
+				<div id="advancedBlock_DynamicIP" style="display:inline">
+					<table  class="block" border="0">
+						<tbody>
+						<tr>
+							<th><script>I18N("h", "Host Name");</script>:</th>
+							<td width="200px"><input class="styled-text" type="text" name="hostName_DynamicIP" size="27" maxlength="25" id="hostName_DynamicIP"></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Primary DNS Server");</script>:</th>
+							<td colspan="2"><input class="styled-text" type="text" name="primaryDNSAddress_DynamicIP" size="27" maxlength="15" id="primaryDNSAddress_DynamicIP" onchange="ReplaceEmpty(this, this.value)"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Secondary DNS Server");</script>:</th>
+							<td colspan="2"><input class="styled-text" type="text" name="secondaryDNSAddress_DynamicIP" size="27" maxlength="15" id="secondaryDNSAddress_DynamicIP" onchange="ReplaceEmpty(this, this.value)"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "MTU");</script>:</th>
+							<td>
+								<div class="styled-select">
+									<select name="mtu_DynamicIP" id="mtu_DynamicIP" onChange="ChangeMTU(this.value, 'DynamicIP')">
+										<option value="AUTO">Auto</option>
+										<option value="MANUAL">Manual</option>
+									</select>
+								</div>
+							</td>
+							<td id="mtu_DynamicIP_tr"><input class="styled-text" type="text" name="mtu_DynamicIP_Input" size="3" maxlength="5" id="mtu_DynamicIP_Input" value="1500" style="display: none;" onchange="ReplaceEmpty(this, this.value)"></td>
+						</tr>
+						<tr id="mac_clone_DynamicIP_tr">
+							<th><script>I18N("h", "Mac Address Clone");</script>:</th>
+							<td><input class="styled-text" type="text" name="macAddress_DynamicIP" size="27" maxlength="17" id="macAddress_DynamicIP" onchange="ReplaceEmpty(this, this.value)"></td>
+							<td>
+								<div class="styled-select">
+									<select name="clone_mac_DynamicIP" id="clone_mac_DynamicIP" onChange="ListMACAddress(this, this.value, 'DynamicIP')">
+										<option value="0">&lt;&lt; MAC Address</option>
+									</select>
+								</div>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-------------------- advancedBlock_PPPoE  ---------------------->
+				<div id="advancedBlock_PPPoE" style="display:none">
+					<table  class="block" border="0">
+						<tbody>
+							<tr>
+								<th><script>I18N("h", "Address Mode");</script>:</th>
+								<td width="200px">
+									<div class="styled-select">
+										<select name="addressMode_PPPoE" id="addressMode_PPPoE" onChange="ChangeAddrMode(this.value, 'PPPoE')">
+											<option value="DYNAMICIP">Dynamic IP</option>
+											<option value="STATICIP">Static IP</option>
+										</select>
+									</div>
+								</td>
+								<td></td>
+							</tr>
+							<tr id="ipAddress_tr"  style="display:none;">
+								<th><script>I18N("h", "IP Address");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="ipAddress_PPPoE" id="ipAddress_PPPoE" size="27" maxlength="15" id="ipAddress" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Service Name");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="serviceName_PPPoE" size="27" maxlength="25" id="serviceName_PPPoE"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Primary DNS Server");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="primaryDNSAddress_PPPoE" size="27" maxlength="15" id="primaryDNSAddress_PPPoE" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Secondary DNS Server");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="secondaryDNSAddress_PPPoE" size="27" maxlength="15" id="secondaryDNSAddress_PPPoE" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "MTU");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select name="mtu_PPPoE" id="mtu_PPPoE" onChange="ChangeMTU(this.value, 'PPPoE')">
+											<option value="AUTO" selected>Auto</option>
+											<option value="MANUAL">Manual</option>
+										</select>
+									</div>
+								<td id="mtu_PPPoE_tr"><input class="styled-text" type="text" name="mtu_PPPoE_Input" size="3" maxlength="5" id="mtu_PPPoE_Input" value="1492" style="display: none;"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-------------------- advancedBlock_PPPoA  ---------------------->
+				<div id="advancedBlock_PPPoA" style="display:none">
+					<table  class="block" border="0">
+						<tbody>
+							<tr style="display:none">
+								<th><script>I18N("h", "Address Mode");</script>:</th>
+								<td width="200px">
+									<div class="styled-select">
+										<select name="addressMode_PPPoA" id="addressMode_PPPoA" onChange="ChangeAddrMode(this.value, 'PPPoA')">
+											<option value="DYNAMICIP">Dynamic IP</option>
+											<option value="STATICIP">Static IP</option>
+										</select>
+									</div>
+								</td>
+								<td></td>
+							</tr>
+							<tr id="ipAddress_PPPoA_tr"  style="display:none;">
+								<th><script>I18N("h", "IP Address");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="ipAddress_PPPoA" id="ipAddress_PPPoA" size="27" maxlength="15" id="ipAddress" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Primary DNS Server");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="primaryDNSAddress_PPPoA" size="27" maxlength="15" id="primaryDNSAddress_PPPoA" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Secondary DNS Server");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="secondaryDNSAddress_PPPoA" size="27" maxlength="15" id="secondaryDNSAddress_PPPoA" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-------------------- advancedBlock_PPTP  ---------------------->
+				<div id="advancedBlock_PPTP" style="display:none">
+					<table  class="block" border="0">
+						<tbody>
+							<tr>
+								<th><script>I18N("h", "Address Mode");</script>:</th>
+								<td width="200px">
+									<div class="styled-select">
+										<select name="addressMode_PPTP" id="addressMode_PPTP" onChange="ChangeAddrMode(this.value, 'PPTP')">
+											<option value="DYNAMICIP">Dynamic IP</option>
+											<option value="STATICIP">Static IP</option>
+										</select>
+									</div>
+								</td>
+								<td></td>
+							</tr>
+							<tr id="ipAddress_PPTP_tr" style="display: none;">
+								<th><script>I18N("h", "PPTP IP Address");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="ipAddress_PPTP" size="27" maxlength="15" id="ipAddress_PPTP" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr id="subnetMask_PPTP_tr" style="display: none;">
+								<th><script>I18N("h", "PPTP Subnet Mask");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="subnetMask_PPTP" size="27" maxlength="15" id="subnetMask_PPTP" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr id="gatewayIP_PPTP_tr" style="display: none;">
+								<th><script>I18N("h", "PPTP Gateway IP Address");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="gatewayIP_PPTP" size="27" maxlength="15" id="gatewayIP_PPTP" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Primary DNS Server");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="primaryDNSAddress_PPTP" size="27" maxlength="15" id="primaryDNSAddress_PPTP" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Secondary DNS Server");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="secondaryDNSAddress_PPTP" size="27" maxlength="15" id="secondaryDNSAddress_PPTP" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "MTU");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select name="mtu_PPTP" id="mtu_PPTP" onChange="ChangeMTU(this.value, 'PPTP')">
+											<option value="AUTO" selected>Auto</option>
+											<option value="MANUAL">Manual</option>
+										</select>
+									</div>
+								</td>
+								<td id="mtu_PPTP_tr"><input class="styled-text" type="text" name="mtu_PPTP_Input" size="3" maxlength="5" id="mtu_PPTP_Input" value="1400" style="display: none;"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-------------------- advancedBlock_L2TP  ---------------------->
+				<div id="advancedBlock_L2TP" style="display:none">
+					<table  class="block" border="0">
+						<tbody>
+							<tr>
+								<th><script>I18N("h", "Address Mode");</script>:</th>
+								<td width="200px">
+									<div class="styled-select">
+										<select name="addressMode_L2TP" id="addressMode_L2TP" onChange="ChangeAddrMode(this.value, 'L2TP')">
+											<option value="DYNAMICIP">Dynamic IP</option>
+											<option value="STATICIP">Static IP</option>
+										</select>
+									</div>
+								</td>
+								<td></td>
+							</tr>
+							<tr id="ipAddress_L2TP_tr" style="display: none;">
+								<th><script>I18N("h", "L2TP IP Address");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="ipAddress_L2TP" size="27" maxlength="15" id="ipAddress_L2TP" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr id="subnetMask_L2TP_tr" style="display: none;">
+								<th><script>I18N("h", "L2TP Subnet Mask");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="subnetMask_L2TP" size="27" maxlength="15" id="subnetMask_L2TP" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr id="gatewayIP_L2TP_tr" style="display: none;">
+								<th><script>I18N("h", "L2TP Gateway IP Address");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="gatewayIP_L2TP" size="27" maxlength="15" id="gatewayIP_L2TP" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Primary DNS Server");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="primaryDNSAddress_L2TP" size="27" maxlength="15" id="primaryDNSAddress_L2TP" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Secondary DNS Server");</script>:</th>
+								<td colspan="2"><input class="styled-text" type="text" name="secondaryDNSAddress_L2TP" size="27" maxlength="15" id="secondaryDNSAddress_L2TP" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "MTU");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select name="mtu_L2TP" id="mtu_L2TP" onChange="ChangeMTU(this.value, 'L2TP')">
+											<option value="AUTO" selected>Auto</option>
+											<option value="MANUAL">Manual</option>
+										</select>
+									</div>
+								</td>
+								<td id="mtu_L2TP_tr"><input class="styled-text" type="text" name="mtu_L2TP_Input" size="3" maxlength="5" id="mtu_L2TP_Input" value="1400" style="display: none;"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-------------------- advancedBlock_DS-Lite  ---------------------->
+				<div id="advancedBlock_DSLite" style="display:none">
+					<table  class="block" border="0">
+						<tbody>
+							<tr>
+								<th><script>I18N("h", "DS-Lite Configuration");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select name="configuration_DSLite" id="configuration_DSLite" onChange="ChangeDSLiteConfig(this.value)">
+											<option value="Dhcpv6Option">DS-Lite DHCPv6 Option</option>
+											<option value="Manual">Manual Configuration</option>
+										</select>
+									</div>
+								</td>
+							</tr>
+							<tr id="afterIPv6Address_DSLite_tr" style="display: none;">
+								<th><script>I18N("h", "AFTR IPv6 Address");</script>:</th>
+								<td><input class="styled-text" type="text" name="afterIPv6Address_DSLite" size="27" maxlength="39" id="afterIPv6Address_DSLite" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "B4 IPv4 Address");</script>:</th>
+								<td>192.0.0.&nbsp;<input class="styled-text" style="width: 50px;" type="text" name="b4IPv4Address_DSLite" size="3" maxlength="3" id="b4IPv4Address_DSLite" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "WAN IPv6 Address");</script>:</th>
+								<td><label name="wanIPv6Address_DSLite" id="wanIPv6Address_DSLite">N/A</label></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "IPv6 WAN Default Gateway");</script>:</th>
+								<td><label name="ipv6WanDefaultGateway_DSLite" id="ipv6WanDefaultGateway_DSLite">N/A</label></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-------------------- advancedBlock_Bridge ---------------------->
+				<div id="advancedBlock_Bridge" style="display:none">
+					<table  class="block" border="0">
+						<tbody>
+							<tr>
+								<th><script>I18N("h", "MTU");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select name="mtu_Bridge" id="mtu_Bridge" onChange="ChangeMTU(this.value, 'Bridge')">
+											<option value="AUTO" selected>Auto</option>
+											<option value="MANUAL">Manual</option>
+										</select>
+									</div>
+								</td>
+								<td id="mtu_Bridge_tr"><input class="styled-text" type="text" name="mtu_Bridge_Input" size="3" maxlength="5" id="mtu_Bridge_Input" value="1500" style="display: none;" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+                                <!-------------------- advancedBlock_USB ---------------------->
+				<div id="advancedBlock_USB" style="display:none">
+					<table  class="block" border="0">
+						<tbody>
+							<tr style="display:none">
+								<th><script>I18N("h", "Authentication Protocol");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select id="authp_wifi_usb">
+											<option value="auto">Auto(PAP+CHAP)</option>
+											<option value="PAP">PAP</option>
+											<option value="CHAP">CHAP</option>
+										</select>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "PIN code");</script>:</th>
+								<td><input class="styled-text" type="text" id="pin_code" size="27"></td>
+							</tr>
+                            <tr>
+								<th><script>I18N("h", "Reconnect Mode");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select id="reconnect_mode_wifi_usb" onChange="ChangeReconnectMode(this.value, 'USB')">
+											<option value="ALWAYSON">Always on</option>
+											<option value="ONDEMAND">On demand</option>
+											<!--<option value="MANUAL">Manual</option>-->
+										</select>
+									</div>
+								</td>
+							</tr>
+							<tr id="maxIdleTime_USB_tr" style="display:none;">
+								<th><script>I18N("h", "Maximum Idle Time");</script>:</th>
+								<td><input class="styled-text" style="width: 120px;" type="text" name="maximumIdleTime_USB" id="maximumIdleTime_USB" value="5" maxlength="5">&nbsp;&nbsp;<script>I18N("h", "minutes");</script></td>
+								<td></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "MTU");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select name="mtu_USB" id="mtu_USB" onChange="ChangeMTU(this.value, 'USB')">
+											<option value="AUTO" selected>Auto</option>
+											<option value="MANUAL">Manual</option>
+										</select>
+									</div>
+								</td>
+								<td id="mtu_USB_tr"><input class="styled-text" type="text" name="mtu_USB_Input" size="3" maxlength="5" id="mtu_USB_Input" value="1492" style="display: none;" onchange="ReplaceEmpty(this, this.value)"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div id="CreatePopAlertMessage" style="display:none">
+				<div id="popRect" style="display:none">
+		 		<div id="dialogBox" style="width: 616px; overflow-x: hidden; overflow-y: auto; max-height: 554px; top: 40px;">
+		 			<div id="closeCreatePopBtn" onclick="document.getElementById('CreatePopAlertMessage').style.display='none';document.getElementById('popRect').style.display='none';document.getElementById('AlertPopRect').style.display='';" style="cursor:pointer;"></div>
+		 			<div style="padding-top: 80px;font-weight:bold;"><script>I18N("h", "System will auto select ATM/PTM to match ISP xDSL line");</script></div>
+		 			<div style="padding-top: 60px;">
+		 				<button type="button" class="styled-button_enable" onclick="document.getElementById('CreatePopAlertMessage').style.display='none';document.getElementById('popRect').style.display='none';document.getElementById('AlertPopRect').style.display='';" style="cursor:pointer;">OK</button>
+		 			</div>
+		 		</div>
+		 		</div>
+		 		
+				<div id="AlertPopRect">
+				<div id="AlertPopBody">
+					<table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0" style="display:none">
+						<tbody>
+							<tr>
+								<td><center><div id="Loading_pop_image2"></div></center></td>
+							</tr>
+							<tr>
+								<td><label id="reciprocal_Number"></label></td>
+							</tr>
+							<tr>
+								<td id="dialog_msg_black2">
+									<script>I18N("h", "Your changes are being saved.");</script>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="myAlertPop_table" id="waitDeviceReboot" border="0" cellspacing="0"  style="display:none">
+						<tbody>
+							<tr>
+								<td>
+									<center><div id="Loading_pop_image"></div></center>
+								</td>
+							</tr>
+							<tr>
+								<td><label id="reciprocal_Number_Reboot"/></td>
+							</tr>
+							<tr>
+								<td id="Font_Color_Red"></td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="myAlertPop_table_b" id="SuccessREBOOT" border="0" cellspacing="0"  style="display:none">
+						<tbody>
+							<tr>
+								<td>
+								<center><div id="Information_pop_image"></div></center>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div id="dialog_msg_black">
+										<script>I18N("h", "The new settings have been saved.");</script>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<center>
+										<div id="Confirm_btn" onclick="RedirectToURL()" style="cursor:pointer">
+											<script>I18N("h", "OK");</script>
+										</div>
+									</center>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</div>
+			</div>
+			<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+			<div id="DetectRouterConnection" style="display:none"></div>
+			<div id="footer">
+				<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>
+			</div>
+		</div>
+	</div>
+	</form>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready( function() {
+			presetCheckBox("enable_iface", true);
+			
+			function check_session(session)
+			{
+				if(session != "PPPoE" && wan_IPv6type == "IPv6_PPPoE" && PppoeNewSession == "SharedWithIPv4")
+					return false;
+				else
+					return true;
+			}
+
+			function check_dslite(session)
+			{
+				if(session == "DSLite" && (wan_IPv6type == "IPv6_IPv6InIPv4Tunnel" || wan_IPv6type == "IPv6_6To4" || wan_IPv6type == "IPv6_6RD" || wan_IPv6type == "IPv6_LinkLocalOnly"))
+					return false;
+				else
+					return true;
+			}
+
+			/* Note: it should return "" if it does not have error check message. */
+			$.validator.addMethod("checkSetValues", function( value, element ) {
+				var elem_id = element.id;
+				var error_msg = "";
+				var connect_type = document.getElementById("connect_type").value;
+
+				var vlanStatus = document.getElementById("taggedvlan_ck").checked;
+				if(vlanStatus)
+				{
+					if(elem_id == "vlanid")
+					{
+						if(!COMM_IsInteger(value) || value < 0 || 4096 < value)
+							return I18N("j", "The VLANID value should be 0 ~ 4096.");					
+					}
+					if(elem_id == "vlanprio")
+					{
+						if(!COMM_IsInteger(value) || value < 0 || 7 < value)
+							return I18N("j", "The VLAN Priority value should be 0 ~ 7.");						
+					}				
+				}
+
+				/* check session first */
+				if(!check_session(connect_type))
+				{
+					if(elem_id == "value_Session")
+						return I18N("j","IPv6 PPPoE is share with IPv4 PPPoE. Please change IPv6 WAN protocol to PPPoE at first.");
+				}
+				else if(!check_dslite(connect_type))
+				{
+					if(elem_id == "value_Session")
+						return I18N("j","Please choose one IPv6 connection type besides Link-Local Only, 6to4, 6rd, and IPv6 in IPv4 Tunnel !");
+				}
+				else
+				{
+					/* if session is valid, check ipv4 settings */
+					switch(connect_type)
+					{
+						case "STATIC": /* static ip */
+							var staticip = document.getElementById("iPAddress_StaticIP").value;
+							var pristaticdns = document.getElementById("primaryDNSAddress_StaticIP").value;
+							var netmask = document.getElementById("subnetMask_StaticIP").value;
+							var mask = COMM_IPv4MASK2INT(netmask);
+
+							if(elem_id == "iPAddress_StaticIP")
+							{
+
+								if(value == "" || value == null)
+									return I18N("j","Please enter an IP address.");
+								else
+								{
+									if(!COMM_ValidV4Format(value) || !COMM_ValidV4Addr(value))
+										return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+
+									var device_mode = document.getElementById("device_mode").value;
+									if(device_mode == "ROUTER" && netmask != "" && (COMM_IPv4NETWORK(value, mask) == COMM_IPv4NETWORK(lan_IPAddr, mask)))
+										return I18N("j", "The network id is the same with LAN.");
+								}
+							}
+
+							if(elem_id=="subnetMask_StaticIP")
+							{
+								if(value == "" || value == null)
+									return I18N("j","Please enter a subnet mask.");
+								else
+								{
+									var mask = COMM_IPv4MASK2INT(value);
+									if(mask <= 0 || mask > 32)
+										return I18N("j","Please enter a valid netmask. (e.g. 255.255.255.0)");
+									if(mask < 8)
+										return I18N("j", "The router would not support the subnet mask which length is less than Class A.");
+								}
+							}
+
+							if(elem_id == "defaultGateway_StaticIP")
+							{
+								if(value == "" || value == null)
+									return I18N("j","Please enter a gateway address.");
+								else
+								{
+									if(netmask != "")
+									{
+										if(!COMM_ValidV4HOST(value, mask))
+											return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+
+										if(staticip != "")
+										{
+											if(value == staticip)
+												return I18N("j", "Please enter a valid gateway address. (e.g. 192.168.0.1)");
+
+											if(COMM_IPv4NETWORK(value, mask) != COMM_IPv4NETWORK(staticip, mask))
+												return I18N("j", "The default gateway should be in the same network.");
+										}
+									}
+								}
+							}
+
+							if(elem_id == "primaryDNSAddress_StaticIP")
+							{
+								if(value == "" || value == null)
+									return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+								else
+								{
+									if(!COMM_ValidV4Addr(value))
+										return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+
+									if(netmask != "" && !COMM_ValidV4HOST(value, mask))
+										return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+
+									if(staticip != "" && value == staticip)
+										return I18N("j", "The dns server cannot be equal to the IP address.");
+								}
+							}
+
+							if(elem_id == "secondaryDNSAddress_StaticIP" && value != "" && value != "0.0.0.0")
+							{
+								if(pristaticdns == "" || pristaticdns == null)
+									return I18N("j","Please enter a primary dns server");
+
+								if(!COMM_ValidV4Addr(value))
+									return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+
+								if(netmask != "" && !COMM_ValidV4HOST(value, mask))
+									return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+							}
+
+							if(elem_id=="mtu_StaticIP_Input" && $("#mtu_StaticIP")[0].value=="MANUAL")
+								if(!COMM_IsInteger(value) || value < 1280 || 1500 < value)
+									return I18N("j", "The MTU value should be 1280 ~ 1500.");
+
+							if(elem_id=="macAddress_StaticIP" && value != "" && (value=="00:00:00:00:00:00" || !COMM_IsMAC(value)))
+								return I18N("j", "Text field contains illegal characters.");
+							break;
+
+						case "DHCP": /* DHCP */
+							var PriDHCPDNS = document.getElementById("primaryDNSAddress_DynamicIP").value;
+
+							if(elem_id == "primaryDNSAddress_DynamicIP" && value != "" && value != "0.0.0.0")
+							{
+								if(!COMM_ValidV4Addr(value))
+									return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+							}
+
+							if(elem_id == "secondaryDNSAddress_DynamicIP" && value != "" && value != "0.0.0.0")
+							{
+								if(PriDHCPDNS == "" || PriDHCPDNS == null)
+									return I18N("j","Please enter a primary dns server");
+
+								if(!COMM_ValidV4Addr(value))
+									return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+
+								if(value == PriDHCPDNS)
+									return I18N("j","Secondary DNS server should not be the same as Primary DNS server.");
+							}
+
+							if(elem_id=="mtu_DynamicIP_Input" && $("#mtu_DynamicIP")[0].value=="MANUAL")
+								if(!COMM_IsInteger(value) || value < 1280 || 1500 < value)
+									return I18N("j", "The MTU value should be 1280 ~ 1500.");
+
+							if(elem_id=="macAddress_DynamicIP" && value != "" && (value=="00:00:00:00:00:00" || !COMM_IsMAC(value)))
+								return I18N("j", "Text field contains illegal characters.");
+							break;
+
+						case "PPPoE": /* pppoe */
+							var PPPoEStatus = document.getElementById("addressMode_PPPoE").value;
+							var PriPPPoEDNS = document.getElementById("primaryDNSAddress_PPPoE").value;
+
+							if(elem_id == "userName_PPPoE" && (value == "" || value == null))
+								return I18N("j","Please enter a username.");
+
+							if(elem_id == "password_PPPoE" && (value == "" || value == null))
+								return I18N("j","Please enter a password.");
+
+							if(elem_id == "primaryDNSAddress_PPPoE" && value != "")
+							{
+								if(!COMM_ValidV4Addr(value))
+									return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+							}
+
+							if(elem_id == "secondaryDNSAddress_PPPoE" && value != "")
+							{
+								if(PriPPPoEDNS == "" || PriPPPoEDNS == null)
+									return I18N("j","Please enter a primary dns server");
+
+								if(!COMM_ValidV4Addr(value))
+									return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+
+								if(value == PriPPPoEDNS)
+									return I18N("j","Secondary DNS server should not be the same as Primary DNS server.");
+							}
+
+							if(PPPoEStatus == "STATICIP" && elem_id == "ipAddress_PPPoE")
+							{
+								if(value == "" || value == null)
+									return I18N("j","Please enter an IP address.");
+								else
+								{
+									if(!COMM_ValidV4Format(value) || !COMM_ValidV4Addr(value))
+										return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+								}
+							}
+
+							if(elem_id=="mtu_PPPoE_Input" && $("#mtu_PPPoE")[0].value=="MANUAL")
+								if(!COMM_IsInteger(value) || value < 1280 || 1492 < value)
+									return I18N("j", "The MTU value should be 1280 ~ 1492.");
+
+							if(elem_id=="maximumIdleTime_PPPoE" && !COMM_IsDigit(value))
+								return I18N("j", "Please enter a value");
+							break;
+
+						case "PPPoA": /* pppoa */
+							var PPPoAStatus = document.getElementById("addressMode_PPPoA").value;
+							var PriPPPoADNS = document.getElementById("primaryDNSAddress_PPPoA").value;
+
+							if(elem_id == "userName_PPPoA" && (value == "" || value == null))
+								return I18N("j","Please enter a username.");
+
+							if(elem_id == "password_PPPoA" && (value == "" || value == null))
+								return I18N("j","Please enter a password.");
+
+							if(elem_id == "primaryDNSAddress_PPPoA" && value != "")
+							{
+								if(!COMM_ValidV4Addr(value))
+									return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+							}
+
+							if(elem_id == "secondaryDNSAddress_PPPoA" && value != "")
+							{
+								if(PriPPPoADNS == "" || PriPPPoADNS == null)
+									return I18N("j","Please enter a primary dns server");
+
+								if(!COMM_ValidV4Addr(value))
+									return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+
+								if(value == PriPPPoADNS)
+									return I18N("j","Secondary DNS server should not be the same as Primary DNS server.");
+							}
+
+							if(PPPoAStatus == "STATICIP" && elem_id == "ipAddress_PPPoA")
+							{
+								if(value == "" || value == null)
+									return I18N("j","Please enter an IP address.");
+								else
+								{
+									if(!COMM_ValidV4Format(value) || !COMM_ValidV4Addr(value))
+										return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+								}
+							}
+							/*
+							if(elem_id=="mtu_PPPoA_Input" && $("#mtu_PPPoA")[0].value=="MANUAL")
+								if(!COMM_IsInteger(value) || value < 1280 || 1492 < value)
+									return I18N("j", "The MTU value should be 1280 ~ 1492.");
+							*/
+							if(elem_id=="maximumIdleTime_PPPoA" && !COMM_IsDigit(value))
+								return I18N("j", "Please enter a value");
+							break;
+
+						case "PPTP": /* pptp */
+							var PPTPStatus = document.getElementById("addressMode_PPTP").value;
+							var PriPPTPDNS = document.getElementById("primaryDNSAddress_PPTP").value;
+
+							if(elem_id=="serverIPAddress_PPTP")
+							{
+								if(value == "" || value == null)
+									return I18N("j","Please enter an IP address.");
+								else
+								{
+									if(!COMM_ValidV4Format(value) || !COMM_ValidV4Addr(value))
+										return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+								}
+							}
+
+							if(elem_id == "userName_PPTP" && (value == "" || value == null))
+								return I18N("j","Please enter a username.");
+
+							if(elem_id == "password_PPTP" && (value == "" || value == null))
+								return I18N("j","Please enter a password.");
+
+							if(PPTPStatus=="STATICIP")
+							{
+								if(elem_id=="ipAddress_PPTP")
+								{
+									if(value == "" || value == null)
+										return I18N("j","Please enter an IP address.");
+									else
+									{
+										if(!COMM_ValidV4Format(value) || !COMM_ValidV4Addr(value))
+											return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+									}
+								}
+
+								if(elem_id=="subnetMask_PPTP")
+								{
+									if(value == "" || value == null)
+										return I18N("j","Please enter a subnet mask.");
+									else
+									{
+										var mask = COMM_IPv4MASK2INT(value);
+										if(mask <= 0 || mask > 32)
+											return I18N("j","Please enter a valid netmask. (e.g. 255.255.255.0)");
+										if(mask < 8)
+											return I18N("j", "The router would not support the subnet mask which length is less than Class A.");
+									}
+								}
+
+								if(elem_id=="gatewayIP_PPTP")
+								{
+									if(value == "" || value == null)
+										return I18N("j","Please enter a gateway address.");
+									else
+									{
+										if(!COMM_ValidV4Format(value) || !COMM_ValidV4Addr(value))
+											return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+									}
+								}
+
+								if(elem_id=="primaryDNSAddress_PPTP")
+								{
+									if(value == "" || value == null)
+										return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+									else
+									{
+										if(!COMM_ValidV4Addr(value))
+											return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+									}
+								}
+							}
+							else
+							{
+								if(elem_id=="primaryDNSAddress_PPTP" && value != "" && value != "0.0.0.0")
+								{
+									if(!COMM_ValidV4Addr(value))
+										return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+								}
+							}
+
+							if(elem_id=="secondaryDNSAddress_PPTP" && value != "" && value != "0.0.0.0")
+							{
+								if(PriPPTPDNS == "" || PriPPTPDNS == null)
+									return I18N("j","Please enter a primary dns server");
+
+								if(!COMM_ValidV4Addr(value))
+									return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+
+								if(value == PriPPTPDNS)
+									return I18N("j","Secondary DNS server should not be the same as Primary DNS server.");
+							}
+
+							if(elem_id=="mtu_PPTP_Input" && $("#mtu_PPTP")[0].value=="MANUAL")
+								if(!COMM_IsInteger(value) || value < 1280 || 1460 < value)
+									return I18N("j", "The MTU value should be 1280 ~ 1460.");
+
+							if(elem_id=="maximumIdleTime_PPTP" && !COMM_IsDigit(value))
+								return I18N("j", "Please enter a value");
+							break;
+						case "L2TP": /* l2tp */
+							var L2TPStatus = document.getElementById("addressMode_L2TP").value;
+							var PriL2TPDNS = document.getElementById("primaryDNSAddress_L2TP").value;
+
+							if(elem_id=="serverIPAddress_L2TP")
+							{
+								if(value == "" || value == null)
+									return I18N("j","Please enter an IP address.");
+								else
+								{
+									if(!COMM_ValidV4Format(value) || !COMM_ValidV4Addr(value))
+										return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+								}
+							}
+
+							if(elem_id == "userName_L2TP" && (value == "" || value == null))
+								return I18N("j","Please enter a username.");
+
+							if(elem_id == "password_L2TP" && (value == "" || value == null))
+								return I18N("j","Please enter a password.");
+
+							if(L2TPStatus=="STATICIP")
+							{
+								if(elem_id=="ipAddress_L2TP")
+								{
+									if(value == "" || value == null)
+										return I18N("j","Please enter an IP address.");
+									else
+									{
+										if(!COMM_ValidV4Format(value) || !COMM_ValidV4Addr(value))
+											return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+									}
+								}
+
+								if(elem_id=="subnetMask_L2TP")
+								{
+									if(value == "" || value == null)
+										return I18N("j","Please enter a subnet mask.");
+									else
+									{
+										var mask = COMM_IPv4MASK2INT(value);
+										if(mask <= 0 || mask > 32)
+											return I18N("j","Please enter a valid netmask. (e.g. 255.255.255.0)");
+										if(mask < 8)
+											return I18N("j", "The router would not support the subnet mask which length is less than Class A.");
+									}
+								}
+
+								if(elem_id=="gatewayIP_L2TP")
+								{
+									if(value == "" || value == null)
+										return I18N("j","Please enter a gateway address.");
+									else
+									{
+										if(!COMM_ValidV4Format(value) || !COMM_ValidV4Addr(value))
+											return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+									}
+								}
+
+								if(elem_id=="primaryDNSAddress_L2TP")
+								{
+									if(value == "" || value == null)
+										return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+									else
+									{
+										if(!COMM_ValidV4Addr(value))
+											return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+									}
+								}
+							}
+							else
+							{
+								if(elem_id=="primaryDNSAddress_L2TP" && value != "" && value != "0.0.0.0")
+								{
+									if(!COMM_ValidV4Addr(value))
+										return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+								}
+							}
+
+							if(elem_id=="secondaryDNSAddress_L2TP" && value != "" && value != "0.0.0.0")
+							{
+								if(PriL2TPDNS == "" || PriL2TPDNS == null)
+									return I18N("j","Please enter a primary dns server");
+
+								if(!COMM_ValidV4Addr(value))
+									return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+
+								if(value == PriL2TPDNS)
+									return I18N("j","Secondary DNS server should not be the same as Primary DNS server.");
+							}
+
+							if(elem_id=="mtu_L2TP_Input" && $("#mtu_L2TP")[0].value=="MANUAL")
+								if(!COMM_IsInteger(value) || value < 1280 || 1460 < value)
+									return I18N("j", "The MTU value should be 1280 ~ 1460.");
+
+							if(elem_id=="maximumIdleTime_L2TP" && !COMM_IsDigit(value))
+								return I18N("j", "Please enter a value");
+							break;
+						case "DSLite": /* dslite */
+							var validregex = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
+							var DSLiteStatus = document.getElementById("configuration_DSLite").value;
+
+							if(DSLiteStatus=="Manual" && elem_id=="afterIPv6Address_DSLite")
+							{
+								if(value=="" || value==null)
+									return I18N("j","Please enter an IPv6 address.");
+								else
+									if(!validregex.test(value))
+										return I18N("j","Please enter a valid IPv6 address. (e.g. 2001::1)");
+							}
+							// Alpha HuanYao
+							if(elem_id=="b4IPv4Address_DSLite")
+							{
+								var b4IPv4Address_DSLite = parseInt(document.getElementById("b4IPv4Address_DSLite").value);
+								if (isNaN(b4IPv4Address_DSLite))
+									return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+								if (b4IPv4Address_DSLite >= 255 || b4IPv4Address_DSLite <= 0)
+									return I18N("j","Please enter a valid IP address. (e.g. 192.168.0.1)");
+							}
+							break;
+						case "BRIDGE":
+							if(elem_id=="mtu_Bridge_Input" && $("#mtu_Bridge")[0].value=="MANUAL")
+								if(!COMM_IsInteger(value) || value < 1280 || 1500 < value)
+									return I18N("j", "The MTU value should be 1280 ~ 1500.");
+							break;
+						case "PPPoE_USB":
+							if(elem_id=="dialno_wifi_usb" && (value=="" || value==null))
+								return I18N("j","Please enter a dial-up number.");
+
+							if(elem_id=="apn_wifi_usb" && (value=="" || value==null))
+								return I18N("j","Please enter an apn.");
+
+							if(elem_id=="mtu_USB_Input" && $("#mtu_USB")[0].value=="MANUAL")
+								if(!COMM_IsInteger(value) || value < 1280 || 1492 < value)
+									return I18N("j", "The MTU value should be 1280 ~ 1492.");
+							break;
+					}
+				}
+
+				return "";
+			}, "");
+
+			$('#internet_form').validate({
+				submitHandler: function(form) {
+					CheckConnectionStatus();
+				}
+			});
+
+			var elements = $("#vlanid, #vlanprio, #iPAddress_StaticIP, #subnetMask_StaticIP, #defaultGateway_StaticIP, #primaryDNSAddress_StaticIP, #secondaryDNSAddress_StaticIP, #primaryDNSAddress_DynamicIP, #secondaryDNSAddress_DynamicIP, #userName_PPPoE, #password_PPPoE, #ipAddress_PPPoE, #primaryDNSAddress_PPPoE, #secondaryDNSAddress_PPPoE, #userName_PPPoA, #password_PPPoA, #ipAddress_PPPoA, #primaryDNSAddress_PPPoA, #secondaryDNSAddress_PPPoA, #serverIPAddress_PPTP, #userName_PPTP, #password_PPTP, #ipAddress_PPTP, #subnetMask_PPTP, #gatewayIP_PPTP, #primaryDNSAddress_PPTP, #secondaryDNSAddress_PPTP, #serverIPAddress_L2TP, #userName_L2TP, #password_L2TP, #ipAddress_L2TP, #subnetMask_L2TP, #gatewayIP_L2TP, #primaryDNSAddress_L2TP, #secondaryDNSAddress_L2TP, #afterIPv6Address_DSLite, #value_Session, #mtu_StaticIP_Input, #mtu_DynamicIP_Input, #mtu_PPPoE_Input, #mtu_PPTP_Input, #mtu_L2TP_Input, #b4IPv4Address_DSLite, #maximumIdleTime_PPPoE, #maximumIdleTime_PPPoA, #maximumIdleTime_PPTP, #maximumIdleTime_L2TP, #macAddress_DynamicIP, #macAddress_StaticIP, #mtu_Bridge_Input, #dialno_wifi_usb, #apn_wifi_usb, #mtu_USB_Input");
+			$.each(elements, function(i, element) {
+				$(this).rules("add", { checkSetValues: true });
+			});
+			
+			
+
+		});
+	</script>
+</body>
+<script type="text/javascript">
+	Load_HTML();
+	Initial();
+	setMenu("menu_Settings");
+	GetXML();
+	InitMACList();
+	//InitWAN();
+	checkTimeout();
+</script>
+</html>

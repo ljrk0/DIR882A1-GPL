@@ -1,0 +1,87 @@
+#!/bin/sh
+#Make the "build" directory
+#if [ ! -f .config ]; then
+#	echo "Please make menuconfig first"
+#	exit -1;
+#fi
+#ConfigLine=`grep "^CONFIG_HW_.*=y$" .config`
+#ARCH=`expr match "$ConfigLine" "CONFIG_HW_\(.*\)=y"`
+function SelectProduct
+{
+  index=1;
+  echo "*************************************************"
+  echo "* Please select a product:"
+  cd ./vendors/Mediatek/
+  find *  -maxdepth 0 -type d > .productlist 
+  while read ProductName; do
+    cd $ProductName
+    profile_index=0;
+    
+    find * -maxdepth 0  -type d | grep -v "config"  | grep -v "flashtool" > .profilelist
+    while read ProfileName; do
+     echo "* $index: $ProductName $ProfileName"
+     eval VAR$index='$ProductName'
+     eval VAR_Profile$index='$ProfileName'
+     index=`expr $index + 1`
+     profile_index=`expr $profile_index + 1`
+    done < .profilelist
+    rm -f .profilelist
+    
+#    if [ $profile_index -eq 0 ];then
+     echo "* $index: $ProductName"
+     eval VAR$index='$ProductName'
+     eval VAR_Profile$index=
+    index=`expr $index + 1` 
+#    fi
+
+    cd ..
+  done < .productlist
+  rm -f .productlist
+  echo "*************************************************"
+  read item;
+  eval "Product=\"\$VAR$item\""
+  eval "Profile=\"\$VAR_Profile$item\""
+  if [ "-${Profile}" == "-" ];then
+   eval "CurProfile=$Product"
+  else
+   eval "CurProfile=${Product}__${Profile}"
+  fi
+  cd ../../
+}
+
+OLDPWD=${PWD}
+if [ "-${ROOTDIR}" == "-" ]; then
+  echo "Please set environ variable ROOTDIR"
+  exit 1
+fi
+echo ${ROOTDIR}
+cd ${ROOTDIR}
+if [ "-$1" = "-" ]; then
+SelectProduct
+else
+CurProfile=$1
+Product=${CurProfile%%__*}
+Profile=${CurProfile##*__}
+if [ -$Profile = -$Product ]; then
+  Profile=
+fi
+fi
+
+echo "Prepare $CurProfile ..."
+echo $PWD
+CONFIG_PRODUCT_AC2600_LINUXDIR="linux-3.10.14.x"
+
+#$(warning $(LINUXDIR))
+#$(warning $(CONFIG_PRODUCT))
+cp vendors/Mediatek/${CurProfile}/config/product.config                          .config
+cp vendors/Mediatek/${CurProfile}/config/8M_128M_config.busybox-3.10.14.x        user/busybox/.config
+cp vendors/Mediatek/${CurProfile}/config/8M_128M_config.linux-3.10.14.x          ${CONFIG_PRODUCT_AC2600_LINUXDIR}/.config
+cp vendors/Mediatek/${CurProfile}/config/8M_128M_config.uclibc-3.10.14.x         lib/.config
+cp vendors/Mediatek/${CurProfile}/config/8M_128M_config.uclibc0933-3.10.14.x     uClibc-0.9.33.2/.config
+cp vendors/Mediatek/${CurProfile}/config/8M_128M_config.vendor-3.10.14.x         config/.config
+cp vendors/Mediatek/${CurProfile}/config/autoconf_config.h                       config/autoconf.h
+cp vendors/Mediatek/${CurProfile}/config/autoconf_main.h                         autoconf.h
+make menuconfig
+
+
+

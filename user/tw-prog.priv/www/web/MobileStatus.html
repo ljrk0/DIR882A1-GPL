@@ -1,0 +1,552 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+
+<link href="/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/js/bootstrap/css/buttonv2.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/style_mobile.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPWanSettings.js"></script>
+
+<script type="text/javascript">
+//xframeoption
+if(top!=self){top.location=self.location;}
+
+//mobile session
+if (sessionStorage.getItem('PrivateKey') === null){
+	window.location.replace('../info/MobileLogin.html');
+}
+
+	var Time_GetConnectionUpTime;
+	var ipv4_connTime = 0;
+	var getInternetStatusDeffered = null;
+	var Time_ResetButton;
+
+	//HNAP data
+	var soapAction = new SOAPAction();
+	var wanStatus = new SOAPGetWanStatusResponse();
+	var currentInternetStatus = null;
+	var wanSettings_cache = new SOAPGetWanSettingsResponse();	//for wan static data cache only
+
+	$(document).ready(function()
+	{
+		GetInternetInformation(true).done(function(){
+			renewWanStatus(true);
+		});
+		setInterval("renewWanStatus(false)",6000);
+
+		startTimeout();
+	});
+
+	function renewWanStatus(init)
+	{
+		var oldWanStatus = wanStatus.Status;
+		wanStatus = new SOAPGetWanStatusResponse();
+		var wan_query = soapAction.sendSOAPAction("GetWanStatus", null, wanStatus);
+		$.when(wan_query).done(function(obj)
+		{
+			//if(init)
+			//{
+			//	GetInternetInformation(true);
+			//}
+		
+			//show topology
+			switch (wanStatus.Status)
+			{
+				case "CONNECTED":	
+					//for better user experience
+					if(init)
+					{
+						showRuntimeWanInfo(wanSettings_cache);
+					}
+					if(getInternetStatusDeffered == null)	//don't double trigger
+					{
+							getInternetStatusDeffered = getInternetStatus(true);
+							getInternetStatusDeffered.done(function(connStatus){
+							var oldConnStatus = currentInternetStatus;
+							currentInternetStatus = connStatus;
+
+							//trigger
+							if((wanStatus.Status != oldWanStatus)||(currentInternetStatus != oldConnStatus))
+							{		
+								renewWanSettings(wanStatus.Status);
+							}
+								getInternetStatusDeffered = null;
+						});
+					}
+					break;
+				case "CONNECTING":
+				case "LIMITED_CONNECTION":
+				case "DISCONNECTED":
+					//trigger
+					if(wanStatus.Status != oldWanStatus)
+					{		
+						renewWanSettings(wanStatus.Status);
+					}
+					break;
+			}
+			
+			GetConnectionUpTime(true);
+
+		}).fail(function()
+		{
+
+		});
+	
+	}
+
+	function renewWanSettings(status)
+	{
+		clearTimeout(Time_ResetButton);
+		
+		switch (status)
+		{
+			case "CONNECTED":
+				GetConnectionUpTime();
+				GetInternetInformation(false);
+				break;
+			case "CONNECTING":
+			case "LIMITED_CONNECTION":
+			case "DISCONNECTED":
+				var wanSettings = new SOAPGetWanSettingsResponse();	//clean all
+				wanSettings.Type = wanSettings_cache.Type;
+				showRuntimeWanInfo(wanSettings);
+				ipv4_connTime = 0;
+				clearInterval(Time_GetConnectionUpTime);
+				runConnUpTime();
+				break;
+		}
+	}
+	
+	function getInternetStatus(trigger)
+	{
+		var dtd = $.Deferred();
+		var getCurrentInternetStatus = new SOAPGetCurrentInternetStatus();
+		getCurrentInternetStatus.InternetStatus = trigger;
+		soapAction.sendSOAPAction("GetCurrentInternetStatus", getCurrentInternetStatus, null).done(function(obj)
+		{
+			var result = obj.GetCurrentInternetStatusResult;
+
+			if (result =="OK_CONNECTED")
+			{
+				dtd.resolve(result);
+			}
+			else if(result.indexOf("OK_DETECTING_") >= 0)
+			{
+				var sec = parseInt(result.substr(13))*1000;
+				sleep(sec).done(function(){
+					getInternetStatus(false).done(function(str){
+						dtd.resolve(str);
+					});						
+				})
+			}
+			else	//not connected
+			{
+				dtd.resolve(result);
+			}
+		});		
+	
+		return dtd.promise();	//wait job done
+	}
+	
+	function GetInternetInformation(init)
+	{
+		var dtd = $.Deferred();
+		var wanSettings = new SOAPGetWanSettingsResponse();
+		var result = soapAction.sendSOAPAction("GetWanSettings", null, wanSettings);
+		result.done(function(obj)
+		{
+			if(wanSettings.Type == "StaticPPTP" || wanSettings.Type == "DynamicPPTP" || wanSettings.Type == "StaticL2TP" || wanSettings.Type == "DynamicL2TP")
+			{
+				wanSettings.IPAddress = wanSettings.VPNLocalIPAddress;
+				wanSettings.SubnetMask = wanSettings.VPNLocalSubnetMask;
+				wanSettings.Gateway = wanSettings.VPNLocalGateway;
+			}
+			soapAction.copyObject(wanSettings_cache, wanSettings);	//keep wan type and mac				
+			
+			//static info
+			if(init)
+			{
+				$("#mobile_macaddr").html(wanSettings.MacAddress.toUpperCase());
+				$("#mobile_wan_type").html(I18N("j", wanSettings.Type));
+				dtd.resolve();
+			}
+			else
+			{
+				showRuntimeWanInfo(wanSettings);
+			}
+		});
+		
+		return dtd.promise();	//wait job done
+	}
+
+	function showRuntimeWanInfo(wanSettings)
+	{
+		var status = wanStatus.Status;
+		var getIPAddress = wanSettings.IPAddress;
+		if (getIPAddress == "")
+		{
+			getIPAddress = I18N("j", "Not Available");
+		}
+		document.getElementById("mobile_ipaddr").innerHTML = getIPAddress;
+		
+		var getSubnetmask = wanSettings.SubnetMask;
+		if (getSubnetmask == "")
+		{
+			getSubnetmask = I18N("j", "Not Available");
+		}
+		document.getElementById("mobile_mask").innerHTML = getSubnetmask;
+
+		var getDefaultgateway = wanSettings.Gateway;
+		if (getDefaultgateway == "")
+		{
+			getDefaultgateway = I18N("j", "Not Available");
+		}
+		document.getElementById("mobile_gw").innerHTML = getDefaultgateway;
+
+		
+		var getPridns = wanSettings.RuntimeDNS.Primary;
+		if (getPridns == "")
+		{
+			getPridns = I18N("j", "Not Available");
+		}
+		document.getElementById("mobile_dns").innerHTML = getPridns;
+		
+		var getSecdns = wanSettings.RuntimeDNS.Secondary;
+		if (getSecdns == "")
+		{
+			getSecdns = I18N("j", "Not Available");
+		}
+		document.getElementById("mobile_dns2").innerHTML = getSecdns;
+		
+		//for compatibility
+		if((status == "CONNECTED")&&(wanSettings.IPAddress == ""))
+		{
+			status = "LIMITED_CONNECTION";
+		}
+
+		//connect, disconnect button
+		var btn = $("#mobile_release_btn");
+		switch (status)
+		{
+			case "CONNECTED":			
+				if(currentInternetStatus =="OK_CONNECTED")
+				{
+					showInternetStatus("CONNECTED");
+				}
+				else if(currentInternetStatus == "OK_NOTCONNECTED")
+				{
+					showInternetStatus("LIMITED_CONNECTION");
+				}
+				else	//detecting, show first
+				{
+					showInternetStatus("CONNECTED");
+				}
+				switch (wanSettings.Type)
+				{
+					case "DHCP":
+						btn.text(I18N("j", "Release IP Address")).css("display", "inline");
+						break;
+					case "DHCPPPPoE":
+					case "StaticPPPoE":
+					case "DynamicPPTP":
+					case "StaticPPTP":
+					case "DynamicL2TP":
+					case "StaticL2TP":
+						if (wanSettings.AutoReconnect == "true")	{
+							btn.hide();
+						}else{
+							btn.text(I18N("j", "Disconnect")).css("display", "inline");
+						}
+						break;
+					case "Static":
+					case "DsLite":
+						btn.hide();
+						break;
+				}
+	
+				btn.removeClass("active btn-info").addClass("btn-default").prop("disabled", false)
+				.off("click").click(function(){
+					WANConnectionDisconnect(wanSettings.Type);
+				});
+				break;
+			case "CONNECTING":
+				showInternetStatus("CONNECTING");
+				if (wanSettings.AutoReconnect == "true"){
+					btn.hide();
+				}else{
+					btn.addClass("active").prop("disabled", true)
+					.text(I18N("j", "Connecting")).css("display", "inline");
+				}
+				break;
+			case "DISCONNECTED":	
+				showInternetStatus("DISCONNECTED");	
+				btn.hide();
+				break;
+			case "LIMITED_CONNECTION":	
+				showInternetStatus("DISCONNECTED");	
+							
+				switch(wanSettings.Type)
+				{
+					case "DHCP":
+						btn.text(I18N("j", "Renew IP Address")).css("display", "inline");
+						break;
+					case "DHCPPPPoE":
+					case "StaticPPPoE":
+					case "DynamicPPTP":
+					case "StaticPPTP":
+					case "DynamicL2TP":
+					case "StaticL2TP":
+						if (wanSettings.AutoReconnect == "true")
+						{
+							btn.hide();
+						}else{
+							btn.text(I18N("j", "Connect")).css("display", "inline");
+						}
+						break;
+					default:	//static, dslite
+						btn.hide();
+						break;
+				}
+				btn.removeClass("active btn-default").addClass("btn-info").prop("disabled", false)
+				.off("click").click(function(){
+					WANConnectionConnect(wanSettings.Type);
+				});
+				break;
+		}
+	}
+
+	function showInternetStatus(status)
+	{
+		switch(status)
+		{
+			case "CONNECTED":
+				$("#mobile_connect_status").html(I18N("j", "Connected"));
+				$("#mobile_connect_img").attr("src", "image/mobile_internet_connected.png");
+				break;
+			case "CONNECTING":
+				$("#mobile_connect_status").html(I18N("j", "Connecting"));
+				$("#mobile_connect_img").attr("src", "image/mobile_internet.png");
+				break;
+			case "LIMITED_CONNECTION":
+				$("#mobile_connect_status").html(I18N("j", "Limited Connection"));
+				$("#mobile_connect_img").attr("src", "image/mobile_internet.png");
+				break;
+			case "DISCONNECTED":
+				$("#mobile_connect_status").html(I18N("j", "Disconnected"));
+				$("#mobile_connect_img").attr("src", "image/mobile_internet.png");
+				break;
+		}
+		return;
+	}
+	
+	function GetConnectionUpTime()
+	{		
+		var connUpTime = new SOAPGetInternetConnUpTimeResponse();
+		clearInterval(Time_GetConnectionUpTime);
+		soapAction.sendSOAPAction("GetInternetConnUpTime", null, connUpTime).done(function(obj)
+		{
+			ipv4_connTime = parseInt(connUpTime.UpTime, 10);
+			Time_GetConnectionUpTime = setInterval("runConnUpTime()", 1000);
+		});
+	}
+	
+	function runConnUpTime()
+	{
+		var sec = 0;
+		var min = 0;
+		var hour = 0;
+		var day = 0;	
+		var upTime;
+		
+		upTime = ipv4_connTime;
+		
+		if (upTime > 0)
+		{
+			sec = upTime % 60;
+			min = Math.floor(upTime / 60) % 60;
+			hour = Math.floor(upTime / 3600) % 24;
+			day = Math.floor(upTime / 86400);
+			upTime++;	
+		}
+		var timeString = day + " " + I18N("j", "Day") + " " + hour + " " + I18N("j", "Hour") + " " + min + " " + I18N("j", "Min") + " " + sec + " " + I18N("j", "Sec");
+		
+
+		$("#mobile_connect_uptime").html(timeString);
+		ipv4_connTime = upTime;
+	}
+
+	function WANConnectionDisconnect(type)
+	{
+		$("#mobile_release_btn").addClass("active").prop("disabled", true);
+		click_Statuschanged();
+		var renewType = "";
+		var renewWanConnection = new SOAPRenewWanConnection();
+		var soapAction2 = new SOAPAction();
+		soapAction2.timeout = 5000;
+		switch (type)
+		{
+			case "DHCP":
+				renewType = "DHCPRelease";
+				break;
+			case "DHCPPPPoE":
+			case "StaticPPPoE":
+				renewType = "PPPoEDisconnect";
+				break;
+			case "DynamicPPTP":
+			case "StaticPPTP":
+				renewType = "PPTPDisconnect";
+				break;
+			case "DynamicL2TP":
+			case "StaticL2TP":
+				renewType = "L2TPDisconnect";
+				break;
+		}
+		renewWanConnection.Action = renewType;
+		var result = soapAction2.sendSOAPAction("RenewWanConnection", renewWanConnection, null);
+		result.done(function(obj)
+		{
+			Time_ResetButton = setTimeout("resetRenewReleaseBtn()", 10000);
+		})
+		.fail(function()
+		{
+			$("#mobile_release_btn").removeClass("active").prop("disabled", false);
+		});
+	}
+
+	function WANConnectionConnect(type)
+	{
+		$("#mobile_release_btn").addClass("active").prop("disabled", true);
+		var renewType = "";
+		click_Statuschanged();
+		var renewWanConnection = new SOAPRenewWanConnection();
+		var soapAction2 = new SOAPAction();
+		soapAction2.timeout = 5000;
+		
+		switch (type)
+		{
+			case "DHCP":
+				renewType = "DHCPRenew";
+				break;
+			case "DHCPPPPoE":
+			case "StaticPPPoE":
+				renewType = "PPPoEConnect";
+				break;
+			case "DynamicPPTP":
+			case "StaticPPTP":
+				renewType = "PPTPConnect";
+				break;
+			case "DynamicL2TP":
+			case "StaticL2TP":
+				renewType = "L2TPConnect";
+				break;
+		}
+		renewWanConnection.Action = renewType;
+		var result = soapAction2.sendSOAPAction("RenewWanConnection", renewWanConnection, null);
+		result.done(function(obj)
+		{
+			Time_ResetButton = setTimeout("resetRenewReleaseBtn()", 10000);
+		})
+		.fail(function()
+		{
+			$("#mobile_release_btn").removeClass("active").prop("disabled", false);
+		});
+	}
+	
+	//reset button if DUT is no response or no successful action
+	function resetRenewReleaseBtn()
+	{
+		wanStatus = new SOAPGetWanStatusResponse();
+	}
+
+	function click_Statuschanged()
+	{
+		changeTimeoutAction();
+	}
+	
+	function SetDefault_RenewRelease_btn()
+	{
+		document.getElementById("release_btn").disabled = false;
+	}
+	
+	function returnToHome()
+	{
+		location.href="/MobileHome.html";
+	}
+	
+</script>
+</head>
+<body>
+<div style="position:absolute;top:13px">
+<button class="btn_home" onclick="returnToHome()"><script>I18N("h", "Home");</script></button>
+</div>
+
+<div id="logo_padding" style="height:17px"></div>
+	<div class="form-group" style="text-align:center;">
+		<img src="/image/logo_2.png" width="102px" height="20px">
+	</div>
+
+<hr/>
+<div class="container" style="text-align:center;">
+<div style="text-align:left;height:50px">					
+<img id="mobile_connect_img" src="image/mobile_internet.png" width="60" height="45">	
+<b><span id="mobile_connect_status" class="textnormal"><script>I18N("h", "Disconnect");</script></span></b>
+</div>
+<div class="list-group" style="text-align:left;">
+	<div class="list-group-item">
+		<h4 class="list-group-item-heading titleBlock"><script>I18N("h", "Connection Type");</script>:</h4>
+		<span id="mobile_wan_type" class="list-group-item-text"><script>I18N("h", "Not Available");</script></span>
+	</div>
+	<div class="list-group-item">
+		<h4 class="list-group-item-heading titleBlock"><script>I18N("h", "Connection Uptime");</script>:</h4>
+		<span id="mobile_connect_uptime" class="list-group-item-text"><script>I18N("h", "Not Available");</script></span>
+	</div>
+	<div class="list-group-item">
+		<h4 class="list-group-item-heading titleBlock"><script>I18N("h", "MAC Address");</script>:</h4>
+		<span id="mobile_macaddr" class="list-group-item-text"><script>I18N("h", "Not Available");</script></span>
+	</div>
+	<div class="list-group-item">
+		<h4 class="list-group-item-heading titleBlock"><script>I18N("h", "IP Address");</script>:</h4>
+		<span id="mobile_ipaddr" class="list-group-item-text"><script>I18N("h", "Not Available");</script></span>
+	</div>
+	<div class="list-group-item">
+		<h4 class="list-group-item-heading titleBlock"><script>I18N("h", "Subnet Mask");</script>:</h4>
+		<span id="mobile_mask" class="list-group-item-text"><script>I18N("h", "Not Available");</script></span>
+	</div>
+	<div class="list-group-item">
+		<h4 class="list-group-item-heading titleBlock"><script>I18N("h", "Default Gateway");</script>:</h4>
+		<span id="mobile_gw" class="list-group-item-text"><script>I18N("h", "Not Available");</script></span>
+	</div>
+	<div class="list-group-item">
+		<h4 class="list-group-item-heading titleBlock"><script>I18N("h", "Primary DNS Server");</script>:</h4>
+		<span id="mobile_dns" class="list-group-item-text"><script>I18N("h", "Not Available");</script></span>
+	</div>
+	<div class="list-group-item">
+		<h4 class="list-group-item-heading titleBlock"><script>I18N("h", "Secondary DNS Server");</script>:</h4>
+		<span id="mobile_dns2" class="list-group-item-text"><script>I18N("h", "Not Available");</script></span>
+	</div>
+</div> <!-- class="list-group" -->
+<div class="text-center">
+	<button id="mobile_release_btn" type="button" class="btn btn-lg btn-info" style="width:90%;"></button>
+</div>
+</div> <!-- class="container" -->
+<div id="logo_padding2" style="height:50px"></div>
+<div id="copyright" class="copyright" style="position:relative;">
+	<script>I18N("h", "COPYRIGHT");</script>
+</div>
+</body>
+</html> 

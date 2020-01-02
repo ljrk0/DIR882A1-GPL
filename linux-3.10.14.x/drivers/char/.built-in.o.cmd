@@ -1,0 +1,1 @@
+cmd_drivers/char/built-in.o :=  /opt/buildroot-gcc463/usr/bin/mipsel-linux-ld  -m elf32ltsmip   -r -o drivers/char/built-in.o drivers/char/mem.o drivers/char/random.o drivers/char/misc.o drivers/char/ralink_gpio.o 

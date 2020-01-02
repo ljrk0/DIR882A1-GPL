@@ -1,0 +1,1 @@
+cmd_net/netfilter/netfilter.o := /opt/buildroot-gcc463/usr/bin/mipsel-linux-ld  -m elf32ltsmip   -r -o net/netfilter/netfilter.o net/netfilter/core.o net/netfilter/nf_log.o net/netfilter/nf_queue.o net/netfilter/nf_sockopt.o 

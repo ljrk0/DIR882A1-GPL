@@ -1,0 +1,491 @@
+.\"
+.\" Process this file with
+.\" groff -man -Tascii foo.1
+.\"
+.\" Copyright 2004, by Shaul Karl. You may modify and distribute 
+.\" this document for any purpose as long as this copyright notice
+.\" remains intact.
+.\"
+
+.TH inadyn-mt 8 "September, 2009" "Linux applications" "System management commands"
+.SH NAME
+inadyn-mt \- a client for open DNS servers.
+.SH SYNOPSIS
+.B inadyn-mt
+[\-h | \-\-help] 
+[\-u | \-\-username 
+.I username] 
+[\-p | \-\- password 
+.I password] 
+[\-a | \-\-alias 
+.I alias[, hash] [dual | coupled | ip4 | ip6 | auto] [if] [pub | policy | home | careof | crypto | nocrypto | tmp | pubtmp] [ip server[:port] <ip server url> [ip server host]]
+[\-\-input_file 
+.I path/name] 
+[\-\-ip_server_name
+.I server[:port] url]
+[\-\-ip_server_host
+.I hostname]
+[\-\-dyndns_server_name
+.I server[:port]]
+[\-\-dyndns_server_url
+.I url]
+[\-\-dyndns_system
+.I service] 
+[\-\-proxy_server[:port]
+.I proxy[:port]] 
+[\-\-update_period
+.I ms] 
+[\-\-update_period_sec
+.I sec] 
+[\-\-forced_update_period
+.I sec] 
+[\-\-log_file
+.I path/name] 
+[\-\-background] 
+[\-\-verbose
+.I level] 
+[\-\-iterations
+.I iterations] 
+[\-\-syslog]
+[\-\-change_persona 
+.I uid[:gid]]
+
+.SH DESCRIPTION
+.B inadyn-mt
+is a client for `open' name servers. That is, it allows the user's
+machine to have an internet recognized name by transferring some
+control over a name server not managed by the user. Some of the 
+services that are offered by those open name servers are free of 
+charge, and work even when the client machine does not have a static
+IP.  Supports both IPv4, and IPv6 addresses.
+
+Supported name servers are:
+.TP
+http://www.dyndns.org
+.TP
+http://freedns.afraid.org
+.TP
+http://www.zoneedit.com
+.TP
+http://www.no-ip.com
+.TP
+http://www.easydns.com
+.TP
+http://www.3322.org
+.TP
+http://www.sitelutions.com
+.TP
+http://www.tzo.com
+.TP
+http://www.dnsomatic.com
+.TP
+http://www.tunnelbroker.net
+.TP
+http://www.dynsip.org
+.TP
+http://www.dhis.org
+.TP
+http://www.zerigo.com
+.TP
+http://www.two-dns.de
+.TP
+http://www.dnsdynamic.org
+.TP
+http://dnspark.com
+.TP
+http://regfish.de
+.TP
+http://www.ovh.com
+.TP
+http://joker.com
+.TP
+http://dyndns.strato.com
+.TP
+http://system-ns.com
+.TP
+http://www.dtdns.com
+.TP
+http://changeip.com
+.TP
+http://dnsexit.com
+.TP
+http://nsupdate.info
+.TP
+http://loopia.com
+.TP
+http://domains.google.com (requires SSL bridge, like stunnel)
+.TP
+http://duckdns.org
+.TP
+http://www.dy.fi
+.TP
+http://ddnss.de
+.TP
+http://dynv6.com
+.TP
+http://selfhost.de
+.PP
+Its basic operation is to periodically check whether the actual IP
+of the client machine is the same one that is recorded in the name
+server, and update the name server records when there is a mismatch.
+
+For IPv6 addresses, see below, alias, and ip_server_name options.
+
+Also, network status can be checked at a user specified interval,
+and audible alerts issued in event of network status down.
+
+.SS OPTIONS
+.TP
+\-h, \-\-help
+Print a summary of the options to
+.B inadyn-mt
+and exit.
+.TP
+\-u, \-\-username username
+The username, if applicable. This might be referred to as hash.
+.TP
+\-p, \-\-password password
+The password, if applicable.
+.TP
+\-a, \-\-alias alias[, hash] [ip type] [if] [addr pref] [ip server[:port] <ip server url> [ip server host]]
+A host name alias, optional comma delimited hash, and optional ip version (default auto), network interface, address preference, ip server (and optional colon delimited port) and url, ip 
+server host. This option can appear multiple times.
+
+IP types are dual, coupled, ip4, ip6, or auto.  IP type auto is the default.  IP type dual (for dual ip stack), denotes the alias should be updated to both ipv6, ipv4.  Coupled is like
+dual, but denotes DDNS server accepts dual stack updates in a single request, where the ipv4, ipv6 addresses are presented as a comma delimited list.
+
+Network interface parameter should denote the network interface to be used as the ip server connect source address.  When this parameter is opted, unless ip type is ip4, the alias will 
+be updated to the ipv6 address obtained from this interface, along with, if indicated, the ipv4 address obtained from ip server.
+
+The addr pref parameter denotes ipv6 privacy extentions address preference.  It can be one of either pub, policy, home, careof, crypto, nocrypto, tmp, pubtmp.  Logical OR not yet supported.  
+The default is pub.
+
+Use the ip server parameter for other than the DDNS server's ip server as per default inadyn-mt hard coded configuration settings.  It can include a colon delimted port number.  It must be 
+accompanied by a url parameter.  Finally, an ip server host can be designated - useful in case of ip server running on multiple server hosts, or the ip server domain name used to reach 
+the server otherwise differs from actual ip server domain name.
+
+Except the host (alias) parameter, all of these parameters are optional, but order matters.
+
+.TP
+\-\-input_file file
+The file name that contains inadyn-mt command options exactly as specified in
+the command line syntax (adds to those already present in the cmd
+line). The default configuration file name is '/etc/inadyn-mt.conf'. It is
+looked at automatically if
+.B inadyn-mt
+is called without any command line options. The format is as expected
+for a **NIX config   the hash character is used to comment entire
+lines. Spaces are ingored. The long options may be specified without 
+\-\- if placed at the beginning of the line.
+.TP
+\-\-ip_server_name server[:port] url
+The client IP is detected by calling 'url' from this 'server:port'.
+
+Choice of ip server name parameter option can determine what type of address is updated.
+To update an IPv6 address, simply choose an ip server that supports IPv6, such as, ip6.me /, 
+myip.dk /, dhis.org /, among others.  And, of course, dynamic dns server should be
+set to one that supports IPv6.
+.TP
+\-\-ip_server_host hostname
+Host name used in http request to ip server if different from ip server name, as when, e.g., ip_server_name is 'localhost:port /' through an SSL bridge. Defaults to ip server name.
+.TP
+\-\-dyndns_server_name server[:port]
+The server that receives the update DNS requests. When no proxy is specified it is sufficient to set the
+dyndns_system so that the default servers will be taken. The option is useful for generic DynDNS services that support HTTP update.
+.TP
+\-\-dyndns_server_url url
+The update path inside the DynDNS server. 
+.TP
+\-\-dyndns_server_host hostname
+Host name used in http update DNS request, if different from dyndns server name, as when, e.g., ip_server_name is 'localhost:port' through an SLL bridge.  Defaults to dyndns server name.
+.TP
+\-\-dyndns_system system
+An optional DDNS service (dyndns@dyndns.org is the default). For 
+
+http://www.dyndns.org
+
+the acceptable services are one of dyndns@dyndns.org or dual@dyndns.org, statdns@dyndns.org
+or custom@dyndns.org. 
+
+There is only one acceptable service for http://freedns.afraid.org, which is default@freedns.afraid.org.
+
+This option can be used multiple times - once for each DDNS server to update - followed by --alias, and other options corresponding to the --dyndns_system entry. Per --dyndns_system entry options are username, password, alias, ip_server_name, ip_server_host, dyndns_server_name, dyndns_server_url, dyndns_server_host, and proxy_server.
+ 
+.br
+Other services are: 
+.br
+default@zoneedit.com
+.br
+default@no-ip.com
+.br
+default@easydns.com
+.br
+dyndns@3322.org
+.br
+default@sitelutions.com
+.br
+default@dnsomatic.com
+.br
+ipv6tb@he.net
+.br
+default@tzo.com
+.br
+default@dynsip.org
+.br
+default@dhis.org
+.br
+default@zerigo.com
+.br
+default@two-dns.de 
+.br
+default@dnsdynamic.org
+.br
+default@dnspark.com
+.br
+ipv4@regfish.de
+.br
+ipv6@regfish.de
+.br
+default@ovh.com
+.br
+default@joker.com
+.br
+default@strato.com
+.br
+default@system-ns.com
+.br
+default@dtdns.com 
+.br
+default@changeip.com
+.br
+default@dnsexit.com 
+.br
+ipv4@nsupdate.info 
+.br
+ipv6@nsupdate.info 
+.br
+default@loopia.com 
+.br
+default@domains.google.com
+.RS
+.RS
+Requires SSL bridge, like stunnel; set --server_host_name domains.google.com
+.RE
+.br
+default@duckdns.org
+.br
+default@dy.fi
+.br
+default@ddnss.de
+.br
+ipv4@dynv6.com
+.br
+ipv6@dynv6.com
+.br
+dual@dynv6.com
+.br
+default@selfhost.de
+.br
+custom@http_svr_basic_auth 
+.RS
+See also custom server options, --svr_rsp_success, --svr_rsp_other, --svr_ip_param,  --svr_ip_in_rsp
+.RE
+.br
+The default service is dyndns@dyndns.org.
+.RE
+.TP
+\-\-proxy_server proxy[:port]
+An http proxy server name and port. The default is none.
+.TP
+\-\-update_period milliseconds
+How often the IP is checked. This value denotes millisecond (There are
+1000 milliseconds in one second). 30000..864000000.  Default is about 10 min.
+maximum is 10 days.
+.TP
+\-\-update_period_sec seconds
+How often the IP is checked. Here the value denotes seconds. 30..864000.  The default is about 10 min.
+The maximum value is 10 days.
+.TP
+\-\-forced_update_period seconds
+How often the IP should be updated even if it is not changed. The time should be given in seconds.
+30 sec..30 days.  Default, 30 days.
+.TP
+\-\-forced_update_adjust control
+Fine timer control.  Slow, or speed timer between -4..5.  Default, 0.
+.TP
+\-\-log_file file
+The name, including the full path, of a log file.
+.TP
+\-\-cache_dir dir
+Directory to which ip, and time update files are written.  Defaults to /tmp on **NIX systems.
+.TP
+\-\-background
+run in background. Output is sent to the UNIX syslog facilities or to a log file, if one was specified.
+.TP
+\-\-verbose level
+Set the debug level, which is an integer between 0 to 5.
+.TP
+\-\-iterations number
+Set the number of DNS updates. The default is 0, which means infinity.
+.TP
+\-\-syslog
+Explicitly sending the output to a syslog like file, such as /var/log/messages.
+.TP
+\-\-change_persona uid[:gid]
+After init changes user ID and group ID to the provided ones. This allows dropping unneeded [root] privileges after startup.
+.TP
+\-\-retries number
+Network comm retry attempts.  0 to 100, default 0.
+.TP
+\-\-retry_interval milliseconds
+Network comm miliseconds retry interval, 0 to 30,000, default 1,000.
+.TP
+\-\-retry_pending
+Retry ip update even after network comm retries exhausted,  default on.
+.TP
+\-\-retry_pending_interval seconds
+Network comm seconds update retry interval, after retries exhausted.  5 to 3600, default 300.
+.TP
+\-\-lang_file file
+Language file path, and file name, defaults to either ../inadyn-mt/lang/en.lng, or etc/inadyn-mt/en.lng.  No parameter option gives hard coded defaults.
+.TP
+\-\-online_check_url srv_name[:port] url
+srv_name[:port] url - URL to reach to confirm online status.
+.TP
+\-\-status_interval seconds
+Seconds [30..864000] interval at which to check online status, defaults to 600.
+.TP
+\-\-alert_retries number
+Network retries before audible network status alerts. [0..100], default 0.
+.TP
+\-\-status_offline_interval seconds
+Seconds [0..864000] interval at which to check online status, after offline detected, defaults to 15.
+.TP
+\-\-audible
+Audible network status alerts toggle (log output only), default off.
+.TP
+\-\-wave_file file
+Audible network status alerts wave file path, and file name. defaults to either ../inadyn-mt/extra/wav/alarm.wav, or etc/inadyn-mt/extra/wav/alarm.wav.  [wave loops: 0..100; -1 for infinite] same as wave_loops below -- optional number of times per wave play call to repeat wave file play, default 0.
+.TP
+\-\-wave_loops number
+Same as wave_file parameter optional parameter -- 0..100; -1 for infinite number of times per wave play call to play wave file.
+.TP
+\-\-wave_buff number
+Wave file output buffer size control -- integer or float multiple of wave file bytes per sec. [.25..10], default .25.
+.TP
+\-\-wave_gain number
+Gain (amplitude adjust) at which to play audible alert (beware clipping), integer or float. [-10..10], default 10 (0db, no attenuation).
+.TP
+\-\-alert_interval milliseconds
+Time in miliseconds between consecutive audible network status alerts, [0..3600000], default 0.
+.TP
+\-\-svr_rsp_success string
+Optional for custom DDNS updates.  A quoted comma delimited string, e.g., "good, nochg", representing custom DDNS server successful update return values.
+.TP
+\-\-svr_rsp_other string
+Optional for custom DDNS updates.  A quoted comma delimited string, e.g., "dnserr,911", representing custom DDNS server non-fatal update failure return values.
+.TP
+\-\-svr_ip_param param [user] [pass]
+Optional for custom DDNS updates.  DDNS url parameter for ip address, e.g., myip.
+.TP
+\-\-svr_ip_in_rsp
+Optional for custom DDNS updates. Flag that custom DDNS server returns your ip address on update success.  Defaults to false.
+.TP
+-\-svr_auto_dual
+Flag that server defaults to dual list (coupled) alias ip type.  Defaults to false.
+.TP
+-\-svr_auto_detect
+Flag server auto detects ip.  Defaults to false.
+.TP
+\-\-svr_add_cfg file
+Additional servers file. Default search for servers_additional.cfg in ./extra, /etc, /etc/inadyn-mt, /etc/inadyn-mt/extra. 
+Contains additional preconfigured DDNS servers to be used as --dyndns_system option parameter in same fashion as servers inadyn-mt 
+supports natively.  Should appear before any dyndns_system, option in inadyn-mt.conf or command line if not using inadyn-mt.conf.
+.TP
+\-\-if interface
+Name of network interface to use for ip server, and DDNS server comm.  Defaults to system configured default.
+.TP
+\-\-addr_pref preference
+ipv6 privacy extensions address preference.  Valid parameters are 'pub,' 'policy,' 'home,' 'careof,' 'crypto,' 'nocrypto,' 'tmp,' 'pubtmp.'  Defaults to 'pub.'  See rfc5014.  Combining via logical OR not presently supported.
+.TP
+\-\-if_enum
+Enumerate network interfaces.
+.SH "TYPICAL USAGE"
+.SS
+
+http://www.dyndns.org
+
+.TP
+inadyn-mt \-u username \-p password \-a my.registered.name
+.TP
+inadyn-mt \-\-username test \-\-password test \-\-update_period 60000 \-\-alias test.homeip.net \-\-alias my.second.domain
+.TP
+inadyn-mt \-\-background \-u test \-p test \-\-update_period 60000 \-\-alias inarcis.homeip.net \-\-alias my.second.domain \-\-log_file inadyn-mt.log
+.SS
+
+http://freedns.afraid.org
+
+.TP
+inadyn-mt \-\-dyndns_system default@freedns.afraid.org \-a my.registrated.name,hash_from_freedns
+.TP
+inadyn-mt \-\-update_period 60000 \-\-alias test.homeip.net,hash_for_host1 \-a my.second.domain,hash2 \-\-dyndns_system default@freedns.afraid.org
+.PP
+This provider prefers to get as parameter a single hashed (base64 encoded) value.
+
+As of inadyn-mt version 02.24.07-afraid_00_patch, aliases hashes can be automatically obtained via sha1 hashed \'username|password\'.
+To this end, use options username, and password.
+
+Otherwise, the freedns.afraid.org DDNS web user interface provides a "Direct URL" link via which corresponding alias hash may be copied, and
+pasted into inadyn-mt config as alias option hash paramter.
+
+Example: Resulting address window url looks like this:
+http://freedns.afraid.org/dynamic/update.php?YUGIUGSEIUFGOUIHEOIFEOIHJFEIO=
+
+The user has to copy and paste the hash value after the '?' until the end of line.
+
+The hash will be used as additional param in --alias option. (see typical usage above)
+
+.SH OUTPUT
+.B
+inadyn-mt
+prints a message when the IP is updated.  When the connection goes down it could be that 
+.B inadyn-mt 
+will print some error messages. Those are harmless and should be 
+followed by 'OK' messages after the connection is back up.
+
+.SH Signals
+Any of the SIG_HUP, SIG_INT, SIG_QUIT will cause inadyn-mt to terminate gracefully.
+SIG_USR1 will cause inadyn-mt to update ip, if changed.
+
+.SH "SEE ALSO"
+.SS "Other manual pages"
+The syntax of the optional configuration file is given by
+.BR inadyn-mt.conf(5).
+.SS "Internet resources"
+.B inadyn:
+
+http://www.inatech.eu/
+
+
+.B inadyn-advanced:
+
+http://sourceforge.net/projects/inadyn-advanced/
+
+
+.B inadyn-mt:
+
+http://sourceforge.net/projects/inadyn-mt/
+
+
+.SH AUTHOR
+.B inadyn
+was written by Narcis Ilisei, <inarcis2002@hotpop.com>;
+inadyn-advanced, Steve Horbachuk;
+inadyn-mt unicode, other augmentations, Bryan Hoover <bhoover@wecs.com>
+
+This manual page was written by Shaul Karl, <shaul@debian.org>, for the
+.B Debian GNU/Linux
+system, based on the readme.html file that is found in the source.
+
+
+

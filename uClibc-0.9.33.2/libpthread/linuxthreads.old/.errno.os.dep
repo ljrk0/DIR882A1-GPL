@@ -1,0 +1,267 @@
+libpthread/linuxthreads.old/errno.os: libpthread/linuxthreads.old/errno.c \
+ include/libc-symbols.h include/bits/uClibc_arch_features.h \
+ include/features.h include/bits/uClibc_config.h include/sys/cdefs.h \
+ include/libc-internal.h include/errno.h include/bits/errno.h \
+ /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
+ include/netdb.h include/netinet/in.h include/stdint.h \
+ include/bits/wchar.h include/bits/wordsize.h include/sys/socket.h \
+ include/sys/uio.h include/sys/types.h include/bits/types.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
+ include/bits/kernel_types.h include/bits/typesizes.h \
+ include/bits/pthreadtypes.h include/bits/sched.h include/time.h \
+ include/endian.h include/bits/endian.h include/byteswap.h \
+ include/bits/byteswap.h include/bits/byteswap-common.h \
+ include/sys/select.h include/bits/select.h include/bits/sigset.h \
+ include/bits/time.h include/sys/sysmacros.h include/bits/uio.h \
+ include/bits/socket.h include/limits.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
+ include/bits/posix1_lim.h include/bits/local_lim.h \
+ /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
+ include/bits/uClibc_local_lim.h include/bits/posix2_lim.h \
+ include/bits/xopen_lim.h include/bits/stdio_lim.h \
+ include/bits/sockaddr.h \
+ /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h \
+ /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h \
+ /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
+ /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h \
+ include/bits/in.h include/rpc/netdb.h include/bits/siginfo.h \
+ include/bits/netdb.h include/pthread.h include/sched.h \
+ include/bits/uClibc_clk_tck.h include/signal.h include/bits/initspin.h \
+ include/bits/sigthread.h libpthread/linuxthreads.old/internals.h \
+ libpthread/linuxthreads.old/sysdeps/pthread/bits/libc-tsd.h \
+ include/tls.h libpthread/linuxthreads.old/sysdeps/pthread/tls.h \
+ libpthread/linuxthreads.old/internals.h \
+ libpthread/linuxthreads.old/sysdeps/pthread/bits/libc-lock.h \
+ include/setjmp.h include/bits/setjmp.h include/sgidefs.h \
+ include/bits/signum.h include/bits/sigaction.h include/bits/sigcontext.h \
+ include/bits/sigstack.h include/sys/ucontext.h include/unistd.h \
+ include/bits/posix_opt.h include/bits/environments.h \
+ include/bits/confname.h include/bits/getopt.h include/bits/stackinfo.h \
+ include/sys/wait.h include/sys/resource.h include/bits/resource.h \
+ include/bits/waitflags.h include/bits/waitstatus.h \
+ libpthread/linuxthreads.old/sysdeps/mips/pt-machine.h \
+ libpthread/linuxthreads.old/semaphore.h \
+ libpthread/linuxthreads.old/../linuxthreads.old_db/thread_dbP.h \
+ include/string.h \
+ libpthread/linuxthreads.old/../linuxthreads.old_db/proc_service.h \
+ include/sys/procfs.h include/sys/time.h include/sys/user.h \
+ include/bits/uClibc_page.h \
+ libpthread/linuxthreads.old/../linuxthreads.old_db/thread_db.h \
+ libpthread/linuxthreads.old/internals.h \
+ libpthread/linuxthreads.old/sysdeps/pthread/pthread-functions.h \
+ include/stdio.h include/bits/uClibc_stdio.h include/wchar.h \
+ include/bits/uClibc_mutex.h include/bits/uClibc_pthread.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdarg.h
+
+include/libc-symbols.h:
+
+include/bits/uClibc_arch_features.h:
+
+include/features.h:
+
+include/bits/uClibc_config.h:
+
+include/sys/cdefs.h:
+
+include/libc-internal.h:
+
+include/errno.h:
+
+include/bits/errno.h:
+
+/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+
+/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+
+/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+
+include/netdb.h:
+
+include/netinet/in.h:
+
+include/stdint.h:
+
+include/bits/wchar.h:
+
+include/bits/wordsize.h:
+
+include/sys/socket.h:
+
+include/sys/uio.h:
+
+include/sys/types.h:
+
+include/bits/types.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h:
+
+include/bits/kernel_types.h:
+
+include/bits/typesizes.h:
+
+include/bits/pthreadtypes.h:
+
+include/bits/sched.h:
+
+include/time.h:
+
+include/endian.h:
+
+include/bits/endian.h:
+
+include/byteswap.h:
+
+include/bits/byteswap.h:
+
+include/bits/byteswap-common.h:
+
+include/sys/select.h:
+
+include/bits/select.h:
+
+include/bits/sigset.h:
+
+include/bits/time.h:
+
+include/sys/sysmacros.h:
+
+include/bits/uio.h:
+
+include/bits/socket.h:
+
+include/limits.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h:
+
+include/bits/posix1_lim.h:
+
+include/bits/local_lim.h:
+
+/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
+
+include/bits/uClibc_local_lim.h:
+
+include/bits/posix2_lim.h:
+
+include/bits/xopen_lim.h:
+
+include/bits/stdio_lim.h:
+
+include/bits/sockaddr.h:
+
+/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h:
+
+/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h:
+
+/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
+
+/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
+
+include/bits/in.h:
+
+include/rpc/netdb.h:
+
+include/bits/siginfo.h:
+
+include/bits/netdb.h:
+
+include/pthread.h:
+
+include/sched.h:
+
+include/bits/uClibc_clk_tck.h:
+
+include/signal.h:
+
+include/bits/initspin.h:
+
+include/bits/sigthread.h:
+
+libpthread/linuxthreads.old/internals.h:
+
+libpthread/linuxthreads.old/sysdeps/pthread/bits/libc-tsd.h:
+
+include/tls.h:
+
+libpthread/linuxthreads.old/sysdeps/pthread/tls.h:
+
+libpthread/linuxthreads.old/internals.h:
+
+libpthread/linuxthreads.old/sysdeps/pthread/bits/libc-lock.h:
+
+include/setjmp.h:
+
+include/bits/setjmp.h:
+
+include/sgidefs.h:
+
+include/bits/signum.h:
+
+include/bits/sigaction.h:
+
+include/bits/sigcontext.h:
+
+include/bits/sigstack.h:
+
+include/sys/ucontext.h:
+
+include/unistd.h:
+
+include/bits/posix_opt.h:
+
+include/bits/environments.h:
+
+include/bits/confname.h:
+
+include/bits/getopt.h:
+
+include/bits/stackinfo.h:
+
+include/sys/wait.h:
+
+include/sys/resource.h:
+
+include/bits/resource.h:
+
+include/bits/waitflags.h:
+
+include/bits/waitstatus.h:
+
+libpthread/linuxthreads.old/sysdeps/mips/pt-machine.h:
+
+libpthread/linuxthreads.old/semaphore.h:
+
+libpthread/linuxthreads.old/../linuxthreads.old_db/thread_dbP.h:
+
+include/string.h:
+
+libpthread/linuxthreads.old/../linuxthreads.old_db/proc_service.h:
+
+include/sys/procfs.h:
+
+include/sys/time.h:
+
+include/sys/user.h:
+
+include/bits/uClibc_page.h:
+
+libpthread/linuxthreads.old/../linuxthreads.old_db/thread_db.h:
+
+libpthread/linuxthreads.old/internals.h:
+
+libpthread/linuxthreads.old/sysdeps/pthread/pthread-functions.h:
+
+include/stdio.h:
+
+include/bits/uClibc_stdio.h:
+
+include/wchar.h:
+
+include/bits/uClibc_mutex.h:
+
+include/bits/uClibc_pthread.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdarg.h:
+cmd_libpthread_linuxthreads.old_errno.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libpthread/linuxthreads.old/errno.c -o libpthread/linuxthreads.old/errno.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -DNOT_IN_libc -DIS_IN_libpthread -MT libpthread/linuxthreads.old/errno.os -MD -MP -MF libpthread/linuxthreads.old/.errno.os.dep

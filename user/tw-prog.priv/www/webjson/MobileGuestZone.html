@@ -1,0 +1,609 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<meta name="viewport" content="width=device-width">
+<link rel="stylesheet" type="text/css" href="css/style_mobile.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
+<link href="css/jquery.selectbox.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js?v=TimeStamp_QzwsxDcRfvTGByHn"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js?v=TimeStamp_QzwsxDcRfvTGByHn"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialValidate1.js?v=TimeStamp_QzwsxDcRfvTGByHn"></script>
+
+<script type="text/javascript">
+	var HNAP = new HNAP_XML();
+	var savetime = 50;
+	var timer;
+
+	function mobile_btn_chg(t, csid_id, env, disv, band)
+	{
+		var stren = I18N("j", "Enabled");
+		var stardis = I18N("j", "Disabled");
+		var now_class = t.className;
+		if(now_class == "btn_en")
+		{
+			t.className = "btn_dis";
+			if(band != ""){
+			document.getElementById("mbgz_ssid_"+band).disabled = true;
+			document.getElementById("mbgz_pswd_"+band).disabled = true;
+
+			var content = document.getElementById("mobile_wifi_"+band+"_content");
+			}
+			if(content)
+				content.style.display = "none";
+		}
+		else
+		{
+			t.className = "btn_en";
+			if(band != ""){
+			document.getElementById("mbgz_ssid_"+band).disabled = false;
+			document.getElementById("mbgz_pswd_"+band).disabled = false;
+
+			var content = document.getElementById("mobile_wifi_"+band+"_content");
+			}
+			if(content)
+				content.style.display = "block";
+		}
+
+		t.innerHTML = (now_class == "btn_en")?'<span>'+stardis+'</span>':'<span id="_menu_14">'+stren+'</span>';
+		div = document.getElementById(csid_id);
+		f=div.form
+		for(cb=0;cb<f.length;cb++){if(f.elements[cb]==div)break;}
+		f.elements[cb].value=(now_class == "btn_en")?disv:env;
+	}
+
+	function InitGZSettings()
+	{
+		var xml_GetSmartconnectSettings = HNAP.GetXML("GetSmartconnectSettings");
+		var smartconnect_enable = xml_GetSmartconnectSettings.Get("GetSmartconnectSettingsResponse/Enabled");
+		
+		if(smartconnect_enable=="true")
+		{
+			document.getElementById("mobile_smartconnect").style.display = "block";
+			document.getElementById("mobile_wifi_24").style.display = "none";
+			document.getElementById("mobile_wifi_5").style.display = "none";
+			document.getElementById("mobile_wifi_5_hi").style.display = "none";
+			
+			/* Init 2.4GHz value for smart connect */
+			var xml_GetWLan24GSettings = HNAP.GetXML("GetWLanRadioSettings", new Array("RadioID", "RADIO_2.4GHz"));
+			var ssid = xml_GetWLan24GSettings.Get("GetWLanRadioSettingsResponse/SSID");
+			var getWifi24GStatus = xml_GetWLan24GSettings.Get("GetWLanRadioSettingsResponse/Enabled");
+			mode = xml_GetWLan24GSettings.Get("GetWLanRadioSettingsResponse/Mode");
+			document.getElementById("mbwifi_ssid_smartconnect").value = ssid;
+	
+			var xml_GetWLan24GSecurity = HNAP.GetXML("GetWLanRadioSecurity", new Array("RadioID", "RADIO_2.4GHz"));
+			var password = xml_GetWLan24GSecurity.Get("GetWLanRadioSecurityResponse/Key");
+			document.getElementById("mbwifi_pswd_smartconnect").value = password;
+			
+			document.getElementById("mbwifi_ssid_smartconnect").disabled = true;
+			document.getElementById("mbwifi_pswd_smartconnect").disabled = true;
+		}
+		else
+		{
+			document.getElementById("mobile_wifi_24").style.display = "block";
+			document.getElementById("mobile_wifi_5").style.display = "block";
+			document.getElementById("mobile_wifi_5_hi").style.display = "block";
+	
+			/* guest zone 2.4GHz */
+			var xml_GetWLanRadioSettings = HNAP.GetXML("GetWLanRadioSettings", new Array("RadioID", "RADIO_2.4G_Guest"));
+			var radio_guest24 = xml_GetWLanRadioSettings.Get("GetWLanRadioSettingsResponse/Enabled");
+			if(radio_guest24=="true")
+			{
+				document.getElementById("gz_btn_24g_en").className = "btn_en";
+				document.getElementById("gz_btn_24g_en").innerHTML = I18N("j", "Enabled");
+				document.getElementById("mobile_gz_24g_en").value = 1;
+				document.getElementById("mbgz_ssid_24").disabled = false;
+				document.getElementById("mbgz_pswd_24").disabled = false;
+	
+				var content = document.getElementById("mobile_wifi_24_content");
+				if(content)
+					content.style.display = "block";
+	
+			}
+			else
+			{
+				document.getElementById("gz_btn_24g_en").className = "btn_dis";
+				document.getElementById("gz_btn_24g_en").innerHTML = I18N("j", "Disabled");
+				document.getElementById("mobile_gz_24g_en").value = 0;
+				document.getElementById("mbgz_ssid_24").disabled = true;
+				document.getElementById("mbgz_pswd_24").disabled = true;
+	
+				var content = document.getElementById("mobile_wifi_24_content");
+				if(content)
+					content.style.display = "none";
+			}
+	
+			var ssid_guest24 = xml_GetWLanRadioSettings.Get("GetWLanRadioSettingsResponse/SSID");
+			document.getElementById("mbgz_ssid_24").value = ssid_guest24;
+	
+			var xml_GetWLanRadioSecurity = HNAP.GetXML("GetWLanRadioSecurity", new Array("RadioID", "RADIO_2.4G_Guest"));
+			var password_guest24 = xml_GetWLanRadioSecurity.Get("GetWLanRadioSecurityResponse/Key");
+			document.getElementById("mbgz_pswd_24").value = password_guest24;
+	
+			/* guest zone 5GHz Low Band */
+			var xml_GetWLanRadioSettings = HNAP.GetXML("GetWLanRadioSettings", new Array("RadioID", "RADIO_5G_Guest"));
+			var radio_guest5 = xml_GetWLanRadioSettings.Get("GetWLanRadioSettingsResponse/Enabled");
+			if(radio_guest5=="true")
+			{
+				document.getElementById("gz_btn_5g_en").className = "btn_en";
+				document.getElementById("gz_btn_5g_en").innerHTML = I18N("j", "Enabled");
+				document.getElementById("mobile_gz_5g_en").value = 1;
+				document.getElementById("mbgz_ssid_5").disabled = false;
+				document.getElementById("mbgz_pswd_5").disabled = false;
+	
+				var content = document.getElementById("mobile_wifi_5_content");
+				if(content)
+					content.style.display = "block";
+			}
+			else
+			{
+				document.getElementById("gz_btn_5g_en").className = "btn_dis";
+				document.getElementById("gz_btn_5g_en").innerHTML = I18N("j", "Disabled");
+				document.getElementById("mobile_gz_5g_en").value = 0;
+				document.getElementById("mbgz_ssid_5").disabled = true;
+				document.getElementById("mbgz_pswd_5").disabled = true;
+	
+				var content = document.getElementById("mobile_wifi_5_content");
+				if(content)
+					content.style.display = "none";
+			}
+			var ssid_guest5 = xml_GetWLanRadioSettings.Get("GetWLanRadioSettingsResponse/SSID");
+			document.getElementById("mbgz_ssid_5").value = ssid_guest5;
+	
+			var xml_GetWLanRadioSecurity = HNAP.GetXML("GetWLanRadioSecurity", new Array("RadioID", "RADIO_5G_Guest"));
+			var password_guest5 = xml_GetWLanRadioSecurity.Get("GetWLanRadioSecurityResponse/Key");
+			document.getElementById("mbgz_pswd_5").value= password_guest5;
+	
+			/* guest zone 5GHz High Band */
+			var xml_GetWLanRadioSettings = HNAP.GetXML("GetWLanRadioSettings", new Array("RadioID", "RADIO_5GHz_2_Guest"));
+			var radio_guest5_hi = xml_GetWLanRadioSettings.Get("GetWLanRadioSettingsResponse/Enabled");
+			if(radio_guest5_hi=="true")
+			{
+				document.getElementById("gz_btn_5g_hi_en").className = "btn_en";
+				document.getElementById("gz_btn_5g_hi_en").innerHTML = I18N("j", "Enabled");
+				document.getElementById("mobile_gz_5g_hi_en").value = 1;
+				document.getElementById("mbgz_ssid_5_hi").disabled = false;
+				document.getElementById("mbgz_pswd_5_hi").disabled = false;
+	
+				var content = document.getElementById("mobile_wifi_5_hi_content");
+				if(content)
+					content.style.display = "block";
+			}
+			else
+			{
+				document.getElementById("gz_btn_5g_hi_en").className = "btn_dis";
+				document.getElementById("gz_btn_5g_hi_en").innerHTML = I18N("j", "Disabled");
+				document.getElementById("mobile_gz_5g_hi_en").value = 0;
+				document.getElementById("mbgz_ssid_5_hi").disabled = true;
+				document.getElementById("mbgz_pswd_5_hi").disabled = true;
+	
+				var content = document.getElementById("mobile_wifi_5_hi_content");
+				if(content)
+					content.style.display = "none";
+			}
+			var ssid_guest5_hi = xml_GetWLanRadioSettings.Get("GetWLanRadioSettingsResponse/SSID");
+			document.getElementById("mbgz_ssid_5_hi").value = ssid_guest5_hi;
+	
+			var xml_GetWLanRadioSecurity = HNAP.GetXML("GetWLanRadioSecurity", new Array("RadioID", "RADIO_5GHz_2_Guest"));
+			var password_guest5_hi = xml_GetWLanRadioSecurity.Get("GetWLanRadioSecurityResponse/Key");
+			document.getElementById("mbgz_pswd_5_hi").value= password_guest5_hi;
+	
+	
+			if(radio_guest5_hi!="true" && radio_guest5!="true" && radio_guest24!="true")
+				document.getElementById("mobile_gz_status").innerHTML = '<img src="image/mobile_guestzone.png" width="60" height="45">';
+			else
+				document.getElementById("mobile_gz_status").innerHTML = '<img src="image/mobile_guestzone_enabled.png" width="60" height="45">';
+		}
+		
+		document.getElementById("mobile_local_access").style.display = "block";
+		/* Internet Access Only */
+		var xml_GetGuestZoneRouterSettings = HNAP.GetXML("GetGuestZoneRouterSettings");
+		var internetAccessOnly_status = xml_GetGuestZoneRouterSettings.Get("GetGuestZoneRouterSettingsResponse/InternetAccessOnly");
+		if(internetAccessOnly_status=="true")
+		{
+			document.getElementById("local_access_en").className = "btn_en";
+			document.getElementById("local_access_en").innerHTML = I18N("j", "Enabled");
+			document.getElementById("mobile_local_access_en").value = 1;
+		}
+		else
+		{
+			document.getElementById("local_access_en").className = "btn_dis";
+			document.getElementById("local_access_en").innerHTML = I18N("j", "Disabled");
+			document.getElementById("mobile_local_access_en").value = 0;
+		}
+	}
+
+	function SaveGZSettings()
+	{
+		var xml_SetWLanRadioSettings = HNAP.GetXML("SetWLanRadioSettings");
+		var xml_SetWLanRadioSecurity = HNAP.GetXML("SetWLanRadioSecurity");
+
+		/* guest zone 2.4GHz */
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/RadioID", "RADIO_2.4G_Guest");
+
+		if(document.getElementById("mobile_gz_24g_en").value=="1")
+			xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Enabled", "true");
+		else
+			xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Enabled", "false");
+
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSID", document.getElementById("mbgz_ssid_24").value);
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Mode", "802.11bgn");
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Channel", "0");
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/ChannelWidth", "0");
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSIDBroadcast", "true");
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SecondaryChannel", "0");
+
+		if (document.getElementById("mbgz_pswd_24").value!="")
+		{
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/RadioID", "RADIO_2.4G_Guest");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Enabled", "true");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Type", "WPAORWPA2-PSK");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Encryption", "TKIPORAES");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/KeyRenewal", "3600");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Key", document.getElementById("mbgz_pswd_24").value);
+		}
+		else
+		{
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/RadioID", "RADIO_2.4G_Guest");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Enabled", "false");
+		}
+		var xml_SetWLanRadioSettingsResult = HNAP.SetXMLAsync("SetWLanRadioSettings", xml_SetWLanRadioSettings);
+		var xml_SetWLanRadioSecurityResult = HNAP.SetXMLAsync("SetWLanRadioSecurity", xml_SetWLanRadioSecurity);
+
+		/* guest zone 5GHz Low Band */
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/RadioID", "RADIO_5G_Guest");
+
+		if (document.getElementById("mobile_gz_5g_en").value=="1")
+			xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Enabled", "true");
+		else
+			xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Enabled", "false");
+
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSID", document.getElementById("mbgz_ssid_5").value);
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Mode", "802.11an");
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Channel", "0");
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/ChannelWidth", "0");
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSIDBroadcast", "true");
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SecondaryChannel", "0");
+
+		if (document.getElementById("mbgz_pswd_5").value!="")
+		{
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/RadioID", "RADIO_5G_Guest");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Enabled", "true");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Type", "WPAORWPA2-PSK");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Encryption", "TKIPORAES");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/KeyRenewal", "3600");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Key", document.getElementById("mbgz_pswd_5").value);
+		}
+		else
+		{
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/RadioID", "RADIO_5G_Guest");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Enabled", "false");
+		}
+		var xml_SetWLanRadioSettingsResult = HNAP.SetXMLAsync("SetWLanRadioSettings", xml_SetWLanRadioSettings);
+		var xml_SetWLanRadioSecurityResult = HNAP.SetXMLAsync("SetWLanRadioSecurity", xml_SetWLanRadioSecurity);
+
+		/* guest zone 5GHz High Band */
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/RadioID", "RADIO_5GHz_2_Guest");
+
+		if (document.getElementById("mobile_gz_5g_hi_en").value=="1")
+			xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Enabled", "true");
+		else
+			xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Enabled", "false");
+
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSID", document.getElementById("mbgz_ssid_5_hi").value);
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Mode", "802.11an");
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Channel", "0");
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/ChannelWidth", "0");
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSIDBroadcast", "true");
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SecondaryChannel", "0");
+
+		if (document.getElementById("mbgz_pswd_5_hi").value!="")
+		{
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/RadioID", "RADIO_5GHz_2_Guest");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Enabled", "true");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Type", "WPAORWPA2-PSK");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Encryption", "TKIPORAES");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/KeyRenewal", "3600");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Key", document.getElementById("mbgz_pswd_5_hi").value);
+		}
+		else
+		{
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/RadioID", "RADIO_5GHz_2_Guest");
+			xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Enabled", "false");
+		}
+		var xml_SetWLanRadioSettingsResult = HNAP.SetXMLAsync("SetWLanRadioSettings", xml_SetWLanRadioSettings);
+		var xml_SetWLanRadioSecurityResult = HNAP.SetXMLAsync("SetWLanRadioSecurity", xml_SetWLanRadioSecurity);
+
+
+		/* Internet Access Only */
+		// Routing Between Zone
+		var xml_SetGuestZoneRouterSettings = HNAP.GetXML("SetGuestZoneRouterSettings");
+		if (document.getElementById("mobile_local_access_en").value=="1")
+		{
+			xml_SetGuestZoneRouterSettings.Set("SetGuestZoneRouterSettings/InternetAccessOnly", "true");
+			xml_SetGuestZoneRouterSettings.Set("SetGuestZoneRouterSettings/DHCPServer", "true");
+		}
+		else
+		{
+			xml_SetGuestZoneRouterSettings.Set("SetGuestZoneRouterSettings/InternetAccessOnly", "false");
+			xml_SetGuestZoneRouterSettings.Set("SetGuestZoneRouterSettings/DHCPServer", "false");
+		}
+
+		var xml_SetGuestZoneRouterSettingsResult = HNAP.SetXMLAsync("SetGuestZoneRouterSettings", xml_SetGuestZoneRouterSettings);
+
+		document.getElementById("mobile_popalert").style.display = "block";
+		document.getElementById("mobile_saving").style.display = "block";
+		document.getElementById("mbgz_save_num").innerHTML = savetime;
+		timer = setTimeout("ReciprocalSaveTime()", 1000);
+		setTimeout("clearTimeout("+timer+");window.location.reload()", savetime*1000);
+	}
+
+	function ReciprocalSaveTime()
+	{
+		savetime--;
+		document.getElementById("mbgz_save_num").innerHTML = savetime;
+		timer = setTimeout("ReciprocalSaveTime()", 1000);
+	}
+
+</script>
+</head>
+
+<body>
+	<form name="mobile_gz_form" id="mobile_gz_form" method="POST" action="">
+		<table class="mobile_div_blank" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
+			<tr>
+				<td>
+					<table class="tbl_logo">
+						<tr class="top">
+							<td colspan="3"></td>
+						</tr>
+						<tr class="middle">
+							<td class="btn_home" width="25%" align="center" style="cursor:pointer;" onclick="javascript:location.href='./MobileHome.html'">
+								<img src="image/mobile_sp.gif" height="1" width="8">
+								<span class="textwhite"><script>I18N("h", "Home");</script></span>
+							</td>
+							<td width="40%" align="center">
+								<img src="image/mobile_dlink_logo.png" width="102px" height="20px">
+							</td>
+							<td width="25%"></td>
+						</tr>
+						<tr class="bottom">
+							<td colspan="3"></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table cellspacing="0" cellpadding="0" width="100%" height="60px" align="center" border="0">
+						<tr>
+							<td id="mobile_gz_status" width="40%" align="right" valign="center">
+								<img src="image/mobile_guestzone.png" width="60" height="45">
+							</td>
+							<td width="60%" align="left">
+								<b><span class="textlarge"><script>I18N("h", "Guest Zone");</script></span></b>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td align="center">
+					<div width="90%" style="display:table-cell;">
+						<!--- start of smart connect block --->
+						<div id="mobile_smartconnect" style="display:none; padding: 0 10px;">
+							<div class="input_desc">
+								<b><span class="textnormal"><script>I18N("h", "Wi-Fi Name (SSID)");</script>:</span></b>
+							</div>
+							<div class="input_text">
+								<input id="mbwifi_ssid_smartconnect" name="mbwifi_ssid_smartconnect" type="text" size="24" maxlength="32"/>
+							</div>
+							<div class="input_desc">
+								<b><span class="textnormal"><script>I18N("h", "Password");</script>:</span></b>
+							</div>
+							<div class="input_text">
+								<input id="mbwifi_pswd_smartconnect" name="mbwifi_pswd_smartconnect" type="text" size="24" maxlength="63">
+							</div>
+						</div>
+						<!--- end of smart connect block --->
+						<!--- start of guest zone 2.4GHz block --->
+						<div id="mobile_wifi_24" style="display:none; padding: 0 10px;">
+							<div class="input_desc">
+								<b><span class="textnormal"><script>I18N("h", "2.4GHz Guest Zone");</script>:</span></b>
+							</div>
+							<div class="input_text">
+								<input type="hidden" id="mobile_gz_24g_en" value="">
+								<div id="gz_btn_24g_en" class="btn_en" onclick="mobile_btn_chg(this,'mobile_gz_24g_en',1,0,'24')">
+									<script>I18N("h", "Enabled");</script>
+								</div>
+							</div>
+							<div id="mobile_wifi_24_content">
+								<div class="input_desc">
+									<b><span class="textnormal"><script>I18N("h", "Wi-Fi Name (SSID)");</script>:</span></b>
+							</div>
+								<div class="input_text">
+									<input id="mbgz_ssid_24" name="mbgz_ssid_24" type="text" size="24" maxlength="32"/>
+							</div>
+								<div class="input_desc">
+								<b><span class="textnormal"><script>I18N("h", "Password");</script>:</span></b>
+							</div>
+								<div class="input_text">
+									<input id="mbgz_pswd_24" name="mbgz_pswd_24" type="text" size="24" maxlength="63">
+								</div>
+							</div>
+							<div><img src="image/mobile_line.png"></div>
+						</div>
+						<!--- end of guest zone 2.4GHz block --->
+						<!--- start of guest zone 5GHz Low Band block --->
+						<div id="mobile_wifi_5" style="display:none; padding: 0 10px;">
+							<div class="input_desc">
+								<b><span class="textnormal"><script>I18N("h", "5GHz Low Band Guest Zone");</script>:</span></b>
+							</div>
+							<div class="input_text">
+								<input type="hidden" id="mobile_gz_5g_en" value="">
+								<div id="gz_btn_5g_en" class="btn_en" onclick="mobile_btn_chg(this,'mobile_gz_5g_en',1,0,'5')">
+									<script>I18N("h", "Enabled");</script>
+								</div>
+							</div>
+							<div id="mobile_wifi_5_content">
+								<div class="input_desc">
+									<b><span class="textnormal"><script>I18N("h", "Wi-Fi Name (SSID)");</script>:</span></b>
+							</div>
+								<div class="input_text">
+									<input id="mbgz_ssid_5" name="mbgz_ssid_5" type="text" size="24" maxlength="32"/>
+							</div>
+								<div class="input_desc">
+								<b><span class="textnormal"><script>I18N("h", "Password");</script>:</span></b>
+							</div>
+								<div class="input_text">
+									<input id="mbgz_pswd_5" name="mbgz_pswd_5" type="text" size="24" maxlength="63">
+								</div>
+							</div>
+							<div><img src="image/mobile_line.png"></div>
+						</div>
+						<!--- end of guest zone 5GHz Low Band block --->
+						<!--- start of guest zone 5GHz High Band block --->
+						<div id="mobile_wifi_5_hi" style="display:none; padding: 0 10px;">
+							<div class="input_desc">
+								<b><span class="textnormal"><script>I18N("h", "5GHz High Band Guest Zone");</script>:</span></b>
+							</div>
+							<div class="input_text">
+								<input type="hidden" id="mobile_gz_5g_hi_en" value="">
+								<div id="gz_btn_5g_hi_en" class="btn_en" onclick="mobile_btn_chg(this,'mobile_gz_5g_hi_en',1,0,'5_hi')">
+									<script>I18N("h", "Enabled");</script>
+								</div>
+							</div>
+							<div id="mobile_wifi_5_hi_content">
+								<div class="input_desc">
+									<b><span class="textnormal"><script>I18N("h", "Wi-Fi Name (SSID)");</script>:</span></b>
+							</div>
+								<div class="input_text">
+									<input id="mbgz_ssid_5_hi" name="mbgz_ssid_5_hi" type="text" size="24" maxlength="32"/>
+							</div>
+								<div class="input_desc">
+								<b><span class="textnormal"><script>I18N("h", "Password");</script>:</span></b>
+							</div>
+								<div class="input_text">
+									<input id="mbgz_pswd_5_hi" name="mbgz_pswd_5_hi" type="text" size="24" maxlength="63">
+								</div>
+							</div>
+							<div><img src="image/mobile_line.png"></div>
+						</div>
+						<!--- end of guest zone 5GHz High Band block --->
+						<!--- start of local access block --->
+						<div id="mobile_local_access" style="display:none; padding: 0 10px;">
+							<div align="left">
+								<b><span class="textnormal"><script>I18N("h", "Home Network Access");</script>:</span></b>
+							</div>
+							<div class="input_text">
+								<input type="hidden" id="mobile_local_access_en" value="">
+								<div id="local_access_en" class="btn_en" onclick="mobile_btn_chg(this,'mobile_local_access_en',1,0,'')">
+									<script>I18N("h", "Enabled");</script>
+								</div>
+							</div>
+							<div class="emptyline"></div>
+						</div>
+						<!--- end of local access block --->
+						<div>
+							<table cellspacing="0" cellpadding="0" width="90%" align="center" border="0">
+								<tr>
+									<td class="btn_save" onclick="document.getElementById('submit_check_data').click()">
+										<input id="submit_check_data" class="submit" type="submit" value="Submit" style="display:none"/>
+										<b><span class="textnormal"><script>I18N("h", "Save");</script></span></b>
+									</td>
+								</tr>
+								<tr class="emptyline"></tr>
+								<tr>
+									<td align="center">
+										<span class="textcr"><span id="copyright"><script>I18N("h", "COPYRIGHT");</script></span></span>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="emptyline"></div>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<div id="mobile_popalert" class="mobile_popalert_msg" style="display:none">
+			<div class="mobile_alertpopbody">
+				<table id="mobile_saving" class="mobile_popalert_table" cellspacing="0" cellpadding="0" border="0" style="display:none">
+					<tbody>
+						<tr class="emptyline"></tr>
+						<tr class="emptyline"></tr>
+						<tr>
+							<td width="250px" align="center">
+								<img src="image/loading.gif">
+							</td>
+						</tr>
+						<tr>
+							<td><B><span id="mbgz_save_num" class="textsmall"></span></B></td>
+						</tr>
+						<tr>
+							<td width="250px" align="center">
+								<span class="textsmall"><script>I18N("h", "Your changes are being saved, please wait...");</script></span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</form>
+	<script type="text/javascript" charset="utf-8">
+	$(document).ready( function() {
+		$.validator.setDefaults( { submitHandler: function(form) { form.submit(); } } );
+
+		$.validator.addMethod("checkSetValues", function( value, element ) {
+			var elem_id = element.id;
+			var error_msg = "";
+
+			/* check wifi ssid */
+			if(elem_id.indexOf("ssid")>=0)
+			{
+				if (value=="" || value==null)
+					error_msg = I18N("j","Please enter a Wi-Fi Name(SSID).");
+			}
+
+			/* check wifi password */
+			if(elem_id.indexOf("pswd")>=0)
+			{
+				if (value=="" || value==null)
+					error_msg = I18N("j","Please enter a password.");
+
+				if(value.length == 64)
+				{
+					if( !(/^[0-9a-fA-F]*$/.test(value)) )
+						error_msg = I18N("j","WPA password length is 64, password type must be Hexadecimal.");
+				}
+				else if(value.length > 64 || value.length < 8)
+					error_msg = I18N("j","Your password must be between 8-63 characters length");
+			}
+
+			return error_msg;
+		}, "");
+
+		$('#mobile_gz_form').validate({
+			submitHandler: function(form) {
+				SaveGZSettings();
+			}
+		});
+
+		var elements = $("#mbgz_ssid_24, #mbgz_pswd_24, #mbgz_ssid_5, #mbgz_pswd_5, #mbgz_ssid_5_hi, #mbgz_pswd_5_hi");
+		$.each(elements, function(i, element) {
+			$(this).rules("add", { checkSetValues: true });
+		});
+
+	});
+	</script>
+</body>
+<script type="text/javascript">
+	InitGZSettings();
+	checkTimeout();
+</script>
+</html>

@@ -1,0 +1,1 @@
+cmd_net/wireless/built-in.o :=  /opt/buildroot-gcc463/usr/bin/mipsel-linux-ld  -m elf32ltsmip   -r -o net/wireless/built-in.o net/wireless/wext-core.o net/wireless/wext-proc.o net/wireless/wext-spy.o net/wireless/wext-priv.o 

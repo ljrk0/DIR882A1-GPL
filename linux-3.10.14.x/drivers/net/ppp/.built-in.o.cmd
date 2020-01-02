@@ -1,0 +1,1 @@
+cmd_drivers/net/ppp/built-in.o :=  /opt/buildroot-gcc463/usr/bin/mipsel-linux-ld  -m elf32ltsmip   -r -o drivers/net/ppp/built-in.o drivers/net/ppp/ppp_generic.o drivers/net/ppp/ppp_async.o drivers/net/ppp/bsd_comp.o drivers/net/ppp/ppp_mppe.o drivers/net/ppp/ppp_synctty.o drivers/net/ppp/pppox.o drivers/net/ppp/pppoe.o drivers/net/ppp/pptp.o 

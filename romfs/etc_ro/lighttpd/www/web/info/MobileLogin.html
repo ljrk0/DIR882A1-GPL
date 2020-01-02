@@ -1,0 +1,282 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+
+<link href="/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/css/jquery.selectbox.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="/css/style_mobile.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.stringify.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.cookie.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/comm.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/hmac_md5.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/i18n.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/Login.js"></script> <!--    /* for loging */  -->
+<script type="text/javascript" charset="utf-8" src="../config/features.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAction.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPDeviceSettings.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initEnv.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.client.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPLogin.js"></script>
+<script type="text/javascript">
+	//xframeoption
+	if(top!=self){top.location=self.location;}
+
+	var HasCAPTCHA = false;
+	var html_height;
+
+	//event
+	var viewportmeta = document.querySelector('meta[name="viewport"]');
+	$(window).on("orientationchange",function(){
+  		adjustLayout();
+	});
+	$(window).on("focusout", function(){
+		viewportmeta.content = 'width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0';
+		viewportmeta.content = 'width=device-width';
+	});
+
+	//OnLoad
+	var init = initEnv();
+	$(document).ready( function() {
+		html_height = $("html").height();
+
+		adjustLayout();
+
+		//init
+		init.done(function()
+		{
+			Initial();
+		});
+	});
+
+	function adjustLayout()
+	{
+		//CSS
+		$("#mobile_login_pwd").attr("placeholder", I18N("j", "Admin Password"));
+		$("#mobile_login_captcha").attr("placeholder", I18N("j", "Type the code shown"));
+
+		var window_height = $(window).height();
+		var padding = 20;
+
+
+		if(window_height < html_height + padding)
+		{
+			window_height = html_height + padding;
+		}
+
+		$("html").css("height", window_height);
+		$("body").css("height", window_height);
+
+
+		$("#copyright").css("top", window_height - padding);
+
+	}
+	
+	function GenerateCaptcha()
+	{
+		var cookie = COMM_RandomStr(10);
+		$.cookie('uid', cookie, { expires: 1, path: '/' });
+		sessionStorage.setItem("Cookie", cookie);
+
+		var getCAPTCHAsettingResponse = new SOAPGetCAPTCHAsettingResponse();
+		var soapAction = new SOAPAction();
+		soapAction.sendSOAPAction("GetCAPTCHAsetting", null, getCAPTCHAsettingResponse).done(function(obj){
+			var url = obj.CaptchaUrl;
+			$("#mobile_captcha_image").attr("src", url);
+		})
+		.fail(function(obj){
+			//alpha didn't follow spec
+			$.ajax({
+				url:"/captcha.cgi",
+				type:"GET",
+				contentType:'application/x-www-form-urlencoded',
+				data:"DUMMY=YES",
+				success: function(xml){
+					var url = $(xml).find("message").text();
+					$("#mobile_captcha_image").attr("src", url);
+				}
+			});
+		});
+
+	}
+
+	function Initial()
+	{
+		if (getDeviceSettings.CAPTCHA =="true")
+		{
+			$("#logo_padding").height("50px");
+			$("#login_btn_div").css("bottom","50px");
+
+			document.getElementById("mobile_captcha_info").style.display = "block";
+			GenerateCaptcha();
+			HasCAPTCHA = true;
+		}
+		else
+		{
+			document.getElementById("mobile_captcha_info").style.display = "none";
+			HasCAPTCHA = false;
+		}
+
+		//language
+		var lang = localStorage.getItem('language');
+		$("#Language").val(lang);
+	}
+	
+	function OnClickLogin()
+	{
+		var Login_Captcha = "";
+		
+		var Login_Password = document.getElementById("mobile_login_pwd").value;
+		
+		if(HasCAPTCHA)
+			Login_Captcha = document.getElementById("mobile_login_captcha").value.toUpperCase();
+		
+		document.getElementById("mobile_login_pwd").disabled = true;
+		$("button").addClass("active").prop("disabled", true);
+
+		/* Login request */
+		doLogin(Login_Password,Login_Captcha)
+		.done(function(){
+			var redirect_url = sessionStorage.getItem("RedirectUrl");
+			if((redirect_url == null) || (redirect_url.indexOf("Login.html") > 0) || (redirect_url.indexOf("html") < 0))
+			{
+				window.location.href = "/MobileHome.html";	
+			}
+			else								
+			{	
+				window.location.href = redirect_url;		
+			}
+		})
+		.fail(function(){
+			document.getElementById("mobile_login_pwd").disabled = false;
+			$("button").removeClass("active").prop("disabled", false);
+
+			if (HasCAPTCHA)
+			{
+				alert(I18N("j", "Invalid password or captcha, please try again."));
+				document.getElementById("mobile_login_pwd").value = "";
+				document.getElementById("mobile_login_captcha").value = "";
+				document.getElementById("mobile_login_pwd").focus();
+				GenerateCaptcha();
+			}
+			else
+			{
+				alert(I18N("j", "Invalid password, please try again."));
+				document.getElementById("mobile_login_pwd").value = "";
+				document.getElementById("mobile_login_pwd").focus();
+			}
+		});
+	}
+
+	function switch_Language(value)
+	{
+		sessionStorage.removeItem('langPack');
+		localStorage.setItem('language', value);
+		$("Language").trigger("focusout");
+		location.reload();
+	}
+</script>
+<style>
+body
+{
+	margin: 0px 50px;
+	padding: 0;
+	font-size: 75%;
+	font-family: Arial, Helvetica, sens-serif;
+	line-height:1.4;
+	position:relative;
+
+	background-image:-moz-linear-gradient(to bottom,#fff 20%, #bbb 100%);
+	background-image:-webkit-linear-gradient(to bottom,#fff 20%, #bbb 80%);
+	background-image: -webkit-gradient(linear, 0 20%, 0 100%, from(#ffffff), to(#bbbbbb));
+	background-image:-o-linear-gradient(to bottom,#fff 20%, #bbb 100%);
+	background-image:linear-gradient(to bottom,#fff 20%, #bbb 80%);
+	background-repeat: repeat-x;
+}
+.language
+{
+	position:absolute;
+	top:0px;
+	right:-50px;
+}
+.language > select {
+	background-color: transparent;
+	border:none;
+
+	border-color: transparent;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+.language > select:hover,
+.language > select:focus {
+	color: #000;
+	background-color: transparent;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+</style>
+</head>
+
+<body>
+	<div class="form-group language">
+
+		<select name="Language" id="Language" class="form-control" onChange="switch_Language(this.value)">
+			<option value="en-us">English</option>
+			<option value="zh-tw">繁體中文</option>
+			<option value="zh-cn">简体中文</option>
+			<option value="ko-kr">한국</option>
+			<option value="fr-fr">français</option>
+			<option value="pt-br">português</option>
+			<option value="es-es">Español</option>
+			<option value="it-it">Italiano</option>
+			<option value="de-de">Deutsch</option>
+			<option value="ru-ru">русский</option>
+		</select>
+	</div>
+
+	<div id="logo_padding" style="height:120px"></div>
+	<div class="form-group" style="text-align:center;">
+		<img src="/image/mobile_dlinklogo_login.png" width="200" height="77">
+	</div>
+	<div class="form-group">
+		<!--<label for="mobile_login_pwd" class="textnormal" style="font-weight:bold"><script>I18N("h", "Admin Password");</script>:
+		</label>-->
+	<input class="form-control" style="height:40px" id="mobile_login_pwd" name="mobile_login_pwd" type="password" size="16" maxlength="32" >
+	</div>
+
+	<div id="mobile_captcha_info" style="display:none">
+		<div class="form-group">
+		<!--<label for="mobile_login_captcha" class="textsmall">
+		<script>I18N("h", "Type the characters you see in the picture below.");</script>:
+		</label>-->
+		<input class="form-control" style="height:40px" id="mobile_login_captcha" name="mobile_login_captcha" type="text" size="16" maxlength="15">
+		</div>
+
+		<div class="form-group">
+			<img id="mobile_captcha_image" height="37px"/>
+			<img id="mobile_refresh_btn" src="/image/refresh.png" onclick="GenerateCaptcha()" width="37px" height="37px"/>
+		</div>
+	</div>
+
+	<div id="login_btn_div" class="copyright" style="position:relative;padding-top:100px">
+		<button type="button" class="btn btn-lg btn-default" style="width:80%;" onclick="OnClickLogin()"><b><script>I18N("h", "Log In");</script></b></button>
+	</div>
+
+	<div id="copyright" class="copyright">
+		<script>I18N("h", "COPYRIGHT");</script>
+	</div>
+</body>
+</html>

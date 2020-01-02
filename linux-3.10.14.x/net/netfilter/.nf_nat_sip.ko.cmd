@@ -1,0 +1,1 @@
+cmd_net/netfilter/nf_nat_sip.ko := /opt/buildroot-gcc463/usr/bin/mipsel-linux-ld -r  -m elf32ltsmip -T /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/scripts/module-common.lds --build-id  -o net/netfilter/nf_nat_sip.ko net/netfilter/nf_nat_sip.o net/netfilter/nf_nat_sip.mod.o

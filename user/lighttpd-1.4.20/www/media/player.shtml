@@ -1,0 +1,314 @@
+<!-- Copyright 2011, MediaTek Inc. All Rights Reserved. -->
+<html>
+<head>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="/style/normal_ws.css" type="text/css">
+<title>Media Player</title>
+</head>
+
+<script type="text/javascript" src="/shareFun.js"></script>
+<script language="JavaScript" type="text/javascript">	
+	
+	
+	
+// Butterlate.setTextDomain("media");
+//var operate = "<!--#exec cmd="web 2860 media getMediaOpt"-->";
+var operate = "<!--#exec cmd="web 2860 nvram media_state_operate"-->";
+
+//var mode = "<!--#exec cmd="web 2860 media getMediaMode"-->";
+var mode = "<!--#exec cmd="web 2860 nvram media_state_service_mode"-->";
+//var option = "<!--#exec cmd="web 2860 media getMediaOption"-->";
+var option = "<!--#exec cmd="web 2860 nvram media_state_option"-->";
+
+//var target = "<!--#exec cmd="web 2860 media getMediaTarget"-->";
+
+//var connected = "<!--#exec cmd="web 2860 media getMediaConnected"-->";
+var connected = "<!--#exec cmd="web 2860 nvram media_state_connected"-->";
+
+function style_display_on()
+{
+	if (window.ActiveXObject)  // IE
+	{
+		return "block";
+	}
+	else if (window.XMLHttpRequest)  // Mozilla, Safari,...
+	{
+		return "table-row";
+	}
+}
+
+function initTranslation()
+{
+	var e = document.getElementById("mediaTitle");
+	e.innerHTML = _("media title");
+	e = document.getElementById("stalistWirelessNet");
+	e.innerHTML = _("stalist wireless network");
+	e = document.getElementById("stalistMacAddr");
+	e.innerHTML = _("stalist macaddr");
+}
+
+function makeRequest(url, content) 
+{
+	http_request = false;
+	if (window.XMLHttpRequest) { // Mozilla, Safari,...
+		http_request = new XMLHttpRequest();
+		if (http_request.overrideMimeType) 
+			http_request.overrideMimeType('text/xml');
+	} else if (window.ActiveXObject) { // IE
+		try {
+			http_request = new ActiveXObject("Msxml2.XMLHTTP");
+		} catch (e) {
+			try {
+				http_request = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (e) {}
+		}
+	}
+	if (!http_request) {
+		alert('Giving up : Cannot create an XMLHTTP instance');
+		return false;
+	}
+	http_request.onreadystatechange = dataHandler;
+	http_request.open('POST', url, true);
+	http_request.send(content);
+}
+
+function dataHandler() {
+	if (http_request.readyState == 4) {
+		if (http_request.status == 200) {
+			var data = http_request.responseText;
+			var state = data.split(";");
+			operate = state[0];
+			connected = state[1];
+		} else {
+			alert('There was a problem with the request.');
+		}
+	}
+}
+
+function update() {
+	if (operate == "play")
+	{
+		if (connected == "ok")
+		{
+			document.getElementById("displayImg").src = "images/display01.gif";	
+			ImgChg('03a');
+		}
+		else if (connected == "load")
+		{
+			document.getElementById("displayImg").src = "images/display02.gif";	
+			ImgChg('03a');
+		}
+		else if (connected == "fail")
+		{
+			document.getElementById("displayImg").src = "images/display00.gif";	
+			ImgChg('03');
+		}
+		makeRequest("/goform/getMediaState", "n/a");
+		setTimeout(update, 1000);
+	}
+	else if (operate == "stop")
+	{
+		document.getElementById("displayImg").src = "images/display00.gif";
+		ImgChg('05a');
+	}
+}
+
+function PageInit()
+{
+	//update();
+	document.media_player.service_mode[0].checked = false;
+	document.media_player.service_mode[1].checked = false;
+	document.media_player.service_mode[2].checked = false;
+	document.media_player.play_mode[0].disabled = true;
+	document.media_player.play_mode[1].disabled = true;
+	document.getElementById("div_track_list").style.visibility = "hidden";
+	document.getElementById("div_track_list").style.display = "none";
+
+	if (mode == "0")
+	{
+		document.media_player.service_mode[0].checked = true;
+	}
+	else if (mode == "1")
+	{
+		document.media_player.service_mode[1].checked = true;
+	}
+	else if (mode == "2")
+	{
+		document.media_player.service_mode[2].checked = true;
+		document.media_player.play_mode[0].disabled = false;
+		document.media_player.play_mode[1].disabled = false;
+		if (option == "random")
+		{
+			document.media_player.play_mode[0].checked = true;
+		}
+		else if (option == "sequence")
+		{
+			document.media_player.play_mode[1].checked = true;
+		}
+		document.getElementById("div_track_list").style.visibility = "visible";
+		document.getElementById("div_track_list").style.display = style_display_on();
+	}
+}
+
+function checkValue()
+{
+	if (operate == "play" && connected == "ok")
+	{
+		alert("Please turn off running media");
+		return false;
+	}
+	if (document.media_player.service_mode[0].checked != true &&
+			document.media_player.service_mode[1].checked != true &&
+			document.media_player.service_mode[2].checked != true)
+	{
+		alert("Please Choose one Service Mode");
+		return false;
+	}
+
+	return true;
+}
+
+
+function submit_apply(opt)
+{
+	document.media_player.hidden_opt.value = opt;
+
+	if (opt == "play" && !checkValue())
+		return false;
+	document.media_player.submit();	
+	this.blur();
+	
+	return true;
+}
+
+function ImgChg(num)
+{
+	switch(num)
+	{
+		case "03":
+			document.getElementById("playt").src = "images/media03.gif";
+			break;
+		case "03a":
+			document.getElementById("playt").src = "images/media03a.gif";
+			break;
+		case "05":
+			document.getElementById("stopt").src = "images/media05.gif";
+			break;
+		case "05a":
+			document.getElementById("stopt").src = "images/media05a.gif";
+			break;
+	}
+}
+
+function switch_service()
+{
+	document.media_player.play_mode[0].disabled = true;
+	document.media_player.play_mode[1].disabled = true;
+	document.getElementById("div_track_list").style.visibility = "hidden";
+	document.getElementById("div_track_list").style.display = "none";
+
+	if (document.media_player.service_mode[2].checked == true)
+	{
+		document.media_player.play_mode[0].disabled = false;
+		document.media_player.play_mode[1].disabled = false;
+		document.getElementById("div_track_list").style.visibility = "visible";
+		document.getElementById("div_track_list").style.display = style_display_on();
+	}
+}
+
+function list_submit(parm)
+{
+	document.player_list.list_opt.value = parm;
+	document.player_list.submit();	
+
+}
+</script>
+</head>
+
+<body onLoad="PageInit()">
+<table class="body"><tr><td>
+
+<h1 id="mediaTitle">Media Player</h1>
+<p id="mediaIntroduction"></p>
+<hr />
+<form method=post name=media_player action="/cgi-bin/media.cgi">
+  <input type=hidden name=hidden_opt value="">
+  <input type=hidden name=hidden_vol value="30">
+  <input type=hidden name=media value=mediaPlayer>
+  <table width="540" border="1" cellspacing="1" cellpadding="3" bordercolor="#9BABBD">
+    <tr> 
+      <td class="title" rowspan="4">
+        <img id="displayImg" name="displayImg" src="images/display00.gif"/>
+      </td>
+      <td class="title" id="">Service Mode</td>
+    </tr>
+    <tr>
+      <td class="head">
+	<input type="radio" name="service_mode" onClick="switch_service()" value="0">Airplay
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td class="head">
+	<input type="radio" name="service_mode" onClick="switch_service()" value="1">BTplay
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td class="head">
+	<input type="radio" name="service_mode" onClick="switch_service()" value="2">NAS play&nbsp;&nbsp;&nbsp;
+	<input type="radio" name="play_mode" value="random">Random
+	<input type="radio" name="play_mode" value="sequence" checked>Sequence
+      </td>
+    </tr>
+  </table>
+  <br />
+  <table width="240" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="50" nowrap><img src="images/media01.gif" width="50" height="40" /></td>
+      <td width="35" nowrap><img alt="Play" src="images/media03.gif" width="35" height="40" name="playt" id="playt" onClick="return submit_apply('play');" /></td>
+      <td width="40" nowrap><img src="images/media05.gif" alt="Stop" width="40" height="40" name="stopt" id="stopt" onClick="return submit_apply('stop');" /></td>
+      <td width="60" nowrap><img src="images/media07.gif" width="60" height="40" /></td>
+      <td width="5" nowrap><img src="images/media08.gif" width="5" height="40" /></td>
+      <td width="62" nowrap><img src="images/media11.gif" width="62" height="40" /></td>
+    </tr>
+  </table>
+</form>
+<br />
+<form method=post name=player_list action="/cgi-bin/media.cgi">
+  <input type=hidden name=list_opt value="">
+  <input type=hidden name=media value=mediaPlayerList>
+  
+  <table id="div_track_list" width="540" border="1" cellspacing="1" cellpadding="3" bordercolor="#9BABBD">
+    <tr>
+      <td class="title">UnSelected List</td>
+      <td class="title"><br /></td>
+      <td class="title">Selected List</td>
+    </tr>
+    <tr>
+      <td>
+        <select name="unselected_list" size=20 style="width:250px" multiple>
+    		<!--#exec cmd="web 2860 media showUnSelectedList"-->    	
+				</select>
+      </td>
+      <td>
+        <input type="button" style="{width:30px;}" value=">>" name="add_list" onClick="return list_submit('add')" ><br />
+        <input type="button" style="{width:30px;}" value="<<" name="del_list" onClick="return list_submit('del')" ><br />
+      </td>
+      <td>
+        <select name="selected_list" size=20 style="width:250px" multiple>
+    		<!--#exec cmd="web 2860 media showSelectedList"-->  
+				</select>
+      </td>
+   </tr>
+    
+    
+  </table>
+</form>
+
+</td></tr></table>
+</body>
+</html>

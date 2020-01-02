@@ -1,0 +1,7 @@
+#####################
+config OPENSOURCE_PPPD
+	bool 'PPP Daemom'
+	default y
+	depends OPENSOURCE
+  	help 
+      	PPP Daemom

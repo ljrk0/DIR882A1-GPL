@@ -1,0 +1,54 @@
+<!-- Copyright 2011, MediaTek Inc. All Rights Reserved. -->
+<html>
+<head>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="/style/normal_ws.css" type="text/css">
+<title>Select Default Share</title>
+</head>
+<script type="text/javascript" src="/shareFun.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+var dir_count = parseInt("<!--#exec cmd="web 2860 sys n_AllDir"-->");
+var select_dir_path = parseInt("<!--#exec cmd="web 2860 sys n_AllDir"-->");
+
+
+function submit_apply(param)
+{
+	document.disk_share.page.value = param;
+	document.disk_share.submit(param);
+}
+</script>
+
+<body>
+<table class="body"><tr><td>
+
+<form method=post name="disk_share" action="/cgi-bin/nas.cgi">
+<input type=hidden name=page value="dish_share">
+<table width="540" border="1" cellspacing="1" cellpadding="3" vspace="2" hspace="2" bordercolor="#9BABBD">
+  <tr> 
+    <td class="title" colspan="4"><font id="storageShowDisk">Folder List</font></td>
+  </tr>
+  <tr align=center> 
+    <td bgcolor="#E8F8FF" width=15px>&nbsp;</td>
+    <td bgcolor="#E8F8FF" id="storageDirPath">Directory Path</td>
+    <td bgcolor="#E8F8FF" id="storageDirPart">Partition</td>
+  </tr>
+  <!--#exec cmd="web 2860 sys DiskDir"-->
+</table>
+<table width = "540" border = "0" cellpadding = "2" cellspacing = "1">
+  <tr align="center">
+    <td>
+      <input type="button" style="{width:150px;}" value="Set As Default Share" id="storageShareDefault" onClick="submit_apply('setdefault')">&nbsp;&nbsp;
+    </td>
+  </tr>
+</table>
+<hr />
+<br />
+
+</form>
+
+</td></tr></table>
+</body>
+</html>
+

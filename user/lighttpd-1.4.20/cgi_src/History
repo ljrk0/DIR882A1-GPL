@@ -1,0 +1,58 @@
+MediaTek APSOC SDK - History
+
+Version 5.0.2.0
+===============
+
+PLATFORM:
+[IC | SDK/Uboot | Category | Priority] Description
+[MT7621/MT7623 | SDK | Wireless | Middle] Support MT7615 V2.1 MP release
+
+Bug Fix:
+[MT7621/MT7623 | SDK | Ethernet | Middle] Fix ethernet can't work normally if the link speed is 100Mbps or 10Mbps when GMAC2 is connected to external phy.
+[MT7628 | Uboot | DDR | Middle] Fix DDR unstable issue due to KGD DDR process variation.
+[MT7621 | SDK | Ethernet | Middle] Fix ethernet can't work normally when hw_nat module is inserted.
+[MT7621 | SDK | Ethernet | Middle] Fix kernel panic caused by skb_reserve when allocate skb fail.
+[MT7621/MT7623 | SDK | Ethernet | Middle] Fix samba read issue in PDMA and QDMA.
+[All | Uboot | Boot | Middle] Fix occasional LZMA decompress error when kernel image size is large.
+
+Version 5.0.1.0
+===============
+
+PLATFORM:
+[IC | SDK/Uboot | Category | Priority] Description
+[MT7621/MT7623 | SDK | Wireless | Middle] Support MT7615
+
+Bug Fix:
+[MT7623 | SDK | NVRAM | High] Fix "rcu_preempt detected stalls on CPU/task" bug while nvram is accessed
+[MT7621 | SDK | CPU | High] Fixed MT7621 low throughput issue after enabling CPU sleep mode.
+[MT7621 | SDK |	NAND | Middle] ixed MT7621 cannot identify factory bad block correctly if NAND flash > 1Gb
+
+New Feature:
+[MT7621/MT7623 | SDK | hw_nat | middle]	MT7621/MT7623 support MT7615 wifi hw_nat
+[MT7623 | SDK/Uboot | NAND | High] Modify Linux SDK/Uboot/Preloader for Spanson & MXIC NAND support
+
+Feature Change:
+[MT7628 | SDK | Ethernet | middle]Use config-longloop.sh to enable or disable long_loop (long_loop adjusts Ethernet link speed automatically)
+
+
+Version 5.0.0.0
+===============
+
+IMPROVEMENT:
+- [ALSA] refine ALSA implementation and support MMAP
+- [NAND] For MT7621, add NAND flash QVL (MXIC 1Gb NAND MX30LF1G18AC).
+- [Ethernet] For MT7628/MT7620, enlarge Ethernet ring size from 256 to 512 to improve wifi<->ethernet bi-direction t-put.
+
+NEW FUNCTIONS:
+- [Bluetooth] For MT7623, support GATT by Blueangel.
+- [Ethernet] For MT7623, support TX/RX interrupt separation for loading balance.
+- [Ethernet] For MT7623, support HW LRO to enhance Samba write performance.
+
+BUG FIX:
+- [SPI] For Winbond 32MB SPI flash (W25Q256FV), fix code to switch back from 4B mode to 3B mode successfully and avoid reboot failed cause by spi flash parking in 4B mode.
+- [NAND] For MT7621, Uboot detect bad block correctly and store manufacture bad block information in latest 4 blocks of flash. 
+
+PLATFORM:
+- SDK 5.0.0.0 support MT7620/MT7621/MT7628/MT7623
+
+

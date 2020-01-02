@@ -1,0 +1,1 @@
+cmd_drivers/net/wireless/wifi_forward/wifi_hook/wifi_hook.o := /opt/buildroot-gcc463/usr/bin/mipsel-linux-ld  -m elf32ltsmip   -r -o drivers/net/wireless/wifi_forward/wifi_hook/wifi_hook.o drivers/net/wireless/wifi_forward/wifi_hook/hook.o 

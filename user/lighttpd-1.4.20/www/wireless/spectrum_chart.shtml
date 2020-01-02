@@ -1,0 +1,806 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Flot Examples: Real-time updates</title>
+<link rel="stylesheet" href="/style/normal_ws.css" type="text/css">
+<link href="../examples.css" rel="stylesheet" type="text/css">
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../excanvas.min.js"></script><![endif]-->
+<script language="javascript" type="text/javascript" src="../excanvas.min.js"></script>
+<script language="javascript" type="text/javascript" src="../jquery.js"></script>
+<script language="javascript" type="text/javascript" src="../jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="../jquery.flot.crosshair.js"></script>
+<script language="javascript" type="text/javascript" src="../math.js"></script>
+<script language="javascript" type="text/javascript" src="../plotly.js"></script>
+<script type="text/javascript">
+
+
+
+var freqandBwAllData = "<!--#exec cmd="web 2860 wifi getCentralFreq"-->";
+var tmpFreqandBw = freqandBwAllData.split(":");
+
+var bw = tmpFreqandBw[1];
+var node = "b";
+var centralFreq = tmpFreqandBw[0];
+var firstCall = 1;
+
+$(function() {
+
+
+// if(bw == 0)
+// {
+    // $("#CaptureBW").val('20 Mhz');
+// }
+// else if(bw == 1)
+// {
+    // $("#CaptureBW").val('40 Mhz');
+// }
+// else if(bw == 2)
+// {
+    // $("#CaptureBW").val('80 Mhz');
+// }
+
+var sample_data = 0; // 0 : Normal execution, 1 : Read data from file for debug
+var xydata = new Array(32768);
+
+for (var j=0;j<32768;j++) 
+{
+	xydata[j] = [];
+	xydata[j][0]=0;
+	xydata[j][1]=0;
+}
+
+var Nx,data_num;
+var DFT_size, window_num = 0,i = 0;
+Nx = 32768;
+DFT_size = 512; // Sliding window size
+data_num = Nx;
+window_num = (data_num/512);
+
+var input_I = new Array(32768);
+var input_Q = new Array(32768);
+var e=document.getElementById("ddlViewBy");
+
+var fs_mhz=40; //Sampling rate of IQC output is 2*BW
+var frac_bit_num=9;    // 9:IQC output, 7:ADC output
+var frac_scale=1/Math.pow(2,frac_bit_num);
+var gsw_prd_us=1;
+var gsw_prd_pt=gsw_prd_us*fs_mhz;
+
+var sample_rate_us=1/fs_mhz;
+
+var freq_res_mhz=fs_mhz/DFT_size;  // Frequency resolution
+
+ var fc_mhz = centralFreq;
+
+var Y_fxp = new Array();
+var t_axis = new Array();
+var f_axis = new Array();
+var refresh_interval = 5000; // 5 sec timer interval for capturing data
+var capture_data = 0;
+var data1 = new Array();
+
+
+input_I = [];
+
+
+
+input_Q = [];
+
+
+
+var LNA=[];
+
+
+var LPF=[];
+
+ var options = {
+			canvas: true,
+			xaxes: [ { mode: "time" } ],
+			yaxes: [ { min: 0 }, {
+				position: "right",
+				alignTicksWithAxis: 1,
+				tickFormatter: function(value, axis) {
+					return value.toFixed(axis.tickDecimals) + "€";
+				}
+			} ],
+			legend: { position: "sw" }
+		}
+		
+var j=0;	
+function fftshift(x,m,n)
+{
+	var m2, n2;
+	var i, k;
+	var tmp13, tmp24;
+
+	m2 = m / 2;    // half of row dimension
+	n2 = n / 2;    // half of column dimension
+
+	// interchange entries in 4 quadrants, 1 <--> 3 and 2 <--> 4
+
+	for (i = 0; i < m2; i++)
+	{
+		 for (k = 0; k < n2; k++)
+		 {
+			  tmp13         = x[i][k];
+			  x[i][k]       = x[i+m2][k+n2];
+			  x[i+m2][k+n2] = tmp13;
+
+			  tmp24         = x[i+m2][k];
+			  x[i+m2][k]    = x[i][k+n2];
+			  x[i][k+n2]    = tmp24;
+		 }
+	}
+	return(x);
+}
+
+function initvalues(freqBw)
+{
+	var tmpFreqBw = freqBw.split(":");
+	bw = tmpFreqBw[0];
+	fc_mhz = tmpFreqBw[1];
+	
+	//alert("BW is " + tmpFreqBw[0]);
+	//alert("Freq is " + tmpFreqBw[1]);
+	if(bw == 0)
+	{
+		$("#CaptureBW").val('20 Mhz');
+	}
+	else if(bw == 1)
+	{
+		$("#CaptureBW").val('40 Mhz');
+	}
+	else if(bw == 2)
+	{
+		$("#CaptureBW").val('80 Mhz');
+	}
+	else if(bw == 3)
+	{
+		$("#CaptureBW").val('160 Mhz');
+	}
+	
+	
+    if (bw == "0") //BW20
+    {
+		DFT_size = 128;
+		fs_mhz=40;
+    }
+    else if (bw == "1")//BW40
+    {
+		DFT_size = 256;
+		fs_mhz=80;
+    }
+    else if (bw == "2")//BW80
+    {
+		DFT_size = 512;
+		fs_mhz=160;
+    }
+    else
+    {
+		DFT_size = 512;
+		fs_mhz=160;
+    }
+    gsw_prd_us = 1;
+    frac_bit_num = 9;
+    Nx = 32768;
+
+		frac_scale=1/Math.pow(2,frac_bit_num);
+    gsw_prd_pt=gsw_prd_us*fs_mhz;
+    freq_res_mhz=fs_mhz/DFT_size;
+
+     sample_data=0;    // 0 : Normal execution, 1 : Read data from file for debug 
+   
+    for (var j=0;j<Nx;j++) 
+    {
+        xydata[j] = [];
+        xydata[j][0]=0;
+        xydata[j][1]=0;
+    }
+    
+    i = 0;
+    data_num = Nx;
+
+
+     sample_rate_us=1/fs_mhz;
+  
+     freq_res_mhz=fs_mhz/DFT_size;
+
+     //fc_mhz = centralFreq;
+
+     refresh_interval = 5000; // 5 sec timer for capturing data
+
+    input_I = [];
+    input_Q = [];
+    LNA=[];
+    LPF=[];
+    j=0;
+}
+function fft_rec(N, offset, delta,x,X,XX)
+{
+
+	var N2 = N/2;            /* half the number of points in FFT */
+	var k;                   /* generic index */
+	var cs, sn;           /* cosine and sine */
+	var k00, k01, k10, k11;  /* indices for butterflies */
+	var tmp0, tmp1;       /* temporary storage */
+
+	if(N != 2)  /* Perform recursive step. */
+	{
+		/* Calculate two (N/2)-point DFT's. */
+		
+		fft_rec(N2, offset, 2*delta, x, XX, X);
+		//alert(N2);
+		fft_rec(N2, offset+delta, 2*delta, x, XX, X);
+		
+		/* Combine the two (N/2)-point DFT's into one N-point DFT. */
+		for(k=0; k<N2; k++)
+		{
+			
+			k00 = offset + k*delta;    
+			k01 = k00 + N2*delta;
+			k10 = offset + 2*k*delta;
+			k11 = k10 + delta;
+			cs = Math.cos(2*Math.PI*k/N);
+			sn = Math.sin(2*Math.PI*k/N);
+			tmp0 = cs * XX[k11][0] + sn * XX[k11][1];
+			tmp1 = cs * XX[k11][1] - sn * XX[k11][0];
+			X[k01][0] = XX[k10][0] - tmp0;
+			X[k01][1] = XX[k10][1] - tmp1;
+			X[k00][0] = XX[k10][0] + tmp0;
+			X[k00][1] = XX[k10][1] + tmp1;
+		}
+	}
+	else  /* Perform 2-point DFT. */
+	{
+		k00 = offset;
+		k01 = k00 + delta;
+		X[k01][0] = x[k00][0] - x[k01][0];
+		X[k01][1] = x[k00][1] - x[k01][1];
+		X[k00][0] = x[k00][0] + x[k01][0];
+		X[k00][1] = x[k00][1] + x[k01][1];
+	}
+	
+	return(X);
+ }
+
+function fft(N,x,X)
+{
+
+	/* Declare a pointer to scratch space. */
+	var XX = new Array(512);
+	for (var j=0;j<512;j++) {
+     XX[j] = [];
+	 XX[j][0]=0;
+	 XX[j][1]=0;
+  }
+  
+	/* Calculate FFT by a recursion. */
+	fft_rec(N, 0, 1, x, X, XX);
+
+	/* Free memory. */
+	return(X);
+	
+	
+}
+
+function show_values(input)
+{
+	if(typeof input == "object")
+	{
+		return (input[0] + "; " + input[1] + "; " + input[2] + "; " + input[3] + "; " + input[4] + "; " + input[5] + "; " + input[6] + "; " + input[7] + "; " + input[8] + "; " + input[9]);
+	}
+	else
+	{
+		return(input);
+	}
+}
+
+function multiplyMatrix(m1, m2, complex) 
+{
+    var result = [];
+	
+	
+    for(var j = 0; j < m2.length; j++) {
+        result[j] = [];
+        for(var k = 0; k < m1[0].length; k++) {
+            var sum = 0;
+			var temp = 0;
+            for(var i = 0; i < m1.length; i++) {
+                if(complex == 0)
+				{
+					sum += m1[i][k] * m2[j][i];
+				}
+				else
+				{
+					temp=math.multiply(m1[i][k],m2[j][i]);
+					sum = math.add(sum, temp);
+				}
+				
+            }
+            result[j].push(sum);
+        }
+    }
+    return result;
+}
+
+function complex_absolute(number)
+{
+	return (Math.sqrt(math.re(number)*math.re(number) + math.im(number)*math.im(number)))
+}
+
+function processData()
+{
+	
+	var FFT_IN = new Array(DFT_size), FFT_OUT = new Array(DFT_size);
+	var data = 0;
+	var index=0;
+	var total_gain;
+	if (fc_mhz>2500){
+		var LNA_gain_table = [9, 21, 33, 45];
+	}else{
+		var LNA_gain_table = [3, 21, 33, 45];
+	}
+	var runtime_us;
+	var xydata_data_array = [];
+
+	var no_gsw_cnt = 0;
+	var fft_window_cnt = 0;
+	var p=0;
+	
+	
+	for (var j=0;j<DFT_size;j++) 
+	{
+		FFT_IN[j] = [];
+		FFT_OUT[j] = [];
+		xydata_data_array[j] = [];
+		Y_fxp[j] = [];
+		data1[j] = [];
+	}
+
+	no_gsw_cnt = 0;
+	fft_window_cnt = 0;
+	window_num = 0;
+	t_axis = [];
+	f_axis = [];
+	for(var i=0;i<data_num;i++)
+	{
+		
+		if (i>0) {
+			if ((LNA[i]!=LNA[i-1])||(LPF[i]!=LPF[i-1])){
+				no_gsw_cnt = 0;
+			} else {
+				no_gsw_cnt++;
+			}
+		}
+		if (no_gsw_cnt >= gsw_prd_pt) {
+			fft_window_cnt++;
+		} else {
+			fft_window_cnt = 0;
+		}
+		if (fft_window_cnt >= DFT_size) {
+			fft_window_cnt = 0;
+	    runtime_us= i * sample_rate_us;
+			t_axis.push(runtime_us);
+
+			//total gain is lna gain + lpf gain
+			total_gain = LNA_gain_table[parseInt(LNA[i])] + ((parseInt(LPF[i]) -3)*2)+18-13;
+			total_gain = Math.pow(10,(-0.05*total_gain));
+			
+			for(p=0; p<DFT_size; p++)
+			{
+				FFT_IN[p][0] = input_I[i-DFT_size+1+p]*frac_scale*total_gain;
+				FFT_IN[p][1] = input_Q[i-DFT_size+1+p]*frac_scale*total_gain;
+			
+				FFT_OUT[p][0] = 0;
+				FFT_OUT[p][1] = 0;
+			}
+
+			fft(DFT_size, FFT_IN, FFT_OUT);
+
+			fftshift(FFT_OUT,DFT_size,2);
+
+			for(p=0; p<DFT_size; p++)
+			{
+				//alert("calculated values "+ FFT_OUT[i][0] + " " + FFT_OUT[i][1]);
+			
+				xydata_data_array[p][window_num]=math.complex(FFT_OUT[p][1],FFT_OUT[p][0]);
+				Y_fxp[p][window_num] = 20 * Math.log10(complex_absolute(xydata_data_array[p][window_num])/DFT_size);
+			}
+			
+			window_num++;
+		}		
+	}
+
+	for(i=fc_mhz-fs_mhz/2;i<=fc_mhz+fs_mhz/2-freq_res_mhz;i=i+freq_res_mhz)
+	{
+		f_axis.push(i);
+	}
+	
+        /*Free Memory*/
+	FFT_IN = null;
+	FFT_OUT = null;
+
+	return(Y_fxp);
+}
+
+function fill_db(output)
+{
+	var data = output.split("\n");
+	var iq_section=0;
+	var lna_section=0;
+	
+	for(var index = 0;index<data.length;index++)
+	{
+		if(data[index].indexOf("IQ VALUES START") != -1 )
+		{
+		iq_section=1;
+		continue;
+		}
+		if(data[index].indexOf("IQ VALUES STOP") != -1 )
+		{
+		iq_section=0;
+		continue;
+		}
+		if(data[index].indexOf("LNA LPF VALUES START") != -1 )
+		{
+		lna_section=1;
+		continue;
+		}
+		if(data[index].indexOf("LNA LPF VALUES STOP") != -1 )
+		{
+		lna_section=0;
+		continue;
+		}
+		
+		if(data[index] == "")
+		{
+			continue;
+		}
+		
+		var dt = data[index].split("\t");
+		
+		if(iq_section == 1)
+		{
+			input_I.push(""+dt[0]);
+			input_Q.push(""+dt[1]);
+		}
+		if(lna_section == 1)
+		{
+			LNA.push(""+dt[0]);
+			LPF.push(""+dt[1]);
+		}
+	}
+	
+
+	data1 = processData();
+	plotData();
+
+}
+
+function initialize_db(freqBw)
+{
+
+    
+	input_I=[];
+	input_Q=[];
+	LNA=[];
+	LPF=[];
+	
+	//queryData();
+
+	for (var k=0;k<DFT_size;k++) {
+		data1[k] = [];
+	}
+    
+	initvalues(freqBw);
+}
+
+function plotData() 
+{
+
+	// This is the plotting function of the contour graph
+	var sin = [], cos = [], ran = [];
+
+	var data = [ {
+		z: data1,
+		x: t_axis,
+		y: f_axis,
+		type: 'contour',
+               contours: {
+                 start: -100,
+                 end: -10,
+                 size: 10
+                },
+                autocontour: false,
+                colorscale: 'Jet',
+	}
+];
+
+
+ var layout = {
+  title: 'Power Distribution',
+  size: 18,
+  family: 'Times New Roman, monospace',
+  color: '#000000',
+  xaxis: {
+    title: 'Time (us)',
+    titlefont: {
+      family: 'Times New Roman, monospace',
+      size: 18,
+      autorange: true,
+      color: '#000000'
+    }
+  },
+  yaxis: {
+    title: 'Frequency (MHz)',
+    titlefont: {
+      family: 'Times New Roman, monospace',
+      size: 18,
+      autorange: true,
+      color: '#000000'
+    }
+  }
+};
+  if (firstCall!=1)
+  {
+    Plotly.redraw('placeholder', data, layout);
+  }
+  else
+  {
+    Plotly.newPlot('placeholder', data, layout);
+  }
+
+	var recall;
+	
+	if(capture_data == 1)
+	{
+        // Set timer again with given refresh interval
+		recall = setTimeout(queryData, refresh_interval);
+	}
+	else
+	{
+		clearTimeout(recall);
+	}
+	  firstCall++;
+}
+
+function queryData()
+{
+	//initialize_db();
+
+	makeRequest("/cgi-bin/wireless.cgi", "page=getWifiSpectrumParam&wlan_conf=2860&interface=ra0&bandwidth="+bw+"&node="+node+"&sample_data=" + sample_data);
+
+}
+
+
+function makeRequest1(url, content) 
+{
+
+	http_request = false;
+	if (window.XMLHttpRequest) { // Mozilla, Safari,...
+		http_request = new XMLHttpRequest();
+		if (http_request.overrideMimeType)
+
+			http_request.overrideMimeType('text/xml');
+	} else if (window.ActiveXObject) { // IE
+			
+
+		try {
+		
+			http_request = new ActiveXObject("Msxml2.XMLHTTP");
+		} catch (e) {
+		
+			try {
+			
+				http_request = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (e) {
+			
+			}
+		}
+	}
+	if (!http_request) {
+		alert('Giving up : Cannot create an XMLHTTP instance');
+		return false;
+	}
+	http_request.onreadystatechange = dataHandler1;
+
+	http_request.open('POST', url, true);
+	http_request.send(content);
+
+}
+
+function dataHandler1() 
+{
+	if (http_request.readyState == 4) {
+	
+		if (http_request.status == 200) {
+
+            var output = http_request.responseText;
+            
+            var tmpBwandFreq = output.split(":");
+            bw = tmpBwandFreq[0];
+                        
+            if(tmpBwandFreq[0] == 0)
+            {
+                $("#CaptureBW").val('20 Mhz');
+
+            }
+            else if(tmpBwandFreq[0] == 1)
+            {
+                $("#CaptureBW").val('40 Mhz');
+            }
+            else if(tmpBwandFreq[0] == 2)
+            {
+                $("#CaptureBW").val('80 Mhz');
+            }
+            
+		} else {
+			//alert('There was a problem with the request.');
+		}
+	}
+}
+
+
+function makeRequest(url, content) 
+{
+
+	http_request = false;
+	if (window.XMLHttpRequest) { // Mozilla, Safari,...
+
+		http_request = new XMLHttpRequest();
+		if (http_request.overrideMimeType)
+
+			http_request.overrideMimeType('text/xml');
+	} else if (window.ActiveXObject) { // IE
+			
+
+		try {
+		
+			http_request = new ActiveXObject("Msxml2.XMLHTTP");
+		} catch (e) {
+		
+			try {
+			
+				http_request = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (e) {
+			
+			}
+		}
+	}
+	if (!http_request) {
+		alert('Giving up : Cannot create an XMLHTTP instance');
+		return false;
+	}
+	http_request.onreadystatechange = dataHandler;
+
+	http_request.open('POST', url, true);
+	http_request.send(content);
+
+}
+
+function dataHandler() 
+{
+	if (http_request.readyState == 4) {
+	
+		if (http_request.status == 200) {
+
+			var output = http_request.responseText;
+            
+			var splitOutput = output.split("@!@!");
+			
+			//alert("output 1 is " + splitOutput[0]);
+			//alert("output 2 is " + splitOutput[1]);
+			initialize_db(splitOutput[0]);
+			fill_db(splitOutput[1]);
+
+		} else {
+			alert('There was a problem with the request.');
+			if(capture_data == 1)
+			{
+				makeRequest("/cgi-bin/wireless.cgi", "page=getWifiSpectrumParam&wlan_conf=2860&interface=ra0&bandwidth="+bw+"&node="+node+"&sample_data=" + sample_data);
+			}
+		}
+	}
+}
+
+
+$("#capture").click(function(){
+
+	var txt = $("#capture").val();
+
+	if($("#capture").val() == "Start Capture")
+	{
+		// startCapure 
+		$("#capture").val("Stop Capture");
+		capture_data=1;
+		
+		queryData();
+		
+	}
+	else
+	{
+		// stopCapure
+		capture_data=0;
+		$("#capture").val("Start Capture");
+        location.reload();
+	}
+});
+
+
+
+});
+
+
+function BwOnChange()
+{
+bw = $("#ymax").val();
+}
+
+function NodeOnChange()
+{
+node = $("#Node").val();
+}
+
+</script>
+</head>
+<body onload="">
+<h2>Wifi Spectrum</h2>
+
+<form name=spectrum>
+<table style="position: relative;" border="1" cellspacing="1" cellpadding="3" bordercolor="#9BABBD">
+	<tr>
+		<td colspan=3>
+			<div id="placeholder" style="width: 800px; height: 600px;" class="demo-placeholder"></div>
+		</td>
+	</tr>
+
+  <br />
+ <table style="margin-left:120px;" align="center" width="340" border="1" cellspacing="1" cellpadding="3" bordercolor="#9BABBD">
+  
+  <tr> 
+    <td class="title" colspan="2" id="basicWirelessNet"> WiFi Spectrum Settings</td>
+  </tr>
+  
+    <br /> 
+  <tr>
+   <td>Capture Bandwidth:</td>
+       <td><input type=text id="CaptureBW" name=CaptureBandWidth value=""></td>
+  </tr>
+  
+  <tr>
+   <td>Capture Node:</td>
+   <td>
+			<select id="Node" name="Node" size="1" onChange="NodeOnChange()">
+				<option value="b" selected>WF0</option>
+				<option value="c">WF1</option>
+				<option value="d">WF2</option>
+                <option value="e">WF3</option>
+			</select>
+		</td>
+  </tr>
+  </table>
+  
+  <br />
+
+<table style="margin-left:120px;" width = "340" border = "0" cellpadding = "2" cellspacing = "1">
+   <tr align="center">
+  <td id="div_factor">
+			<form method="post" action="/cgi-bin/wireless.cgi">
+			<input type=hidden name="page" id ="wifispectrum" value="">
+			<input type=hidden name=wlan_conf value="2860">
+			<input type=hidden name=interface value="ra0">
+			<input type="button" id="capture" name="capture" style="{width:120px;}" value="Start Capture" onclick>
+			</form>
+		</td>
+  </tr>
+</table>
+  
+
+
+</table>
+</form>
+</body>
+</html>

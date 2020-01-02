@@ -1,0 +1,17 @@
+#!/bin/sh /etc/rc.common
+
+START=62
+START=62
+STOP=0
+SERVICE_DAEMONIZE=1
+SERVICE_WRITE_PID=1
+GOAHEAD_BIN=/sbin/goahead
+
+start() {
+  service_start /sbin/goahead
+}
+
+stop() {
+  service_stop /sbin/goahead
+}
+1

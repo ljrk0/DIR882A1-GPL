@@ -1,0 +1,1 @@
+{"Envelope":{"Body":{"SetSysEmailSettings":{"SysEmail":null,"EmailFrom":null,"EmailTo":null,"EmailSubject":null,"SMTPServerAddress":null,"SMTPServerPort":null,"Authentication":null,"AccountName":null,"AccountPassword":null,"OnLogFull":null,"OnSchedule":null,"ScheduleName":null}}}}

@@ -1,0 +1,1 @@
+cmd_arch/mips/lib/built-in.o :=  /opt/buildroot-gcc463/usr/bin/mipsel-linux-ld  -m elf32ltsmip   -r -o arch/mips/lib/built-in.o arch/mips/lib/iomap.o arch/mips/lib/iomap-pci.o arch/mips/lib/dump_tlb.o arch/mips/lib/ashldi3.o arch/mips/lib/ashrdi3.o arch/mips/lib/cmpdi2.o arch/mips/lib/lshrdi3.o arch/mips/lib/ucmpdi2.o 

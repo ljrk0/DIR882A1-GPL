@@ -1,0 +1,691 @@
+<!DOCTYPE HTML">
+<HTML>
+<head>
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="-1">
+<script src="../jquery.js"></script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Flot Examples: Real-time updates</title>
+<link rel="stylesheet" href="/style/normal_ws.css" type="text/css">
+
+<style >
+
+
+td { width: 100px; height:30px; padding: 2px 0 0 0; }
+
+
+</style>
+    <SCRIPT language="javascript">
+	    var i = 15;
+		function createElement(type,id,name,value)
+		{
+			//alert(type);
+			var element1 = document.createElement("input");
+            element1.type = type;
+            element1.name = name;
+			element1.id = id;
+			element1.value = value;
+			return element1;
+		}
+		function minmax(value, min, max) 
+		{
+			if(parseInt(value) < min || isNaN(value)) 
+				return 0; 
+			else if(parseInt(value) > max) 
+				return 100; 
+			else return value;
+		}
+		
+		function isContains(arr,no)
+		{
+			var i =0;
+			var flag=0;
+			for(i=0;i<arr.length;i++)
+			{
+				if(arr[i]==no)
+				{
+					flag=1;
+					break;
+				}
+			}
+			if(flag==1)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		
+		}
+		
+        function addRow(ssid, min_tput,max_tput, min_ratio,max_ratio,tput,at,isDisabled) {
+		//alert(ssid);
+ 
+            var table = document.getElementById("dataTable");
+ 
+            var rowCount = table.rows.length;
+			var ssidcount1 = document.getElementById("ssidcount_1"); // Set SSID count
+			var ssidcount2 = document.getElementById("ssidcount_2"); // Set SSID count
+			ssidcount1.value = rowCount;
+			ssidcount2.value = rowCount;
+            var row = table.insertRow(rowCount);
+			
+			var cell0 = row.insertCell(0);
+			var arr1 = new Array();
+			var arr2 = new Array();
+			var arr3 = new Array();
+			var arr4 = new Array();
+			arr1 = [1,5,9,13];
+			arr2 = [2,6,10,14];
+			arr3 = [3,7,11,15];
+			arr4 = [4,8,12,16];
+			if (isContains(arr1,rowCount))
+			{
+			//do something
+				cell0.setAttribute("bgcolor","#edc240");
+			}
+			else if (isContains(arr2,rowCount))
+			{
+			//do something
+				cell0.setAttribute("bgcolor","#afd8f8");
+			}
+			else if (isContains(arr3,rowCount))
+			{
+			//do something
+				cell0.setAttribute("bgcolor","#cb4b4b");
+			}
+			else if (arr4,rowCount)
+			{
+			//do something
+				cell0.setAttribute("bgcolor","#4da74d");
+			}
+			cell0.setAttribute("style","text-align:center");
+			var x = document.createElement("LABEL");
+			var t = document.createTextNode(ssid);
+			x.setAttribute("for", "SSID");
+			x.appendChild(t);
+			cell0.setAttribute("class","fixed");
+			cell0.appendChild(x);
+	
+            var cell1 = row.insertCell(1);
+            var element1 = createElement("text","txt1-"+rowCount,"min_tput"+rowCount,min_tput);
+			element1.setAttribute("style","text-align:center");
+			element1.setAttribute("size",3);
+			element1.setAttribute("maxlength",4);
+			cell1.setAttribute("style","text-align:center");
+			cell1.setAttribute("class","fixed");
+			element1.setAttribute(isDisabled,isDisabled);
+	        cell1.appendChild(element1);
+			
+			var cell2 = row.insertCell(2);
+            var element2 = createElement("text","txt2-"+rowCount,"max_tput"+rowCount,max_tput);
+			cell2.setAttribute("class","fixed");
+			cell2.setAttribute("style","text-align:center");
+			element2.setAttribute("style","text-align:center");
+			element2.setAttribute("size",3);
+			element2.setAttribute("maxlength",4);
+			element2.setAttribute(isDisabled,isDisabled);
+			cell2.appendChild(element2);
+			
+			var cell3 = row.insertCell(3);
+            var element3 = createElement("text","txt3-"+rowCount,"min_ratio"+rowCount,min_ratio);
+			cell3.setAttribute("class","fixed");
+			element3.setAttribute("onkeyup","this.value = minmax(this.value, 0, 100)");
+			element3.setAttribute("style","text-align:center");
+			element3.setAttribute("size",3);
+			element3.setAttribute("maxlength",4);
+			element3.setAttribute(isDisabled,isDisabled);
+			cell3.setAttribute("style","text-align:center");
+			cell3.appendChild(element3);
+			
+			var cell4 = row.insertCell(4);
+            var element4 = createElement("text","txt4-"+rowCount,"max_ratio"+rowCount,max_ratio);
+			cell4.setAttribute("class","fixed");
+			element4.setAttribute("onkeyup","this.value = minmax(this.value, 0, 100)");
+			cell4.setAttribute("style","text-align:center");
+			element4.setAttribute("style","text-align:center");
+			element4.setAttribute("size",3);
+			element4.setAttribute("maxlength",4);
+			element4.setAttribute(isDisabled,isDisabled);
+            cell4.appendChild(element4);
+ 
+ 
+			var table1 = document.getElementById("dataTable1");
+ 
+            var rowCount = table1.rows.length;
+            var row1 = table1.insertRow(rowCount);
+            var cell5 = row1.insertCell(0);
+			var element5 = document.createElement("input");
+			cell5.setAttribute("class","fixed");
+			cell5.setAttribute("style","text-align:center");
+            element5.type = "checkbox";
+            element5.name = "tput"+rowCount;
+			element5.id = "put"+rowCount;
+			if(tput)
+			{
+				element5.value = '1';
+			}
+			else
+			{
+				element5.value = '0';
+			}
+			element5.checked = tput;
+			element5.setAttribute(isDisabled,isDisabled);
+			
+			element5.setAttribute("onClick","tputCheck()");
+			
+			
+            //var element5 = createElement("checkbox","chk5-"+rowCount,"put"+rowCount,tput);
+            cell5.appendChild(element5);
+			var cell6 = row1.insertCell(1);
+			var element6 = document.createElement("input");
+			cell6.setAttribute("class","fixed");
+			cell6.setAttribute("style","text-align:center");
+            element6.type = "checkbox";
+            element6.name = "at"+rowCount;
+			element6.id = "at"+rowCount;
+			if(at)
+			{
+				element6.value = '1';
+			}
+			else
+			{
+				element6.value = '0';
+			}
+			
+			element6.checked = at;
+			//var cell6 = row.insertCell(6);
+           // var element6 = createElement("checkbox","chk5-"+rowCount,"at1"+rowCount,at);
+		   element6.setAttribute(isDisabled,isDisabled);
+            cell6.appendChild(element6);
+                     
+         }
+		 
+		 function tputCheck()
+		 {
+			//alert($(this).val());
+		 }
+		 
+		function addButtons()
+		 {
+		 	var rx = '<!--#exec cmd="web 2860 nvram VOW_RX_En"-->';
+			var isDisabled = "enabled";
+			
+			var table = document.getElementById("dataTable");
+            var rowCount = table.rows.length;
+			var row = table.insertRow(rowCount);
+			
+			var cell0 = row.insertCell(0);
+			
+			var element1 = document.createElement("input");
+            element1.type = "submit";
+            element1.name = "Confirm";
+			element1.id = "btn1";
+			element1.value = "Confirm";
+			element1.setAttribute("onClick","document.forms[0].submit();");
+			element1.setAttribute("style","width:120px;");
+			element1.setAttribute(isDisabled,isDisabled);
+			cell0.setAttribute("colspan",5);
+			cell0.setAttribute("style","text-align:center;width:120px;padding-top:2px;padding-bottom:2px;");
+			//cell0.text-align = "center";
+			cell0.appendChild(element1);
+			
+			
+			var table1 = document.getElementById("dataTable1");
+            var rowCount1 = table1.rows.length;
+			var row1 = table1.insertRow(rowCount1);
+			var cell1 = row1.insertCell(0);
+			//cell1.colspan = "2";
+			var element2 = document.createElement("input");
+			element2.type = "submit";
+			element2.name = "Confirm";
+			element2.id = "btn1";
+			element2.value = "Confirm";
+			
+			element2.setAttribute("style","width:120px;");
+			element2.setAttribute("onClick","confirmRadio()");
+			element2.setAttribute(isDisabled,isDisabled);
+			cell1.setAttribute("colspan",2);
+			//cell0.text-align = "center";
+			cell1.setAttribute("style","text-align:center;width:120px;padding-top:2px;padding-bottom:2px;");
+			
+			cell1.appendChild(element2);
+			
+			
+		 }
+		
+		
+		$(document).on('change' , ':checkbox', function()
+		{
+			
+			
+			$(this).val(this.checked ? 1 : 0);
+			 //$(this).val($(this).attr('checked') ? '1' : '0');
+			//alert('hello '+this.checked);
+		});
+		
+		 
+		 function confirmRadio()
+		 {
+			//alert(document.getElementById("radioform").serializeArray());
+			//alert($("#radioform").serialize());
+			document.forms[1].submit();
+			
+		 }
+		 function setButtonState()
+		 {
+			var atf = '<!--#exec cmd="web 2860 nvram VOW_Airtime_Fairness_En"-->';
+			var rx = '<!--#exec cmd="web 2860 nvram VOW_RX_En"-->';
+			var bw = '<!--#exec cmd="web 2860 nvram VOW_BW_Ctrl"-->';
+			//alert("Reading  "+atf);
+			
+			if (atf==0 && bw==0)
+			{
+				document.getElementById("vow_status").innerHTML = "ATF OFF, BW OFF";
+			}
+			else if (atf==1 && bw==0)
+			{
+				document.getElementById("vow_status").innerHTML = "ATF ON, BW OFF";
+			}
+			else if (atf==0 && bw==1)
+			{
+				document.getElementById("vow_status").innerHTML = "ATF OFF, BW ON";
+			}
+			else if (atf==1 && bw==1)
+			{
+				document.getElementById("vow_status").innerHTML = "ATF ON, BW ON";
+			}
+			
+			
+			
+			
+			
+			if(atf==0)
+			{
+				document.getElementById("atf_button").value = "ATF ON"; 
+				document.getElementById("atf").value = "1";
+				document.getElementById("atf_page").value = "atf_page";
+				//document.forms[1].atf.value = 0;
+			}
+			else 
+			{
+				document.getElementById("atf_button").value = "ATF OFF"; 
+				document.getElementById("atf_page").value = "atf_page";
+				document.getElementById("atf").value = "0";
+			}
+			
+			
+			if (bw==0) 
+			{
+				document.getElementById("bw_button").value = "BW ON"; 
+				document.getElementById("bw").value = "1";
+				document.getElementById("atf_page").value = "bw_page";
+			}
+			else
+			{
+				document.getElementById("bw_button").value = "BW OFF"; 
+				document.getElementById("bw").value = "0";
+				document.getElementById("atf_page").value = "bw_page";
+			}
+			
+			if (rx==0) 
+			{
+				document.getElementById("rx_button").value = "RX ON"; 
+				document.getElementById("rx").value = "1";
+				document.getElementById("atf_page").value = "rx_page";
+			}
+			else 
+			{
+			
+				
+				document.getElementById("rx_button").value = "RX OFF"; 
+				document.getElementById("rx").value = "0";
+				document.getElementById("atf_page").value = "rx_page";
+			}
+			
+		 }
+		 
+		 
+		function loadData()
+		{
+		
+			
+			
+			var i=0;
+			var ssid = "1";
+			
+			//var min_tput_str = "VOW_Group_Min_Rate=0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15";
+			var min_tput_ar = '<!--#exec cmd="web 2860 nvram VOW_Group_Min_Rate"-->';
+			var min_tput = min_tput_ar.split(';');
+			
+			//var max_tput_str = "VOW_Group_Min_Rate=0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15";
+			var max_tput_ar = '<!--#exec cmd="web 2860 nvram VOW_Group_Max_Rate"-->';//max_tput_str.split('=');
+			var max_tput = max_tput_ar.split(';');
+			
+			//var max_ratio_str = "VOW_Group_Min_Rate=10;10;10;10;10;10;10;10;10;10;10;10;10;10;10;10";
+			var max_ratio_ar = '<!--#exec cmd="web 2860 nvram VOW_Group_Max_Ratio"-->';//max_ratio_str.split('=');
+			var max_ratio = max_ratio_ar.split(';');
+			
+			//var min_ratio_str = "VOW_Group_Min_Rate=1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1";
+			var min_ratio_ar = '<!--#exec cmd="web 2860 nvram VOW_Group_Min_Ratio"-->';//min_ratio_str.split('=');
+			var min_ratio = min_ratio_ar.split(';');
+			
+			//Radio Tput
+			var radio_tput_ar = '<!--#exec cmd="web 2860 nvram VOW_Rate_Ctrl_En"-->';//min_ratio_str.split('=');
+			var radio_tput = radio_tput_ar.split(';');
+			
+			//alert(radio_tput_ar);
+			
+			//Radio At
+			var radio_at_ar = '<!--#exec cmd="web 2860 nvram VOW_Airtime_Ctrl_En"-->';//min_ratio_str.split('=');
+			var radio_at = radio_at_ar.split(';');
+			
+			
+			
+			
+			//alert(min_tput[1]);
+			
+			var ssid = new Array();
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID1"-->');
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID2"-->');
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID3"-->');
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID4"-->');
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID5"-->');
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID6"-->');
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID7"-->');
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID8"-->');
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID9"-->');
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID10"-->');
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID11"-->');
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID12"-->');
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID13"-->');
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID14"-->');
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID15"-->');
+			ssid.push('<!--#exec cmd="web 2860 nvram SSID16"-->');
+			
+			
+			
+			// Set Atf Button State
+			
+			
+			
+			/*ssid.push("SSID1");
+			ssid.push("SSID2");
+			ssid.push("SSID3");
+			ssid.push("SSID4");
+			ssid.push("SSID1");
+			ssid.push("SSID2");
+			ssid.push("SSID3");
+			ssid.push("SSID4")
+			ssid.push("SSID1");
+			ssid.push("SSID2");
+			ssid.push("SSID3");
+			ssid.push("SSID4")
+			ssid.push("SSID1");
+			ssid.push("SSID2");
+			ssid.push("SSID3");
+			ssid.push("SSID4")*/
+	var rx = '<!--#exec cmd="web 2860 nvram VOW_RX_En"-->';
+		
+		
+	for (i=0;i<16;i++)
+	{
+		if(ssid[i] !="")
+		{
+			
+			var tput = (radio_tput[i]==1)? true : false;
+			var at = (radio_at[i]==1)? true : false;
+			var isDisabled = "enabled";
+			addRow(ssid[i],min_tput[i],max_tput[i],min_ratio[i],max_ratio[i],tput,at,isDisabled);
+		}
+				
+	}
+addButtons();
+setButtonState();
+}
+		
+		
+ 
+        function deleteRow(tableID) {
+            try {
+            var table = document.getElementById(tableID);
+            var rowCount = table.rows.length;
+ 
+            for(var i=0; i<rowCount; i++) {
+                var row = table.rows[i];
+                var chkbox = row.cells[0].childNodes[0];
+                if(null != chkbox && true == chkbox.checked) {
+                    table.deleteRow(i);
+                    rowCount--;
+                    i--;
+                }
+ 
+ 
+            }
+            }catch(e) {
+                alert(e);
+            }
+        }
+ function init()
+{
+	loadData();
+	var grate_str = '<!--#exec cmd="web 2860 nvram BW_Guarantee_Rate"-->';
+	var crate_str = '<!--#exec cmd="web 2860 nvram BW_Maximum_Rate"-->'; 
+	var priority_str = '<!--#exec cmd="web 2860 nvram BW_Priority"-->';  
+	var air_grate_str = '<!--#exec cmd="web 2860 nvram BW_Guarantee_Airtime_Ratio"-->';  
+	var air_crate_str = '<!--#exec cmd="web 2860 nvram BW_Maximum_Airtime_Ratio"-->'; 
+	var grate = grate_str.split(";");
+	var crate = crate_str.split(";");
+	var air_gratio = air_grate_str.split(";");
+	var air_cratio = air_crate_str.split(";");
+	var priority = priority_str.split(";");
+	var rf_off = '<!--#exec cmd="web 2860 nvram RadioOff"-->'; 
+	var vow_on = '<!--#exec cmd="web 2860 nvram BW_Enable"-->'; 
+	var ssid = '<!--#exec cmd="web 2860 nvram SSID1"-->'; 
+
+
+}
+
+function RFStatusChange(rs)
+{
+	if (rs == 1) {
+		document.forms[1].rf_button.value = "RF OFF";
+		document.forms[1].rf.value = 0;
+	} else {
+		document.forms[1].rf_button.value = "RF ON";
+		document.forms[1].rf.value = 1;
+	}
+}
+function ATFStatusChange()
+{
+
+	//alert("sending"+document.getElementById("atf").value);
+	if (document.getElementById("atf_button").value=="ATF ON") {
+		//document.forms[1].atf_button.value = "ATF OFF";
+		//document.getElementById("atf_button").value = "ATF OFF"; 
+		//document.getElementById("atf").value = "0";
+		document.getElementById("atf_page").value = "atf_page";
+		//document.forms[1].atf.value = 0;
+	} else {
+		//document.getElementById("atf_button").value = "ATF ON"; 
+		document.getElementById("atf_page").value = "atf_page";
+		//document.getElementById("atf").value = "1";
+	}
+}
+function BWStatusChange()
+{
+	if (document.getElementById("bw_button").value== "BW ON") {
+		
+		//document.getElementById("bw_button").value = "BW OFF"; 
+		//document.getElementById("bw").value = "0";
+		document.getElementById("atf_page").value = "bw_page";
+	} else {
+		//document.getElementById("bw_button").value = "BW ON"; 
+		//document.getElementById("bw").value = "1";
+		document.getElementById("atf_page").value = "bw_page";
+	}
+}
+function RXStatusChange()
+{
+	if (document.getElementById("rx_button").value == "RX ON") {
+		//document.getElementById("rx_button").value = "RX OFF"; 
+		//document.getElementById("rx").value = "0";
+		document.getElementById("atf_page").value = "rx_page";
+	} else {
+		
+		//document.getElementById("rx_button").value = "RX ON"; 
+		//document.getElementById("rx").value = "1";
+		document.getElementById("atf_page").value = "rx_page";
+	}
+}
+
+function LockField(idx, lock)
+{
+	var field = eval("document.forms[0].g_rate"+idx);
+	field.disabled = lock;
+	field = eval("document.forms[0].ceil_rate"+idx);
+	field.disabled = lock;
+	field = eval("document.forms[0].priority"+idx);
+	field.disabled = lock;
+	field = eval("document.forms[0].air_g_ratio"+idx);
+	field.disabled = lock;
+	field = eval("document.forms[0].air_ceil_ratio"+idx);
+	field.disabled = lock;
+}
+
+function VoWStatusChange(rs)
+{
+	if (rs == 1) {
+		document.forms[1].vow_button.value = "VoW OFF";
+		document.forms[1].vow.value = 0;
+	} else {
+		document.forms[1].vow_button.value = "VoW ON";
+		document.forms[1].vow.value = 1;
+	}
+}
+
+function CheckValue()
+{
+	if (document.forms[0].air_g_ratio1.value < 0)
+		document.forms[0].air_g_ratio1.value = 0;
+	else if (document.forms[0].air_g_ratio1.value > 100)
+		document.forms[0].air_g_ratio1.value = 100;
+	if (document.forms[0].air_ceil_ratio1.value < 0)
+		document.forms[0].air_ceil_ratio1.value = 0;
+	else if (document.forms[0].air_ceil_ratio1.value > 100)
+		document.forms[0].air_ceil_ratio1.value = 100;
+
+	if (document.forms[0].air_g_ratio2.value < 0)
+		document.forms[0].air_g_ratio2.value = 0;
+	else if (document.forms[0].air_g_ratio2.value > 100)
+		document.forms[0].air_g_ratio2.value = 100;
+	if (document.forms[0].air_ceil_ratio2.value < 0)
+		document.forms[0].air_ceil_ratio2.value = 0;
+	else if (document.forms[0].air_ceil_ratio2.value > 100)
+		document.forms[0].air_ceil_ratio2.value = 100;
+
+	if (document.forms[0].air_g_ratio3.value < 0)
+		document.forms[0].air_g_ratio3.value = 0;
+	else if (document.forms[0].air_g_ratio3.value > 100)
+		document.forms[0].air_g_ratio3.value = 100;
+	if (document.forms[0].air_ceil_ratio3.value < 0)
+		document.forms[0].air_ceil_ratio3.value = 0;
+	else if (document.forms[0].air_ceil_ratio3.value > 100)
+		document.forms[0].air_ceil_ratio3.value = 100;
+
+	if (document.forms[0].air_g_ratio4.value < 0)
+		document.forms[0].air_g_ratio4.value = 0;
+	else if (document.forms[0].air_g_ratio4.value > 100)
+		document.forms[0].air_g_ratio4.value = 100;
+	if (document.forms[0].air_ceil_ratio4.value < 0)
+		document.forms[0].air_ceil_ratio4.value = 0;
+	else if (document.forms[0].air_ceil_ratio4.value > 100)
+		document.forms[0].air_ceil_ratio4.value = 100;
+	document.forms[0].submit();
+}
+
+    </SCRIPT>
+</HEAD>
+<BODY onload="init();">
+ 
+	<h2 style = "font: 32px 'omnes-pro',Helvetica,Arial,sans-serif;margin-top:15px;margin-bottom:0">VoW Setting Configuration</h2>
+   
+	<table width="540" border="0" cellspacing="1" cellpadding="3" bordercolor="#9BABBD" style="border-collapse: collapse; display: table;" >
+	<tr>
+    <td class="title" colspan="7">
+      Configuration
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      VoW Status: <span id="vow_status"></span>
+    </td>
+  </tr>
+	<tr>
+	<td colspan = 5>
+	<form method="post" action="/cgi-bin/wireless.cgi" style="margin:0;padding:0">
+		<input type=hidden name=page value="setvowinput">
+		<input type=hidden name=wlan_conf value="2860">
+		<input type=hidden name=interface value="ra0">
+		<input type=hidden name="ssidcount" id ="ssidcount_1" value="0">
+    <table id="dataTable" border="1" bordercolor="#9BABBD" cellspacing="1" cellpadding="3" style="float:left;border-collapse: collapse;height:100%;">
+	
+        <tr>
+            <td class="head"></td>
+            <td class="head" style="text-align:center;"> Min Tput(Mbps) </td>
+            <td class="head" style="text-align:center;"> Max Tput(Mbps) </td>
+			<td class="head" style="text-align:center;"> Min Ratio(%) </td>
+			<td class="head" style="text-align:center;"> Max Ratio(%) </td>
+			
+        </tr>
+    </table>
+	</form>
+	</td>
+	
+	<td colspan =2>
+	<form method="post" action="/cgi-bin/wireless.cgi" style="margin:0;padding:0" id="radioform" >
+	<input type=hidden name=page value="setvowcheckbox" />
+	<input type=hidden name=wlan_conf value="2860" />
+	<input type=hidden name=interface value="ra0" />
+	<input type=hidden name="ssidcount" id ="ssidcount_2" value="0" />
+    <table id="dataTable1"  border="1" cellspacing="1" cellpadding="3"  bordercolor="#9BABBD" style="border-collapse: collapse;height:100%;">
+        <tr>
+            <td class="head" style="text-align:center;"> TPUT</td>
+			<td class="head" style="text-align:center;"> AT</td>
+        </tr>
+    </table>
+	</form>
+	</td>
+	</tr>
+</table>
+<form method="post" action="/cgi-bin/wireless.cgi" style="margin:0;padding:0" >
+	<input type=hidden name="page" id ="atf_page" value="">
+	<input type=hidden name=wlan_conf value="2860">
+	<input type=hidden name=interface value="ra0">
+<table width = "540" border = "0" cellpadding = "3" cellspacing = "1" style="margin-top:5px;">
+ <tr align="center">
+    <td>
+      <input type="button" name="atf_button" id ="atf_button" style="{width:120px;}" value="ATF ON"
+      onClick="ATFStatusChange();document.forms[2].submit();">
+      <input type=hidden name="atf" id ="atf" value="1" >
+    </td>
+      
+    <td>
+      <input type="button" name="bw_button" id ="bw_button" style="{width:120px;}" value="BW ON"
+      onClick="BWStatusChange();document.forms[2].submit(); ">
+      <input type=hidden name="bw" id ="bw" value="1">
+    </td>
+	<td>
+      <input type="button" name="rx_button" id ="rx_button" style="{width:120px;}" value="RX ON"
+      onClick="RXStatusChange();document.forms[2].submit(); ">
+      <input type=hidden name="rx" id ="rx" value="1">
+    </td>
+      
+</tr>
+</BODY>
+
+</form>
+</HTML>

@@ -1,0 +1,12 @@
+<HTML>
+<!-- Copyright (c) Go Ahead Software Inc., 1994-2000. All Rights Reserved. -->
+<HEAD>
+<TITLE>WiFi Spectrum</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html">
+</HEAD>
+
+<FRAMESET BORDER="0" FRAMESPACING="0" FRAMEBORDER="NO"> 
+  <FRAME SRC="spectrum_chart.shtml" NAME="chart" FRAMEBORDER="NO" SCROLLING="NO" MARGINWIDTH="0" MARGINHEIGHT="0">
+</FRAMESET>
+<NOFRAMES>
+</HTML>

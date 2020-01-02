@@ -1,0 +1,2143 @@
+configuration: --cc=gcc --prefix=./out --disable-xanim --disable-vm --disable-pvr --disable-dvdnav --disable-dvdread --disable-libdvdcss-internal --disable-live --disable-win32dll --disable-xvid --disable-dvdread-internal --disable-libavcodec_mpegaudio_hp --disable-libmpeg2 --disable-libamr_nb --disable-libamr_wb --disable-dvdnav --disable-cddb --disable-tga --disable-pnm --disable-md5sum --disable-mencoder --disable-muxer=MUXER --disable-tv --disable-bitmap-font --disable-x264 --disable-xvid --disable-qtx --disable-win32dll --disable-alsa --disable-ossaudio --disable-speex --disable-libdv --disable-jpeg --disable-gif --disable-dvb --disable-toolame --disable-mad --disable-tremor-internal --disable-tremor-low --disable-tremor-external --disable-xmga --disable-xinerama --disable-radio-capture --disable-libpostproc_so --disable-libavcodec_mpegaudio_hp --disable-unrarlib --disable-liba52 --disable-libdca --disable-musepack --disable-faad-internal --disable-faad-external --disable-faac --disable-libvorbis --disable-libavutil_so --disable-libavcodec_so --disable-libpostproc_so --disable-libavformat_so --disable-png --disable-freetype --language=en
+
+============ Checking for gcc version ============
+Result is: 4.1.1, ok 
+##########################################
+
+============ Checking for host cc ============
+Result is: gcc 
+##########################################
+
+============ Checking for cross compilation ============
+
+int main() { return 0; }
+
+gcc       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: no 
+##########################################
+
+============ Checking for CPU vendor ============
+Result is: GenuineIntel (6:15:6) 
+##########################################
+
+============ Checking for CPU type ============
+Result is:  Intel(R) Core(TM)2 CPU          6300  @ 1.86GHz 
+##########################################
+
+============ Checking for kernel support of mmx ============
+
+#include <signal.h>
+void catch() { exit(1); }
+int main(void){
+  signal(SIGILL, catch);
+  __asm__ __volatile__ ("emms":::"memory");return(0);
+}
+
+gcc       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c: In function 'catch':
+/tmp/mplayer-conf-26717-18215.c:2: warning: incompatible implicit declaration of built-in function 'exit'
+
+
+Result is: yes 
+##########################################
+
+============ Checking for kernel support of mmxext ============
+
+#include <signal.h>
+void catch() { exit(1); }
+int main(void){
+  signal(SIGILL, catch);
+  __asm__ __volatile__ ("sfence":::"memory");return(0);
+}
+
+gcc       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c: In function 'catch':
+/tmp/mplayer-conf-26717-18215.c:2: warning: incompatible implicit declaration of built-in function 'exit'
+
+
+Result is: yes 
+##########################################
+
+============ Checking for kernel support of sse ============
+
+#include <signal.h>
+void catch() { exit(1); }
+int main(void){
+  signal(SIGILL, catch);
+  __asm__ __volatile__ ("xorps %%xmm0, %%xmm0":::"memory");return(0);
+}
+
+gcc       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c: In function 'catch':
+/tmp/mplayer-conf-26717-18215.c:2: warning: incompatible implicit declaration of built-in function 'exit'
+
+
+Result is: yes 
+##########################################
+
+============ Checking for kernel support of sse2 ============
+
+#include <signal.h>
+void catch() { exit(1); }
+int main(void){
+  signal(SIGILL, catch);
+  __asm__ __volatile__ ("xorpd %%xmm0, %%xmm0":::"memory");return(0);
+}
+
+gcc       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c: In function 'catch':
+/tmp/mplayer-conf-26717-18215.c:2: warning: incompatible implicit declaration of built-in function 'exit'
+
+
+Result is: yes 
+##########################################
+
+============ Checking for kernel support of cmov ============
+
+#include <signal.h>
+void catch() { exit(1); }
+int main(void){
+  signal(SIGILL, catch);
+  __asm__ __volatile__ ("cmovb %%eax,%%ebx":::"memory");return(0);
+}
+
+gcc       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c: In function 'catch':
+/tmp/mplayer-conf-26717-18215.c:2: warning: incompatible implicit declaration of built-in function 'exit'
+
+
+Result is: yes 
+##########################################
+
+============ Checking for mtrr support ============
+Result is: yes 
+##########################################
+
+============ Checking for GCC & CPU optimization abilities ============
+
+int main(void) { return 0; }
+
+gcc       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -march=native
+/tmp/mplayer-conf-26717-18215.c:1: error: bad value (native) for -march= switch
+/tmp/mplayer-conf-26717-18215.c:1: error: bad value (native) for -mtune= switch
+
+
+
+int main(void) { return 0; }
+
+gcc       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -march=core2 -mtune=core2
+/tmp/mplayer-conf-26717-18215.c:1: error: bad value (core2) for -march= switch
+/tmp/mplayer-conf-26717-18215.c:1: error: bad value (core2) for -mtune= switch
+
+
+
+int main(void) { return 0; }
+
+gcc       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -march=nocona -mtune=nocona
+
+
+Result is: nocona 
+##########################################
+
+============ Checking for assembler support of -pipe option ============
+
+int main(void) { return 0; }
+
+gcc       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -pipe
+
+
+Result is: yes 
+##########################################
+
+============ Checking for compiler support of named assembler arguments ============
+Result is: yes 
+##########################################
+
+============ Checking for .align is a power of two ============
+
+main() { asm (".align 3"); }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c:1: warning: return type defaults to 'int'
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:1: warning: control reaches end of non-void function
+{standard input}: Assembler messages:
+{standard input}:8: Error: alignment not a power of 2
+
+
+Result is: no 
+##########################################
+
+============ Checking for -lposix ============
+
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lposix
+/usr/bin/ld: cannot find -lposix
+collect2: ld returned 1 exit status
+
+
+Result is: no 
+##########################################
+
+============ Checking for -lm ============
+
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lm
+
+
+Result is: yes 
+##########################################
+
+============ Checking for langinfo ============
+
+#include <langinfo.h>
+int main(void) { nl_langinfo(CODESET); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for language ============
+Result is: using en (man pages: en en ) 
+##########################################
+
+============ Checking for enable sighandler ============
+Result is: yes 
+##########################################
+
+============ Checking for runtime cpudetection ============
+Result is: no 
+##########################################
+
+============ Checking for restrict keyword ============
+
+void foo(char * restrict p); int main(){}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c:1: error: expected ';', ',' or ')' before 'p'
+
+
+
+void foo(char * __restrict p); int main(){}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:1: warning: control reaches end of non-void function
+
+
+Result is: __restrict 
+##########################################
+
+============ Checking for __builtin_expect ============
+
+int foo (int a) {
+    a = __builtin_expect (a, 10);
+    return a == 10 ? 0 : 1;
+}
+int main() { return foo(10) && foo(0); }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for kstat ============
+
+#include <kstat.h>
+int main(void) { (void) kstat_open(); (void) kstat_close(0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lkstat
+/tmp/mplayer-conf-26717-18215.c:1:19: error: kstat.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: warning: implicit declaration of function 'kstat_open'
+/tmp/mplayer-conf-26717-18215.c:2: warning: implicit declaration of function 'kstat_close'
+
+
+Result is: no 
+##########################################
+
+============ Checking for posix4 ============
+
+#include <time.h>
+int main(void) { (void) nanosleep(0, 0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lposix4
+/usr/bin/ld: cannot find -lposix4
+collect2: ld returned 1 exit status
+
+
+Result is: no 
+##########################################
+
+============ Checking for lrintf ============
+
+#include <math.h>
+int main(void) { long (*foo)(float); foo = lrintf; (void)(*foo)(0.0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -D_GNU_SOURCE -lm
+
+
+Result is: yes 
+##########################################
+
+============ Checking for mkstemp ============
+
+#include <stdlib.h>
+int main(void) { char a;  mkstemp(&a); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for nanosleep ============
+
+#include <time.h>
+int main(void) { (void) nanosleep(0, 0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for socklib ============
+
+#include <netdb.h>
+#include <sys/socket.h>
+int main(void) { (void) gethostbyname(0); (void) socket(AF_INET, SOCK_STREAM, 0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+
+#include <winsock2.h>
+int main(void) { (void) gethostbyname(0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lws2_32
+/tmp/mplayer-conf-26717-18215.c:1:22: error: winsock2.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: warning: implicit declaration of function 'gethostbyname'
+
+
+Result is: yes 
+##########################################
+
+============ Checking for inet_pton() ============
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+int main(void) { (void) inet_pton(0, 0, 0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes (using )
+##########################################
+
+============ Checking for network ============
+Result is: yes 
+##########################################
+
+============ Checking for inttypes.h (required) ============
+
+#include <inttypes.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for int_fastXY_t in inttypes.h ============
+
+#include <inttypes.h>
+int main(void) { 
+volatile int_fast16_t v= 0;
+return v; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for word size ============
+
+#include <stdio.h>
+#include <sys/types.h>
+int main(void) { printf("%d\n", sizeof(size_t)*8); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:3: warning: format '%d' expects type 'int', but argument 2 has type 'long unsigned int'
+
+
+Result is: 64 
+##########################################
+
+============ Checking for malloc.h ============
+
+#include <malloc.h>
+int main(void) { (void) malloc(0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for memalign() ============
+
+#include <malloc.h>
+int main (void) { (void) memalign(64, sizeof(char)); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for alloca.h ============
+
+#include <alloca.h>
+int main(void) { (void) alloca(0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+
+#include <alloca.h>
+int main(void) { (void) alloca(0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for mman.h ============
+
+#include <sys/types.h>
+#include <sys/mman.h>
+int main(void) { (void) mmap(0, 0, 0, 0, 0, 0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+
+#include <sys/types.h>
+#include <sys/mman.h>
+int main(void) { void *p = MAP_FAILED; return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:3: warning: unused variable 'p'
+
+
+============ Checking for dynamic loader ============
+
+#include <dlfcn.h>
+int main(void) { dlopen(0, 0); dlclose(0); dlsym(0, 0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: warning: null argument where non-null required (argument 1)
+/tmp/mplayer-conf-26717-18215.c:2: warning: null argument where non-null required (argument 2)
+/tmp/ccVRlr7e.o: In function `main':
+mplayer-conf-26717-18215.c:(.text+0x9): undefined reference to `dlopen'
+mplayer-conf-26717-18215.c:(.text+0x10): undefined reference to `dlclose'
+mplayer-conf-26717-18215.c:(.text+0x19): undefined reference to `dlsym'
+collect2: ld returned 1 exit status
+
+
+
+#include <dlfcn.h>
+int main(void) { dlopen(0, 0); dlclose(0); dlsym(0, 0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -ldl
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: warning: null argument where non-null required (argument 1)
+/tmp/mplayer-conf-26717-18215.c:2: warning: null argument where non-null required (argument 2)
+
+
+Result is: yes 
+##########################################
+
+============ Checking for dynamic a/v plugins support ============
+Result is: no 
+##########################################
+
+============ Checking for pthread ============
+
+#include <pthread.h>
+void* func(void *arg) { return arg; }
+int main(void) { pthread_t tid; return pthread_create (&tid, 0, func, 0) == 0 ? 0 : 1; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lpthreadGC2
+/usr/bin/ld: cannot find -lpthreadGC2
+collect2: ld returned 1 exit status
+
+
+
+#include <pthread.h>
+void* func(void *arg) { return arg; }
+int main(void) { pthread_t tid; return pthread_create (&tid, 0, func, 0) == 0 ? 0 : 1; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/ccwFk3sd.o: In function `main':
+mplayer-conf-26717-18215.c:(.text+0x17): undefined reference to `pthread_create'
+collect2: ld returned 1 exit status
+
+
+
+#include <pthread.h>
+void* func(void *arg) { return arg; }
+int main(void) { pthread_t tid; return pthread_create (&tid, 0, func, 0) == 0 ? 0 : 1; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lpthread
+
+
+Result is: yes (using -lpthread)
+##########################################
+
+============ Checking for w32threads ============
+Result is: no (using pthread instead)
+##########################################
+
+============ Checking for rpath ============
+Result is: no 
+##########################################
+
+============ Checking for iconv ============
+
+#include <stdio.h>
+#include <unistd.h>
+#include <iconv.h>
+#define INBUFSIZE 1024
+#define OUTBUFSIZE 4096
+
+char inbuffer[INBUFSIZE];
+char outbuffer[OUTBUFSIZE];
+
+int main(void) {
+  size_t numread;
+  iconv_t icdsc;
+  char *tocode="UTF-8";
+  char *fromcode="cp1250";
+  if ((icdsc = iconv_open (tocode, fromcode)) != (iconv_t)(-1)) {
+    while ((numread = read (0, inbuffer, INBUFSIZE))) {
+      char *iptr=inbuffer;
+      char *optr=outbuffer;
+      size_t inleft=numread;
+      size_t outleft=OUTBUFSIZE;
+      if (iconv(icdsc, (const char **)&iptr, &inleft, &optr, &outleft)
+          != (size_t)(-1)) {
+        write (1, outbuffer, OUTBUFSIZE - outleft);
+      }
+    }
+    if (iconv_close(icdsc) == -1)
+      ;
+  }
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lm
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:21: warning: passing argument 2 of 'iconv' from incompatible pointer type
+/tmp/mplayer-conf-26717-18215.c:29: warning: control reaches end of non-void function
+
+
+Result is: yes 
+##########################################
+
+============ Checking for soundcard.h ============
+
+#include <sys/soundcard.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer        -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes (sys/soundcard.h)
+##########################################
+
+============ Checking for sys/dvdio.h ============
+
+#include <unistd.h>
+#include <sys/dvdio.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer        -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c:2:23: error: sys/dvdio.h: No such file or directory
+
+
+Result is: no 
+##########################################
+
+============ Checking for sys/cdio.h ============
+
+#include <unistd.h>
+#include <sys/cdio.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer        -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c:2:22: error: sys/cdio.h: No such file or directory
+
+
+Result is: no 
+##########################################
+
+============ Checking for linux/cdrom.h ============
+
+#include <sys/types.h>
+#include <linux/cdrom.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer        -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for dvd.h ============
+
+#include <dvd.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer        -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c:1:17: error: dvd.h: No such file or directory
+
+
+Result is: no 
+##########################################
+
+============ Checking for termcap ============
+
+int main(void) { tgetent(); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer        -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lncurses
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:1: warning: implicit declaration of function 'tgetent'
+
+
+Result is: yes (using -lncurses)
+##########################################
+
+============ Checking for termios ============
+
+#include <sys/termios.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes (sys/termios.h)
+##########################################
+
+============ Checking for shm ============
+
+#include <sys/types.h>
+#include <sys/shm.h>
+int main(void) { shmget(0, 0, 0); shmat(0, 0, 0); shmctl(0, 0, 0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for strsep() ============
+
+#include <string.h>
+int main (void) { char *s = "Hello, world!"; (void) strsep(&s, ","); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for vsscanf() ============
+
+#include <stdarg.h>
+int main(void) { vsscanf(0, 0, 0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: warning: implicit declaration of function 'vsscanf'
+/tmp/mplayer-conf-26717-18215.c:2: warning: too many arguments for format
+
+
+Result is: yes 
+##########################################
+
+============ Checking for swab() ============
+
+#include <unistd.h>
+int main(void) { swab(0, 0, 0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: warning: implicit declaration of function 'swab'
+
+
+Result is: yes 
+##########################################
+
+============ Checking for POSIX select() ============
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <string.h>
+#include <sys/time.h>
+#include <unistd.h>
+int main(void) {int nfds = 1; fd_set readfds; struct timeval timeout; select(nfds,&readfds,NULL,NULL,&timeout); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for gettimeofday() ============
+
+#include <stdio.h>
+#include <sys/time.h>
+int main(void) {struct timeval tv_start; gettimeofday(&tv_start, NULL); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for glob() ============
+
+#include <stdio.h>
+#include <glob.h>
+int main(void) { glob_t gg; glob("filename",0,NULL,&gg); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for setenv() ============
+
+#include <stdlib.h>
+int main (void){ setenv("","",0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for sys/sysinfo.h ============
+
+#include <sys/sysinfo.h>
+int main(void) {
+  struct sysinfo s_info;
+  sysinfo(&s_info);
+  return 0;
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for pkg-config ============
+Result is: yes 
+##########################################
+
+============ Checking for Samba support (libsmbclient) ============
+
+#include <libsmbclient.h>
+int main(void) { smbc_opendir("smb://"); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lsmbclient
+
+
+Result is: yes 
+##########################################
+
+============ Checking for tdfxfb ============
+Result is: no 
+##########################################
+
+============ Checking for s3fb ============
+Result is: no 
+##########################################
+
+============ Checking for tdfxvid ============
+Result is: no 
+##########################################
+
+============ Checking for xvr100 ============
+
+#include <unistd.h>
+#include <sys/fbio.h>
+#include <sys/visual_io.h>
+int main(void) {
+struct vis_identifier ident;
+struct fbgattr attr;
+
+ioctl(0, VIS_GETIDENTIFIER, &ident);
+ioctl(0, FBIOGATTR, &attr);
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c:2:22: error: sys/fbio.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c:3:27: error: sys/visual_io.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:5: error: storage size of 'ident' isn't known
+/tmp/mplayer-conf-26717-18215.c:6: error: storage size of 'attr' isn't known
+/tmp/mplayer-conf-26717-18215.c:8: warning: implicit declaration of function 'ioctl'
+/tmp/mplayer-conf-26717-18215.c:8: error: 'VIS_GETIDENTIFIER' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:8: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:8: error: for each function it appears in.)
+/tmp/mplayer-conf-26717-18215.c:9: error: 'FBIOGATTR' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:6: warning: unused variable 'attr'
+/tmp/mplayer-conf-26717-18215.c:5: warning: unused variable 'ident'
+
+
+Result is: no 
+##########################################
+
+============ Checking for tga ============
+Result is: no 
+##########################################
+
+============ Checking for md5sum support ============
+Result is: no 
+##########################################
+
+============ Checking for bl ============
+Result is: no 
+##########################################
+
+============ Checking for DirectFB ============
+
+#include <directfb.h>
+int main(void) { IDirectFB *foo; DirectFBInit(0,0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -ldirectfb
+/tmp/mplayer-conf-26717-18215.c:1:22: error: directfb.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: error: 'IDirectFB' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:2: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:2: error: for each function it appears in.)
+/tmp/mplayer-conf-26717-18215.c:2: error: 'foo' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:2: warning: implicit declaration of function 'DirectFBInit'
+
+
+
+#include <directfb.h>
+int main(void) { IDirectFB *foo; DirectFBInit(0,0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -I/usr/local/include/directfb -ldirectfb
+/tmp/mplayer-conf-26717-18215.c:1:22: error: directfb.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: error: 'IDirectFB' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:2: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:2: error: for each function it appears in.)
+/tmp/mplayer-conf-26717-18215.c:2: error: 'foo' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:2: warning: implicit declaration of function 'DirectFBInit'
+
+
+
+#include <directfb.h>
+int main(void) { IDirectFB *foo; DirectFBInit(0,0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -I/usr/include/directfb -ldirectfb
+/tmp/mplayer-conf-26717-18215.c:1:22: error: directfb.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: error: 'IDirectFB' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:2: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:2: error: for each function it appears in.)
+/tmp/mplayer-conf-26717-18215.c:2: error: 'foo' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:2: warning: implicit declaration of function 'DirectFBInit'
+
+
+
+#include <directfb.h>
+int main(void) { IDirectFB *foo; DirectFBInit(0,0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -I/usr/local/include -ldirectfb
+/tmp/mplayer-conf-26717-18215.c:1:22: error: directfb.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: error: 'IDirectFB' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:2: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:2: error: for each function it appears in.)
+/tmp/mplayer-conf-26717-18215.c:2: error: 'foo' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:2: warning: implicit declaration of function 'DirectFBInit'
+
+
+Result is: no 
+##########################################
+
+============ Checking for X11 headers presence ============
+Result is: yes 
+##########################################
+
+============ Checking for X11 ============
+
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+int main(void) { (void) XCreateWindow(0,0,0,0,0,0,0,0,0,0,0,0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lXext -lX11 -lpthread
+
+
+Result is: yes 
+##########################################
+
+============ Checking for DPMS ============
+
+#include <X11/Xmd.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/Xatom.h>
+#include <X11/extensions/dpms.h>
+int main(void) {
+  (void) DPMSQueryExtension(0, 0, 0);
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -lXext -lX11 -lpthread  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lXdpms
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:8: warning: control reaches end of non-void function
+/usr/bin/ld: cannot find -lXdpms
+collect2: ld returned 1 exit status
+
+
+
+#include <X11/Xlib.h>
+#include <X11/extensions/dpms.h>
+int main(void) {
+  (void) DPMSQueryExtension(0, 0, 0);
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -lXext -lX11 -lpthread  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lXext
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:5: warning: control reaches end of non-void function
+
+
+Result is: yes (using Xdpms 4)
+##########################################
+
+============ Checking for Xv ============
+
+#include <X11/Xlib.h>
+#include <X11/extensions/Xvlib.h>
+int main(void) {
+  (void) XvGetPortAttribute(0, 0, 0, 0);
+  (void) XvQueryPortAttributes(0, 0, 0);
+  return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -lXext -lX11 -lpthread  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lXv
+
+
+Result is: yes 
+##########################################
+
+============ Checking for XvMC ============
+Result is: no 
+##########################################
+
+============ Checking for Xinerama ============
+Result is: no 
+##########################################
+
+============ Checking for Xxf86vm ============
+Result is: no 
+##########################################
+
+============ Checking for XF86keysym ============
+
+#include <X11/Xlib.h>
+#include <X11/XF86keysym.h>
+int main(void) { return XF86XK_AudioPause; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for DGA ============
+
+#include <X11/Xlib.h>
+#include <X11/extensions/xf86dga.h>
+int main (void) { (void) XDGASetViewport(0, 0, 0, 0, 0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lXxf86dga
+
+
+Result is: yes (using DGA 2.0)
+##########################################
+
+============ Checking for 3dfx ============
+Result is: no 
+##########################################
+
+============ Checking for OpenGL ============
+
+#include <GL/gl.h>
+#ifdef GL_WIN32
+#include <windows.h>
+#include <GL/glext.h>
+#else
+#include <X11/Xlib.h>
+#include <GL/glx.h>
+#endif
+int main(void) {
+#ifdef GL_WIN32
+  HDC dc;
+  wglCreateContext(dc);
+#else
+  glXCreateContext(NULL, NULL, NULL, True);
+#endif
+  glFinish();
+  return 0;
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lGL -lm
+
+
+Result is: yes 
+##########################################
+
+============ Checking for VIDIX ============
+Result is: yes (internal)
+##########################################
+
+============ Checking for /dev/mga_vid ============
+Result is: no 
+##########################################
+
+============ Checking for xmga ============
+Result is: no 
+##########################################
+
+============ Checking for GGI ============
+
+#include <ggi/ggi.h>
+int main(void) { ggiInit(); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lggi
+/tmp/mplayer-conf-26717-18215.c:1:21: error: ggi/ggi.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: warning: implicit declaration of function 'ggiInit'
+
+
+Result is: no 
+##########################################
+
+============ Checking for GGI extension: libggiwmh ============
+
+#include <ggi/ggi.h>
+#include <ggi/wmh.h>
+int main(void) { ggiInit(); ggiWmhInit(); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lggi -lggiwmh
+/tmp/mplayer-conf-26717-18215.c:1:21: error: ggi/ggi.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c:2:21: error: ggi/wmh.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:3: warning: implicit declaration of function 'ggiInit'
+/tmp/mplayer-conf-26717-18215.c:3: warning: implicit declaration of function 'ggiWmhInit'
+
+
+Result is: no 
+##########################################
+
+============ Checking for AA ============
+
+#include <aalib.h>
+extern struct aa_hardware_params aa_defparams;
+extern struct aa_renderparams aa_defrenderparams;
+int main(void) {
+aa_context *c;
+aa_renderparams *p;
+(void) aa_init(0, 0, 0);
+c = aa_autoinit(&aa_defparams);
+p = aa_getrenderparams();
+aa_autoinitkbd(c,0);
+return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -laa
+/tmp/mplayer-conf-26717-18215.c:1:19: error: aalib.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:5: error: 'aa_context' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:5: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:5: error: for each function it appears in.)
+/tmp/mplayer-conf-26717-18215.c:5: error: 'c' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:6: error: 'aa_renderparams' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:6: error: 'p' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:7: warning: implicit declaration of function 'aa_init'
+/tmp/mplayer-conf-26717-18215.c:8: warning: implicit declaration of function 'aa_autoinit'
+/tmp/mplayer-conf-26717-18215.c:9: warning: implicit declaration of function 'aa_getrenderparams'
+/tmp/mplayer-conf-26717-18215.c:10: warning: implicit declaration of function 'aa_autoinitkbd'
+
+
+Result is: no 
+##########################################
+
+============ Checking for CACA ============
+./configure: line 4385: caca-config: command not found
+Result is: no 
+##########################################
+
+============ Checking for SVGAlib ============
+
+#include <vga.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lvga -lm
+/tmp/mplayer-conf-26717-18215.c:1:17: error: vga.h: No such file or directory
+
+
+Result is: no 
+##########################################
+
+============ Checking for FBDev ============
+Result is: yes 
+##########################################
+
+============ Checking for DVB ============
+Result is: no 
+##########################################
+
+============ Checking for DVB HEAD ============
+
+#include <sys/poll.h>
+#include <sys/ioctl.h>
+#include <stdio.h>
+#include <time.h>
+#include <unistd.h>
+
+#include <linux/dvb/dmx.h>
+#include <linux/dvb/frontend.h>
+#include <linux/dvb/video.h>
+#include <linux/dvb/audio.h>
+int main(void) {return 0;}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer      -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for zr ============
+Result is: no 
+##########################################
+
+============ Checking for PNG support ============
+Result is: no 
+##########################################
+
+============ Checking for JPEG support ============
+Result is: no 
+##########################################
+
+============ Checking for PNM support ============
+Result is: no 
+##########################################
+
+============ Checking for GIF support ============
+Result is: no 
+##########################################
+
+============ Checking for VESA support ============
+
+#include <vbe.h>
+int main(void) { vbeVersion(); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lvbe -llrmi
+/tmp/mplayer-conf-26717-18215.c:1:17: error: vbe.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: warning: implicit declaration of function 'vbeVersion'
+
+
+Result is: no 
+##########################################
+
+============ Checking for SDL ============
+1.2.10
+1.2.10
+
+#include <SDL.h>
+int main(int argc, char *argv[]) {
+  SDL_Init(SDL_INIT_VIDEO|SDL_INIT_NOPARACHUTE);
+  return 0;
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT -L/usr/lib64 -lSDL -lpthread
+
+
+Result is: yes (using sdl-config)
+##########################################
+
+============ Checking for NAS ============
+
+#include <audio/audiolib.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT     -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lm -laudio -lXt
+/tmp/mplayer-conf-26717-18215.c:1:28: error: audio/audiolib.h: No such file or directory
+
+
+Result is: no 
+##########################################
+
+============ Checking for DXR2 ============
+
+#include <dxr2ioctl.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT     -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c:1:23: error: dxr2ioctl.h: No such file or directory
+
+
+
+#include <dxr2ioctl.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT     -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -I/usr/local/include/dxr2
+/tmp/mplayer-conf-26717-18215.c:1:23: error: dxr2ioctl.h: No such file or directory
+
+
+
+#include <dxr2ioctl.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT     -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -I/usr/include/dxr2
+/tmp/mplayer-conf-26717-18215.c:1:23: error: dxr2ioctl.h: No such file or directory
+
+
+Result is: no 
+##########################################
+
+============ Checking for DXR3/H+ ============
+
+#include <linux/em8300.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT     -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c:1:26: error: linux/em8300.h: No such file or directory
+
+
+Result is: no 
+##########################################
+
+============ Checking for IVTV TV-Out ============
+
+#include <stdlib.h>
+#include <inttypes.h>
+#include <linux/types.h>
+#include <linux/videodev2.h>
+#include <linux/ivtv.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT     -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c:5:24: error: linux/ivtv.h: No such file or directory
+
+
+Result is: no 
+##########################################
+
+============ Checking for V4L2 MPEG Decoder ============
+
+#include <stdlib.h>
+#include <inttypes.h>
+#include <linux/types.h>
+#include <linux/videodev2.h>
+#include <linux/version.h>
+int main(void) {
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,22)
+#error kernel headers too old, need 2.6.22
+  bad_kernel_version();
+#endif
+  struct v4l2_ext_controls ctrls;
+  ctrls.ctrl_class = V4L2_CTRL_CLASS_MPEG;
+  return 0;
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT     -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c:8:2: error: #error kernel headers too old, need 2.6.22
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:9: warning: implicit declaration of function 'bad_kernel_version'
+
+
+Result is: no 
+##########################################
+
+============ Checking for OSS Audio ============
+Result is: no 
+##########################################
+
+============ Checking for aRts ============
+./configure: line 5042: artsc-config: command not found
+Result is: no 
+##########################################
+
+============ Checking for EsounD ============
+0.2.36
+
+#include <esd.h>
+int main(void) { int fd = esd_open_sound("test"); return fd; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT     -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lesd -laudiofile -lm
+
+
+Result is: yes 
+##########################################
+
+============ Checking for esd_get_latency() ============
+
+#include <esd.h>
+int main(void) { return esd_get_latency(0); }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lesd -laudiofile -lm
+
+
+Result is: yes 
+##########################################
+
+============ Checking for Polyp ============
+Result is: no 
+##########################################
+
+============ Checking for JACK ============
+
+#include <jack/jack.h>
+int main(void) { jack_client_new("test"); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -ljack
+/tmp/mplayer-conf-26717-18215.c:1:23: error: jack/jack.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: warning: implicit declaration of function 'jack_client_new'
+
+
+
+#include <jack/jack.h>
+int main(void) { jack_client_new("test"); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c:1:23: error: jack/jack.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: warning: implicit declaration of function 'jack_client_new'
+
+
+Result is: no 
+##########################################
+
+============ Checking for OpenAL ============
+
+#ifdef OPENAL_AL_H
+#include <OpenAL/al.h>
+#else
+#include <AL/al.h>
+#endif
+int main(void) {
+  alSourceQueueBuffers(0, 0, 0);
+//  alGetSourcei(0, AL_SAMPLE_OFFSET, 0);
+  return 0;
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lopenal
+/tmp/mplayer-conf-26717-18215.c:4:19: error: AL/al.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:7: warning: implicit declaration of function 'alSourceQueueBuffers'
+
+
+
+#ifdef OPENAL_AL_H
+#include <OpenAL/al.h>
+#else
+#include <AL/al.h>
+#endif
+int main(void) {
+  alSourceQueueBuffers(0, 0, 0);
+//  alGetSourcei(0, AL_SAMPLE_OFFSET, 0);
+  return 0;
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -DOPENAL_AL_H=1 -lopenal
+/tmp/mplayer-conf-26717-18215.c:2:23: error: OpenAL/al.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:7: warning: implicit declaration of function 'alSourceQueueBuffers'
+
+
+
+#ifdef OPENAL_AL_H
+#include <OpenAL/al.h>
+#else
+#include <AL/al.h>
+#endif
+int main(void) {
+  alSourceQueueBuffers(0, 0, 0);
+//  alGetSourcei(0, AL_SAMPLE_OFFSET, 0);
+  return 0;
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -framework OpenAL
+gcc: OpenAL: No such file or directory
+cc1: error: unrecognized command line option "-framework"
+
+
+
+#ifdef OPENAL_AL_H
+#include <OpenAL/al.h>
+#else
+#include <AL/al.h>
+#endif
+int main(void) {
+  alSourceQueueBuffers(0, 0, 0);
+//  alGetSourcei(0, AL_SAMPLE_OFFSET, 0);
+  return 0;
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -DOPENAL_AL_H=1 -framework OpenAL
+gcc: OpenAL: No such file or directory
+cc1: error: unrecognized command line option "-framework"
+
+
+Result is: no 
+##########################################
+
+============ Checking for ALSA audio ============
+Result is: no 
+##########################################
+
+============ Checking for Sun audio ============
+
+#include <sys/types.h>
+#include <sys/audioio.h>
+int main(void) { audio_info_t info; AUDIO_INITINFO(&info); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c:2:25: error: sys/audioio.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:3: error: 'audio_info_t' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:3: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:3: error: for each function it appears in.)
+/tmp/mplayer-conf-26717-18215.c:3: error: expected ';' before 'info'
+/tmp/mplayer-conf-26717-18215.c:3: warning: implicit declaration of function 'AUDIO_INITINFO'
+/tmp/mplayer-conf-26717-18215.c:3: error: 'info' undeclared (first use in this function)
+
+
+Result is: no 
+##########################################
+
+============ Checking for VCD support ============
+Result is: yes 
+##########################################
+
+============ Checking for dvdread ============
+Result is: no 
+##########################################
+
+============ Checking for internal libdvdcss ============
+Result is: no 
+##########################################
+
+============ Checking for cdparanoia ============
+
+#include <cdda_interface.h>
+#include <cdda_paranoia.h>
+// This need a better test. How ?
+int main(void) {
+    void *test = cdda_verbose_set;
+    return test == (void *)1;
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lcdda_interface -lcdda_paranoia -lm
+/tmp/mplayer-conf-26717-18215.c:1:28: error: cdda_interface.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c:2:27: error: cdda_paranoia.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:5: error: 'cdda_verbose_set' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:5: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:5: error: for each function it appears in.)
+
+
+
+#include <cdda_interface.h>
+#include <cdda_paranoia.h>
+// This need a better test. How ?
+int main(void) {
+    void *test = cdda_verbose_set;
+    return test == (void *)1;
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -I/usr/include/cdda -lcdda_interface -lcdda_paranoia -lm
+/tmp/mplayer-conf-26717-18215.c:1:28: error: cdda_interface.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c:2:27: error: cdda_paranoia.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:5: error: 'cdda_verbose_set' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:5: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:5: error: for each function it appears in.)
+
+
+
+#include <cdda_interface.h>
+#include <cdda_paranoia.h>
+// This need a better test. How ?
+int main(void) {
+    void *test = cdda_verbose_set;
+    return test == (void *)1;
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -I/usr/local/include/cdda -lcdda_interface -lcdda_paranoia -lm
+/tmp/mplayer-conf-26717-18215.c:1:28: error: cdda_interface.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c:2:27: error: cdda_paranoia.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:5: error: 'cdda_verbose_set' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:5: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:5: error: for each function it appears in.)
+
+
+Result is: no 
+##########################################
+
+============ Checking for libcdio ============
+
+#include <stdio.h>
+#include <cdio/version.h>
+#include <cdio/cdda.h>
+#include <cdio/paranoia.h>
+int main()
+{
+    void *test = cdda_verbose_set;
+    printf("%s\n", CDIO_VERSION);
+    return test == (void *)1;
+    
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lcdio_cdda -lcdio -lcdio_paranoia -lm
+/tmp/mplayer-conf-26717-18215.c:2:26: error: cdio/version.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c:3:23: error: cdio/cdda.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c:4:27: error: cdio/paranoia.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:7: error: 'cdda_verbose_set' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:7: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:7: error: for each function it appears in.)
+/tmp/mplayer-conf-26717-18215.c:8: error: 'CDIO_VERSION' undeclared (first use in this function)
+
+
+
+#include <stdio.h>
+#include <cdio/version.h>
+#include <cdio/cdda.h>
+#include <cdio/paranoia.h>
+int main()
+{
+    void *test = cdda_verbose_set;
+    printf("%s\n", CDIO_VERSION);
+    return test == (void *)1;
+    
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lcdio_cdda -lcdio -lcdio_paranoia -lwinmm -lm
+/tmp/mplayer-conf-26717-18215.c:2:26: error: cdio/version.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c:3:23: error: cdio/cdda.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c:4:27: error: cdio/paranoia.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:7: error: 'cdda_verbose_set' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:7: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:7: error: for each function it appears in.)
+/tmp/mplayer-conf-26717-18215.c:8: error: 'CDIO_VERSION' undeclared (first use in this function)
+
+
+Result is: no 
+##########################################
+
+============ Checking for bitmap font support ============
+Result is: no 
+##########################################
+
+============ Checking for freetype >= 2.0.9 ============
+Result is: no 
+##########################################
+
+============ Checking for fontconfig ============
+Result is: no (freetype support needed)
+##########################################
+
+============ Checking for SSA/ASS support ============
+Result is: no (FreeType support needed)
+##########################################
+
+============ Checking for fribidi with charsets ============
+Result is: no 
+##########################################
+
+============ Checking for ENCA ============
+
+#include <enca.h>
+int main()
+{
+    const char **langs;
+    size_t langcnt;
+    langs = enca_get_languages(&langcnt);
+    return 0;
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lenca -lm
+/tmp/mplayer-conf-26717-18215.c:1:18: error: enca.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:5: error: 'size_t' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:5: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:5: error: for each function it appears in.)
+/tmp/mplayer-conf-26717-18215.c:5: error: expected ';' before 'langcnt'
+/tmp/mplayer-conf-26717-18215.c:6: warning: implicit declaration of function 'enca_get_languages'
+/tmp/mplayer-conf-26717-18215.c:6: error: 'langcnt' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:6: warning: assignment makes pointer from integer without a cast
+
+
+Result is: no 
+##########################################
+
+============ Checking for zlib ============
+
+#include <zlib.h>
+int main(void) { (void) inflate(0, Z_NO_FLUSH); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lz
+
+
+Result is: yes 
+##########################################
+
+============ Checking for RTC ============
+
+#include <sys/ioctl.h>
+#ifdef __linux__
+#include <linux/rtc.h>
+#else
+#include <rtc.h>
+#define RTC_PIE_ON RTCIO_PIE_ON
+#endif
+int main(void) { return RTC_PIE_ON; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient -lz   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: yes 
+##########################################
+
+============ Checking for liblzo2 support ============
+
+#include <lzo/lzo1x.h>
+int main(void) { lzo_init();return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient -lz   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -llzo2
+/tmp/mplayer-conf-26717-18215.c:1:23: error: lzo/lzo1x.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: warning: implicit declaration of function 'lzo_init'
+
+
+Result is: no 
+##########################################
+
+============ Checking for mad support ============
+Result is: no 
+##########################################
+
+============ Checking for Twolame ============
+
+#include <twolame.h>
+int main(void) { twolame_init(); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient -lz   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -ltwolame -lm
+/tmp/mplayer-conf-26717-18215.c:1:21: error: twolame.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:2: warning: implicit declaration of function 'twolame_init'
+
+
+Result is: no 
+##########################################
+
+============ Checking for Toolame ============
+Result is: no 
+##########################################
+
+============ Checking for OggVorbis support ============
+Result is: no 
+##########################################
+
+============ Checking for libspeex (version >= 1.1 required) ============
+Result is: no 
+##########################################
+
+============ Checking for OggTheora support ============
+
+#include <theora/theora.h>
+#include <string.h>
+int main(void) 
+{ 
+  /* theora is in flux, make sure that all interface routines and 
+   * datatypes exist and work the way we expect it, so we don't break
+   * mplayer */
+  ogg_packet op;
+  theora_comment tc;
+  theora_info inf;
+  theora_state st;
+  yuv_buffer yuv;
+  int r;
+  double t;
+
+  theora_info_init (&inf);
+  theora_comment_init (&tc);
+ 
+  return 0;
+
+  /* we don't want to execute this kind of nonsense; just for making sure
+   * that compilation works... */
+  memset(&op, 0, sizeof(op));
+  r = theora_decode_header (&inf, &tc, &op);
+  r = theora_decode_init (&st, &inf);
+  t = theora_granule_time (&st, op.granulepos);
+  r = theora_decode_packetin (&st, &op);
+  r = theora_decode_YUVout (&st, &yuv);
+  theora_clear (&st);
+
+  return 0;
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient -lz   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c:1:27: error: theora/theora.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:8: error: 'ogg_packet' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:8: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:8: error: for each function it appears in.)
+/tmp/mplayer-conf-26717-18215.c:8: error: expected ';' before 'op'
+/tmp/mplayer-conf-26717-18215.c:9: error: 'theora_comment' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:9: error: expected ';' before 'tc'
+/tmp/mplayer-conf-26717-18215.c:10: error: 'theora_info' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:10: error: expected ';' before 'inf'
+/tmp/mplayer-conf-26717-18215.c:11: error: 'theora_state' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:11: error: expected ';' before 'st'
+/tmp/mplayer-conf-26717-18215.c:12: error: 'yuv_buffer' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:12: error: expected ';' before 'yuv'
+/tmp/mplayer-conf-26717-18215.c:16: warning: implicit declaration of function 'theora_info_init'
+/tmp/mplayer-conf-26717-18215.c:16: error: 'inf' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:17: warning: implicit declaration of function 'theora_comment_init'
+/tmp/mplayer-conf-26717-18215.c:17: error: 'tc' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:23: error: 'op' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:24: warning: implicit declaration of function 'theora_decode_header'
+/tmp/mplayer-conf-26717-18215.c:25: warning: implicit declaration of function 'theora_decode_init'
+/tmp/mplayer-conf-26717-18215.c:25: error: 'st' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:26: warning: implicit declaration of function 'theora_granule_time'
+/tmp/mplayer-conf-26717-18215.c:27: warning: implicit declaration of function 'theora_decode_packetin'
+/tmp/mplayer-conf-26717-18215.c:28: warning: implicit declaration of function 'theora_decode_YUVout'
+/tmp/mplayer-conf-26717-18215.c:28: error: 'yuv' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:29: warning: implicit declaration of function 'theora_clear'
+
+
+
+#include <theora/theora.h>
+#include <string.h>
+int main(void) 
+{ 
+  /* theora is in flux, make sure that all interface routines and 
+   * datatypes exist and work the way we expect it, so we don't break
+   * mplayer */
+  ogg_packet op;
+  theora_comment tc;
+  theora_info inf;
+  theora_state st;
+  yuv_buffer yuv;
+  int r;
+  double t;
+
+  theora_info_init (&inf);
+  theora_comment_init (&tc);
+ 
+  return 0;
+
+  /* we don't want to execute this kind of nonsense; just for making sure
+   * that compilation works... */
+  memset(&op, 0, sizeof(op));
+  r = theora_decode_header (&inf, &tc, &op);
+  r = theora_decode_init (&st, &inf);
+  t = theora_granule_time (&st, op.granulepos);
+  r = theora_decode_packetin (&st, &op);
+  r = theora_decode_YUVout (&st, &yuv);
+  theora_clear (&st);
+
+  return 0;
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient -lz   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -ltheora -logg
+/tmp/mplayer-conf-26717-18215.c:1:27: error: theora/theora.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:8: error: 'ogg_packet' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:8: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:8: error: for each function it appears in.)
+/tmp/mplayer-conf-26717-18215.c:8: error: expected ';' before 'op'
+/tmp/mplayer-conf-26717-18215.c:9: error: 'theora_comment' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:9: error: expected ';' before 'tc'
+/tmp/mplayer-conf-26717-18215.c:10: error: 'theora_info' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:10: error: expected ';' before 'inf'
+/tmp/mplayer-conf-26717-18215.c:11: error: 'theora_state' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:11: error: expected ';' before 'st'
+/tmp/mplayer-conf-26717-18215.c:12: error: 'yuv_buffer' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:12: error: expected ';' before 'yuv'
+/tmp/mplayer-conf-26717-18215.c:16: warning: implicit declaration of function 'theora_info_init'
+/tmp/mplayer-conf-26717-18215.c:16: error: 'inf' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:17: warning: implicit declaration of function 'theora_comment_init'
+/tmp/mplayer-conf-26717-18215.c:17: error: 'tc' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:23: error: 'op' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:24: warning: implicit declaration of function 'theora_decode_header'
+/tmp/mplayer-conf-26717-18215.c:25: warning: implicit declaration of function 'theora_decode_init'
+/tmp/mplayer-conf-26717-18215.c:25: error: 'st' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:26: warning: implicit declaration of function 'theora_granule_time'
+/tmp/mplayer-conf-26717-18215.c:27: warning: implicit declaration of function 'theora_decode_packetin'
+/tmp/mplayer-conf-26717-18215.c:28: warning: implicit declaration of function 'theora_decode_YUVout'
+/tmp/mplayer-conf-26717-18215.c:28: error: 'yuv' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:29: warning: implicit declaration of function 'theora_clear'
+
+
+Result is: no 
+##########################################
+
+============ Checking for internal mp3lib support ============
+Result is: yes 
+##########################################
+
+============ Checking for internal liba52 support ============
+Result is: no 
+##########################################
+
+============ Checking for libdca support ============
+Result is: no 
+##########################################
+
+============ Checking for internal libmpeg2 support ============
+Result is: no 
+##########################################
+
+============ Checking for libmpcdec (musepack, version >= 1.2.1 required) ============
+Result is: no 
+##########################################
+
+============ Checking for FAAC (AAC encoder) support ============
+Result is: no (in libavcodec: ) 
+##########################################
+
+============ Checking for FAAD2 (AAC) support ============
+Result is: no 
+##########################################
+
+============ Checking for LADSPA plugin support ============
+
+#include <stdio.h>
+#include <ladspa.h>
+int main(void) {
+const LADSPA_Descriptor *ld = NULL;
+return 0;
+}
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient -lz   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c:2:20: error: ladspa.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:4: error: expected '=', ',', ';', 'asm' or '__attribute__' before '*' token
+/tmp/mplayer-conf-26717-18215.c:4: error: 'ld' undeclared (first use in this function)
+/tmp/mplayer-conf-26717-18215.c:4: error: (Each undeclared identifier is reported only once
+/tmp/mplayer-conf-26717-18215.c:4: error: for each function it appears in.)
+
+
+Result is: no 
+##########################################
+
+============ Checking for Win32 codecs ============
+Result is: no 
+##########################################
+
+============ Checking for XAnim codecs ============
+Result is: no 
+##########################################
+
+============ Checking for RealPlayer codecs ============
+Result is: yes (using ./out/lib/codecs)
+##########################################
+
+============ Checking for QuickTime codecs ============
+Result is: no 
+##########################################
+
+============ Checking for Nemesi Streaming Media libraries ============
+Result is: no 
+##########################################
+
+============ Checking for LIVE555 Streaming Media libraries ============
+Result is: no 
+##########################################
+
+============ Checking for FFmpeg libavutil ============
+Result is: yes (static)
+##########################################
+
+============ Checking for FFmpeg libavcodec ============
+Result is: yes (static)
+##########################################
+
+============ Checking for FFmpeg libavformat ============
+Result is: yes (static)
+##########################################
+
+============ Checking for FFmpeg libpostproc ============
+Result is: yes (static)
+##########################################
+
+============ Checking for libamr narrowband ============
+Result is: no 
+##########################################
+
+============ Checking for libamr wideband ============
+Result is: no 
+##########################################
+
+============ Checking for libdv-0.9.5+ ============
+Result is: no 
+##########################################
+
+============ Checking for XviD ============
+Result is: no 
+##########################################
+
+============ Checking for x264 ============
+Result is: no (in libavcodec: no) 
+##########################################
+
+============ Checking for libnut ============
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <inttypes.h>
+#include <libnut.h>
+int main(void) { (void)nut_error(0); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient -lz   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lnut
+/tmp/mplayer-conf-26717-18215.c:4:20: error: libnut.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:5: warning: implicit declaration of function 'nut_error'
+
+
+Result is: no 
+##########################################
+
+============ Checking for mencoder ============
+Result is: no 
+##########################################
+
+============ Checking for fastmemcpy ============
+Result is: yes 
+##########################################
+
+============ Checking for UniquE RAR File Library ============
+Result is: no 
+##########################################
+
+============ Checking for TV interface ============
+Result is: no 
+##########################################
+
+============ Checking for Video 4 Linux TV interface ============
+Result is: no 
+##########################################
+
+============ Checking for Video 4 Linux 2 TV interface ============
+Result is: no 
+##########################################
+
+============ Checking for TV teletext interface ============
+Result is: no 
+##########################################
+
+============ Checking for Radio interface ============
+Result is: no 
+##########################################
+
+============ Checking for Capture for Radio interface ============
+Result is: no 
+##########################################
+
+============ Checking for Video 4 Linux 2 Radio interface ============
+Result is: no 
+##########################################
+
+============ Checking for Video 4 Linux Radio interface ============
+Result is: no 
+##########################################
+
+============ Checking for Video 4 Linux 2 MPEG PVR interface ============
+Result is: no 
+##########################################
+
+============ Checking for audio select() ============
+Result is: yes 
+##########################################
+
+============ Checking for ftp ============
+Result is: yes 
+##########################################
+
+============ Checking for vstream client ============
+
+#include <vstream-client.h>
+void vstream_error(const char *format, ... ) {}
+int main(void) { vstream_start(); return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient -lz   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -lvstream-client
+/tmp/mplayer-conf-26717-18215.c:1:28: error: vstream-client.h: No such file or directory
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:3: warning: implicit declaration of function 'vstream_start'
+
+
+Result is: no 
+##########################################
+
+============ Checking for byte order ============
+
+short ascii_name[] = { (('M'<<8)|'P'),(('l'<<8)|'a'),(('y'<<8)|'e'),(('r'<<8)|'B'),
+                      (('i'<<8)|'g'),(('E'<<8)|'n'),(('d'<<8)|'i'),(('a'<<8)|'n'),0};
+int main(){
+  return (int)ascii_name;
+} 
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient -lz   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+
+
+Result is: little-endian 
+##########################################
+
+============ Checking for OSD menu ============
+Result is: no 
+##########################################
+
+============ Checking for Subtitles sorting ============
+Result is: yes 
+##########################################
+
+============ Checking for XMMS inputplugin support ============
+Result is: no 
+##########################################
+
+============ Checking for inet6 ============
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+int main(void) { struct sockaddr_in6 six; socket(AF_INET6, SOCK_STREAM, AF_INET6); }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient -lz   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:4: warning: unused variable 'six'
+/tmp/mplayer-conf-26717-18215.c:4: warning: control reaches end of non-void function
+
+
+Result is: yes 
+##########################################
+
+============ Checking for gethostbyname2 ============
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+int main(void) { gethostbyname2("", AF_INET); }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient -lz   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c
+/tmp/mplayer-conf-26717-18215.c: In function 'main':
+/tmp/mplayer-conf-26717-18215.c:4: warning: control reaches end of non-void function
+
+
+Result is: yes 
+##########################################
+
+============ Checking for GUI ============
+============ Checking for automatic gdb attach ============
+Result is: no 
+##########################################
+
+============ Checking for compiler support for noexecstack ============
+
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT       -lncurses -lsmbclient -lz   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -Wl,-z,noexecstack
+
+
+Result is: yes 
+##########################################
+
+============ Checking for joystick ============
+Result is: no 
+##########################################
+
+============ Checking for lirc ============
+
+#include <lirc/lirc_client.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT    -Wl,-z,noexecstack    -lncurses -lsmbclient -lz -lpthread -ldl -rdynamic   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -llirc_client
+/tmp/mplayer-conf-26717-18215.c:1:30: error: lirc/lirc_client.h: No such file or directory
+
+
+Result is: no 
+##########################################
+
+============ Checking for lircc ============
+
+#include <lirc/lircc.h>
+int main(void) { return 0; }
+
+gcc -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer   -I/usr/include/SDL  -D_REENTRANT    -Wl,-z,noexecstack    -lncurses -lsmbclient -lz -lpthread -ldl -rdynamic   -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -L/usr/lib64 -lSDL -lpthread -lesd -laudiofile -lm    -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -llircc
+/tmp/mplayer-conf-26717-18215.c:1:24: error: lirc/lircc.h: No such file or directory
+
+
+Result is: no 
+##########################################
+
+============ Checking for color console output ============
+Result is: no 
+##########################################
+
+
+int main() { return 0; }
+
+gcc -I. -I.. -I../libavutil -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer -D_REENTRANT   -I/usr/include/SDL  -D_REENTRANT    -L/usr/lib64 -Wl,-z,noexecstack    -lncurses -lsmbclient -lz -lpthread -ldl -rdynamic  -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -lSDL -lpthread -lesd -laudiofile -lm  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -Wdeclaration-after-statement
+
+
+
+int main() { return 0; }
+
+gcc -Wdeclaration-after-statement -I. -I.. -I../libavutil -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer -D_REENTRANT   -I/usr/include/SDL  -D_REENTRANT    -L/usr/lib64 -Wl,-z,noexecstack    -lncurses -lsmbclient -lz -lpthread -ldl -rdynamic  -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -lSDL -lpthread -lesd -laudiofile -lm  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -Wno-pointer-sign
+
+
+
+int main() { return 0; }
+
+gcc -Wno-pointer-sign -Wdeclaration-after-statement -I. -I.. -I../libavutil -Wall -Wno-switch -Wpointer-arith -Wredundant-decls -O4 -march=nocona -mtune=nocona -pipe -ffast-math -fomit-frame-pointer -D_REENTRANT   -I/usr/include/SDL  -D_REENTRANT    -L/usr/lib64 -Wl,-z,noexecstack    -lncurses -lsmbclient -lz -lpthread -ldl -rdynamic  -lXext -lX11 -lpthread -lXv -lXxf86dga -lGL -ldl -lSDL -lpthread -lesd -laudiofile -lm  -o /tmp/mplayer-conf-23786-18215 /tmp/mplayer-conf-26717-18215.c -Wdisabled-optimization
+
+
+============ Checking for DVD support (libdvdnav) ============
+Result is: no 
+##########################################
+

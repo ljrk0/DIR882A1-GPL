@@ -1,0 +1,735 @@
+<!-- Copyright 2011, MediaTek Inc. All Rights Reserved. -->
+<html>
+<head>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="Expires" content="-1">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="/style/normal_ws.css" type="text/css">
+<title>Wireless APClient Settings</title>
+</head>
+
+<script type="text/javascript" src="/shareFun.js"></script>
+<script language="JavaScript" type="text/javascript">
+var submit_buttons = ["ApcliConn", "ApcliCancel", "ApcliSCAN"];
+var mode = "<!--#exec cmd="web 2860 nvram ApCliAuthMode"-->";
+var enc = "<!--#exec cmd="web 2860 nvram ApCliEncrypType"-->";
+var wpapsk = "<!--#exec cmd="web 2860 nvram ApCliWPAPSK"-->";
+var keyid = "<!--#exec cmd="web 2860 nvram ApCliDefaultKeyID"-->";
+var key1type = "<!--#exec cmd="web 2860 nvram ApCliKey1Type"-->";
+var key2type = "<!--#exec cmd="web 2860 nvram ApCliKey2Type"-->";
+var key3type = "<!--#exec cmd="web 2860 nvram ApCliKey3Type"-->";
+var key4type = "<!--#exec cmd="web 2860 nvram ApCliKey4Type"-->";
+var SSID = new Array();
+var PhyModeList  = new Array(); 
+var dbdc_enabled = "<!--#exec cmd="web 2860 nvram DBDC_MODE"-->"; 
+var dbdcb = "<!--#exec cmd="web 2860 build dbdc"-->";
+
+function SecurityModeSwitch()
+{
+	var mysel = document.wireless_apcli.apcli_enc;
+	mysel.options.length = 0;
+	if (document.wireless_apcli.apcli_mode.options.selectedIndex == 0) {
+		mysel.options[0] = new Option("WEP", "WEP");
+		mysel.options[1] = new Option("None", "NONE");
+	}
+	else if (document.wireless_apcli.apcli_mode.options.selectedIndex == 1) {
+		mysel.options[0] = new Option("WEP", "WEP");
+	}
+	else if (document.wireless_apcli.apcli_mode.options.selectedIndex == 2 ||
+		 document.wireless_apcli.apcli_mode.options.selectedIndex == 3) {
+		mysel.options[0] = new Option("TKIP", "TKIP");
+		mysel.options[1] = new Option("AES", "AES");
+	}
+}
+
+function EncryptModeSwitch()
+{
+	display("none", "div_apcli_default_key");
+	document.wireless_apcli.apcli_default_key.disabled = true;
+	display("none", "div_apcli_key1");
+	document.wireless_apcli.apcli_key1.disabled = true;
+	display("none", "div_apcli_key2");
+	document.wireless_apcli.apcli_key2.disabled = true;
+	display("none", "div_apcli_key3");
+	document.wireless_apcli.apcli_key3.disabled = true;
+	display("none", "div_apcli_key4");
+	document.wireless_apcli.apcli_key4.disabled = true;
+	display("none", "div_apcli_wpapsk");
+	document.wireless_apcli.apcli_wpapsk.disabled = true;
+
+	if (document.wireless_apcli.apcli_enc.value == "WEP") {
+		display("table-row", "div_apcli_default_key");
+		document.wireless_apcli.apcli_default_key.disabled = false;
+		display("table-row", "div_apcli_key1");
+		document.wireless_apcli.apcli_key1.disabled = false;
+		display("table-row", "div_apcli_key2");
+		document.wireless_apcli.apcli_key2.disabled = false;
+		display("table-row", "div_apcli_key3");
+		document.wireless_apcli.apcli_key3.disabled = false;
+		display("table-row", "div_apcli_key4");
+		document.wireless_apcli.apcli_key4.disabled = false;
+	}
+	else if (document.wireless_apcli.apcli_enc.value == "TKIP" ||
+		 document.wireless_apcli.apcli_enc.value == "AES") {
+		display("table-row", "div_apcli_wpapsk");
+		document.wireless_apcli.apcli_wpapsk.disabled = false;
+	}
+}
+
+function initSSIDList()
+{
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID1"-->") != "")
+	{
+		SSID[0] = str;
+	}
+
+	if((dbdc_enabled != "1") || (dbdcb != "1"))
+	{
+		SSID.splice(1, SSID.length - 1);
+		return;
+	}
+
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID2"-->") != "")
+	{
+		SSID[1] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID3"-->") != "")
+	{
+		SSID[2] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID4"-->") != "")
+	{
+		SSID[3] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID5"-->") != "")
+	{
+		SSID[4] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID6"-->") != "")
+	{
+		SSID[5] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID7"-->") != "")
+	{
+		SSID[6] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID8"-->") != "")
+	{
+		SSID[7] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID9"-->") != "")
+	{
+		SSID[8] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID10"-->") != "")
+	{
+		SSID[9] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID11"-->") != "")
+	{
+		SSID[10] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID12"-->") != "")
+	{
+		SSID[11] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID13"-->") != "")
+	{
+		SSID[12] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID14"-->") != "")
+	{
+		SSID[13] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID15"-->") != "")
+	{
+		SSID[14] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID16"-->") != "")
+	{
+		SSID[15] = str;
+	}
+}
+
+function UpdateMBSSIDList()
+{
+
+	for (var i = document.wireless_apcli.ssidIndex.length; i > 1; i--) 
+	{
+		var res = document.wireless_apcli.ssidIndex.remove(i-1);
+	}
+	document.wireless_apcli.ssidIndex.length = 0;
+
+	for(var i=0; i<SSID.length; i++){
+		//var j = document.wireless_apcli.ssidIndex.options.length;
+		//document.wireless_apcli.ssidIndex.options[j] = new Option(SSID[i], i, false, false);
+		document.wireless_apcli.ssidIndex.options[i] = new Option(SSID[i], i, false, false);
+	}
+	
+	var binding_ssid = "<!--#exec cmd="web 2860 nvram ApcliDBDCSsidId"-->";
+	var binding_ssid_array = new Array();
+	var apcliId = document.wireless_apcli.apcliIndex.value;
+	var selectId = 0;
+console.log("apcliId="+apcliId);
+
+	if (binding_ssid.length > 0)
+		binding_ssid_array = binding_ssid.split(";");
+	else
+		binding_ssid_array = [0, 1]; //default value of DBDC mode apcli.
+
+	selectId = binding_ssid_array[apcliId];
+	if ((selectId > 0) && (selectId < 16)) {
+		document.wireless_apcli.ssidIndex.options.selectedIndex = selectId;
+	}
+
+	if ((dbdc_enabled == "1") && (dbdcb == "1")){
+		display("table-row","div_ssid_choice");
+		display("block", "apcli_dbdc_intro");
+		document.wireless_apcli.ssidIndex.disabled = false;
+	} else {
+		display("none", "div_ssid_choice");
+		display("none", "apcli_dbdc_intro");
+		document.wireless_apcli.ssidIndex.disabled = true;
+	}
+}
+
+/*
+ * Must be called anywhere after initSSIDList() is called.
+ */
+function dbdc_ap_configured()
+{
+	var dbdc_check_ret;
+	str = "<!--#exec cmd="web 2860 nvram WirelessMode"-->";
+	PhyModeList = str.split(";");
+
+	console.log("SSID["+SSID.length+"] vs WirelessMode["+PhyModeList.length+"]");
+	if (SSID.length < 2)
+		alert("[Warning] There are 1 DBDC AP SSID. Please configure equal or more then 2 DBDC AP SSID settings before enableing DBDC AP Client settings.");
+
+	if (SSID.length != PhyModeList.length){
+		dbdc_check_ret = -1;
+	} else {
+		for(var i = 0; i < PhyModeList.length; i++){
+			if(PhyModeList[i] == "")
+				dbdc_check_ret = -2;
+		}
+	}
+	if (dbdc_check_ret == -1)
+		alert("[Error] There are "+ SSID.length + " DBDC AP SSIDs, but only " + PhyModeList.length
+		+ " of them are configured. Please complete all DBDC AP SSID settings before configure DBDC AP Client settings.");
+	else if (dbdc_check_ret == -2)
+		alert("[Error] Not all DBDC AP SSID settings are configured. Please complete all DBDC AP SSID settings before configure DBDC AP Client settings.");
+
+	return dbdc_check_ret;
+}
+
+function initValue()
+{
+	if ((dbdc_enabled == "1") && (dbdcb == "1")){
+		var apcliId = document.wireless_apcli.apcliIndex.value;
+		var str = "";
+		var val = new Array();
+
+		str = "<!--#exec cmd="web 2860 nvram ApCliSsid"-->";
+		val = str.split(";");
+		if (val.length > apcliId)
+			document.wireless_apcli.apcli_ssid.value = val[apcliId];
+		else
+			document.wireless_apcli.apcli_ssid.value = "";
+
+		str = "<!--#exec cmd="web 2860 nvram ApCliBssid"-->"; 
+		val = str.split(";");
+		if (val.length > apcliId)
+			document.wireless_apcli.apcli_bssid.value = val[apcliId];
+		else
+			document.wireless_apcli.apcli_bssid.value = "";
+
+		if (apcliId == 0){
+			document.wireless_apcli.apcli_key1.value = "<!--#exec cmd="web 2860 nvram ApCliKey1Str"-->";
+			document.wireless_apcli.apcli_key2.value = "<!--#exec cmd="web 2860 nvram ApCliKey2Str"-->";
+			document.wireless_apcli.apcli_key3.value = "<!--#exec cmd="web 2860 nvram ApCliKey3Str"-->";
+			document.wireless_apcli.apcli_key4.value = "<!--#exec cmd="web 2860 nvram ApCliKey4Str"-->";
+		} else if (apcliId == 1) {
+			document.wireless_apcli.apcli_key1.value = "<!--#exec cmd="web 2860 nvram ApCliKey1Str1"-->";
+			document.wireless_apcli.apcli_key2.value = "<!--#exec cmd="web 2860 nvram ApCliKey2Str1"-->";
+			document.wireless_apcli.apcli_key3.value = "<!--#exec cmd="web 2860 nvram ApCliKey3Str1"-->";
+			document.wireless_apcli.apcli_key4.value = "<!--#exec cmd="web 2860 nvram ApCliKey4Str1"-->";
+		} else if (apcliId == 2) {
+			document.wireless_apcli.apcli_key1.value = "<!--#exec cmd="web 2860 nvram ApCliKey1Str2"-->";
+			document.wireless_apcli.apcli_key2.value = "<!--#exec cmd="web 2860 nvram ApCliKey2Str2"-->";
+			document.wireless_apcli.apcli_key3.value = "<!--#exec cmd="web 2860 nvram ApCliKey3Str2"-->";
+			document.wireless_apcli.apcli_key4.value = "<!--#exec cmd="web 2860 nvram ApCliKey4Str2"-->";
+		} else {
+			document.wireless_apcli.apcli_key1.value = "<!--#exec cmd="web 2860 nvram ApCliKey1Str"-->";
+			document.wireless_apcli.apcli_key2.value = "<!--#exec cmd="web 2860 nvram ApCliKey2Str"-->";
+			document.wireless_apcli.apcli_key3.value = "<!--#exec cmd="web 2860 nvram ApCliKey3Str"-->";
+			document.wireless_apcli.apcli_key4.value = "<!--#exec cmd="web 2860 nvram ApCliKey4Str"-->";
+		}
+
+		str = "<!--#exec cmd="web 2860 nvram MACRepeaterEn"-->";
+		val = str.split(";");
+		console.log("val[" + apcliId + "]=" + val[apcliId]);
+		if (val.length > apcliId){ 
+			if (val[apcliId] > 0){
+				document.wireless_apcli.mac_repeater[1].checked = true;
+				console.log("mac_repeater[1]="+val[apcliId]);
+			} else {
+				document.wireless_apcli.mac_repeater[0].checked = true;
+				console.log("mac_repeater[1]="+val[apcliId]);
+			}
+		} else {
+			if (val[0] > 0){
+				document.wireless_apcli.mac_repeater[1].checked = true;
+				console.log("mac_repeater[1.0]="+val[1]);
+			} else {
+				document.wireless_apcli.mac_repeater[0].checked = true;
+				console.log("mac_repeater[0]="+val[0]);
+			}
+		}
+		
+
+		str = "<!--#exec cmd="web 2860 nvram ApCliAuthMode"-->";
+		val = str.split(";");
+		if (val.length > apcliId)
+			mode = val[apcliId];
+		else
+			mode = "OPEN";
+		if (mode == "SHARED")
+			document.wireless_apcli.apcli_mode.options.selectedIndex = 1;
+		else if (mode == "WPAPSK")
+			document.wireless_apcli.apcli_mode.options.selectedIndex = 2;
+		else if (mode == "WPA2PSK")
+			document.wireless_apcli.apcli_mode.options.selectedIndex = 3;
+		else
+			document.wireless_apcli.apcli_mode.options.selectedIndex = 0;
+	
+		SecurityModeSwitch(); //TODO need check
+
+		str ="<!--#exec cmd="web 2860 nvram ApCliEncrypType"-->";
+		val = str.split(";");
+		if (val.length > apcliId)
+			enc = val[apcliId];
+		else
+			enc = "NONE";
+		if (enc == "WEP")
+			document.wireless_apcli.apcli_enc.options.selectedIndex = 0;
+		else if (enc == "TKIP")
+			document.wireless_apcli.apcli_enc.options.selectedIndex = 0;
+		else if (enc == "AES")
+			document.wireless_apcli.apcli_enc.options.selectedIndex = 1;
+		else
+			document.wireless_apcli.apcli_enc.options.selectedIndex = 1;
+		EncryptModeSwitch();
+
+		str = "<!--#exec cmd="web 2860 nvram ApCliDefaultKeyID"-->";
+		val = str.split(";");
+		if (val.length > apcliId)
+			keyid = val[apcliId];
+		else
+			keyid = 1;
+
+		str = "<!--#exec cmd="web 2860 nvram ApCliKey1Type"-->";
+		val = str.split(";");
+		if (val.length > apcliId)
+			key1type = val[apcliId];
+		else
+			key1type = 1;
+		str = "<!--#exec cmd="web 2860 nvram ApCliKey2Type"-->";
+		val = str.split(";");
+		if (val.length > apcliId)
+			key2type = val[apcliId];
+		else
+			key2type = 1;
+		str = "<!--#exec cmd="web 2860 nvram ApCliKey3Type"-->";
+		val = str.split(";");
+		if (val.length > apcliId)
+			key3type = val[apcliId];
+		else
+			key3type = 1;
+		str = "<!--#exec cmd="web 2860 nvram ApCliKey4Type"-->";
+		val = str.split(";");
+		if (val.length > apcliId)
+			key4type = val[apcliId];
+		else
+			key4type = 1;
+
+		if (enc == "WEP") {
+			document.wireless_apcli.apcli_default_key.options.selectedIndex = 1*keyid-1;
+			if (key1type == "1")
+				document.wireless_apcli.apcli_key1type.options.selectedIndex = 0;
+			else
+				document.wireless_apcli.apcli_key1type.options.selectedIndex = 1;
+			if (key2type == "1")
+				document.wireless_apcli.apcli_key2type.options.selectedIndex = 0;
+			else
+				document.wireless_apcli.apcli_key2type.options.selectedIndex = 1;
+			if (key3type == "1")
+				document.wireless_apcli.apcli_key3type.options.selectedIndex = 0;
+			else
+				document.wireless_apcli.apcli_key3type.options.selectedIndex = 1;
+			if (key4type == "1")
+				document.wireless_apcli.apcli_key4type.options.selectedIndex = 0;
+			else
+				document.wireless_apcli.apcli_key4type.options.selectedIndex = 1;
+		} else if (enc == "TKIP" || enc == "AES") {
+			if (apcliId == 0)
+				document.wireless_apcli.apcli_wpapsk.value = "<!--#exec cmd="web 2860 nvram ApCliWPAPSK"-->";
+			else if (apcliId == 1) 
+				document.wireless_apcli.apcli_wpapsk.value = "<!--#exec cmd="web 2860 nvram ApCliWPAPSK1"-->";
+			else if (apcliId == 2) 
+				document.wireless_apcli.apcli_wpapsk.value = "<!--#exec cmd="web 2860 nvram ApCliWPAPSK2"-->";
+			else
+				document.wireless_apcli.apcli_wpapsk.value = "<!--#exec cmd="web 2860 nvram ApCliWPAPSK"-->";
+		}
+
+		initSSIDList();
+		UpdateMBSSIDList();		
+
+		dbdc_ap_configured();
+	} else {
+		display("none", "div_ssid_choice");
+		display("none", "apcli_dbdc_intro");
+		document.wireless_apcli.ssidIndex.disabled = true;
+	
+		document.wireless_apcli.apcli_ssid.value = "<!--#exec cmd="web 2860 nvram ApCliSsid"-->";
+		document.wireless_apcli.apcli_bssid.value = "<!--#exec cmd="web 2860 nvram ApCliBssid"-->";
+		document.wireless_apcli.apcli_key1.value = "<!--#exec cmd="web 2860 nvram ApCliKey1Str"-->";
+		document.wireless_apcli.apcli_key2.value = "<!--#exec cmd="web 2860 nvram ApCliKey2Str"-->";
+		document.wireless_apcli.apcli_key3.value = "<!--#exec cmd="web 2860 nvram ApCliKey3Str"-->";
+		document.wireless_apcli.apcli_key4.value = "<!--#exec cmd="web 2860 nvram ApCliKey4Str"-->";
+		if (mode == "SHARED")
+			document.wireless_apcli.apcli_mode.options.selectedIndex = 1;
+		else if (mode == "WPAPSK")
+			document.wireless_apcli.apcli_mode.options.selectedIndex = 2;
+		else if (mode == "WPA2PSK")
+			document.wireless_apcli.apcli_mode.options.selectedIndex = 3;
+		else
+			document.wireless_apcli.apcli_mode.options.selectedIndex = 0;
+	
+		SecurityModeSwitch();
+		if (enc == "WEP")
+			document.wireless_apcli.apcli_enc.options.selectedIndex = 0;
+		else if (enc == "TKIP")
+			document.wireless_apcli.apcli_enc.options.selectedIndex = 0;
+		else if (enc == "AES")
+			document.wireless_apcli.apcli_enc.options.selectedIndex = 1;
+		else
+			document.wireless_apcli.apcli_enc.options.selectedIndex = 1;
+		EncryptModeSwitch();
+		if (enc == "WEP") {
+			document.wireless_apcli.apcli_default_key.options.selectedIndex = 1*keyid-1;
+			if (key1type == "1")
+				document.wireless_apcli.apcli_key1type.options.selectedIndex = 0;
+			else
+				document.wireless_apcli.apcli_key1type.options.selectedIndex = 1;
+			if (key2type == "1")
+				document.wireless_apcli.apcli_key2type.options.selectedIndex = 0;
+			else
+				document.wireless_apcli.apcli_key2type.options.selectedIndex = 1;
+			if (key3type == "1")
+				document.wireless_apcli.apcli_key3type.options.selectedIndex = 0;
+			else
+				document.wireless_apcli.apcli_key3type.options.selectedIndex = 1;
+			if (key4type == "1")
+				document.wireless_apcli.apcli_key4type.options.selectedIndex = 0;
+			else
+				document.wireless_apcli.apcli_key4type.options.selectedIndex = 1;
+		} else if (enc == "TKIP" || enc == "AES") {
+			document.wireless_apcli.apcli_wpapsk.value = "<!--#exec cmd="web 2860 nvram ApCliWPAPSK"-->";
+		}
+
+		var mac_repeater = "<!--#exec cmd="web 2860 nvram MACRepeaterEn"-->";
+		if (mac_repeater == "1")
+			document.wireless_apcli.mac_repeater[1].checked = true;
+		else
+			document.wireless_apcli.mac_repeater[0].checked = true;
+	}
+
+}
+
+function CheckHex(str)
+{
+	var len = str.length;
+
+	for (var i = 0; i < str.length; i++) {
+		if ((str.charAt(i) >= '0' && str.charAt(i) <= '9') ||
+				(str.charAt(i) >= 'a' && str.charAt(i) <= 'f') ||
+				(str.charAt(i) >= 'A' && str.charAt(i) <= 'F')) {
+			continue;
+		}
+		else
+			return false;
+	}
+	return true;
+}
+
+function CheckInjection(str)
+{
+	var len = str.length;
+	for (var i = 0; i < str.length; i++) {
+		if (str.charAt(i) == ';' || str.charAt(i) == ',' ||
+				str.charAt(i) == '\r' || str.charAt(i) == '\n') {
+			return false;
+		}
+		else
+			continue;
+	}
+	return true;
+}
+
+function CheckWep()
+{
+	var defaultid = 1*document.wireless_apcli.apcli_default_key.value;
+	if (document.wireless_apcli.apcli_enc.value == "WEP") {
+		if (eval("document.wireless_apcli.apcli_key"+defaultid).value.length == 0) {
+			alert('Please input wep key'+defaultid+'!');
+			eval("document.wireless_apcli.apcli_key"+defaultid).focus();
+			return false;
+		}
+	}
+
+	if (document.wireless_apcli.apcli_key1type.options.selectedIndex == 0) {
+		for (var i = 1; i < 5; i++) {
+			var mykey = eval("document.wireless_apcli.apcli_key"+i);
+			if (mykey.value.length != 0 && mykey.value.length != 5 && mykey.value.length != 13) {
+				alert('Please input 5 or 13 characters of wep key'+i);
+				mykey.focus();
+				return false;
+			}
+			if (!CheckInjection(mykey.value)) {
+				alert('Wep key'+i+' contains invalid characters!');
+				mykey.focus();
+				return false;
+			}
+		}
+	}
+	else {
+		for (var i = 1; i < 5; i++) {
+			var mykey = eval("document.wireless_apcli.apcli_key"+i);
+			if (mykey.value.length != 0 && mykey.value.length != 10 && mykey.value.length != 26) {
+				alert('Please input 10 or 26 characters of wep key'+i);
+				mykey.focus();
+				return false;
+			}
+			if (!CheckHex(wireless_apcli.apcli_key1.value)) {
+				alert('Invalid Wep key'+i+' format!');
+				mykey.focus();
+				return false;
+			}
+		}
+	}
+}
+
+function CheckWpa()
+{
+	if (document.wireless_apcli.apcli_wpapsk.value.length < 8) {
+		alert("Pass Phrase length should be larger than 8!");
+		document.wireless_apcli.apcli_wpapsk.focus();
+		return false;
+	}
+	if (!CheckInjection(document.wireless_apcli.apcli_wpapsk.value)) {
+		alert('Invalid characters in Pass Phrase.');
+		document.wireless_apcli.apcli_wpapsk.focus();
+		return false;
+	}
+	return true;
+}
+
+function CheckValue()
+{
+	if ((dbdc_enabled == "1") && (dbdcb == "1") && (dbdc_ap_configured() < 0)){
+		return false;
+	}
+
+	if (document.wireless_apcli.apcli_ssid.value == '') {
+		alert('empty SSID!');
+		document.wireless_apcli.apcli_ssid.focus(); 
+		return false;
+	}
+
+	if (document.wireless_apcli.apcli_bssid.value != '') {
+		var re = /[A-Fa-f0-9]{2}:[A-Fa-f0-9]{2}:[A-Fa-f0-9]{2}:[A-Fa-f0-9]{2}:[A-Fa-f0-9]{2}:[A-Fa-f0-9]{2}/;
+		if (!re.test(document.wireless_apcli.apcli_bssid.value)) {
+			alert("BSSID format error!");
+			document.wireless_apcli.apcli_bssid.focus(); 
+			return false;
+		}
+	}
+
+	if (document.wireless_apcli.apcli_mode.options.selectedIndex == 0)
+		return CheckWep();
+	else if (document.wireless_apcli.apcli_mode.options.selectedIndex == 1)
+		return CheckWep();
+	else if (document.wireless_apcli.apcli_mode.options.selectedIndex == 2)
+		return CheckWpa();
+	else if (document.wireless_apcli.apcli_mode.options.selectedIndex == 3)
+		return CheckWpa();
+	else {
+		alert('Unknown Security Mode!');
+		return false;
+	}
+}
+</script>
+
+<body onLoad="initValue()">
+<table class="body"><tr><td>
+
+<h1>AP Client Feature</h1>
+<p>You could configure AP Client parameters here.</p>
+<p id="apcli_dbdc_intro" >AP client is bound to one of AP settings when DBDC is on.</p>
+<hr />
+
+<form method=post name=wireless_apcli action="/cgi-bin/wireless.cgi" onSubmit="return CheckValue()">
+<input type="hidden" name="page" value="apclient">
+<input type="hidden" name="wlan_conf" value="2860">
+<input type="hidden" name="apcliIndex" value="1">
+<table width="540" border="1" cellspacing="1" cellpadding="3" bordercolor="#9BABBD">
+  <tr> 
+    <td class="title" colspan="3">AP Client Parameters</td>
+  </tr>
+  <tr id="div_ssid_choice">
+    <td  class="head" colspan="2" id="ssidBinding">AP SSID Binding</td>
+    <td>
+      <select name="ssidIndex" size="1">
+	<!-- ....Javascript will update options.... -->
+      </select>
+    </td>
+  </tr>
+  <tr> 
+    <td class="head" colspan="2">SSID</td>
+    <td><input type=text name="apcli_ssid" size=20 maxlength=32 value=""></td>
+  </tr>
+  <tr> 
+    <td class="head" colspan="2">MAC Address (Optional)</td>
+    <td><input type=text name="apcli_bssid" size=20 maxlength=17 value=""></td>
+  </tr>
+  <tr> 
+    <td class="head" colspan="2">Security Mode</td>
+    <td>
+      <select name="apcli_mode" id="apcli_mode" size="1" onchange="SecurityModeSwitch(); EncryptModeSwitch();">
+	<option value="OPEN">OPEN</option>
+	<option value="SHARED">SHARED</option>
+	<option value="WPAPSK">WPAPSK</option>
+	<option value="WPA2PSK">WPA2PSK</option>
+      </select>
+    </td>
+  </tr>
+  <tr id="div_apcli_enc">
+    <td class="head" colspan="2">Encryption Type</td>
+    <td>
+      <select name="apcli_enc" id="apcli_enc" size="1" onchange="EncryptModeSwitch()">
+      </select>
+    </td>
+  </tr>
+  <tr id="div_apcli_default_key">
+    <td class="head" colspan="2">WEP Default Key</td>
+    <td>
+      <select name="apcli_default_key" id="apcli_default_key" size="1">
+	<option value="1">Key 1</option>
+	<option value="2">Key 2</option>
+	<option value="3">Key 3</option>
+	<option value="4">Key 4</option>
+      </select>
+    </td>
+  </tr>
+  <tr id="div_apcli_key1">
+    <td class="head1" rowspan="4">WEP Keys</td>
+    <td class="head2">WEP Key 1 :</td>
+    <td>
+      <input name="apcli_key1" id="apcli_key1" maxlength="26" value="">
+      <select id="apcli_key1type" name="apcli_key1type"> 
+        <option value="1">ASCII</option>
+	<option value="0">Hex</option>
+      </select>
+    </td>
+  </tr>
+  <tr id="div_apcli_key2">
+    <td class="head2">WEP Key 2 :</td>
+    <td>
+      <input name="apcli_key2" id="apcli_key2" maxlength="26" value="">
+      <select id="apcli_key2type" name="apcli_key2type"> 
+        <option value="1">ASCII</option>
+	<option value="0">Hex</option>
+      </select>
+    </td>
+  </tr>
+  <tr id="div_apcli_key3">
+    <td class="head2">WEP Key 3 :</td>
+    <td>
+      <input name="apcli_key3" id="apcli_key3" maxlength="26" value="">
+      <select id="apcli_key3type" name="apcli_key3type"> 
+        <option value="1">ASCII</option>
+	<option value="0">Hex</option>
+      </select>
+    </td>
+  </tr>
+  <tr id="div_apcli_key4">
+    <td class="head2">WEP Key 4 :</td>
+    <td>
+      <input name="apcli_key4" id="apcli_key4" maxlength="26" value="">
+      <select id="apcli_key4type" name="apcli_key4type"> 
+        <option value="1">ASCII</option>
+	<option value="0">Hex</option>
+      </select>
+    </td>
+  </tr>
+  <tr id="div_apcli_wpapsk"> 
+    <td class="head" colspan="2">Pass Phrase</td>
+    <td><input type=text name="apcli_wpapsk" size=20 maxlength=64 value=""></td>
+  </tr>
+  <tr> 
+    <td class="head" colspan="2">MAC Repeater</td>
+    <td>
+      <input type="radio" name="mac_repeater" value="0" checked><font id="apcliMACRepeaterEn">Disable&nbsp;</font>
+      <input type="radio" name="mac_repeater" value="1"><font id="apcliMACRepeaterEn">Enable</font>
+    </td>
+  </tr>
+</table>
+
+<table width = "540" border = "0" cellpadding = "2" cellspacing = "1">
+  <tr align="center">
+    <td>
+      <input type="button" style="{width:120px;}" value="Apply" id="ApcliConn" onClick="submit_form(this, 60, submit_buttons, null)"> &nbsp; &nbsp;
+      <input type=reset  style="{width:120px;}" value="Cancel" id="ApcliCancel" onClick="window.location.reload()">
+      <input type=reset  style="{width:120px;}" value="SCAN" id="ApcliSCAN" onClick="window.location.reload()">
+    </td>
+  </tr>
+</table>
+</form>  
+<table width="600" border="1" cellpadding="2" cellspacing="1">
+  <tr> 
+    <td class="title" colspan="10">Site Survey</td>
+  </tr>
+  <tr> 
+    <td class="head" style="width:6%">No</td>
+    <td class="head" style="width:6%">Ch</td>
+    <td class="head">SSID</td>
+    <td class="head">BSSID</td>
+    <td class="head">Security</td>
+    <td class="head">Signal(%)</td>
+    <td class="head">W-Moe</td>
+    <td class="head">ExtCh</td>
+    <td class="head">NT</td>
+    <td class="head">WPS</td>
+  </tr>
+  <!--#exec cmd="web 2860 wifi ApcliScan 1"-->
+</table>
+</td></tr>
+
+<!-- =============================== Waiting info ================================== -->
+<tr><td>
+<table name="div_waiting_img" id="div_waiting_img" width="600" style="visibility: hidden;">
+  <tr align="center"><td id="cooldown_time_text"></td></tr>
+  <tr align="center">
+    <td><img src="/graphics/ajax-loader.gif"></td>
+  </tr>
+</table>
+
+</td></tr></table>
+</body>
+<head>
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="-1">
+</head>
+</html>
+

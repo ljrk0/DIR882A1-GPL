@@ -1,0 +1,121 @@
+2017-03-27 09:36:01 main 4370 Self-Defined Prefix indicated : SelfDefinedPrefix=X_BC0304_
+2017-03-27 09:36:01 main 4366 db version specified : dbVersion[DataModel.xls,20063] => excelFile=DataModel.xls dbVersion=20063
+2017-03-27 09:36:01 main 4366 db version specified : dbVersion[FwcmdModel.xls,19529] => excelFile=FwcmdModel.xls dbVersion=19529
+2017-03-27 09:36:01 main 4366 db version specified : dbVersion[InternalModel.xls,20124] => excelFile=InternalModel.xls dbVersion=20124
+2017-03-27 09:36:01 main 4366 db version specified : dbVersion[PmFileModel.xls,17971] => excelFile=PmFileModel.xls dbVersion=17971
+2017-03-27 09:36:01 main 4366 db version specified : dbVersion[SonDataModel.xls,19371] => excelFile=SonDataModel.xls dbVersion=19371
+2017-03-27 09:36:01 main 4366 db version specified : dbVersion[TraceMdtModel.xls,18892] => excelFile=TraceMdtModel.xls dbVersion=18892
+2017-03-27 09:36:01 main 4361 excel file specified at /home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/DataModel.xls
+2017-03-27 09:36:01 main 4361 excel file specified at /home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/FwcmdModel.xls
+2017-03-27 09:36:01 main 4361 excel file specified at /home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/InternalModel.xls
+2017-03-27 09:36:01 main 4361 excel file specified at /home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/PmFileModel.xls
+2017-03-27 09:36:01 main 4361 excel file specified at /home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/SonDataModel.xls
+2017-03-27 09:36:01 main 4361 excel file specified at /home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/TraceMdtModel.xls
+2017-03-27 09:36:01 printConfig 101 -------------- configuration ------------
+2017-03-27 09:36:01 printConfig 102 : [Tool]
+2017-03-27 09:36:01 printConfig 103 :    ExcelFileDir=['/home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/DataModel.xls', '/home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/FwcmdModel.xls', '/home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/InternalModel.xls', '/home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/PmFileModel.xls', '/home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/SonDataModel.xls', '/home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/TraceMdtModel.xls']
+2017-03-27 09:36:01 printConfig 104 :    CommonSrcDir=../../../
+2017-03-27 09:36:01 printConfig 105 :    ResultSrcDir=../../
+2017-03-27 09:36:01 printConfig 106 :    ResultDbLibDir=../../lib/
+2017-03-27 09:36:01 printConfig 107 :    XmlWithComment=No
+2017-03-27 09:36:01 printConfig 108 : 
+2017-03-27 09:36:01 printConfig 109 : [Db]
+2017-03-27 09:36:01 printConfig 110 :    SelfDefinedPrefix=X_BC0304_
+2017-03-27 09:36:01 printConfig 111 :    WorkingDir=./
+2017-03-27 09:36:01 printConfig 112 :    LoadingDir=./
+2017-03-27 09:36:01 printConfig 113 :    BackupDir=./
+2017-03-27 09:36:01 printConfig 114 :    MappingXmlDir=./
+2017-03-27 09:36:01 printConfig 115 -------------- configuration ------------
+2017-03-27 09:36:01 main 4411 rm -rf ../../..//dm_lib/db_*
+2017-03-27 09:36:01 main 4435 : parsing single file /home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/DataModel.xls
+2017-03-27 09:36:01 __init__ 3941 : excelFilePath=/home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/DataModel.xls
+2017-03-27 09:36:02 main 4453 DataModel.xls : external dbFileVersion '20063'
+2017-03-27 09:36:02 __init__ 731 dbname : Device
+2017-03-27 09:36:02 parseModule 234 column length is 51
+2017-03-27 09:36:02 __init__ 765 Device VendorDataModelVersion value changed to 20063
+2017-03-27 09:36:02 __init__ 772 final dbVersion : 20063
+2017-03-27 09:36:02 __init__ 783 maxIndex : 3773
+2017-03-27 09:36:07 genIncludeFile 1240 writing ../..//db_device/inc/device_model_def.h
+2017-03-27 09:36:08 genPatternFile 1667 writing ../..//db_device/src/device_model_pattern.c
+2017-03-27 09:36:08 genRegisterGetHandleFile 2164 writing ../..//db_cbs/tm/tm_device_register_get_handler.c
+2017-03-27 09:36:08 genRegisterGetHandleFile 2164 writing ../..//db_cbs/scm/scm_device_register_get_handler.c
+2017-03-27 09:36:08 genRegisterGetHandleFile 2164 writing ../..//db_cbs/dmm/dmm_device_register_get_handler.c
+2017-03-27 09:36:08 genRegisterGetHandleFile 2164 writing ../..//db_cbs/sm/sm_device_register_get_handler.c
+2017-03-27 09:36:08 genRegisterGetHandleFile 2164 writing ../..//db_cbs/pm/pm_device_register_get_handler.c
+2017-03-27 09:36:08 genRegisterGetHandleFile 2164 writing ../..//db_cbs/tr069/tr069_device_register_get_handler.c
+2017-03-27 09:36:08 genRegisterGetHandleFile 2164 writing ../..//db_cbs/ps/ps_device_register_get_handler.c
+2017-03-27 09:36:08 genRegisterNotifyHandleFile 2389 writing ../..//db_cbs/scm/scm_device_register_notify_handler.c
+2017-03-27 09:36:08 genRegisterNotifyHandleFile 2389 writing ../..//db_cbs/dmm/dmm_device_register_notify_handler.c
+2017-03-27 09:36:08 genRegisterNotifyHandleFile 2389 writing ../..//db_cbs/ema/ema_device_register_notify_handler.c
+2017-03-27 09:36:08 genRegisterNotifyHandleFile 2389 writing ../..//db_cbs/pm/pm_device_register_notify_handler.c
+2017-03-27 09:36:08 genRegisterNotifyHandleFile 2389 writing ../..//db_cbs/fm/fm_device_register_notify_handler.c
+2017-03-27 09:36:08 genRegisterNotifyHandleFile 2389 writing ../..//db_cbs/tm/tm_device_register_notify_handler.c
+2017-03-27 09:36:08 genRegisterNotifyHandleFile 2389 writing ../..//db_cbs/sm/sm_device_register_notify_handler.c
+2017-03-27 09:36:08 genRegisterNotifyHandleFile 2389 writing ../..//db_cbs/tr069/tr069_device_register_notify_handler.c
+2017-03-27 09:36:08 genRegisterNotifyHandleFile 2389 writing ../..//db_cbs/gui/gui_device_register_notify_handler.c
+2017-03-27 09:36:08 genRegisterNotifyHandleFile 2389 writing ../..//db_cbs/ps/ps_device_register_notify_handler.c
+2017-03-27 09:36:08 genDbCbMakeFile 3477 writing ../..//db_cbs/scm//Makefile
+2017-03-27 09:36:08 genDbCbMakeFile 3477 writing ../..//db_cbs/ps//Makefile
+2017-03-27 09:36:08 genDbCbMakeFile 3477 writing ../..//db_cbs/ema//Makefile
+2017-03-27 09:36:08 genDbCbMakeFile 3477 writing ../..//db_cbs/gui//Makefile
+2017-03-27 09:36:08 genDbCbMakeFile 3477 writing ../..//db_cbs/dmm//Makefile
+2017-03-27 09:36:08 genDbCbMakeFile 3477 writing ../..//db_cbs/tm//Makefile
+2017-03-27 09:36:08 genDbCbMakeFile 3477 writing ../..//db_cbs/tr069//Makefile
+2017-03-27 09:36:08 genDbCbMakeFile 3477 writing ../..//db_cbs/sm//Makefile
+2017-03-27 09:36:08 genDbCbMakeFile 3477 writing ../..//db_cbs/fm//Makefile
+2017-03-27 09:36:08 genDbCbMakeFile 3477 writing ../..//db_cbs/pm//Makefile
+2017-03-27 09:36:08 genDbMakeFile 3608 writing ../..//db_device/Makefile
+2017-03-27 09:36:08 main 4435 : parsing single file /home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/FwcmdModel.xls
+2017-03-27 09:36:08 __init__ 3941 : excelFilePath=/home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/FwcmdModel.xls
+2017-03-27 09:36:08 main 4453 FwcmdModel.xls : external dbFileVersion '19529'
+2017-03-27 09:36:08 __init__ 731 dbname : Fwcmd
+2017-03-27 09:36:08 parseModule 234 column length is 39
+2017-03-27 09:36:08 __init__ 783 maxIndex : 21
+2017-03-27 09:36:08 genIncludeFile 1240 writing ../..//db_fwcmd/inc/fwcmd_model_def.h
+2017-03-27 09:36:08 genPatternFile 1667 writing ../..//db_fwcmd/src/fwcmd_model_pattern.c
+2017-03-27 09:36:08 genDbMakeFile 3608 writing ../..//db_fwcmd/Makefile
+2017-03-27 09:36:08 main 4435 : parsing single file /home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/InternalModel.xls
+2017-03-27 09:36:08 __init__ 3941 : excelFilePath=/home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/InternalModel.xls
+2017-03-27 09:36:08 main 4453 InternalModel.xls : external dbFileVersion '20124'
+2017-03-27 09:36:08 __init__ 731 dbname : Internal
+2017-03-27 09:36:08 parseModule 234 column length is 40
+2017-03-27 09:36:08 __init__ 765 Internal VendorDataModelVersion value changed to 20124
+2017-03-27 09:36:08 __init__ 772 final dbVersion : 20124
+2017-03-27 09:36:08 __init__ 783 maxIndex : 173
+2017-03-27 09:36:08 genIncludeFile 1240 writing ../..//db_internal/inc/internal_model_def.h
+2017-03-27 09:36:08 genPatternFile 1667 writing ../..//db_internal/src/internal_model_pattern.c
+2017-03-27 09:36:08 genRegisterNotifyHandleFile 2389 writing ../..//db_cbs/sm/sm_internal_register_notify_handler.c
+2017-03-27 09:36:08 genRegisterNotifyHandleFile 2389 writing ../..//db_cbs/gui/gui_internal_register_notify_handler.c
+2017-03-27 09:36:08 genDbMakeFile 3608 writing ../..//db_internal/Makefile
+2017-03-27 09:36:08 main 4435 : parsing single file /home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/PmFileModel.xls
+2017-03-27 09:36:08 __init__ 3941 : excelFilePath=/home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/PmFileModel.xls
+2017-03-27 09:36:08 main 4453 PmFileModel.xls : external dbFileVersion '17971'
+2017-03-27 09:36:08 __init__ 731 dbname : measCollecFile
+2017-03-27 09:36:08 parseModule 234 column length is 39
+2017-03-27 09:36:08 __init__ 783 maxIndex : 14
+2017-03-27 09:36:08 genIncludeFile 1240 writing ../..//db_meascollecfile/inc/meascollecfile_model_def.h
+2017-03-27 09:36:08 genPatternFile 1667 writing ../..//db_meascollecfile/src/meascollecfile_model_pattern.c
+2017-03-27 09:36:08 genDbMakeFile 3608 writing ../..//db_meascollecfile/Makefile
+2017-03-27 09:36:08 main 4435 : parsing single file /home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/SonDataModel.xls
+2017-03-27 09:36:08 __init__ 3941 : excelFilePath=/home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/SonDataModel.xls
+2017-03-27 09:36:08 main 4453 SonDataModel.xls : external dbFileVersion '19371'
+2017-03-27 09:36:08 __init__ 731 dbname : SON_DM
+2017-03-27 09:36:08 parseModule 234 column length is 49
+2017-03-27 09:36:08 __init__ 765 SON_DM VendorDataModelVersion value changed to 19371
+2017-03-27 09:36:08 __init__ 772 final dbVersion : 19371
+2017-03-27 09:36:08 __init__ 783 maxIndex : 102
+2017-03-27 09:36:08 genIncludeFile 1240 writing ../..//db_son_dm/inc/son_dm_model_def.h
+2017-03-27 09:36:08 genPatternFile 1667 writing ../..//db_son_dm/src/son_dm_model_pattern.c
+2017-03-27 09:36:08 genRegisterNotifyHandleFile 2389 writing ../..//db_cbs/ps/ps_son_dm_register_notify_handler.c
+2017-03-27 09:36:08 genDbMakeFile 3608 writing ../..//db_son_dm/Makefile
+2017-03-27 09:36:08 main 4435 : parsing single file /home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/TraceMdtModel.xls
+2017-03-27 09:36:08 __init__ 3941 : excelFilePath=/home/wangwuzhi/dir882h/trunk/source/user/tr69c_with_dm/01.common/dm_lib/_script/excel_files/TraceMdtModel.xls
+2017-03-27 09:36:08 main 4453 TraceMdtModel.xls : external dbFileVersion '18892'
+2017-03-27 09:36:08 __init__ 731 dbname : traceCollecFile
+2017-03-27 09:36:08 parseModule 234 column length is 39
+2017-03-27 09:36:08 __init__ 783 maxIndex : 9
+2017-03-27 09:36:08 genIncludeFile 1240 writing ../..//db_tracecollecfile/inc/tracecollecfile_model_def.h
+2017-03-27 09:36:08 genPatternFile 1667 writing ../..//db_tracecollecfile/src/tracecollecfile_model_pattern.c
+2017-03-27 09:36:08 genDbMakeFile 3608 writing ../..//db_tracecollecfile/Makefile
+2017-03-27 09:36:08 main 4483 : dm_selfdefined.h genenrated...
+2017-03-27 09:36:08 main 4485 : generating data model source code finished

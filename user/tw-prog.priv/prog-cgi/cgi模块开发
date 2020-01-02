@@ -1,0 +1,43 @@
+1.编译cgi：
+make user/tw-prog.priv/prog-cgi/src_only 
+添加prog-cgi的代码到项目中，cgi模块代码位于modules/目录下
+
+2、以lan为例：
+打开modules/Network.c，进到ModuleInitNetwork函数，注册页面获取数据Form表单钩子，设置Form表单钩子
+	websFormDefine(T("GetRouterLanSettings"), GetRouterLanSettings);
+	websFormDefine(T("SetRouterLanSettings"), SetRouterLanSettings);
+
+3、编写Get的HNAP接口，GetRouterLanSettings
+	1)调用HTML_hnap_xml_header接口，往buff中加入soap body header
+	2)调用nvram_safe_get获取配置，往buff中加入HNAP 数据
+	3)调用HTML_hnap_xml_tail接口，往buff中加入soap body tail
+	4)调用websGetResponseData接口，把buff加入输出链表，待Form钩子调用完后输出HNAP数据给页面
+
+4、编写Set的HNAP接口，SetRouterLanSettings
+	1)获取页面数据，pUPNP = webGetVarString(wp,T("/SetAdvNetworkSettings/UPNP"));
+	2)有效性检查或冲突检查，如果页面有做后台就不需要再做
+	2)设置nvram配置，nvram_set(RT2860_NVRAM,"lan0_upnp",pUPNP);
+	3)设置返回OK还是ERROR的结果，WebsSetResponseResult(wp,ret);
+	
+	补充：	获取实例节点值api：webGetVarString、webGetVar
+			获取实例个数api：webGetCount
+	
+5、查看cgi进程数据：
+1)找到cgi进程号
+# ps | grep cgi
+  763 admin     4892 S    /etc_ro/lighttpd/www/web/HNAP1/prog.fcgi 
+2)发送信号给cgi，USR1是查看下发POST数据，USR2是查看安全认证临时链表和认证通过链表信息
+# kill -USR1 763
+<wrgac37_dlink.2013gui_dir859>
+        <GetWanSettings></GetWanSettings>
+</wrgac37_dlink.2013gui_dir859>
+# kill -USR2 763
+security.c:authHandler:424:*********** Temp Session ********
+
+6、调试，把prog.cgi下载到var下，把prog.fcgi软链接到/var/prog.cgi
+# cd /etc_ro/lighttpd/www/web/HNAP1/ 
+# ln -sf /var/prog.cgi prog.fcgi 
+# killall lighttpd
+# tftp -gr prog.cgi 192.168.0.26 ; chmod 775 prog.cgi ; 
+# tftp -gr lighttpd.conf 192.168.0.26 ; chmod 775 lighttpd.conf ;
+# /bin/lighttpd -f /var/lighttpd.conf -m /etc_ro/lighttpd/lib  

@@ -1,0 +1,1 @@
+cmd_drivers/net/raeth/raeth.o := /opt/buildroot-gcc463/usr/bin/mipsel-linux-ld  -m elf32ltsmip   -r -o drivers/net/raeth/raeth.o drivers/net/raeth/ra_mac.o drivers/net/raeth/mii_mgr.o drivers/net/raeth/ra_rfrw.o drivers/net/raeth/raether_qdma.o drivers/net/raeth/raether.o 

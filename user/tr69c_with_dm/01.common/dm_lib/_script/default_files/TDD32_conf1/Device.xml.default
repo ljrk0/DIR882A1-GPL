@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Description : The top-level object for a Device.-->
+<Device>
+  <Services>
+    <FAPService>
+      <i1>
+        <Capabilities>
+          <LTE>
+            <DuplexMode>TDDMode</DuplexMode>
+          </LTE>
+        </Capabilities>
+        <AccessMgmt>
+          <LTE>
+            <MaxUEsServed>96</MaxUEsServed>
+            <X_BC0304_MaxUEsActive>32</X_BC0304_MaxUEsActive>
+          </LTE>
+        </AccessMgmt>
+        <CellConfig>
+          <LTE>
+            <RAN>
+              <PHY>
+                <TDDFrame>
+                  <SubFrameAssignment>1</SubFrameAssignment>
+                  <SpecialSubframePatterns>7</SpecialSubframePatterns>
+                </TDDFrame>
+              </PHY>
+              <X_BC0304_RRA>
+                <SrPeriodShort>10</SrPeriodShort>
+                <SrPeriodLong>20</SrPeriodLong>
+                <CqiPeriodShort>10</CqiPeriodShort>
+                <CqiPeriodLong>80</CqiPeriodLong>
+                <SpsInfo>
+                  <DlSpsConfig>
+                    <DlSchedInterval>sf20</DlSchedInterval>
+                  </DlSpsConfig>
+                  <UlSpsConfig>
+                    <UlSchedInterval>sf40</UlSchedInterval>
+                  </UlSpsConfig>
+                </SpsInfo>
+              </X_BC0304_RRA>
+            </RAN>
+          </LTE>
+        </CellConfig>
+      </i1>
+    </FAPService>
+  </Services>
+</Device>

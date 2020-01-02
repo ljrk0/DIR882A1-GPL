@@ -1,0 +1,215 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]
+then
+	echo arg err!
+	echo place input process name!
+	exit 1
+fi
+
+
+pppoe_monitor()
+{
+	
+	
+		nvram get wan_proto|grep -v grep|grep pppoe > /dev/null
+		if [ $? -eq 0 ]
+		then
+		  wan_proto="pppoe"
+		else
+		wan_proto="other"
+		fi
+
+		nvram get pppoe|grep -v grep|grep start > /dev/null
+		if [ $? -eq 0 ]
+		then
+			pppoe="start"
+		else
+			pppoe="stop"
+		fi
+
+		if [ "$wan_proto" = "pppoe" -a "$pppoe" = "start" ]
+		then
+      			
+	   	ps |grep -v grep|grep -v pc_monitor|grep $1  > /dev/null
+		
+			if [ $? -eq 0 ]
+			then
+				echo pppoe run ok > /dev/null 
+			else
+				/sbin/rc restart
+				echo rc restart ok ! > /dev/null
+			fi 
+		else
+			echo "info: $wan_proto $pppoe" > /dev/null
+		fi
+		
+		
+		
+	
+}
+
+pptp_monitor()
+{
+	
+	
+		nvram get wan_proto|grep -v grep|grep pptp > /dev/null
+		if [ $? -eq 0 ]
+		then
+		  wan_proto="pptp"
+		else
+		wan_proto="other"
+		fi
+
+		nvram get pptp|grep -v grep|grep start > /dev/null
+		if [ $? -eq 0 ]
+		then
+			pptp="start"
+		else
+			pptp="stop"
+		fi
+
+		ps |grep -v grep|grep -v pc_monitor|grep pppd > /dev/null
+		if [ $? -eq 0 ]
+		then
+			pppd="start"
+		fi		
+		if [ "$wan_proto" = "pptp" -a "$pptp" = "start" ]
+		then
+      			
+	   	ps |grep -v grep|grep -v pc_monitor|grep $1  > /dev/null
+		
+			if [ $? -eq 0 -a "$pppd" = "start" ]
+			then
+				echo pptp run ok > /dev/null 
+			else
+				/sbin/rc restart
+				echo rc restart ok ! > /dev/null
+			fi 
+		else
+			echo "info: $wan_proto $pptp" > /dev/null
+		fi	
+}
+
+l2tp_monitor()
+{
+	
+	
+		nvram get wan_proto|grep -v grep|grep l2tp > /dev/null
+		if [ $? -eq 0 ]
+		then
+		  wan_proto="l2tp"
+		else
+			wan_proto="other"
+		fi
+
+		nvram get l2tp|grep -v grep|grep start > /dev/null
+		if [ $? -eq 0 ]
+		then
+			l2tp="start"
+		else
+			l2tp="stop"
+		fi
+		
+		ps |grep -v grep|grep -v pc_monitor|grep pppd > /dev/null
+		if [ $? -eq 0 ]
+		then
+			pppd="start"
+		fi	
+		
+		if [ "$wan_proto" = "l2tp" -a "$l2tp" = "start" ]
+		then
+      			
+	   	ps |grep -v grep|grep -v pc_monitor|grep $1  > /dev/null
+	
+			if [ $? -eq 0 -a "$pppd" = "start" ]
+			then
+				echo l2tp run ok > /dev/null 
+			else
+				/sbin/rc restart
+				echo rc restart ok ! > /dev/null
+			fi 
+		else
+			echo "info: $wan_proto $l2tp" > /dev/null
+		fi	
+}
+
+httpd_monitor()
+{
+		nvram get httpd|grep -v grep|grep start > /dev/null
+		if [ $? -eq 0 ]
+		then
+		  httpd="start"
+		else
+			httpd="stop"
+		fi
+		
+		if [ "$httpd" = "start" ]
+		then
+ 			ps |grep -v grep|grep -v pc_monitor|grep $1  > /dev/null
+	
+			if [ $? -eq 0 ]
+			then
+				echo httpd run ok > /dev/null
+			else
+				/sbin/rc restart
+				echo rc restart ok ! > /dev/null
+			fi
+		else
+			echo "info: httpd process $httpd" > /dev/null
+		fi	
+}
+
+pc_daemon_monitor()
+{
+		ps |grep -v grep|grep -v pc_monitor|grep $1  > /dev/null
+	
+		if [ $? -eq 0 ]
+		then
+			echo pc_daemon run ok > /dev/null 
+		else
+			/sbin/pc_daemon
+			echo pc_daemon start ok ! > /dev/null
+		fi 	
+}
+
+
+
+for var in $* ;do
+
+case $var in 
+	"pppd")
+	
+	echo "monitor $var process!" > /dev/null
+	pppoe_monitor $var
+	;;
+	"pptp")
+	
+	echo "monitor $var process!" > /dev/null
+	pptp_monitor $var
+	;;
+	"l2tp")
+	
+	echo "monitor $var process!" > /dev/null
+	l2tp_monitor $var
+	;;	
+	"httpd")
+	
+	echo "monitor $var process!" > /dev/null
+	httpd_monitor $var
+	;;
+	
+	"pc_daemon")
+	
+	echo "monitor $var process!" > /dev/null
+	pc_daemon_monitor $var
+	;;
+	*)
+	echo "the $var process can't be monitored !" 
+	
+	
+esac
+
+done
+
+

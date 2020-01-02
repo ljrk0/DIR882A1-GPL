@@ -1,0 +1,1562 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="../style/normal_ws.css" type="text/css">
+<link href="../examples.css" rel="stylesheet" type="text/css">
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../excanvas.min.js"></script><![endif]-->
+<script language="javascript" type="text/javascript" src="../excanvas.min.js"></script>
+<script language="javascript" type="text/javascript" src="../jquery.js"></script>
+<script language="javascript" type="text/javascript" src="../jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="../parabola.js"></script>
+<script language="javascript" type="text/javascript" src="../jquery.flot.stack.js"></script>
+<script type="text/javascript">
+
+var current_channel="";
+var channel_axis= new Array();
+var sample_data=0;
+var best_channel=1;
+var supported_set="";
+
+var _2G = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+var _5G = [36,40,44,48,52,56,60,64,68,72,76,80,84,88,92,96,100,104,108,112,116,120,124,128,132,136,140,144,149,153,157,161,165,169,173,177,181];
+
+function get_supported_channel_list()
+{
+	//code pasted from advanced tab
+	
+	var wirelessMode = "";
+	var countryRegion;
+	
+	if(sample_data == 1)
+	{
+		if($("#band").val() == "2.4")
+		{
+			wirelessMode=0;
+			countryRegion=2;
+			return ("," + Show_support_channel_list(24,countryRegion) + ",");
+		}
+		else
+		{
+			wirelessMode=2;
+			countryRegion=30;
+			return("," + Show_support_channel_list(5,countryRegion) + ",");
+		}
+		
+	}
+	else
+	{
+		//sample data is off
+		wirelessMode="<!--#exec cmd="web 2860 nvram WirelessMode"-->";
+		if (wirelessMode == 0 || wirelessMode == 1 || wirelessMode == 4 ||
+			wirelessMode == 9 || wirelessMode == 6) 
+		{
+			countryRegion = 1*"<!--#exec cmd="web 2860 nvram CountryRegion"-->";
+			return ("," + Show_support_channel_list(24,countryRegion) + ",");
+			
+		}
+		else if (wirelessMode == 2 || wirelessMode == 8 || wirelessMode == 11 ||
+				wirelessMode == 14 || wirelessMode == 15) 
+		{
+			countryRegion = 1*"<!--#exec cmd="web 2860 nvram CountryRegionABand"-->";
+			return("," + Show_support_channel_list(5,countryRegion) + ",");
+			
+		}
+	}
+}
+
+function Show_support_channel_list(rf_band,countryRegion)
+{
+	var supported_channels=new Array();
+	
+	if (rf_band == 24) {
+		supported_channels[0]="1,2,3,4,5,6,7,8,9,10,11";
+		supported_channels[1]="1,2,3,4,5,6,7,8,9,10,11,12,13";
+		supported_channels[2]="10,11";
+		supported_channels[3]="10,11,12,13";
+		supported_channels[4]="14";
+		supported_channels[5]="1,2,3,4,5,6,7,8,9,10,11,12,13,14";
+		supported_channels[6]="3,4,5,6,7,8,9";
+		supported_channels[7]="5,6,7,8,9,10,11,12,13";
+		supported_channels[8]="1,2,3,4,5,6,7,8,9,10,11";
+		supported_channels[9]="1,2,3,4,5,6,7,8,9,10,11";
+		supported_channels[10]="1,2,3,4,5,6,7,8,9,10,11,12,13,14";
+		
+		/*
+		code pasted from advanced tab
+		document.wireless_advanced.country_region.options[0] = new Option("Ch1~11", "0");
+		document.wireless_advanced.country_region.options[1] = new Option("Ch1~13", "1");
+		document.wireless_advanced.country_region.options[2] = new Option("Ch10~11", "2");
+		document.wireless_advanced.country_region.options[3] = new Option("Ch10~13", "3");
+		document.wireless_advanced.country_region.options[4] = new Option("Ch14", "4");
+		document.wireless_advanced.country_region.options[5] = new Option("Ch1~14", "5");
+		document.wireless_advanced.country_region.options[6] = new Option("Ch3~9", "6");
+		document.wireless_advanced.country_region.options[7] = new Option("Ch5~13", "7");
+		document.wireless_advanced.country_region.options[8] = new Option("Ch1~11", "31");
+		document.wireless_advanced.country_region.options[9] = new Option("Ch1~11", "32");
+		document.wireless_advanced.country_region.options[10] = new Option("Ch1~14", "33");
+		*/
+	} 
+	else if (rf_band == 5) 
+	{
+	
+		supported_channels[0]="36,40,44,48,52,56,60,64,149,153,157,161,165";
+		supported_channels[1]="36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,128,132,136,140";
+		supported_channels[2]="36,40,44,48,52,56,60,64";
+		supported_channels[3]="52,56,60,64,149,153,157,161";
+		supported_channels[4]="149,153,157,161,165";
+		supported_channels[5]="149,153,157,161";
+		supported_channels[6]="36,40,44,48";
+		supported_channels[7]="36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,128,132,136,140,149,153,157,161,165";
+		supported_channels[8]="52,56,60,64";
+		supported_channels[9]="36,40,44,48,52,56,60,64,100,104,108,112,116,132,136,140,149,153,157,161,165";
+		supported_channels[10]="36,40,44,48,149,153,157,161,165";
+		supported_channels[11]="36,40,44,48,52,56,60,64,100,104,108,112,116,120,149,153,157,161,165";
+		supported_channels[12]="149,153,157,161";
+		supported_channels[13]="52,56,60,64,100,104,108,112,116,120,124,128,132,136,140,149,153,157,161";
+		supported_channels[14]="36,40,44,48,52,56,60,64,100,104,108,112,116,136,140,149,153,157,161,165";
+		supported_channels[15]="149,153,157,161,165";
+		supported_channels[16]="52,56,60,64,149,153,157,161,165";
+		supported_channels[17]="36,40,44,48,149,153,157,161";
+		supported_channels[18]="36,40,44,48,52,56,60,64,100,104,108,112,116,132,136,140";
+		supported_channels[19]="56,60,64,100,104,108,112,116,120,124,128,132,136,140,149,153,157,161";
+		supported_channels[20]="36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,128,132,136,140,149,153,157,161";
+		
+		
+		/*
+		code pasted from advanced tab
+		document.wireless_advanced.country_region.options[0] = new Option("Ch36~64, Ch149~165", "0");
+		document.wireless_advanced.country_region.options[1] = new Option("Ch36~64, Ch100~140", "1");
+		document.wireless_advanced.country_region.options[2] = new Option("Ch36~64", "2");
+		document.wireless_advanced.country_region.options[3] = new Option("Ch52~64, Ch149~161", "3");
+		document.wireless_advanced.country_region.options[4] = new Option("Ch149~165", "4");
+		document.wireless_advanced.country_region.options[5] = new Option("Ch149~161", "5");
+		document.wireless_advanced.country_region.options[6] = new Option("Ch36~48", "6");
+		document.wireless_advanced.country_region.options[7] = new Option("Ch36~64, Ch100~140, Ch149~165", "7");
+		document.wireless_advanced.country_region.options[8] = new Option("Ch52~64", "8");
+		document.wireless_advanced.country_region.options[9] = new Option("Ch36~64, Ch100~116, Ch132~140, Ch149~165", "9");
+		document.wireless_advanced.country_region.options[10] = new Option("Ch36~48, Ch149~165", "10");
+		document.wireless_advanced.country_region.options[11] = new Option("Ch36~64, Ch100~120, Ch149~161", "11");
+		document.wireless_advanced.country_region.options[12] = new Option("Ch149~161", "12");
+		document.wireless_advanced.country_region.options[13] = new Option("Ch52~64, Ch100~140, Ch149~161", "13");
+		document.wireless_advanced.country_region.options[14] = new Option("Ch36~64, Ch100~116, Ch136~140, Ch149~165", "14");
+		document.wireless_advanced.country_region.options[15] = new Option("Ch149~165", "15");
+		document.wireless_advanced.country_region.options[16] = new Option("Ch52~64, Ch149~165", "16");
+		document.wireless_advanced.country_region.options[17] = new Option("Ch36~48, Ch149~161", "17");
+		document.wireless_advanced.country_region.options[18] = new Option("Ch36~64, Ch100~116, Ch132~140", "18");
+		document.wireless_advanced.country_region.options[19] = new Option("Ch56~64, Ch100~140, Ch149~161", "19");
+		document.wireless_advanced.country_region.options[20] = new Option("Ch36~64, Ch100~124, Ch149~161", "20");
+		document.wireless_advanced.country_region.options[21] = new Option("Ch36~64, Ch100~140, Ch149~161", "21");
+		
+		*/
+		
+	}
+	
+	if (countryRegion < 30)
+	{
+			return supported_channels[countryRegion];
+			//document.wireless_advanced.country_region.options.selectedIndex = countryRegion;
+	}
+	else
+	{
+			return supported_channels[countryRegion - 23];
+			//document.wireless_advanced.country_region.options.selectedIndex = countryRegion - 23;
+	}
+}
+
+function initialize_xAxis()
+{
+	channel_axis=[];
+	//alert("initilizing axis for "+$("#band").val());
+	var working_set_for_xAxes="";
+	if($("#band").val() == "2.4")
+	{
+		working_set_for_xAxes=_2G;
+	}
+	else
+	{
+		working_set_for_xAxes=_5G;
+	}
+
+	supported_set = get_supported_channel_list();
+
+	//alert("working set is "+working_set_for_xAxes);
+	//alert("supported set is "+supported_set);
+	for(var value in working_set_for_xAxes)
+	{
+		//alert("processing "+working_set_for_xAxes[value]);
+		//if current found value is found in the supported list of values then include it in x axis else do nothing
+		if(supported_set.indexOf(","+working_set_for_xAxes[value]+",")!=-1)
+		{
+			if(current_channel == working_set_for_xAxes[value])
+			{
+				channel_axis.push([working_set_for_xAxes[value],working_set_for_xAxes[value]+"*"]);
+			}
+			else
+			{
+				channel_axis.push([working_set_for_xAxes[value],working_set_for_xAxes[value]+""]);
+			}
+		}
+		else
+		{
+			//channel_axis.push([working_set_for_xAxes[value],""]);
+			//alert("not found "+ working_set_for_xAxes[value]);
+		}
+		
+	}
+    
+    populate_channels();
+	
+	//alert("channel axis values "+channel_axis);
+}
+function wifi_on_off()
+{
+	if(document.getElementById("wifi_btn").value.indexOf("Wifi On") != -1)
+	{
+		//alert("turn wifi on");
+		
+        makeRequest1("/cgi-bin/wireless.cgi", "page=setWifiState&wlan_conf=2860&interface=ra0&sample_data=" + sample_data + "&setwifistate=1");
+		
+		
+		
+		document.getElementById("wifi_btn").value="Wifi Off";
+		document.getElementById("capture").disabled = false;
+		$("#capture").val("Start");
+	}
+	else
+	{
+		//alert("turn wifi off");
+		
+        makeRequest1("/cgi-bin/wireless.cgi", "page=setWifiState&wlan_conf=2860&interface=ra0&sample_data=" + sample_data + "&setwifistate=0");
+		
+		
+		
+		document.getElementById("wifi_btn").value="Wifi On";
+		document.getElementById("capture").disabled = true;
+		$("#capture").val("Start");
+	}
+}
+
+function populate_channels()
+{
+    var channels=new Array();
+    channels=supported_set.split(",");
+    var select = document.getElementById("set_channel_drpdwn");
+    
+    //alert("channels found = " + channels);
+    select.options.length = 0; // this removes existing options
+    
+    for(var i = 0; i <= channels.length-1; i++) 
+    {
+    		if((channels[i] != "") && (channels[i] != "undefined"))
+    		{
+        var option = document.createElement('option');
+        option.text = "Channel No. " + channels[i];
+        option.value = channels[i] ;
+        select.add(option, 0);
+    		}
+    }
+}
+
+function set_channel()
+{
+    var select = document.getElementById("set_channel_drpdwn");
+    var selected_channel = select.options[select.selectedIndex].value;
+    
+    makeRequest1("/cgi-bin/wireless.cgi", "page=setCurrentChannel&wlan_conf=2860&interface=ra0&sample_data=" + sample_data + "&setCurrentChannel=" + selected_channel);
+}
+
+
+
+function set_threshold()
+{
+	if(typeof document.getElementById("set_threshold_txt") != "undefined")
+	{
+		//alert("value is "+document.getElementById("set_threshold_txt").value);
+		var thresh_value=parseInt(document.getElementById("set_threshold_txt").value);
+		//alert("hex value "+thresh_value.toString(16));
+        //alert("Value of threshold" + thresh_value.toString(16));
+		makeRequest1("/cgi-bin/wireless.cgi", "page=setThreshold&wlan_conf=2860&interface=ra0&sample_data=" + sample_data + "&threshold=" + thresh_value.toString(16));
+	}
+	
+}
+
+function makeRequest1(url, content) 
+{
+
+	http_request = false;
+	if (window.XMLHttpRequest) { // Mozilla, Safari,...
+//	alert('window.XMLHttpRequest');
+		http_request = new XMLHttpRequest();
+		if (http_request.overrideMimeType)
+//alert('http_request.overrideMimeType');		
+			http_request.overrideMimeType('text/xml');
+	} else if (window.ActiveXObject) { // IE
+			
+
+		try {
+		
+			http_request = new ActiveXObject("Msxml2.XMLHTTP");
+		} catch (e) {
+		
+			try {
+			
+				http_request = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (e) {
+			
+			}
+		}
+	}
+	if (!http_request) {
+		alert('Giving up : Cannot create an XMLHTTP instance');
+		return false;
+	}
+	http_request.onreadystatechange = dataHandler1;
+	//alert(dataHandler);
+	http_request.open('POST', url, true);
+	
+	http_request.send(content);
+	//alert('ReqSent');
+	
+}
+
+function dataHandler1() 
+{
+	if (http_request.readyState == 4) {
+	//alert("Ready State is" + http_request.readyState);
+	//alert("Status State is" + http_request.status);
+	//alert("Response Text is :" + http_request.responseText);
+		if (http_request.status == 200) {
+     		//alert(http_request.responseText);
+			//AP = getAP(AP);
+            var output = http_request.responseText;
+			if(output.indexOf("ThresholdSet")!=-1)
+			{
+				alert("Threshold set");
+			}
+            if(output.indexOf("WifiChannel")!=-1)
+            {
+                alert("Channel set");
+            }
+	
+		
+			//getData(http_request.responseText);
+		} else {
+			alert('There was a problem with the request.' + http_request.status);
+		}
+	}
+}
+
+
+function get_working_channel()
+{
+
+    //var outputtext = http_request.responseText
+	if(typeof document.getElementById("current_channel_label") != "undefined")
+	{
+		document.getElementById("current_channel_label").innerHTML=current_channel;
+		document.getElementById("current_channel_label").style.fontWeight = 'bold';
+		return current_channel;
+	}
+    
+}
+
+
+$(function() {
+var AP = new Array();
+var paraboladata= [[]];
+var timer = 500;
+var no_of_ap =0;
+var channelsScan = new Array();
+var rssi = new Array();
+var para_data = new Array();
+var para_data_5 = new Array();
+var ssid_data = new Array();
+var serviceStatus = "0";
+var ssid_position_details = new Array();
+
+
+var stack = 0,
+bars = true,
+lines = false,
+steps = false;
+
+var series1 = [];
+var series2 = [];
+var series3 = [];
+var series4 = new Array();
+var serviceStatus = "0";
+var channelsBusyTime = new Array();
+var channel_busy_time = new Array();
+var mac_hash = new Array();
+var min_value=100;
+
+ssid_data=[];
+ssid_position_details=[];
+mac_hash=[];
+
+
+
+//makeRequest1("/cgi-bin/wireless.cgi", "page=setWifiState&wlan_conf=2860&interface=ra0&sample_data=" + sample_data + "&setwifistate=1");
+"<!--#exec cmd="echo 1 > /dev/wmtWifi"-->";
+
+function makeRequest(url, content) 
+{
+
+	http_request = false;
+	if (window.XMLHttpRequest) { // Mozilla, Safari,...
+//	alert('window.XMLHttpRequest');
+		http_request = new XMLHttpRequest();
+		if (http_request.overrideMimeType)
+//alert('http_request.overrideMimeType');		
+			http_request.overrideMimeType('text/xml');
+	} else if (window.ActiveXObject) { // IE
+			
+
+		try {
+		
+			http_request = new ActiveXObject("Msxml2.XMLHTTP");
+		} catch (e) {
+		
+			try {
+			
+				http_request = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (e) {
+			
+			}
+		}
+	}
+	if (!http_request) {
+		alert('Giving up : Cannot create an XMLHTTP instance');
+		return false;
+	}
+	http_request.onreadystatechange = dataHandler;
+	//alert(dataHandler);
+	http_request.open('POST', url, true);
+	
+	http_request.send(content);
+	//alert('ReqSent');
+	
+}
+function dataHandler() {
+	if (http_request.readyState == 4) {
+	//alert("Ready State is" + http_request.readyState);
+	//alert("Status State is" + http_request.status);
+	//alert("Response Text is :" + http_request.responseText);
+		if (http_request.status == 200) {
+     		//alert(http_request.responseText);
+			//AP = getAP(AP);
+			getData(http_request.responseText);
+		} else {
+			alert('There was a problem with the request.' + http_request.status);
+		}
+	}
+}
+	
+function queryData() 
+{
+	
+	var band = $("#band").val();
+	//alert(band);
+	makeRequest("/cgi-bin/wireless.cgi", "page=getSS&wlan_conf=2860&interface=ra0&sample_data=" + sample_data + "&band="+band+"&serviceStatus="+serviceStatus+"&bestchannel="+best_channel);
+}
+
+
+
+function mac_details(in_key)
+{
+	this.MAC=in_key;
+	this.COUNTER=0;
+}
+
+mac_details.prototype.getMAC = function() {
+	return this.MAC;
+}
+
+mac_details.prototype.getSSID = function() {
+	return this.SSID;
+}
+
+mac_details.prototype.getChannel = function() {
+	return this.CHANNEL;
+}
+
+mac_details.prototype.getRSSI = function() {
+	return this.RSSI;
+}
+
+mac_details.prototype.getColor = function() {
+	return this.COLOR;
+}
+
+mac_details.prototype.getCounter = function() {
+	return this.COUNTER;
+}
+
+mac_details.prototype.setSSID = function(in_key) {
+	return this.SSID=in_key;
+}
+
+mac_details.prototype.setChannel = function(in_key) {
+	return this.CHANNEL=in_key;
+}
+
+mac_details.prototype.setRSSI = function(in_key) {
+	return this.RSSI=in_key;
+}
+
+mac_details.prototype.setColor = function(in_key) {
+	return this.COLOR=in_key;
+}
+
+mac_details.prototype.setCounter = function(in_key) {
+	return this.COUNTER=in_key;
+}
+
+mac_details.prototype.incCounter = function() {
+	this.COUNTER=this.COUNTER+1;
+	return this.COUNTER;
+}
+
+mac_details.prototype.decCounter = function() {
+	return this.COUNTER=this.COUNTER-1;
+}
+
+
+function getData(datalist)
+{
+
+	//var datalist = "11:-37;5:-31";
+	//alert("get data" + datalist);
+	rssi = [];
+	channelsScan = [];
+	channelsBusyTime = [];
+	para_data = [];
+	para_data_5 = [];
+	ssid_data = [];
+	series1=[];
+	series2=[];
+	series3=[];
+	series4=[];
+	min_value=100;
+	
+	
+	var data = datalist.split("\n");
+	var str_busy_time = "";
+	var str_rssi = "";
+	var detected_macs = "";
+	for(var index = 0;index<data.length;index++)
+	{
+	
+		if(data[index].indexOf("CurrentSelectedChannel") == -1 && data[index].indexOf("COMMAND") == -1 && data[index].indexOf("activated") == -1 && data[index].indexOf("OK") == -1 && data[index].indexOf(";") == -1 )
+		{
+			data[index] = data[index].replace("wlan0","");
+			data[index] = data[index].replace("driver","");
+			
+			
+			data[index].trim();
+            if(data[index].indexOf("Content-type") == -1 && data[index].indexOf("Pragma") == -1 && data[index].indexOf("Cache") == -1 )
+			{	
+				data[index] = data[index].replace("  :","  ");
+				data[index].trim();
+				data[index] = data[index].replace(/\s{2,}/g,'');
+                
+				str_busy_time = str_busy_time+data[index]+" ";
+            }
+		}
+        else if(data[index].indexOf("CurrentSelectedChannel") != -1)
+        {
+			
+            var line = "" + data[index];
+            
+            var info=line.split(":");
+            current_channel=info[1];
+            //alert("selected channel found "+info[1]);
+			document.getElementById("current_channel_label").innerHTML=current_channel;
+           
+        }
+		else if(data[index].indexOf("==") != -1)
+		{
+			str_rssi = str_rssi+data[index]+";";
+		}
+	}
+	
+	
+	var channel_Scan = str_rssi.split(";");
+    var new_plot_values=new Array();
+    
+	//alert("ch length "+ch.length);
+	for(var i =0;i<channel_Scan.length-1;i++)
+	{
+        if(channel_Scan[i] == "")
+		{
+			break;
+		}
+        var network_details=channel_Scan[i].split("==");
+        var mac_Address=network_details[0];
+		var ssid="";        
+        var channel_details=network_details[2];
+		var dt = channel_details.split(":");
+		var rssi_value="";
+		var curve_data= new Array();
+		
+		if(supported_set.indexOf(","+dt[0]+",")==-1)
+		{
+			//channel is not supported so data is dropped
+			//alert("dropping value for channel " + dt[0]);
+			continue;
+		}
+		
+		if(typeof network_details[1]!="undefined")
+		{
+			ssid=network_details[1];
+		}
+		else
+		{
+			ssid="NULL_SSID"+ i;
+		}
+		
+		detected_macs=detected_macs + "," + mac_Address;
+		
+		if((dt[0] >=0 || dt[0] < 0) && (dt[1] >=0 || dt[1] < 0))
+		{
+			channelsScan.push(dt[0]);
+			rssi_value=-100 - dt[1];
+            
+			rssi.push(rssi_value);
+			//alert("channel "+dt[0]+" rssi"+dt[1]);
+			var parabolaPlot=parabola(4, rssi_value, dt[0], -rssi_value, 0, .1,1);
+		
+			//alert("initial="+parabolaPlot);
+			
+			if(typeof mac_hash[mac_Address]!='undefined')
+			{
+				//if the mac address is detected
+				//reseting the counter and the values
+				mac_hash[mac_Address].setSSID(ssid);
+				mac_hash[mac_Address].setChannel(dt[0]);
+				mac_hash[mac_Address].setRSSI(rssi_value);
+				mac_hash[mac_Address].setCounter(0);
+				
+				//curve_data["label"]=ssid;
+				curve_data["color"]=mac_hash[mac_Address].getColor();
+				curve_data["data"]=parabolaPlot;
+				curve_data["name"]=mac_Address;
+				
+			}
+			else
+			{
+				//else create a new instance and save the object details in the global array with the mac address
+				var current_details = new mac_details(mac_Address);
+				current_details.setSSID(ssid);
+				current_details.setChannel(dt[0]);
+				current_details.setRSSI(rssi_value);
+				//current_details.setColor("grey");
+				
+				
+				//mac address and object mapping hash
+				mac_hash[mac_Address]=current_details;
+				//para_data.push(parabolaPlot);
+				
+				//color will be handled by the chart itself
+				//curve_data["label"]=ssid;
+				curve_data["data"]=parabolaPlot;
+				curve_data["name"]=mac_Address;
+			}
+			//alert(channel + " the data is " + parabolaPlot);
+			para_data.push(curve_data);
+			
+			
+			
+			//para_data.push(new_plot_values);
+			ssid_data.push(ssid);
+			
+			
+		}
+	
+	}
+	
+	
+	//channel busy time
+	//alert("busy time string is " + str_busy_time);
+	best_channel=1;
+	var working_channel=current_channel;
+	var working_value=100;
+	
+	var channel_BusyTime = str_busy_time.split(" ");
+	var tot="";
+	for(var i =0;i<channel_BusyTime.length;i++)
+	{
+		if(channel_BusyTime[i] == "")
+		{
+			continue;
+		}
+		
+		var dt = channel_BusyTime[i].split(":");
+		
+		
+		if(supported_set.indexOf(","+dt[0]+",")==-1)
+		{
+			//channel is not supported so data is dropped
+			//alert("dropping value for channel " + dt[0]);
+			continue;
+		}
+		
+		if((dt[0] >=0 || dt[0] < 0) && (dt[1] >=0 || dt[1] < 0))
+		{
+			channelsBusyTime.push(dt[0]);
+			if(dt[1]== -1 || dt[1]== "-1")
+			{
+				dt[1] = 12000;
+			}
+			var per = (12000- dt[1])/120;
+			
+			if(per < min_value)
+			{
+				min_value=per;
+				best_channel=dt[0];
+			}
+			
+			if(working_channel.indexOf(dt[0])!= -1)
+			{
+				working_value=per;
+			}
+			
+			
+			tot = tot+per+" ";
+			channel_busy_time.push(per);
+		}
+	}
+	//alert("best channel "+best_channel);
+	document.getElementById("best_channel_label").innerHTML=best_channel;
+	
+	var temp_data= new Array();
+	
+	
+	temp_data['data']=[min_value,0];
+	if(min_value >60)
+	{
+		temp_data['color']='red';
+	}
+	else if(min_value <30)
+	{
+		temp_data['color']='green';
+	}
+	else
+	{
+		temp_data['color']='yellow';
+	}
+	best_channel_data.push(temp_data);
+	
+for(var i=0;i<best_channel_data.length;i++)
+{
+	//alert("best_channel_data after reading = "+ best_channel_data[i]);
+}
+	
+	temp_data['data']=[working_value,0];
+	if(working_value >60)
+	{
+		temp_data['color']='red';
+	}
+	else if(working_value <30)
+	{
+		temp_data['color']='green';
+	}
+	else
+	{
+		temp_data['color']='yellow';
+	}
+	working_channel_data.push(temp_data);
+	
+	
+	//alert("channel_BusyTime "+tot);
+	channel_busy_time = tot.split(" ");
+	for (var j =0;j<channel_busy_time.length;j++)
+	{
+		if(channel_busy_time[j]<=30)
+		{
+			series1.push([channelsBusyTime[j],channel_busy_time[j]]);
+			//series2.push([channelsBusyTime[j],0]);
+			//series3.push([channelsBusyTime[j],0]);
+			//series4.push([j,100-dummy[j]]);
+		}
+		else if(channel_busy_time[j]<=60)
+		{
+			//series1.push([channelsBusyTime[j],0]);
+			series2.push([channelsBusyTime[j],channel_busy_time[j]]);
+			//series3.push([channelsBusyTime[j],0]);
+			//series4.push([j,100-dummy[j]]);
+		}
+		else
+		{
+			//series1.push([channelsBusyTime[j],0]);
+			//series2.push([channelsBusyTime[j],0]);
+			series3.push([channelsBusyTime[j],channel_busy_time[j]]);
+			//series4.push([j,dummy[j]]);
+		}
+		
+	}
+	
+	//terminating with a comma
+	detected_macs=detected_macs + ",";
+	//processing all the undetected mac address now
+	//alert("processing all the undetected mac address now");
+	for (var saved_mac in mac_hash)
+	{
+		//earlier values which are non existant now
+		if(mac_hash[saved_mac]=="NULL")
+		{
+			//alert("null value found");
+			continue;
+		}
+		
+		//not detected
+		if(detected_macs.indexOf( "," + saved_mac + "," )  == -1)
+		{
+			//alert("not detected mac found "+ saved_mac + " counter " + mac_hash[saved_mac].getCounter() + " SSID " + mac_hash[saved_mac].getSSID() );
+			if(mac_hash[saved_mac].getCounter() == 2)
+			{
+				//this entry was not found from two previous iterations
+				//deleting the object associated
+				delete mac_hash[saved_mac];
+				//deleting the mapping from that object
+				//mac_hash[saved_mac]="NULL";
+			}
+			else
+			{
+				
+				//incrementing the counter and plotting it on the chart
+				mac_hash[saved_mac].incCounter();
+				
+				var channel=mac_hash[saved_mac].getChannel();
+				var rssi_val=mac_hash[saved_mac].getRSSI();
+				var ssid=mac_hash[saved_mac].getSSID();
+				
+				channelsScan.push(channel);
+				rssi.push(rssi_val);
+				
+				//alert("channel "+dt[0]+" rssi"+dt[1]);
+				var parabolaPlot=parabola(4, rssi_val, channel, -rssi_val, 0, .1,1);
+			
+				//alert("initial="+parabolaPlot);
+
+				var curve_data=new Array();
+				//curve_data["label"]=ssid;
+				curve_data["color"]=mac_hash[saved_mac].getColor();
+				curve_data["data"]=parabolaPlot;
+				curve_data["name"]=saved_mac;
+				
+				para_data.push(curve_data);
+				//para_data.push(parabolaPlot);
+				//para_data.push(new_plot_values);
+				ssid_data.push(ssid);
+				
+				
+			}
+			
+		}
+	}
+	//alert("done");
+}
+
+  
+function setLabels(ap){  
+	for(var j=0;j<ap;j++)
+	{
+
+		var len = plotRSSI.getData()[j].data.length;
+		//alert(len);
+		if(len%2 ==0)
+		{
+			len = len/2;
+		}
+		else
+		{
+			len = (len-1)/2;
+		}
+		var k=0;
+		$.each(plotRSSI.getData()[j].data, function(i, el){
+	   
+		//var len = plot1.getData()[i].length/2;
+		if(k==len)
+		{
+		  var o = plotRSSI.pointOffset({x: el[0], y: el[1]});
+		  //el[1] = -el[1];
+		  //alert("plotting for " + el[0]);
+			
+			
+		  var x=o.left;
+		  var y=o.top;
+		  var position_plotted=0;
+		  
+		  
+		  if(y % 2 == 1)
+		  {
+			y=y+1;
+		  }
+		  var xcounter=25;
+		  var ycounter=15;
+		  
+		  x=x-xcounter;
+		  y=y-ycounter;
+		  
+		  while(y> -2)
+		  {
+			//alert("top position="+y+" counter="+ycounter+" left position="+x+" counter="+xcounter+"for ssid="+ssid_data[j]);
+			
+			if(typeof ssid_position_details[""+x+","+y] != 'undefined')
+			{
+				//alert("value already existing");
+				
+			}
+			else
+			{
+				//checking 5 pixels around y is also treated as overlapping
+				var variant=5;
+				while(variant!=0)
+				{
+					var y1=y-variant;
+					var y2=y+variant;
+					//alert(" concat="+""+x+","+y);
+					if (typeof ssid_position_details[""+x+","+y1] != 'undefined' || typeof ssid_position_details[""+x+","+y2] != 'undefined') 
+					{
+						//alert("value already existing"+ variant);
+						//ycounter=ycounter + 2;
+						break;
+					}
+					
+					variant=variant-1;
+				}
+				if(variant==0)
+				{
+					//loop exited normally
+					//alert("value not existing");
+					
+					
+					ssid_position_details[""+x+","+y]="1";
+					//alert("value assigned");
+					position_plotted=1;
+					break;
+				
+				}
+			}
+			
+			
+			
+			
+			y=y-15;
+		  }
+		  
+		  if(position_plotted == 0)
+		  {
+			//this means no space was present below the curve, so we will try to go above it
+			while(y< 80)
+			  {
+				//alert("top position="+y+" counter="+ycounter+" left position="+x+" counter="+xcounter+"for ssid="+ssid_data[j]);
+			
+				if(typeof ssid_position_details[""+x+","+y] != 'undefined')
+				{
+					//alert("value already existing");
+				}
+				else
+				{
+					//checking 5 pixels around y is also treated as overlapping
+					var variant=5;
+					while(variant!=0)
+					{
+						var y1=y-variant;
+						var y2=y+variant;
+						//alert(" concat="+""+x+","+y);
+						if (typeof ssid_position_details[""+x+","+y1] != 'undefined' || typeof ssid_position_details[""+x+","+y2] != 'undefined') 
+						{
+							//alert("value already existing"+ variant);
+							//ycounter=ycounter + 2;
+							break;
+						}
+						
+						variant=variant-1;
+					}
+					if(variant==0)
+					{
+						//loop exited normally
+						//alert("value not existing");
+						
+						
+						ssid_position_details[""+x+","+y]="1";
+						//alert("value assigned");
+						position_plotted=1;
+						break;
+					
+					}
+				}
+				
+				
+				
+				
+				y=y+15;
+			  } 
+		  
+		  }
+		  x= ssid_data[j].length * 5 / 2;
+		  
+		  
+		  $('<div class="data-point-label">' + ssid_data[j] + '</div>').css( {
+			position: 'absolute',
+			left: o.left - x,
+			top: y,
+			display: 'none',
+			color: mac_hash[plotRSSI.getData()[j].name].getColor()
+		  }).appendTo(plotRSSI.getPlaceholder()).fadeIn('slow');
+		  
+		}
+		k =k+1;
+		});
+	}
+	ssid_position_details=[];
+}
+	
+
+var data_with_ssid = [];
+var data = [{data: series1, color: "green"}, 
+{data: series2, color: "yellow"},
+{data: series3, color: "red"}];
+
+var optionsForBusyTime;
+var optionsForRSSI;
+//var optionsForWorkingChannel;
+//var optionsForBestChannel;
+
+
+/*
+optionsForWorkingChannel= {series: {
+			shadowSize: 0	// Drawing is faster without shadows
+		},
+		xaxis: {
+			show: false,
+			min: 0,
+			max:100
+		},
+		yaxis: {
+			show: false,
+			min: 0,
+			max: 100,
+			ticks: [[0,'0%'],[10,'10%'],[20,'20%'],[30,'30%'],[40,'40%'],[50,'50%'],[60,'60%'],[70,'70%'],[80,'80%'],[90,'90%'],[100,'100%']]
+		},
+		bars: {
+			show: bars,
+			align: "center",
+			barWidth: 0.5,
+			//horizontal: true,
+			fillColor: { colors: [{ opacity: 0.5 }, { opacity: 1}] },
+			
+		}
+		};
+		
+optionsForWorkingChannel=optionsForBestChannel;
+*/
+
+
+
+initialize_xAxis();
+
+/*
+for(var i=1;i<14;i++)
+{
+	if(current_channel == i)
+	{
+		channel_axis.push([i,i+"*"]);
+	}
+	else
+	{
+		channel_axis.push([i,""+i]);
+	}
+	
+}
+*/
+
+
+if($("#band").val() == "2.4")
+{
+	 optionsForBusyTime= {series: {
+			shadowSize: 0	// Drawing is faster without shadows
+		},
+		lines: {
+		fill:true
+		},
+		xaxis: {
+			show: true,
+			min:-1,
+			max: 16,
+			//ticks: [[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5'],[6,'6'],[7,'7'],[8,'8'],[9,'9'],[10,'10'],[11,'11'],[12,'12'],[13,'13']],
+			ticks: channel_axis,
+			axisLabel: "Channel Number"	
+				
+		},
+		yaxis: {
+			show: true,
+			min: 0,
+			max: 100,
+			ticks: [[0,'0%'],[10,'10%'],[20,'20%'],[30,'30%'],[40,'40%'],[50,'50%'],[60,'60%'],[70,'70%'],[80,'80%'],[90,'90%'],[100,'100%']]
+		}
+		};
+		
+	optionsForRSSI = {series: {
+			shadowSize: 0	// Drawing is faster without shadows
+		},
+		lines: {
+		fill:true
+		},
+		yaxis:
+		{
+			show:true,
+			axisLabel: "Value (dBm)",
+			ticks: [[0,'-100 dBm'],[10,'-90 dBm'],[20,'-80 dBm'],[30,'-70 dBm'],[40,'-60 dBm'],[50,'-50 dBm'],[60,'-40 dBm'],[70,'-30 dBm'],[80,'-20 dBm'],[90,'-10 dBm'],[100,'0 dBm']]
+		},
+		xaxis: {
+			show: true,
+			min:-1,
+			max: 16,
+			//ticks: [[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5'],[6,'6'],[7,'7'],[8,'8'],[9,'9'],[10,'10'],[11,'11'],[12,'12'],[13,'13']],
+			ticks: channel_axis,
+			axisLabel: "Channel Number"	
+				
+		},
+		};
+}
+else
+{
+	optionsForBusyTime = {series: {
+		shadowSize: 0	// Drawing is faster without shadows
+		},
+		lines: {
+		fill:true
+		},
+		xaxis: {
+			show: true,
+			min:34,
+			max: 184,
+			ticks: channel_axis,
+			/*ticks: [[36,'36'],[40,'40'],[44,'44'],[48,'48'],
+					[52,'52'],[56,'56'],[60,'60'],[64,'64'],[68,'68'],
+					[72,'72'],[76,'76'],[80,'80'],[84,'84'],[88,'88'],[92,'92'],
+					[96,'96'],[100,'100'],[104,'104'],[108,'108'],[112,'112'],[116,'116'],[120,'120'],[124,'124'],[128,'128'],[132,'132'],[136,'136'],[140,'140'],[144,'144'],
+					[149,'149'],[153,'153'],[157,'157'],[161,'161'],[165,'165'],[169,'169'],[173,'173'],[177,'177'],[181,'181']],*/
+			axisLabel: "Channel Number"	
+				
+		},
+		yaxis:
+		{
+			show:true,
+			axisLabel: "Busy Time",
+			min:0,
+			max:100,
+			ticks: [[0,'0%'],[10,'10%'],[20,'20%'],[30,'30%'],[40,'40%'],[50,'50%'],[60,'60%'],[70,'70%'],[80,'80%'],[90,'90%'],[100,'100%']]
+		},
+		};
+	optionsForRSSI = {	series: {
+			shadowSize: 0	// Drawing is faster without shadows
+		},
+		lines: {
+			fill:true
+		},yaxis:
+		{
+			show:true,
+			axisLabel: "Value"	,
+			ticks: [[0,'-100 dBm'],[10,'-90 dBm'],[20,'-80 dBm'],[30,'-70 dBm'],[40,'-60 dBm'],[50,'-50 dBm'],[60,'-40 dBm'],[70,'-30 dBm'],[80,'-20 dBm'],[90,'-10 dBm'],[100,'0 dBm']]
+		},
+		xaxis: {
+				show: true,
+				min:34,
+				max: 184,
+				ticks: channel_axis,
+				/*ticks: [[36,'36'],[40,'40'],[44,'44'],[48,'48'],
+						[52,'52'],[56,'56'],[60,'60'],[64,'64'],[68,'68'],
+						[72,'72'],[76,'76'],[80,'80'],[84,'84'],[88,'88'],[92,'92'],
+						[96,'96'],[100,'100'],[104,'104'],[108,'108'],[112,'112'],[116,'116'],[120,'120'],[124,'124'],[128,'128'],[132,'132'],[136,'136'],[140,'140'],[144,'144'],
+						[149,'149'],[153,'153'],[157,'157'],[161,'161'],[165,'165'],[169,'169'],[173,'173'],[177,'177'],[181,'181']],*/
+				axisLabel: "Channel Number"	
+				
+				},
+		};
+
+}
+	
+var best_channel_data=new Array();
+var working_channel_data=new Array();
+
+var temp_data= new Array();
+	
+	
+	temp_data['data']=[min_value,0];
+	temp_data['color']='red';
+	
+	
+best_channel_data.push(temp_data);
+working_channel_data.push(temp_data);
+
+for(var i=0;i<best_channel_data.length;i++)
+{
+	//alert("best_channel_data initial = "+ best_channel_data[i]);
+}
+	
+para_data = [];
+//var plotBestChannel= $.plot("#best_channel_placeholder", best_channel_data, optionsForBestChannel);
+//var plotWorkingChannel= $.plot("#current_channel_placeholder", working_channel_data, optionsForWorkingChannel);
+var plotChannelBusy = 	$.plot("#placeholder1", [data], optionsForBusyTime);
+var plotRSSI = 	$.plot("#placeholder", para_data, optionsForRSSI);
+
+plotRSSI.draw();
+//plotBestChannel.draw();
+//plotWorkingChannel.draw();
+	
+window.plotParabola = function()
+{
+	
+	initialize_xAxis();
+	
+	
+	if($("#capture").val() == "Stop")
+    {
+        queryData();
+    }
+
+	//plotRSSI.destroy();
+	var timer1 = $("#time").val();
+	
+	var str = [];
+	var index =1;
+	//alert("parabola length "+para_data.length);
+	//var d;
+	for(var i=0;i<channelsScan.length;i++)
+	{
+		str.push(para_data[i]);
+	}
+	
+	data = [{data: series1, color: "green"}, 
+            {data: series2, color: "yellow"},
+            {data: series3, color: "red"}];
+			
+	
+	if($("#band").val() == "2.4")
+	{
+		plotRSSI = $.plot("#placeholder", str, {
+			series: {
+				shadowSize: 0	// Drawing is faster without shadows
+			},
+			lines: {
+			fill:true
+			},
+			grid: {
+                hoverable: true,
+                borderWidth: 5,
+                backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
+            },
+			yaxis:
+			{
+				show:true,
+				min: 0,
+				max: 100,
+				ticks: [[0,'-100 dBm'],[10,'-90 dBm'],[20,'-80 dBm'],[30,'-70 dBm'],[40,'-60 dBm'],[50,'-50 dBm'],[60,'-40 dBm'],[70,'-30 dBm'],[80,'-20 dBm'],[90,'-10 dBm'],[100,'0 dBm']]
+			},
+			xaxis: {
+				show: true,
+				min:-1,
+				max: 16,
+				//ticks: [[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5'],[6,'6'],[7,'7'],[8,'8'],[9,'9'],[10,'10'],[11,'11'],[12,'12'],[13,'13']]
+				ticks: channel_axis	
+					
+			}
+		});
+		
+		
+		plotChannelBusy = $.plot("#placeholder1", data, {
+				series: {
+					stack: true,
+					lines: {
+						show: lines,
+						fill: true,
+						//steps: steps,
+						
+					},
+					bars: {
+						show: bars,
+						barWidth: 0.3,
+						align: "center"
+						
+					}
+				},
+				grid: {
+                hoverable: true,
+                borderWidth: 5,
+                backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
+            },
+					yaxis: {
+					min: 0,
+					max: 100,
+					ticks: [[0,'0%'],[10,'10%'],[20,'20%'],[30,'30%'],[40,'40%'],[50,'50%'],[60,'60%'],[70,'70%'],[80,'80%'],[90,'90%'],[100,'100%']]
+				},
+					xaxis: {
+						show: true,
+						min: -1,
+						max: 16,
+						//ticks: [[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5'],[6,'6'],[7,'7'],[8,'8'],[9,'9'],[10,'10'],[11,'11'],[12,'12'],[13,'13']]
+						ticks: channel_axis
+					}
+			});
+	}
+	else
+	{
+		plotRSSI = $.plot("#placeholder", str, {
+			series: {
+				shadowSize: 0	// Drawing is faster without shadows
+			},
+			lines: {
+			fill:true
+			},
+			grid: {
+                hoverable: true,
+                borderWidth: 5,
+                backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
+            },
+			yaxis:
+			{
+				show:true,
+				min: 0,
+				max: 100,
+				ticks: [[0,'-100 dBm'],[10,'-90 dBm'],[20,'-80 dBm'],[30,'-70 dBm'],[40,'-60 dBm'],[50,'-50 dBm'],[60,'-40 dBm'],[70,'-30 dBm'],[80,'-20 dBm'],[90,'-10 dBm'],[100,'0 dBm']]
+			},
+			xaxis: {
+				show: true,
+				min:34,
+				max: 184,
+				ticks: channel_axis,
+				/*ticks: [[36,'36'],[40,'40'],[44,'44'],[48,'48'],
+						[52,'52'],[56,'56'],[60,'60'],[64,'64'],[68,'68'],
+						[72,'72'],[76,'76'],[80,'80'],[84,'84'],[88,'88'],[92,'92'],
+						[96,'96'],[100,'100'],[104,'104'],[108,'108'],[112,'112'],[116,'116'],[120,'120'],[124,'124'],[128,'128'],[132,'132'],[136,'136'],[140,'140'],[144,'144'],
+						[149,'149'],[153,'153'],[157,'157'],[161,'161'],[165,'165'],[169,'169'],[173,'173'],[177,'177'],[181,'181']]*/
+					
+						
+					
+			}
+		});
+		plotChannelBusy = $.plot("#placeholder1", data, {
+				series: {
+					stack: true,
+					lines: {
+						show: lines,
+						fill: true,
+						//steps: steps,
+						
+					},
+					bars: {
+						show: bars,
+						barWidth: 0.3,
+						align: "center"
+						
+					}
+				},
+				grid: {
+                hoverable: true,
+                borderWidth: 5,
+                backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
+            },
+					yaxis: {
+					min: 0,
+					max: 100,
+					ticks: [[0,'0%'],[10,'10%'],[20,'20%'],[30,'30%'],[40,'40%'],[50,'50%'],[60,'60%'],[70,'70%'],[80,'80%'],[90,'90%'],[100,'100%']]
+					
+				},
+					xaxis: {
+						show: true,
+						min:34,
+						max: 184,
+						ticks: channel_axis,
+						/*ticks: [[36,'36'],[40,'40'],[44,'44'],[48,'48'],
+								[52,'52'],[56,'56'],[60,'60'],[64,'64'],[68,'68'],
+								[72,'72'],[76,'76'],[80,'80'],[84,'84'],[88,'88'],[92,'92'],
+								[96,'96'],[100,'100'],[104,'104'],[108,'108'],[112,'112'],[116,'116'],[120,'120'],[124,'124'],[128,'128'],[132,'132'],[136,'136'],[140,'140'],[144,'144'],
+								[149,'149'],[153,'153'],[157,'157'],[161,'161'],[165,'165'],[169,'169'],[173,'173'],[177,'177'],[181,'181']]*/
+							
+						
+					}
+			});
+	}
+	
+	
+//var plotBestChannel= $.plot("#best_channel_placeholder", best_channel_data, optionsForBestChannel);
+//var plotWorkingChannel= $.plot("#current_channel_placeholder", data, optionsForWorkingChannel);
+
+
+	plotRSSI.draw();
+	plotChannelBusy.draw();
+	//plotBestChannel.draw();
+	//plotWorkingChannel.draw();
+	
+	for(var i=0;i<best_channel_data.length;i++)
+	{
+		//alert("working value is "+ best_channel_data[i]);
+	}
+	
+	if(typeof plotWorkingChannel != "undefined")
+	{
+		var series_curve = plotWorkingChannel.getData();
+		for (var i = 0; i < series_curve.length; ++i)
+		{
+			//alert("value "+series_curve[i]);
+		}
+	}
+	
+	
+	if(typeof plotRSSI != "undefined")
+	{
+		
+		var series_curve = plotRSSI.getData();
+		for (var i = 0; i < series_curve.length; ++i)
+		{
+			//alert(series_curve[i].color + "is for name = " + series_curve[i].name);
+			mac_hash[series_curve[i].name].setColor(series_curve[i].color);
+		}
+	}
+	
+	best_channel_data=[];
+	working_channel_data=[];
+	para_data=[];
+    //get_working_channel();
+	var recall;
+	
+	if(serviceStatus==1)
+	{
+		setLabels(channelsScan.length);
+		recall = setTimeout(plotParabola, timer1);
+	}
+	else
+	{
+		clearTimeout(recall);
+	}
+}	
+plotParabola();
+
+	$("#set_interval").click(function(){
+	
+		//alert();
+		
+		
+	});
+	
+	
+	$("#capture").click(function(){
+
+
+
+	var txt = $("#capture").val();
+	//alert(txt);
+	if($("#capture").val() == "Start")
+	{
+		//alert("startCapure");
+		$("#capture").val("Stop");
+		serviceStatus = "1";
+		plotParabola();
+		
+	}
+	else
+	{
+		//alert("stopCapure");
+		$("#capture").val("Start");
+		serviceStatus = "0";
+		makeRequest("/cgi-bin/wireless.cgi", "page=getSS&wlan_conf=2860&interface=ra0&sample_data=" + sample_data + "&band="+band+"&serviceStatus="+serviceStatus+"&bestchannel="+best_channel);
+		
+	}
+});
+
+});
+
+
+</script>
+
+</head>
+<body onload="">
+<h2 style="font: 32px 'omnes-pro',Helvetica,Arial,sans-serif;margin-top:15px;margin-bottom:0">RSSI Indicator</h2>
+<div class="demo-container" style="margin:20px auto;padding:5px 10px;width:900px;height:400px;padding-left:20px;">
+<div id="placeholder" class="demo-placeholder" align="center" style="width:850px;height:400px"></div>
+</div>
+
+<h2 style="font: 32px 'omnes-pro',Helvetica,Arial,sans-serif;margin-top:15px;margin-bottom:0">Channel Busy Time</h2>
+<div class="demo-container" style="margin: 20px auto;padding:5px 10px;width:900px;height:400px;padding-left: 40px;">
+<div id="placeholder1" class="demo-placeholder" align="center" style="width:830px;height:400px"></div>
+</div>
+
+<center style="margin-top:10px;">
+	Select Band  
+	<select id="band" name="factor" size="1" style="height:28px">
+	<option value="2.4">2.4G</option>
+	<option value="5.0">5G</option>
+	
+    </select>
+	Time interval 
+	<select id="time" name="factor" size="1" style="height:28px">
+	<option value="6000">6 Sec.</option>
+	<option value="10000">10 Sec.</option>
+	<option value="20000">20 Sec.</option>
+	<option value="40000">40 Sec.</option>
+	<option value="60000">60 Sec.</option>
+    </select>
+	<input type="button" id="capture" name="capture" style="{width:120px;}" value="Start" onclick>
+</center>
+
+<center>
+	<table align="center" border="0" width="300px" style="width:100%" cell-padding: 15px; border-spacing: 5px; >
+	
+		<tr>
+			<td style="width:25%">
+			Current Channel
+			</td>
+			<td style="width:25%">
+				<label id="current_channel_label" style="font: 20px 'omnes-pro',Bold"> <b></b> </label>
+			</td>
+			<td style="width:25%">
+			Best Channel
+			</td>
+			<td style="width:25%">
+				<label id="best_channel_label" style="font: 20px 'omnes-pro',Bold"> <b></b> </label>
+			</td>
+			<td>
+				</br>
+			</td>
+			
+		</tr>
+		<tr>
+			<td style="width:33%">
+			Threshold
+			</td>
+			<td style="width:33%">
+				<input type="textbox" id="set_threshold_txt" style="text-align:center;width:40%" value="100">
+			</td>
+			<td style="width:33%">
+				<input type="button"  id="set_threshold_btn" value="Set Threshold" onclick="set_threshold()">
+				
+			</td>
+    </tr>
+    <tr>
+        <td style="width:33%">
+        	Channel
+        </td>
+        <td style="width:33%">
+	        <select id="set_channel_drpdwn" size="1" style="height:28px">
+	            <option value="1">1</option>
+	        </select>
+        </td>
+	        <td style="width:33%">
+	            <input type="button" style="width:60%" id="set_channel_btn" value="Set Channel" onclick="set_channel()">
+	        </td>
+    </tr>
+	
+			
+		
+	</table>
+</center>
+
+</body>
+</html>

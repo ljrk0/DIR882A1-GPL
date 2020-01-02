@@ -1,0 +1,580 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link rel=stylesheet type="text/css" href="/css/jquery.selectbox.css?v=20160524151219" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js?v=20160524151219"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialCSS.js?v=20160524151219"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js?v=20160524151219"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialValidate1.js?v=20160524151219"></script>
+<style>
+#page_btn {
+	min-width: 80px;
+}
+</style>
+<script>
+$(document).ready(function(){
+	presetCheckBox("gdmt", true);
+	presetCheckBox("glite", true);
+	presetCheckBox("t1413", true);
+	presetCheckBox("adsl2", true);
+	presetCheckBox("annexl", true);
+	presetCheckBox("adsl2plus", true);
+	presetCheckBox("annexm", true);
+	presetCheckBox("bitswap", true);
+	presetCheckBox("sra", true);
+	presetCheckBox("vdsl2", true);
+
+	presetCheckBox("tag_8a", true);
+	presetCheckBox("tag_12a", true);
+	presetCheckBox("tag_8b", true);
+	presetCheckBox("tag_12b", true);
+	presetCheckBox("tag_8c", true);
+	presetCheckBox("tag_17a", true);
+	presetCheckBox("tag_8d", true);
+	//presetCheckBox("tag_30a", true);
+	presetCheckBox("tag_US0", true);
+
+	//jquery
+	$("div.checkbox_on" || "div.checkbox_off").click(function(e) {
+	 var checkboxId =  e.target.id +'_ck';
+		if(e.target.getAttribute("class") == "checkbox_on") {
+			var disable = I18N("j","Disabled");
+			e.target.setAttribute("class", "checkbox_off");
+			e.target.setAttribute("className", "checkbox_off");
+			document.getElementById(e.target.id).innerHTML='<input type="checkbox" name=' + e.target.id + ' id=' + checkboxId + ' checked>'+disable;
+			document.getElementById(checkboxId).checked=false;
+			changeFlag = true;
+			save_button_changed();
+		}
+		else {
+			var enable = I18N("j","Enabled");
+			e.target.setAttribute("class", "checkbox_on");
+			e.target.setAttribute("className", "checkbox_on");
+			document.getElementById(e.target.id).innerHTML='<input type="checkbox" name=' + e.target.id + ' id=' + checkboxId + ' checked="">'+enable;
+			document.getElementById(checkboxId).checked=true;
+			changeFlag = true;
+			save_button_changed();
+		}
+	});
+	
+	GetXML();
+});
+</script>
+
+<script type="text/javascript">
+	var HNAP = new HNAP_XML();
+
+	var JSON_GetDslModulationSettings;
+	
+	function Load_HTML()
+	{
+		$("#header").load("header.html");
+	}
+
+	function Initial()
+	{
+		initialMenu();
+		initialDetectRouterConnection();
+	}
+
+	function GetXML()	{	
+	var result_xml = new StringDoc();
+	HNAP.SetXMLAsync("GetDslModulationSettings", result_xml, function(xml)	{	GetResult_2nd(xml);	});
+	}
+	function GetResult_1st(result_xml)
+	{
+		if (result_xml != null)
+		{
+			result_xml.Set("GetDslModulationSettings/dsl_modulation");
+			
+			HNAP.SetXMLAsync("GetDslModulationSettings", result_xml, function(xml)	{	GetResult_2nd(xml);	});		
+		}
+		else	{	if (DebugMode == 1)	{	alert("[!!GetXML Error!!] Function: GetResult_1st");	}	}
+	}
+	function GetResult_2nd(result_xml)
+	{
+		var GetResult_2nd = result_xml.Get("GetDslModulationSettingsResponse/GetDslModulationSettingsResult");
+		if (GetResult_2nd == "OK")
+		{
+			JSON_GetDslModulationSettings = result_xml;
+
+			var modultion = JSON_GetDslModulationSettings.Get("GetDslModulationSettingsResponse/dsl_modulation");
+			var profiles = JSON_GetDslModulationSettings.Get("GetDslModulationSettingsResponse/dsl_profiles");
+			var us0_enable = JSON_GetDslModulationSettings.Get("GetDslModulationSettingsResponse/dsl_us0_enable");
+			var bitswap_enable = JSON_GetDslModulationSettings.Get("GetDslModulationSettingsResponse/dsl_bitswap_enable");
+			var sra_enable = JSON_GetDslModulationSettings.Get("GetDslModulationSettingsResponse/dsl_sra_enable");
+			presetCheckBox("gdmt", false);
+			presetCheckBox("glite", false);
+			presetCheckBox("t1413", false);
+			presetCheckBox("adsl2", false);
+			presetCheckBox("annexl", false);
+			presetCheckBox("adsl2plus", false);
+			presetCheckBox("annexm", false);
+			presetCheckBox("vdsl2", false);
+			presetCheckBox("tag_8a", false);
+			presetCheckBox("tag_12a", false);
+			presetCheckBox("tag_8b", false);
+			presetCheckBox("tag_12b", false);
+			presetCheckBox("tag_8c", false);
+			presetCheckBox("tag_17a", false);
+			presetCheckBox("tag_8d", false);
+			//presetCheckBox("tag_30a", false);
+			presetCheckBox("tag_US0", false);
+			
+			if (modultion.indexOf("g.dmt") >= 0) {	presetCheckBox("gdmt", true);	}
+			else						{	presetCheckBox("gdmt", false);	}
+			if (modultion.indexOf("g.lite") >= 0){	presetCheckBox("glite", true);	}
+			else						{	presetCheckBox("glite", false);	}
+			if (modultion.indexOf("t1.413") >= 0){	presetCheckBox("t1413", true);	}
+			else						{	presetCheckBox("t1413", false);	}
+			if (modultion.indexOf("adsl2") >= 0) {	presetCheckBox("adsl2", true);	}
+			else						{	presetCheckBox("adsl2", false);	}
+			if (modultion.indexOf("annexl") >= 0){	presetCheckBox("annexl", true);	}
+			else						{	presetCheckBox("annexl", false);	}
+			if (modultion.indexOf("adsl2+") >= 0){	presetCheckBox("adsl2plus", true);}
+			else						{	presetCheckBox("adsl2plus", false);	}
+			if (modultion.indexOf("annexm") >= 0){	presetCheckBox("annexm", true);	}
+			else						{	presetCheckBox("annexm", false);	}
+			if (modultion.indexOf("vdsl2") >= 0) {	presetCheckBox("vdsl2", true);	}
+			else						{	presetCheckBox("vdsl2", false);	}
+			
+			if (profiles.indexOf("8a") >= 0)	{	presetCheckBox("tag_8a", true);	}
+			else						{	presetCheckBox("tag_8a", false);	}
+			if (profiles.indexOf("8b") >= 0)	{	presetCheckBox("tag_8b", true);	}
+			else						{	presetCheckBox("tag_8b", false);	}
+			if (profiles.indexOf("8c") >= 0) 	{	presetCheckBox("tag_8c", true);	}
+			else						{	presetCheckBox("tag_8c", false);	}
+			if (profiles.indexOf("8d") >= 0)    {	presetCheckBox("tag_8d", true);	}
+			else						{	presetCheckBox("tag_8d", false);	}
+			if (profiles.indexOf("12a") >= 0)	{	presetCheckBox("tag_12a", true);}
+			else						{	presetCheckBox("tag_12a", false);	}
+			if (profiles.indexOf("12b") >= 0)	{	presetCheckBox("tag_12b", true);}
+			else						{	presetCheckBox("tag_12b", false);	}
+			if (profiles.indexOf("17a") >= 0)	{	presetCheckBox("tag_17a", true);}
+			else						{	presetCheckBox("tag_17a", false);	}
+			
+			if (us0_enable == "1")		{	presetCheckBox("tag_US0", true);	}
+			else						{	presetCheckBox("tag_US0", false);	}
+			if (bitswap_enable == "1")	{	presetCheckBox("bitswap", true);	}
+			else						{	presetCheckBox("bitswap", false);	}
+			if (sra_enable == "1")		{	presetCheckBox("sra", true);	}
+			else						{	presetCheckBox("sra", false);	}
+			VDSL2_disabled();
+		}
+		else	{	if (DebugMode == 1)	{	alert("[!!GetXML Error!!] Function: GetResult_2nd");	}	}
+
+	}
+
+	function CheckConnectionStatus()
+	{
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 2000,
+			type : "GET",
+			success : function(data) { SetXML(); },
+			error : function() { document.getElementById("DetectRouterConnection").style.display = "inline"; }
+		});
+	}
+
+	function SetXML()
+	{
+		document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		document.getElementById("waitSettingFinish").style.display = "inline";
+		//HNAP.GetXMLAsync("SetDslModulationSettings", null, "GetXML", function(xml)	{	SetResult_1st(xml)	});
+		SetResult_1st();
+	}
+	function SetResult_1st()
+	{
+		var json_SetDSL = {};
+		
+		var Modulation="";
+		if (document.getElementById("gdmt_ck").checked)
+			Modulation += "g.dmt,";
+		if (document.getElementById("glite_ck").checked)
+			Modulation += "g.lite,";
+		if(document.getElementById("t1413_ck").checked)
+			Modulation += "t1.413,";
+		if(document.getElementById("adsl2_ck").checked)
+			Modulation += "adsl2,";
+		if(document.getElementById("annexl_ck").checked)
+			Modulation += "annexl,";
+		if(document.getElementById("adsl2plus_ck").checked)
+			Modulation += "adsl2+,";
+		if(document.getElementById("annexm_ck").checked)
+			Modulation += "annexm,";
+		if(document.getElementById("vdsl2_ck").checked)
+			Modulation += "vdsl2";
+			
+		var Profiles="";
+		if (document.getElementById("tag_8a_ck").checked)
+			Profiles += "8a,";
+		if (document.getElementById("tag_8b_ck").checked)
+			Profiles += "8b,";
+		if(document.getElementById("tag_8c_ck").checked)
+			Profiles += "8c,";
+		if(document.getElementById("tag_8d_ck").checked)
+			Profiles += "8d,";
+		if(document.getElementById("tag_12a_ck").checked)
+			Profiles += "12a,";
+		if(document.getElementById("tag_12b_ck").checked)
+			Profiles += "12b,";
+		if(document.getElementById("tag_17a_ck").checked)
+			Profiles += "17a";
+			
+		var us0_enable="0";
+		if(document.getElementById("tag_US0_ck").checked)
+			us0_enable = "1";
+		else 
+			us0_enable = "0";
+		
+		var bitswap_enable = "0";
+		if(document.getElementById("bitswap_ck").checked)
+			bitswap_enable = "1";
+		else 
+			bitswap_enable = "0";
+		
+		var sra_enable = "0";
+		if(document.getElementById("sra_ck").checked)
+			sra_enable = "1";
+		else 
+			sra_enable = "0";
+				
+		json_SetDSL["dsl_modulation"] = Modulation;
+		json_SetDSL["dsl_profiles"] = Profiles;
+		json_SetDSL["dsl_us0_enable"] = us0_enable;
+		json_SetDSL["dsl_bitswap_enable"] = bitswap_enable;
+		json_SetDSL["dsl_sra_enable"] = sra_enable;
+			
+		HNAP.SetJSONAsync("SetDslModulationSettings", null, json_SetDSL, function(xml)	{	SetResult_2nd(xml);	});
+		
+		
+	}
+	function SetResult_2nd(result_xml)
+	{
+		var SetResult_2nd = result_xml.Get("SetDslModulationSettingsResponse/SetDslModulationSettingsResult");
+		if (SetResult_2nd == "OK")
+		{
+			setTimeout("waitSettingFinished()", 1000);
+		}
+		else if (SetResult_2nd == "ERROR")	
+		{	
+			if (DebugMode == 1)	
+			{	
+				alert("[!!SetXML Error!!] Function: SetResult_2nd");	
+			}	
+			setTimeout("waitSettingFinished()", 1000);	
+		}
+	}
+	function waitSettingFinished()	
+	{
+		window.location.reload();	
+	}
+	function VDSL2_disabled()
+	{
+		if (document.getElementById("vdsl2_ck").checked == "1") 
+		{
+			if(document.getElementById("advancedBlock").style.display=="block")
+			{
+				document.getElementById("advancedBlock1").style.display="block";
+			}
+		}	
+		else 
+		{
+			document.getElementById("advancedBlock1").style.display="none";
+		}
+		
+	}
+	function VDSL2_disabled_click()
+	{
+		//var sss=$("#vdsl2").attr("class");
+		if (document.getElementById("vdsl2_ck").checked == "1") 
+		{
+			document.getElementById("advancedBlock1").style.display="none";
+		}	
+		else 
+		{
+			if(document.getElementById("advancedBlock").style.display=="block")
+			{
+				document.getElementById("advancedBlock1").style.display="block";
+			}
+		}
+		
+	}
+</script>
+<script type="text/javascript">
+
+	$(function() {
+		$("select").change(function () {	save_button_changed();	});
+		$("input").keydown(function () {	save_button_changed();	});
+	});
+
+</script>
+</head>
+
+<body>
+	<form name="internet_form" id="internet_form" method="POST" action="">
+	<div id="wrapper">
+		<!-------------------- Logo ------------------------->
+		<div id="header"></div>
+		<!-------------------- Menu ------------------------->
+		<div id="menu"></div>
+		<!-------------------- Content ---------------------->
+		<div id="content">
+		<!-------------------- info ---------------------->
+			<div id="info">
+				<div id="FunctionName"><script>I18N("h", "DSL");</script></div>
+				<div id="wallimage"><img src="image/internet_page.png" alt="" width="195" height="119"/></div>
+				<div id="directions">
+					<script>I18N("h", "Use this section to configure your DSL Setting.");</script>
+				</div>
+			</div>
+			<!-------------------- funcBar ---------------------->
+			<div id="funcBar" style="width:920px">
+				<div id="pagePath">&nbsp;<script>I18N("h", "Settings");</script> >> <script>I18N("h", "Internet");</script> >> <script>I18N("h", "DSL");</script></div>
+				<ul id="rightFunc">
+					<li style="display:block"><div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click()" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li>
+					<li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+					<input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+					<li style="display:block"><a href="javascript:CheckHTMLStatus('Internet');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "IPv4");</script></div></a></li>
+					<li id="FUNC_IPv6" style="display:block"><a href="javascript:CheckHTMLStatus('Internet_IPv6');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "IPv6");</script></div></a></li>
+					<li id="FUNC_Ptm" style="display:block"><a href="javascript:CheckHTMLStatus('Internet_PTM');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "PTM");</script></div></a></li>
+					<li id="FUNC_Atm" style="display:block"><a href="javascript:CheckHTMLStatus('Internet_ATM');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "ATM");</script></div></a></li>
+					<li id="FUNC_MultiWAN" style="display:block"><a href="javascript:CheckHTMLStatus('Internet_MultiWAN');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "Multi WAN");</script></div></a></li>
+				</ul>
+			</div>
+			<!-------------------- main ---------------------->
+			<br />
+			<div id="main">
+				<table class="block4" border="0">
+					<tbody>
+						<tr>
+							<td colspan="4"><div class ="title"><script>I18N("h", "DSL Modulation");</script></div></td>
+						</tr>
+						<tr>
+							<th style="width: 200px;"><script>I18N("h", "G.dmt");</script>:</th>
+							<td style="width: 100px;">
+								<div id="gdmt" class="checkbox_on">
+									<input type="checkbox" id="gdmt_ck" name="gdmt" checked>
+								</div>
+							</td>
+							<th style="width: 150px;"><script>I18N("h", "G.lite");</script>:</th>
+							<td style="width: 250px;">
+								<div id="glite" class="checkbox_on">
+									<input type="checkbox" id="glite_ck" name="glite" checked>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th style="width: 200px;"><script>I18N("h", "T1.413");</script>:</th>
+							<td style="width: 100px;">
+								<div id="t1413" class="checkbox_on">
+									<input type="checkbox" id="t1413_ck" name="t1413" checked>
+								</div>
+							</td>
+							<th style="width: 150px;"><script>I18N("h", "ADSL2");</script>:</th>
+							<td style="width: 250px;">
+								<div id="adsl2" class="checkbox_on">
+									<input type="checkbox" id="adsl2_ck" name="adsl2" checked>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th style="width: 200px;"><script>I18N("h", "AnnexL");</script>:</th>
+							<td style="width: 100px;">
+								<div id="annexl" class="checkbox_on">
+									<input type="checkbox" id="annexl_ck" name="annexl" checked>
+								</div>
+							</td>
+							<th style="width: 150px;"><script>I18N("h", "ADSL2+");</script>:</th>
+							<td style="width: 250px;">
+								<div id="adsl2plus" class="checkbox_on">
+									<input type="checkbox" id="adsl2plus_ck" name="adsl2plus" checked>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th style="width: 200px;"><script>I18N("h", "AnnexM");</script>:</th>
+							<td style="width: 100px;">
+								<div id="annexm" class="checkbox_on">
+									<input type="checkbox" id="annexm_ck" name="annexm" checked>
+								</div>
+							</td>
+							<th style="width: 150px;"><script>I18N("h", "VDSL2");</script>:</th>
+							<td style="width: 250px;">
+								<div id="vdsl2" class="checkbox_on" onClick="VDSL2_disabled_click();">
+									<input type="checkbox" id="vdsl2_ck" name="vdsl2" checked>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-----------------------------------Advanced Settings------------------------------------------------->
+			<div class="advButton" onclick="showAdv('advancedBlock');showAdv('advancedBlock1');VDSL2_disabled();"><script>I18N("h", "Advanced Settings");</script>...</div>
+			<hr />
+			<div id="advancedBlock" style="display:none">	
+				<table  class="block4" border="0">
+					<tbody>
+						<tr>
+							<th style="width: 200px;"><script>I18N("h", "Bitswap");</script>:</th>
+							<td style="width: 100px;">
+								<div id="bitswap" class="checkbox_on">
+									<input type="checkbox" id="bitswap_ck" name="bitswap" checked>
+								</div>
+							</td>
+							<th style="width: 150px;"><script>I18N("h", "SRA");</script>:</th>
+							<td style="width: 250px;">
+								<div id="sra" class="checkbox_on">
+									<input type="checkbox" id="sra_ck" name="sra" checked>
+								</div>
+							</td>
+							
+						</tr>
+						<tr style="display:none">
+							<th style="width: 150px;"><script>I18N("h", "AnnexL Upstream PSD");</script>:</th>
+							<td style="width: 250px;">
+								<div class="styled-select">
+									<select id="annexLMask" name="annexLMask">
+										<option value="0">M1 and M2</option>
+										<option value="1">M1 only</option>
+										<option value="2">M2 only</option>
+									</select>
+								</div>
+							</td>
+							<th>&nbsp;</th>
+							<td>&nbsp;</td>
+						</tr>
+					</tbody>
+				</table>	
+			</div>
+
+			
+			<div id="advancedBlock1" style="display:none">
+			<hr />
+				<table  class="block4" border="0">
+					<tbody>
+						<tr>
+							<th style="width: 200px;"><script>I18N("h", "8a");</script>:</th>
+							<td style="width: 100px;">
+								<div id="tag_8a" class="checkbox_on">
+									<input type="checkbox" id="tag_8a_ck" name="tag_8a" checked>
+								</div>
+							</td>
+							<th style="width: 150px;"><script>I18N("h", "12a");</script>:</th>
+							<td style="width: 250px;">
+								<div id="tag_12a" class="checkbox_on">
+									<input type="checkbox" id="tag_12a_ck" name="tag_12a" checked>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th style="width: 200px;"><script>I18N("h", "8b");</script>:</th>
+							<td style="width: 100px;">
+								<div id="tag_8b" class="checkbox_on">
+									<input type="checkbox" id="tag_8b_ck" name="tag_8b" checked>
+								</div>
+							</td>
+							<th style="width: 150px;"><script>I18N("h", "12b");</script>:</th>
+							<td style="width: 250px;">
+								<div id="tag_12b" class="checkbox_on">
+									<input type="checkbox" id="tag_12b_ck" name="tag_12b" checked>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th style="width: 200px;"><script>I18N("h", "8c");</script>:</th>
+							<td style="width: 100px;">
+								<div id="tag_8c" class="checkbox_on">
+									<input type="checkbox" id="tag_8c_ck" name="tag_8c" checked>
+								</div>
+							</td>
+							<th style="width: 150px;"><script>I18N("h", "17a");</script>:</th>
+							<td style="width: 250px;">
+								<div id="tag_17a" class="checkbox_on">
+									<input type="checkbox" id="tag_17a_ck" name="tag_17a" checked>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th style="width: 200px;"><script>I18N("h", "8d");</script>:</th>
+							<td style="width: 100px;">
+								<div id="tag_8d" class="checkbox_on">
+									<input type="checkbox" id="tag_8d_ck" name="tag_8d" checked>
+								</div>
+							</td>
+							<!--
+							<th style="width: 150px;"><script>I18N("h", "30a");</script>:</th>
+							<td style="width: 250px;">
+								<div id="tag_30a" class="checkbox_on">
+									<input type="checkbox" id="tag_30a_ck" name="tag_30a" checked>
+								</div>
+							</td>
+							-->
+						</tr>
+						<tr>
+							<th style="width: 200px;"><script>I18N("h", "US0");</script>:</th>
+							<td style="width: 100px;">
+								<div id="tag_US0" class="checkbox_on">
+									<input type="checkbox" id="tag_US0_ck" name="tag_US0" checked>
+								</div>
+							</td>
+							<th>&nbsp;</th>
+							<td>&nbsp;</td>
+						</tr>
+					</tbody>
+				</table>	
+			</div>
+
+			<div id="CreatePopAlertMessage" style="display:none">
+				<div id="AlertPopRect">
+				<div id="AlertPopBody">
+					<table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0" style="display:none">
+						<tbody>
+							<tr>
+								<td><center><div id="Loading_pop_image2"></div></center></td>
+							</tr>
+							<tr>
+								<td><label id="reciprocal_Number"></label></td>
+							</tr>
+							<tr>
+								<td id="dialog_msg_black2">
+									<script>I18N("h", "Your changes are being saved.");</script>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</div>
+			</div>
+			<div id="DetectRouterConnection" style="display:none"></div>
+			<div id="footer">
+				<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>
+			</div>
+		</div>
+	</div>
+	</form>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready( function() {
+			$('#internet_form').validate({
+				submitHandler: function(form) {
+					CheckConnectionStatus();
+				}
+			});
+		});
+	</script>
+</body>
+<script type="text/javascript">
+	Load_HTML();
+	Initial();
+	setMenu("menu_Settings");
+	checkTimeout();
+</script>
+</html>

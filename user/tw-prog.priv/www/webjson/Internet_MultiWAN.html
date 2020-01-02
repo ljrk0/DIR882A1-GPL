@@ -1,0 +1,369 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link rel=stylesheet type="text/css" href="/css/style_h.css" media="all" />
+<link rel=stylesheet type="text/css" href="/css/jquery.selectbox.css?v=20160524151219" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js?v=20160524151219"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialCSS.js?v=20160524151219"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js?v=20160524151219"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialValidate1.js?v=20160524151219"></script>
+<style>
+#page_btn {
+	min-width: 80px;
+}
+</style>
+<script>
+$(document).ready(function(){
+
+	//var xml_GetPVCList = HNAP.GetXML("GetPVCListAlpha");
+	//var pvcCount = xml_GetPVCList.Get("GetPVCListAlphaResponse/PVCList/PVC#");
+	
+	
+	$("#priority_high").children().remove();
+	$("#priority_mid").children().remove();
+	$("#priority_low").children().remove();
+	for (var i=0; i<WAN_array.length; i++)
+	{
+		$("#priority_high").append('<option value="'+ WAN_array[i] +'">'+WAN_array[i]+'</option>');
+		//$("#priority_mid").append('<option value="'+ WAN_array[i] +'">'+WAN_array[i]+'</option>');
+		//$("#priority_low").append('<option value="'+ WAN_array[i] +'">'+WAN_array[i]+'</option>');
+	}
+	var obj_high = document.getElementById("priority_high");
+	COMM_SetSelectValue(obj_high, Priority_High);
+	ChangePriorityHigh(Priority_High);
+	$("#priority_high").selectbox();
+	$("#priority_mid").selectbox();
+	$("#priority_low").selectbox();
+	
+});
+</script>
+
+<script type="text/javascript">
+	var HNAP = new HNAP_XML();
+	var currPriority = {};
+	var WAN_array = ["ETH0","ETH1","ATM0","ATM1","PTM0","PTM1","USB0","USB1"];
+	var Priority_High = "ETH0";
+	var Priority_Mid = "ATM1";
+	var Priority_Low = "USB1";
+	var curren_High = Priority_High;
+	var curren_Mid = Priority_Mid;
+	var curren_Low = Priority_Low;
+	function Load_HTML()
+	{
+		$("#header").load("header.html");
+	}
+
+	function Initial()
+	{
+		initialMenu();
+		initialDetectRouterConnection();
+	}
+	
+	function GetXML()
+	{
+		//HNAP.GetXMLAsync('GetFailOverSettings', null, 'GetValue', getMainCallback);
+	}
+	function ChangePriorityHigh(High_Mode)
+	{
+		$("#priority_mid").selectbox('detach');
+		$("#priority_mid").children().remove();
+		$("#priority_low").children().remove();
+		
+		var obj_mid = document.getElementById("priority_mid");
+		if( High_Mode.indexOf("USB")>=0 )
+		{
+			for (var i=0; i<WAN_array.length; i++)
+			{
+				if(WAN_array[i].indexOf("USB")<0)
+				{
+					$("#priority_mid").append('<option value="'+ WAN_array[i] +'">'+WAN_array[i]+'</option>');
+					if(WAN_array[i] == Priority_Mid)
+						COMM_SetSelectValue(obj_mid, WAN_array[i]);
+				}
+			}
+		}
+		else if( High_Mode.indexOf("ETH")>=0 )
+		{
+			for (var i=0; i<WAN_array.length; i++)
+			{
+				if(WAN_array[i].indexOf("ETH")<0)
+				{
+					$("#priority_mid").append('<option value="'+ WAN_array[i] +'">'+WAN_array[i]+'</option>');
+					if(WAN_array[i] == Priority_Mid)
+						COMM_SetSelectValue(obj_mid, WAN_array[i]);
+				}
+			}
+		}
+		else if( High_Mode.indexOf("ATM")>=0 || High_Mode.indexOf("PTM")>=0 )
+		{
+			//alert("atm");
+			for (var i=0; i<WAN_array.length; i++)
+			{
+				if(WAN_array[i].indexOf("ATM")== -1 && WAN_array[i].indexOf("PTM") == -1)
+				{
+					$("#priority_mid").append('<option value="'+ WAN_array[i] +'">'+WAN_array[i]+'</option>');
+					if(WAN_array[i] == Priority_Mid)
+						COMM_SetSelectValue(obj_mid, WAN_array[i]);
+				}
+			}
+		}
+		$("#priority_mid").selectbox('attach');
+		
+		ChangePriorityMid(obj_mid.value);
+	}
+	function ChangePriorityMid(Mid_Mode)
+	{
+		$("#priority_low").selectbox('detach');
+		$("#priority_low").children().remove();
+		
+		var opt_mid = document.getElementById("priority_mid");
+		var obj_low = document.getElementById("priority_low");
+		
+		if(Mid_Mode.indexOf("ETH")>=0)
+		{
+			for(var i=0;i<opt_mid.length;i++)
+			{
+				if(opt_mid.options[i].value.indexOf("ETH")<0)//-1
+				{	
+					$("#priority_low").append('<option value="'+ opt_mid.options[i].value +'">'+opt_mid.options[i].value+'</option>');
+					if(opt_mid.options[i].value == Priority_Low)
+						COMM_SetSelectValue(obj_low, opt_mid.options[i].value);
+				}
+			}
+		}
+		else if(Mid_Mode.indexOf("ATM")>=0 || Mid_Mode.indexOf("PTM")>=0)
+		{
+			for(var i=0;i<opt_mid.length;i++)
+			{
+				if(opt_mid.options[i].value.indexOf("ATM")<0 && opt_mid.options[i].value.indexOf("PTM")<0)//-1
+				{
+					$("#priority_low").append('<option value="'+ opt_mid.options[i].value +'">'+opt_mid.options[i].value+'</option>');
+					if(opt_mid.options[i].value == Priority_Low)
+						COMM_SetSelectValue(obj_low, opt_mid.options[i].value);
+				}
+			}
+		}
+		else if(Mid_Mode.indexOf("USB")>=0)
+		{
+			for(var i=0;i<opt_mid.length;i++)
+			{
+				if(opt_mid.options[i].value.indexOf("USB")<0)//-1
+				{
+					$("#priority_low").append('<option value="'+ opt_mid.options[i].value +'">'+opt_mid.options[i].value+'</option>');
+					if(opt_mid.options[i].value == Priority_Low)
+						COMM_SetSelectValue(obj_low, opt_mid.options[i].value);
+				}
+			}
+		}
+		$("#priority_low").selectbox('attach');
+	}
+	function CheckConnectionStatus()
+	{
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 2000,
+			type : "GET",
+			success : function(data) { SetXML(); },
+			error : function() { document.getElementById("DetectRouterConnection").style.display = "inline"; }
+		});
+	}
+
+	function SetXML()
+	{
+		//var xml_SetDSLSettingsResult = HNAP.SetXMLAsync("SetFailOverSettings", xml_SetDSLSettings);
+		HNAP.GetXMLAsync("SetNetworkSettings", null, "GetXML", function(xml)	{	SetResult_1st(xml)	});
+		document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		document.getElementById("waitSettingFinish").style.display = "inline";
+	}
+	function SetResult_1st(result_xml)
+	{
+		var json_SetMultiWANSettings = {};
+		
+		if (result_xml != null)
+		{
+			json_SetMultiWANSettings["high"] = document.getElementById("priority_high").value;
+			json_SetMultiWANSettings["mid"] = document.getElementById("priority_mid").value;
+			json_SetMultiWANSettings["low"] = document.getElementById("priority_low").value;
+			
+			HNAP.SetJSONAsync("SetFailOverSettings", result_xml, json_SetMultiWANSettings, function(xml)	{	SetResult_2nd(xml);	});
+		}
+	}
+	function SetResult_2nd(result_xml)
+	{
+		var SetResult_2nd = result_xml.Get("SetFailOverSettingsResponse/SetFailOverSettingsResult");
+		
+		if (SetResult_2nd == "OK")
+		{
+			setTimeout("waitSettingFinished()", 1000);
+		}
+		else if (SetResult_2nd == "ERROR")	
+		{	
+			if (DebugMode == 1)	
+			{	
+				alert("[!!SetXML Error!!] Function: SetResult_2nd");	
+			}	
+			//setTimeout("waitSettingFinished()", 1000);	
+		}
+	}
+	function waitSettingFinished()	
+	{
+		window.location.reload();	
+	}
+</script>
+<script type="text/javascript">
+	$(function() {
+		$("select").change(function () {	save_button_changed();	});
+		$("input").keydown(function () {	save_button_changed();	});
+		//$("#priority_high").unbind();
+	});
+
+</script>
+</head>
+
+<body>
+	<form name="internet_form" id="internet_form" method="POST" action="">
+	<div id="wrapper">
+		<!-------------------- Logo ------------------------->
+		<div id="header"></div>
+		<!-------------------- Menu ------------------------->
+		<div id="menu"></div>
+		<!-------------------- Content ---------------------->
+		<div id="content">
+		<!-------------------- info ---------------------->
+			<div id="info">
+				<div id="FunctionName"><script>I18N("h", "Multiple WAN");</script></div>
+				<div id="wallimage"><img src="image/internet_page.png" alt="" width="195" height="119"/></div>
+				<div id="directions">
+					<script>I18N("h", "Configure your Internet fail over priority. In the event that your primary Internet connection method fails, this device can automatically fall back to using a secondary or tertiary connection in order to maintain Internet connectivity. From this page you may configure your Internet failover priority.");</script>
+				</div>
+			</div>
+			<!-------------------- funcBar ---------------------->
+			<div id="funcBar" style="width:920px">
+				<div id="pagePath">&nbsp;<script>I18N("h", "Settings");</script> >> <script>I18N("h", "Internet");</script> >> <script>I18N("h", "Multi WAN");</script></div>
+				<ul id="rightFunc">
+					<li style="display:block"><div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click()" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li>
+					<li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+					<input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+					<li style="display:block"><a href="javascript:CheckHTMLStatus('Internet');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "IPv4");</script></div></a></li>
+					<li id="FUNC_IPv6" style="display:block"><a href="javascript:CheckHTMLStatus('Internet_IPv6');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "IPv6");</script></div></a></li>
+					<li id="FUNC_Ptm" style="display:block"><a href="javascript:CheckHTMLStatus('Internet_PTM');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "PTM");</script></div></a></li>
+					<li id="FUNC_Atm" style="display:block"><a href="javascript:CheckHTMLStatus('Internet_ATM');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "ATM");</script></div></a></li>
+					<li id="FUNC_Dsl" style="display:block"><a href="javascript:CheckHTMLStatus('Internet_DSL');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "DSL");</script></div></a></li>
+				</ul>
+			</div>
+			<!-------------------- main ---------------------->
+			<br />
+			<div id="main">
+				<table class="block" border="0">
+					<tbody>
+						<tr id="country_block">
+							<th><script>I18N("h", "Primary Internet Connection");</script>:</th>
+							<td>
+								<div class="styled-select">
+									<select id="priority_high" class="dsl-select" name="priority_high" onchange="ChangePriorityHigh(this.value)">
+										<!--<option value="">Not Listed</option>
+										<option value="AU">Australia</option>
+										<option value="NZ">New Zealand</option>-->
+									</select>
+								</div>
+							</td>
+							<td></td>
+						</tr>
+						
+						<tr>
+							<th><script>I18N("h", "Secondary Backup Internet Connection");</script>:</th>
+							<td>
+								<div class="styled-select">
+									<select id="priority_mid" name="priority_mid" onchange="ChangePriorityMid(this.value)">
+										<option value="">Not Available</option>
+										<!--<option value="0">Path0</option>
+										<option value="1">Path1</option>
+										<option value="4">Path0&Path1</option>-->
+									</select>
+								</div>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Tertiary Backup Internet Connection");</script>:</th>
+							<td>
+								<div class="styled-select">
+									<select id="priority_low" name="priority_low">
+										<option value="">Not Available</option>
+										<!--<option value="LLC">LLC</option>
+										<option value="VC">VC MUX</option>-->
+									</select>
+								</div>
+							</td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div id="CreatePopAlertMessage" style="display:none">
+				<div id="popRect" style="display:none">
+		 		<div id="dialogBox" style="width: 616px; overflow-x: hidden; overflow-y: auto; max-height: 554px; top: 40px;">
+		 			<div id="closeCreatePopBtn" onclick="document.getElementById('CreatePopAlertMessage').style.display='none';document.getElementById('popRect').style.display='none';document.getElementById('AlertPopRect').style.display='';" style="cursor:pointer;"></div>
+		 			<div style="padding-top: 80px;font-weight:bold;"><script>I18N("h", "System will auto select ATM/PTM to match ISP xDSL line");</script></div>
+		 			<div style="padding-top: 60px;">
+		 				<button type="button" class="styled-button_enable" onclick="document.getElementById('CreatePopAlertMessage').style.display='none';document.getElementById('popRect').style.display='none';document.getElementById('AlertPopRect').style.display='';" style="cursor:pointer;">OK</button>
+		 			</div>
+		 		</div>
+		 		</div>
+		 		
+				<div id="AlertPopRect">
+				<div id="AlertPopBody">
+					<table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0" style="display:none">
+						<tbody>
+							<tr>
+								<td><center><div id="Loading_pop_image2"></div></center></td>
+							</tr>
+							<tr>
+								<td><label id="reciprocal_Number"></label></td>
+							</tr>
+							<tr>
+								<td id="dialog_msg_black2">
+									<script>I18N("h", "Your changes are being saved.");</script>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</div>
+			</div>	
+			<div id="DetectRouterConnection" style="display:none"></div>
+			<div id="footer">
+				<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>
+			</div>
+		</div>
+	</div>
+	</form>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready( function() {
+
+			$('#internet_form').validate({
+				submitHandler: function(form) {
+					CheckConnectionStatus();
+				}
+			});
+		});
+
+	</script>
+</body>
+<script type="text/javascript">
+	Load_HTML();
+	Initial();
+	setMenu("menu_Settings");
+	GetXML();
+	checkTimeout();
+</script>
+</html>

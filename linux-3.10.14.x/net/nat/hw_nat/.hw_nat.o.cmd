@@ -1,0 +1,1 @@
+cmd_net/nat/hw_nat/hw_nat.o := /opt/buildroot-gcc463/usr/bin/mipsel-linux-ld  -m elf32ltsmip   -r -o net/nat/hw_nat/hw_nat.o net/nat/hw_nat/ra_nat.o net/nat/hw_nat/foe_fdb.o net/nat/hw_nat/util.o net/nat/hw_nat/hwnat_ioctl.o net/nat/hw_nat/mcast_tbl.o 

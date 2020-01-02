@@ -1,0 +1,795 @@
+<!-- Copyright 2011, MediaTek Inc. All Rights Reserved. -->
+<html>
+<head>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="Expires" content="-1">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="/style/normal_ws.css" type="text/css">
+<title>Wireless WPS</title>
+</head>
+
+<script type="text/javascript" src="/shareFun.js"></script>
+<script type="text/javascript" src="/wps_timer.js"></script>
+<script type="text/javascript" src="/json2.js"></script>
+<script language="JavaScript" type="text/javascript">
+var wps_ajax_url = "/cgi-bin/makeRequest.cgi";
+var SSID = new Array();
+var dbdc_en = "<!--#exec cmd="web 2860 nvram DBDC_MODE"-->";
+var dbdcb =  "<!--#exec cmd="web 2860 build dbdc"-->";
+var wpsenable_raw  = "<!--#exec cmd="web 2860 nvram WscConfMode"-->";
+var wpsenable_list = wpsenable_raw.split(";");
+var wps_result;
+var ifname = "ra0";
+
+function WPSUpdateHTML(http_request, ssid_index)
+{
+	var all_str = http_request.responseText;
+	var field = all_str.split('\t');
+	wpsconfigured = document.getElementById("WPSConfigured");
+	//console.log("WPSUpdateHTML.wpsconfigured="+ field[0]);
+	if(field[0] == "1" || field[0] == "0")
+		wpsconfigured.innerHTML = "No";
+	else if(field[0] == "2")
+		wpsconfigured.innerHTML = "Yes";
+	else
+		wpsconfigured.innerHTML = "Unknown";
+
+	wpsssid = document.getElementById("WPSSSID");
+	wpsssid.innerHTML = field[1];
+	if((dbdc_en == "1") && (dbdcb == "1")){
+		if(field[1] != document.WPSConfig.ssidIndex.options[ssid_index].text){
+			SSID[ssid_index] = field[1];
+			document.WPSConfig.ssidIndex.options[ssid_index].text = field[1];
+		}
+	}
+
+	wpsauthmode = document.getElementById("WPSAuthMode");
+	wpsauthmode.innerHTML = field[2];
+
+	wpsencryptype = document.getElementById("WPSEncryptype");
+	wpsencryptype.innerHTML = field[3];
+
+	wpsdefaultkeyindex = document.getElementById("WPSDefaultKeyIndex");
+	wpsdefaultkeyindex.innerHTML = field[4];
+
+	wpskeytype = document.getElementById("WPSKeyType");
+	if(field[3] == "WEP"){
+		wpskeytype.innerHTML = "WPS Key(Hex value)";
+	}else
+		wpskeytype.innerHTML = "WPS Key(ASCII)";
+
+	wpswpakey = document.getElementById("WPSWPAKey");
+	wpswpakey.innerHTML = field[5];
+
+	wpsstatus = document.getElementById("WPSCurrentStatus");
+	wpsstatus.innerHTML = field[6];
+
+	if(field[7] == "-1")
+		document.getElementById("WPSInfo").value = "WSC failed";
+	else if(field[7] == "0"){
+		document.getElementById("WPSInfo").value = "WSC:" + field[6];
+	}else if(field[7] == "1")
+		document.getElementById("WPSInfo").value = "WSC Success";
+	wps_result = field[7];
+}
+
+function updateWPS(){
+	//makeRequest("/cgi-bin/makeRequest.cgi", "updateAPWPSStatus&ra0", WPSUpdateHTML);
+//	var ssid_index = document.WPSConfig.ssidIndex.value;
+//	alert("updateWPS.ssid_index=" + ssid_index);
+//	var ifname = "ra" + ssid_index;
+	var ssid_index = "0"; 
+
+	if ((dbdc_en == "1") && (dbdcb == "1"))
+		ssid_index = document.WPSConfig.ssidIndex.value;
+
+	makeRequest2("/cgi-bin/makeRequest.cgi", "updateAPWPSStatus&"+ifname, WPSUpdateHTML, ssid_index);
+	document.WPSConfig.submitWPSEnable.disabled = false;
+	document.WPSConfig.WPSEnable.disabled = false;
+	document.getElementById("GenPIN").disabled = false;
+	document.SubmitOOB.submitResetOOB.disabled = false;
+	document.WPS.PINPBCRadio[0].disabled = false;
+	document.WPS.PINPBCRadio[1].disabled = false;
+	document.WPS.PIN.disabled = false;
+	document.WPS.submitWPS.disabled = false;
+}
+
+function enableTextField (field)
+{
+	if(document.all || document.getElementById)
+		field.disabled = false;
+	else {
+		field.onfocus = field.oldOnFocus;
+	}
+}
+
+function disableTextField (field)
+{
+	if(document.all || document.getElementById)
+		field.disabled = true;
+	else {
+		field.oldOnFocus = field.onfocus;
+		field.onfocus = skip;
+	}
+}
+
+function ValidateChecksum(PIN)
+{
+	var accum = 0;
+	var tmp_str = PIN.replace("-", "");
+	var pincode = tmp_str.replace(" ", "");
+
+	document.WPS.PIN.value = pincode;
+	if (pincode.length == 4)
+		return 1;
+	if (pincode.length != 8)
+		return 0;
+
+	accum += 3 * (parseInt(pincode / 10000000) % 10);
+	accum += 1 * (parseInt(pincode / 1000000) % 10);
+	accum += 3 * (parseInt(pincode / 100000) % 10);
+	accum += 1 * (parseInt(pincode / 10000) % 10);
+	accum += 3 * (parseInt(pincode / 1000) % 10);
+	accum += 1 * (parseInt(pincode / 100) % 10);
+	accum += 3 * (parseInt(pincode / 10) % 10);
+	accum += 1 * (parseInt(pincode / 1) % 10);
+
+	return ((accum % 10) == 0);
+}
+
+function PINPBCFormCheck()
+{
+	if (document.WPS.PINPBCRadio[0].checked) {
+		// PIN
+		if(document.WPS.PIN.value != "") {
+			if (!ValidateChecksum(document.WPS.PIN.value)) {
+				alert("PIN number validation failed\n");
+				return false;
+			}
+		}
+	} else {
+		// PBC
+	}
+	return true;
+}
+
+function checkSecurity(ssid_index)
+{
+	var authmode = "<!--#exec cmd="web 2860 nvram AuthMode"-->";
+	var ieee8021x_raw = "<!--#exec cmd="web 2860 nvram IEEE8021X"-->";
+	var security_list = authmode.split(";");
+	var ieee8021x_list = ieee8021x_raw.split(";");
+	var security = security_list[ssid_index];
+	var ieee8021x = ieee8021x_list[ssid_index];
+	
+	if (security == "SHARED" || security == "WEPAUTO" || security == "WPA" || 
+			security == "WPA2" || security == "WPA1WPA2" || ieee8021x == "1")
+		alert("WPS does not support this security mode, please reset to OOB first!");
+}
+
+function initSSIDList()
+{
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID1"-->") != "")
+	{
+		SSID[0] = str;
+	}
+
+	if((dbdc_en != "1") || (dbdcb != "1"))
+	{
+		SSID.splice(1, SSID.length - 1);
+		return;
+	}
+
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID2"-->") != "")
+	{
+		SSID[1] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID3"-->") != "")
+	{
+		SSID[2] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID4"-->") != "")
+	{
+		SSID[3] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID5"-->") != "")
+	{
+		SSID[4] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID6"-->") != "")
+	{
+		SSID[5] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID7"-->") != "")
+	{
+		SSID[6] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID8"-->") != "")
+	{
+		SSID[7] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID9"-->") != "")
+	{
+		SSID[8] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID10"-->") != "")
+	{
+		SSID[9] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID11"-->") != "")
+	{
+		SSID[10] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID12"-->") != "")
+	{
+		SSID[11] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID13"-->") != "")
+	{
+		SSID[12] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID14"-->") != "")
+	{
+		SSID[13] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID15"-->") != "")
+	{
+		SSID[14] = str;
+	}
+	if ((str = "<!--#exec cmd="web 2860 nvram SSID16"-->") != "")
+	{
+		SSID[15] = str;
+	}
+}
+
+function UpdateMBSSIDList()
+{
+
+	for (var i = document.WPSConfig.ssidIndex.length; i > 1; i--) 
+	{
+		var res = document.WPSConfig.ssidIndex.remove(i-1);
+	}
+	document.WPSConfig.ssidIndex.length = 0;
+
+	for(var i=0; i<SSID.length; i++){
+		//var j = document.WPSConfig.ssidIndex.options.length;
+		//document.WPSConfig.ssidIndex.options[j] = new Option(SSID[i], i, false, false);
+		document.WPSConfig.ssidIndex.options[i] = new Option(SSID[i], i, false, false);
+	}
+
+	if ((dbdc_en == "1") && (dbdcb == "1")){
+		display("table-row","div_ssid_choice");
+		document.WPSConfig.ssidIndex.disabled = false;
+	} else {
+		display("none", "div_ssid_choice");
+		document.WPSConfig.ssidIndex.disabled = true;
+	}
+}
+
+function initTranslation()
+{
+	var e = document.getElementById("wpsTitle_text");
+	e.innerHTML = _("wps title");
+	e = document.getElementById("wpsIntroduction_text");
+	e.innerHTML = _("wps introduction");
+	e = document.getElementById("wpsConfig_text");
+	e.innerHTML = _("wps config");
+	e = document.getElementById("wpsWPS_text");
+	e.innerHTML = _("wps wps");
+	e = document.getElementById("wpsDisable_text");
+	e.innerHTML = _("wireless disable");
+	e = document.getElementById("wpsEnable_text");
+	e.innerHTML = _("wireless enable");
+	e = document.getElementById("wpsConfigApply_text");
+	e.value = _("wireless apply");
+
+	e = document.getElementById("wpsSummary_text");
+	e.innerHTML = _("wps summary");
+	e = document.getElementById("wpsCurrentStatus_text");
+	e.innerHTML = _("wps current status");
+	e = document.getElementById("wpsConfigured_text");
+	e.innerHTML = _("wps configured");
+	e = document.getElementById("wpsSSID_text");
+	e.innerHTML = _("wps ssid");
+	e = document.getElementById("wpsAuthMode_text");
+	e.innerHTML = _("wps auth mode");
+	e = document.getElementById("wpsEncrypType_text");
+	e.innerHTML = _("wps encryp type");
+	e = document.getElementById("wpsDefaultKeyIndex_text");
+	e.innerHTML = _("wps default key index");
+	e = document.getElementById("wpsAPPIN_text");
+	e.innerHTML = _("wps ap pin");
+	e = document.getElementById("wpsResetOOB_text");
+	e.value = _("wps reset oob");
+
+	e = document.getElementById("wpsProgress_text");
+	e.innerHTML = _("wps progress");
+	e = document.getElementById("wpsMode_text");
+	e.innerHTML = _("wps mode");
+	e = document.getElementById("wpsPINMode_text");
+	e.innerHTML = _("wps pin mode");
+	e = document.getElementById("wpsPBCMode_text");
+	e.innerHTML = _("wps pbc mode");
+	e = document.getElementById("wpsPINNum_text");
+	e.innerHTML = _("wps pin num");
+	e = document.getElementById("wpsPINApply_text");
+	e.value = _("wireless apply");
+	
+	e = document.getElementById("wpsStatus_text");
+	e.innerHTML = _("wps status");
+
+}
+
+function wps_init()
+{
+	var wpsenable = "<!--#exec cmd="web 2860 nvram WscConfMode"-->";
+
+	if(wpsenable == "0"){
+		// disable WPS
+		document.getElementById("WPSEnable").options.selectedIndex = 0;
+	}else{
+		// enable WPS
+		document.getElementById("WPSEnable").options.selectedIndex = 1;
+		checkSecurity(0);
+
+		display("table", "div_wps_status");
+		display("table", "div_wps");
+		display("table", "div_wps_info");
+
+		updateWPS();
+		wpsGetPinCode();
+		InitializeTimer();
+	}
+}
+
+function dbdc_wps_init(ssid_index)
+{
+
+	var wpsenable;
+
+	document.WPSConfig.ssidIndex.selectedIndex = ssid_index;
+
+	if(!wpsenable_list[ssid_index]){
+		wpsenable_list[ssid_index] = 0;
+		wpsenable = 0;
+	} else {
+		wpsenable = wpsenable_list[ssid_index];
+	}
+
+	//console.log("dbdc_wps_init.ssid_index="+ssid_index);
+	//console.log("dbdc_wps_init.wpsenable="+wpsenable);
+	if(wpsenable == "0"){
+		// disable WPS
+		StopTheClock();
+		document.getElementById("WPSEnable").options.selectedIndex = 0;
+	}else{
+		// enable WPS
+		document.getElementById("WPSEnable").options.selectedIndex = 1;
+		checkSecurity(ssid_index);
+
+		display("table", "div_wps_status");
+		display("table", "div_wps");
+		display("table", "div_wps_info");
+
+		updateWPS();
+		wpsGetPinCode();
+		InitializeTimer();
+	}
+}
+
+
+function pageInit(ssid_index)
+{
+	//initTranslation();
+	// hide tables first
+	display("none", "div_wps_status");
+	display("none", "div_wps");
+	display("none", "div_wps_info");
+	display("none", "div_ssid_choice");
+	//document.WPSConfig.ssidIndex.disabled = true;
+
+	initSSIDList();
+	UpdateMBSSIDList();
+	if((dbdcb == "1") && (dbdc_en == "1")){
+//		initSSIDList();
+//		UpdateMBSSIDList();
+		dbdc_wps_init(ssid_index);
+	} else {
+		wps_init();
+	}
+
+}
+
+function onPINPBCRadioClick(value)
+{
+	if(value == 1){
+		// PIN selected
+		display("table-row", "PINRow");
+	}else{
+		// PBC selected
+		display("none", "PINRow");
+	}
+}
+
+function onMBSSIDChange(ssid_index)
+{
+	//Landen: Set ifname global for updateWPS();
+	ifname = "ra" + ssid_index;
+	console.log("onMBSSIDChange.ifname="+ifname);
+
+	if((dbdcb == "1") && (dbdc_en == "1")){
+		display("none", "div_wps_status");
+		display("none", "div_wps");
+		display("none", "div_wps_info");
+		dbdc_wps_init(ssid_index);
+	} else {
+		alert("DBDC is not enabled! Please refresh this page.");
+	}
+}
+
+/* Raw Ajax Functions */
+function wpsConfigApplyCB(request, ssid_index)
+{
+	var res = JSON.parse(request.responseText);
+	//console.log("wpsConfigApplyCB.res=" + res + " ssid_index=" + ssid_index);
+
+	//dbdc_wps_init(ssid_index);
+	if (res.wpsconf== "OK")
+		//pageInit(ssid_index);
+		location.reload();
+	else
+		alert("wpsConfigApply Error! Please refresh this page.");
+}
+
+function wpsConfigApply(wps_enabled)
+{
+	var ssid_index = "0";
+	//console.log("wpsConfigApply.ssid_index="+ssid_index);
+	var query;
+
+	if ((dbdc_en == "1") && (dbdcb == "1"))
+		ssid_index = document.WPSConfig.ssidIndex.value;
+
+	query = "WPSConfig&2860&"+ ssid_index + "&WPSEnable=" + wps_enabled;
+
+	//Update Javascript structure to save current setting in page.
+	wpsenable_list[ssid_index] = wps_enabled;
+	makeRequest2(wps_ajax_url, query, wpsConfigApplyCB, ssid_index);
+}
+
+function wpsGetPinCodeCB(request, ssid_index)
+{
+	var res = JSON.parse(request.responseText);
+	//console.log("wpsGetPinCodeCB.pincode="+res.getpincode);
+
+	if(res.getpincode != "NG")
+		document.GenPINCode.PINCode.value = res.getpincode;
+	else
+		alert("GetPINCode NG! Please refresh this page.");	
+}
+
+function wpsGetPinCode()
+{
+	var ssid_index = "0"; 
+	var query;
+
+	if ((dbdc_en == "1") && (dbdcb == "1"))
+		ssid_index = document.WPSConfig.ssidIndex.value;
+
+	query = "GetPINCode&2860&" + ssid_index;
+
+	makeRequest2(wps_ajax_url, query, wpsGetPinCodeCB, ssid_index);
+}
+
+function wpsGenPinCodeCB(request, ssid_index)
+{
+	var res = JSON.parse(request.responseText);
+	//console.log("wpsGenPinCodeCB.pincode="+res.genpincode);
+
+	if(res.genpincode != "NG")
+		document.GenPINCode.PINCode.value = res.genpincode;
+	else
+		alert("GenPINCode NG! Please refresh this page.");
+}
+
+function wpsGenPinCode()
+{
+	var ssid_index = "0";
+	var query;
+
+	if ((dbdc_en == "1") && (dbdcb == "1"))
+		ssid_index = document.WPSConfig.ssidIndex.value;
+
+	query = "GenPINCode&2860&" + ssid_index;
+
+	makeRequest2(wps_ajax_url, query, wpsGenPinCodeCB, ssid_index);
+}
+
+function wpsSetPinCodeCB(request, ssid_index)
+{
+	var res = JSON.parse(request.responseText);
+	//console.log("wpsSetPinCodeCB.pincode="+res.setpincode);
+
+	if(res.setpincode != "NG")
+		document.GenPINCode.PINCode.value = res.setpincode;
+	else
+		alert("GenPINCode NG! Please refresh this page.");
+}
+
+function wpsSetPinCode()
+{
+	var ssid_index = "0";
+	var input_pincode = document.GenPINCode.PINCode.value;
+	var query;
+
+	if ((dbdc_en == "1") && (dbdcb == "1"))
+		ssid_index = document.WPSConfig.ssidIndex.value;
+
+	query = "SetPINCode&2860&" + ssid_index + "&" + input_pincode;
+
+	makeRequest2(wps_ajax_url, query, wpsSetPinCodeCB, ssid_index);
+}
+
+function wpsResetOOBCB(request, ssid_index)
+{
+	//console.log("wpsResetOOBCB.text=" + request.responseText + " ssid_index=" + ssid_index);
+	var res = JSON.parse(request.responseText);
+
+	//dbdc_wps_init(ssid_index);
+	if (res.wps_oob== "OK"){
+		StopTheClock();
+		location.reload();
+		//pageInit(ssid_index);
+	} else {
+		alert("wpsResetOOB Error! Please refresh this page.");
+	}
+}
+
+function wpsResetOOB()
+{
+	var ssid_index = "0";
+	var query;
+
+	if ((dbdc_en == "1") && (dbdcb == "1"))
+		ssid_index = document.WPSConfig.ssidIndex.value;
+
+	//console.log("wpsResetOOB.ssid_index="+ssid_index);
+	query = "SubmitOOB&2860&"+ ssid_index;
+
+	makeRequest2(wps_ajax_url, query, wpsResetOOBCB, ssid_index);
+}
+
+function wpsStartCB(request, ssid_index)
+{
+	//console.log("wpsStartCB.text=" + request.responseText + " ssid_index=" + ssid_index);
+	var res = JSON.parse(request.responseText);
+
+	if (res.wps_start== "OK")
+		pageInit(ssid_index);
+	else
+		alert("wpsStart Error!(" + res.wps_start + ")\nPlease refresh this page.");
+}
+
+function wpsStart()
+{
+	var ssid_index = "0";
+	//console.log("wpsStart.ssid_index="+ssid_index);
+	var enrollee_pin = document.WPS.PIN.value;
+	var query;
+
+	if ((dbdc_en == "1") && (dbdcb == "1"))
+		ssid_index = document.WPSConfig.ssidIndex.value;
+
+	query = "WPS&2860&"+ ssid_index;
+
+	if (document.WPS.PINPBCRadio[0].checked) {
+		// PIN
+		if(!PINPBCFormCheck(enrollee_pin))
+			return false;
+		enrollee_pin = document.WPS.PIN.value;
+		console.log("wpsStart.enrollee_pin="+enrollee_pin);
+		query = query + "&1&" + enrollee_pin;
+	} else {
+		// PBC
+		query = query + "&2";
+	}
+		
+	makeRequest2(wps_ajax_url, query, wpsStartCB, ssid_index);
+}
+
+function wpsCancelCB(request, ssid_index)
+{
+	//console.log("wpsResetOOBCB.text=" + request.responseText + " ssid_index=" + ssid_index);
+	var res = JSON.parse(request.responseText);
+
+	//dbdc_wps_init(ssid_index);
+	if (res.wps_oob== "OK")
+		pageInit(ssid_index);
+	else
+		alert("wpsResetOOB Error! Please refresh this page.");
+}
+
+function wpsCancel()
+{
+	var ssid_index = "0";
+	var query;
+
+	//console.log("wpsResetOOB.ssid_index="+ssid_index);
+	if ((dbdc_en == "1") && (dbdcb == "1"))
+		ssid_index = document.WPSConfig.ssidIndex.value;
+
+	query = "wps_cancel&2860&"+ ssid_index;
+
+	makeRequest2(wps_ajax_url, query, wps_cancelCB, ssid_index);
+}
+</script>
+
+<body onload="pageInit(0)">
+<table class="body"><tr><td>
+<h1 id="wpsTitle_text">Wi-Fi Protected Setup</h1>
+<p id="wpsIntroduction_text"> You could setup security easily by choosing PIN or PBC method to do Wi-Fi Protected Setup.</p>
+
+<table border="1" cellpadding="2" cellspacing="1" width="90%">
+<form method="post" name =WPSConfig action="/cgi-bin/wireless.cgi">
+<input type=hidden name=page value=WPSConfig>
+<input type=hidden name=wlan_conf value="2860">
+<tbody>
+<!-- ==================  WPS Config  ================== -->
+<tr>
+  <td class="title" colspan="2" id="wpsConfig_text">WPS Config</td>
+</tr>
+<!-- DBDC MBSSID -->
+<tr id="div_ssid_choice">
+  <td  class="head" id="ssidSelection">AP SSID</td>
+  <td>
+    <select name="ssidIndex" size="1" onChange="onMBSSIDChange(this.value)">
+	<!-- ....Javascript will update options.... -->
+    </select>
+  </td>
+</tr>
+<tr>
+  <td class="head" id="wpsWPS_text">WPS: </td>
+  <td>	<select id="WPSEnable" name="WPSEnable" size="1">
+			<option value=0 id="wpsDisable_text">Disable</option>
+			<option value=1 id="wpsEnable_text">Enable</option>
+		</select>
+  </td>
+</tr>
+
+<tr>
+  <td colspan="2">
+    <!--<input type="submit" value="Apply" id="wpsConfigApply_text" name="submitWPSEnable" align="left">-->
+    <input type="button" value="Apply" id="wpsConfigApply_text" name="submitWPSEnable" align="left" onClick="wpsConfigApply(this.form.WPSEnable.value)">
+  </td>
+</tr>
+</tbody>
+</form>
+</table>
+<br />
+<table id="div_wps_status" name="div_wps_status" border="1" cellpadding="2" cellspacing="1" width="90%" style="visibility: hidden;">
+<tbody>
+
+<!-- =================  WPS Summary  ================= -->
+<tr>
+  <td class="title" colspan="2" id="wpsSummary_text">WPS Summary</td>
+</tr>
+
+<tr>
+  <td class="head" id="wpsCurrentStatus_text">WPS Current Status: </td>
+  <td> <span id="WPSCurrentStatus"> </span> </td>
+</tr>
+
+
+<tr>
+  <td class="head" id="wpsConfigured_text">WPS Configured: </td>
+  <td> <span id="WPSConfigured"> </span> </td>
+</tr>
+
+<tr>
+  <td class="head" id="wpsSSID_text">WPS SSID: </td>
+  <td> <span id="WPSSSID"> </span> </td>
+</tr>
+
+<tr>
+  <td class="head" id="wpsAuthMode_text">WPS Auth Mode: </td>
+  <td> <span id="WPSAuthMode"> </span> </td>
+</tr>
+
+<tr>
+  <td class="head" id="wpsEncrypType_text">WPS Encryp Type: </td>
+  <td> <span id="WPSEncryptype"> </span> </td> 
+</tr>
+
+<tr>
+  <td class="head" id="wpsDefaultKeyIndex_text">WPS Default Key Index: </td>
+  <td> <span id="WPSDefaultKeyIndex"> </span> </td>
+</tr>
+
+<tr>
+  <td class="head" > <span id="WPSKeyType"> </span></td>
+  <td> <span id="WPSWPAKey"> </span> </td>
+</tr>
+
+<form method="post" name ="GenPINCode" action="/cgi-bin/wireless.cgi">
+<input type="hidden" name="page" value="GenPINCode">
+<input type="hidden" name="wlan_conf" value="2860">
+<tr>
+  <td class="head" id="wpsAPPIN_text">AP PIN:
+  </td>
+  <td> <!--exec cmd="web 2860 wifi wpsPINCode"--> <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+    <input name="PINCode" value="123456" size="10" maxLength="9">
+  </td>
+</tr>
+<tr>
+  <td class="head" id="wpsAPPIN_text">AP PIN Action:
+  </td>
+  <td>
+<!--    <input type="submit" value="Generate" id="GenPIN" name="GenPIN">-->
+    <input type="button" value="Random New PINCode" id="GenPIN" name="GenPIN" onClick="wpsGenPinCode()">
+<!--    <input type="button" value="Set Vendor PINCode" id="SetPIn" name="SetPIN" onClick="wpsSetPinCode()">-->
+  </td>
+</tr>
+</form>
+<tr>
+  <td colspan="2">
+	<form method="post" name ="SubmitOOB" action="/cgi-bin/wireless.cgi">
+		<input type="hidden" name="page" value="SubmitOOB">
+		<input type="hidden" name="wlan_conf" value="2860">
+<!--		<input type="submit" value="Reset OOB" id="wpsResetOOB_text" name="submitResetOOB" align="left"> -->
+		<input type="button" value="Reset OOB" id="wpsResetOOB_text" name="submitResetOOB" align="left" onClick="wpsResetOOB()">
+	</form>
+  </td>
+</tr>
+</tbody>
+</table>
+<br />
+<!-- ============================    WPS    ============================ -->
+<form method="post" name =WPS action="/cgi-bin/wireless.cgi">
+<input type="hidden" name="page" value=WPS>
+<input type="hidden" name="wlan_conf" value="2860">
+<table id="div_wps" name="div_wps"  border="1" cellpadding="2" cellspacing="1" width="90%" style="visibility: hidden;">
+<tbody>
+<tr>
+  <td class="title" colspan="2" id="wpsProgress_text">WPS Progress</td>
+</tr>
+
+<tr>
+	<td class="head" id="wpsMode_text">WPS mode</td>
+	<td>
+		<input name="PINPBCRadio" id="PINPBCRadio" value="1" type="radio" checked onClick="onPINPBCRadioClick(1)"><font id="wpsPINMode_text">PIN &nbsp;</font>
+		<input name="PINPBCRadio" id="PINPBCRadio" value="2" type="radio" onClick="onPINPBCRadioClick(2)"><font id="wpsPBCMode_text">PBC &nbsp;</font>
+	</td>
+</tr>
+
+<tr id="PINRow">
+	<td class="head" id="wpsPINNum_text">PIN</td>
+	<td>
+		<input value="" name="PIN" id="PIN" size="10" maxlength="10" type="text">
+	</td>
+</tr>
+
+<tr>
+	<td colspan="2">
+<!--		<input type="submit" value="Apply" id="wpsPINApply_text" name="submitWPS" align="left" onClick="return PINPBCFormCheck();">-->
+		<input type="button" value="Apply" id="wpsPINApply_text" name="submitWPS" align="left" onClick="wpsStart();">
+<!--		<input type="button" value="Apply" id="wpsPINApply_text" name="cancelWPS" align="left" onClick="wpsStart();">-->
+	</td>
+</tr>
+</tbody>
+</table>
+</form>
+<br />
+<!-- =======================  WPS Info Bar  ======================= -->
+<table id="div_wps_info" name="div_wps_info" border="1" cellpadding="1" cellspacing="1" width="90%" style="visibility: hidden;">
+<tbody><tr><td colspan="2" class="title" id="wpsStatus_text">WPS Status</td></tr>
+<tr><td colspan="2"> 
+<textarea name="WPSInfo" id="WPSInfo" cols="55" rows="2" wrap="off" readonly="1"></textarea>
+</td></tr>
+</tbody></table>
+</td></tr></table>
+</body>
+<head>
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="-1">
+</head>
+</html>

@@ -1,0 +1,16 @@
+kernel/drivers/mtd/mtd.ko
+kernel/drivers/mtd/mtd_blkdevs.ko
+kernel/drivers/mtd/mtdblock.ko
+kernel/drivers/mtd/chips/chipreg.ko
+kernel/drivers/mtd/chips/cfi_probe.ko
+kernel/drivers/mtd/chips/cfi_util.ko
+kernel/drivers/mtd/chips/cfi_cmdset_0020.ko
+kernel/drivers/mtd/chips/cfi_cmdset_0002.ko
+kernel/drivers/mtd/chips/gen_probe.ko
+kernel/drivers/mtd/chips/jedec_probe.ko
+kernel/drivers/mtd/devices/block2mtd.ko
+kernel/drivers/mtd/maps/map_funcs.ko
+kernel/drivers/mtd/maps/ralink-flash.ko
+kernel/drivers/mtd/nand/nand.ko
+kernel/drivers/mtd/nand/nand_ecc.ko
+kernel/drivers/mtd/nand/nand_ids.ko

@@ -1,0 +1,13 @@
+libgpg_error_la-strsource.lo: strsource.c ../config.h gpg-error.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
+ gettext.h err-sources.h
+
+../config.h:
+
+gpg-error.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h:
+
+gettext.h:
+
+err-sources.h:

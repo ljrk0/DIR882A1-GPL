@@ -1,0 +1,1 @@
+cmd_drivers/usb/built-in.o :=  /opt/buildroot-gcc463/usr/bin/mipsel-linux-ld  -m elf32ltsmip   -r -o drivers/usb/built-in.o drivers/usb/core/built-in.o drivers/usb/mon/built-in.o drivers/usb/host/built-in.o drivers/usb/storage/built-in.o drivers/usb/misc/built-in.o drivers/usb/usb-common.o 
