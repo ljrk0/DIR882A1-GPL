@@ -1,16 +1,423 @@
-/*!
- * SOAPAction core v1.0.0
- *
- * Copyright 2013 jumi
- * Released under the GPL license
+/** @define {string} */
+var SOAP_NAMESPACE = "http://purenetworks.com/HNAP1/";
+
+/**
+ * @constructor
  */
-var SOAP_NAMESPACE="http://purenetworks.com/HNAP1/";function SOAPAction(){this.list=[]}SOAPAction.prototype={timeout:0,list:null,multipleSoap:"",SOAPResponse:function(c){this.name=c;this.outputObj=[]},AddSOAP:function(c,b){var a=null,d;for(d in this.list)if(this.list[d].name==c){a=this.list[d];break}null==a?(a=new this.SOAPResponse(c),a.outputObj.push(b),this.list.push(a)):a.outputObj.push(b)}};
-SOAPAction.prototype.parseHNAP=function(c,b,a){var d=b.find(c+"Result").text().toUpperCase();if("ERROR"==d)return!1;if(null!=a){var g=function(a,c){if(0==Object.keys(a).length)return c.children().end(),a=[],c.children().each(function(){a.push($(this).text())}),a;for(var b in a)if(1==$.isArray(a[b]))if(0==c.find(b).length)a[b].splice(0,1);else{var d=!1;c.find(b).each(function(){var c=$(this),e={};0<a[b].length&&(e=a[b].slice(0,1),e=JSON.parse(JSON.stringify(e[0])));e=g(e,c);0==a[b].length?(d=!0,a[b]=
-e):a[b].push(e)});0==d&&a[b].splice(0,1)}else c.children().each(function(){var c=$(this);if(c[0].tagName.toLowerCase()==b.toLowerCase()){if("object"==$.type(a[b])){if(1==$.isArray(a[b]))return!0;a[b]=g(a[b],c)}else a[b]=c.text();return!1}});return a};a=g(a,b)}else a={};a[c+"Result"]=d;return a};SOAPAction.prototype.SetMultipleSOAP=function(c,b,a){this.multipleSoap+=this.createActionBody(c,b);this.AddSOAP(c,a)};
-SOAPAction.prototype.SendMultipleSOAPAction=function(c){var b=$.Deferred(),a=this,d;d='<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body>'+("<"+c+' xmlns="http://purenetworks.com/HNAP1/">')+this.multipleSoap;d=d+("</"+c+">")+"</soap:Body></soap:Envelope>";var g='"'+SOAP_NAMESPACE+c+'"',f=sessionStorage.getItem("PrivateKey");null==f&&
-(f="withoutloginkey");var e=sessionStorage.getItem("Cookie");$.cookie("uid",e,{expires:1,path:"/"});e=(new Date).getTime();e=Math.floor(e)%2E12;e=e.toString();f=hex_hmac_md5(f,e+g);f=f.toUpperCase()+" "+e;$.ajax({url:"/HNAP1/",type:"POST",contentType:"text/xml; charset=utf-8",headers:{SOAPAction:g,HNAP_AUTH:f},timeout:a.timeout,data:d,success:function(e){if("ERROR"==$(e).find(c+"Result").text().toUpperCase())return b.reject();for(var d in a.list)$(e).find(a.list[d].name+"Response").each(function(b){a.parseHNAP(a.list[d].name,
-$(this),a.list[d].outputObj[b])});b.resolve(a.list)},error:function(a,c,d){b.reject()}});this.multipleSoap="";return b.promise()};
-SOAPAction.prototype.createValueBody=function(c){var b="",a;for(a in c)if("_"!=a.charAt(0)&&"push"!=a)if(1==$.isArray(c[a])){var d=!1,g="",f;for(f in c[a]){var e=c[a][f];"object"==typeof e?(b+="<"+a+">",b+=this.createValueBody(e),b+="</"+a+">"):(d=!0,g+="<string>"+e+"</string>")}d&&(b+="<"+a+">"+g+"</"+a+">")}else"string"!=typeof a||0<a.length?(b+="<"+a+">",b="object"==$.type(c[a])&&null!=c[a]?b+this.createValueBody(c[a]):b+c[a],b+="</"+a+">"):b+="<"+a+"/>";return b};
-SOAPAction.prototype.createActionBody=function(c,b){var a="";"object"==typeof b&&null!=b?(a+="<"+c+' xmlns="'+SOAP_NAMESPACE+'">',a+=this.createValueBody(b),a+="</"+c+">"):a+="<"+c+' xmlns="'+SOAP_NAMESPACE+'" />';return a};SOAPAction.prototype.createSOAP=function(c){return'<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body>'+c+"</soap:Body></soap:Envelope>"};
-SOAPAction.prototype.sendSOAPAction=function(c,b,a){var d=$.Deferred(),g=this,f=g.createActionBody(c,b),f=g.createSOAP(f),e='"'+SOAP_NAMESPACE+c+'"';b={SOAPAction:e};var k=sessionStorage.getItem("PrivateKey");if(null!=k){var h=sessionStorage.getItem("Cookie");$.cookie("uid",h,{expires:1,path:"/"});h=(new Date).getTime();h=Math.floor(h)%2E12;h=h.toString();e=hex_hmac_md5(k,h+e);e=e.toUpperCase()+" "+h;b.HNAP_AUTH=e}$.ajax({url:"/HNAP1/",type:"POST",contentType:"text/xml; charset=utf-8",headers:b,
-timeout:g.timeout,data:f,success:function(b){b=g.parseHNAP(c,$(b).find(c+"Response"),a);0==b?d.reject():d.resolve(b)},error:function(a,b,c){d.reject()}});return d.promise()};SOAPAction.prototype.copyObject=function(c,b){for(var a in c)for(var d in b)if(a==d)if("object"==$.type(c[a]))this.copyObject(c[a],b[d]);else{c[a]=b[d];break}};
+function SOAPAction()
+{
+	this.list = new Array();
+};
+
+// @prototype
+SOAPAction.prototype = 
+{
+	//property
+	timeout:0,
+	list:null,
+	multipleSoap:"",
+
+	// structure
+	SOAPResponse: function(name)
+	{
+		this.name = name;
+		this.outputObj = new Array();
+	},
+
+	// method
+	AddSOAP: function(name, outputObj)
+	{
+		var soapResponseObj = null;
+		for(var obj in this.list)
+		{
+			if(this.list[obj].name == name)
+			{
+				soapResponseObj = this.list[obj];
+				break;
+			}
+		}
+
+		if(soapResponseObj == null)
+		{
+			soapResponseObj = new this.SOAPResponse(name);
+			soapResponseObj.outputObj.push(outputObj);
+			this.list.push(soapResponseObj);
+		}
+		else
+		{
+			soapResponseObj.outputObj.push(outputObj);
+		}
+	}
+}
+
+SOAPAction.prototype.parseHNAP = function(soapAction, xml, output)
+{
+	//parse xml to object data structure
+	var soapResult = xml.find(soapAction+"Result").text().toUpperCase();
+
+	//get result		
+	if(soapResult == "ERROR")
+	{
+		//console.log(soapAction+ "return error");
+		return false;
+	}
+	
+	if(output != null)
+	{
+		//define function, parse xml recursively
+		function xml2Object(output, xml)
+		{
+			var outputObj = output;
+			if(Object.keys(outputObj).length == 0)
+			{
+				var tag = xml.children().end();	//bug?
+				outputObj = new Array();
+
+				xml.children().each(function()
+				{
+					outputObj.push($(this).text());
+				}
+				);
+				return outputObj;
+			}
+			//search array
+			for(var obj in outputObj)
+			{	
+				if($.isArray(outputObj[obj]) == true)
+				{
+					if(xml.find(obj).length == 0)
+					{
+						outputObj[obj].splice(0,1);
+					}
+					else
+					{
+						var pureArray = false;
+						xml.find(obj).each(function(){
+							var tag = $(this);
+							var newObj = {};
+						
+							//$.extend(true, newObj, outputObj[obj][0]);
+							//0 < outputObj[obj].length && (newObj = outputObj[obj].slice(0, 1), newObj = JSON.parse(JSON.stringify(newObj[0])));
+							if(outputObj[obj].length > 0) {
+								newObj = outputObj[obj].slice(0, 1);
+								newObj = JSON.parse(JSON.stringify(newObj[0]))	
+							}
+							
+							newObj = xml2Object(newObj, tag);
+					
+							if(outputObj[obj].length == 0)
+							{
+								//console.log("pure array: "+obj);
+								pureArray = true;
+								outputObj[obj] = newObj;
+							}
+							else
+							{
+								outputObj[obj].push(newObj);
+							}	
+						});
+						if(pureArray == false)
+							outputObj[obj].splice(0,1);
+					}
+				}
+				else
+				{
+					xml.children().each(function(){
+						var tag = $(this);
+						var tagName = tag[0].tagName.toLowerCase();
+
+						if(tagName == obj.toLowerCase())
+						{
+							if($.type(outputObj[obj]) == "object")
+							{
+								if($.isArray(outputObj[obj]) == true)
+								{										
+									return true;	//continue
+								}
+								outputObj[obj] = xml2Object(outputObj[obj], tag);
+								return false;	//break
+							}
+							else
+							{
+								outputObj[obj] = tag.text();
+								return false;	//break
+							}
+						
+						}
+					});
+			
+				}
+
+			}
+
+			return outputObj;
+		}
+	
+		//parse xml
+		output = xml2Object(output, xml);
+
+	}
+	else
+	{
+		output = new Object();
+	}
+	output[soapAction+"Result"] = soapResult;
+
+	return output;
+};
+
+SOAPAction.prototype.SetMultipleSOAP = function(aSoapAction, aPara, output)
+{
+	//SOAP Message to Send
+	this.multipleSoap += this.createActionBody(aSoapAction, aPara);
+	this.AddSOAP(aSoapAction, output);
+}
+
+SOAPAction.prototype.SendMultipleSOAPAction = function(aSoapAction)
+{
+	//init
+	var deferred = $.Deferred();	
+	var self = this;
+	//SetMultipleActions
+	//GetMultipleHNAPs
+	
+	//create SOAPMultipleAction
+	var body = '<?xml version="1.0" encoding="utf-8"?>';
+	body += '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">';
+	body += "<soap:Body>";
+	body += '<' + aSoapAction + ' xmlns="http://purenetworks.com/HNAP1/">';
+
+	body += this.multipleSoap;
+
+	body += '</'+ aSoapAction +'>';
+	body += "</soap:Body></soap:Envelope>";
+
+	var soapActionURI = '"'+SOAP_NAMESPACE + aSoapAction + '"';
+	
+	//auth
+	var PrivateKey = sessionStorage.getItem('PrivateKey');
+	if(PrivateKey == null)
+		PrivateKey = "withoutloginkey"; //For login action or another action without login.
+	
+	// Set Cookie
+	var cookie = sessionStorage.getItem('Cookie');
+	$.cookie('uid', cookie, { expires: 1, path: '/' });
+	
+	//The current time length should fit the size of integer in Code. The period of the current time is almost 30 years.
+	var current_time = new Date().getTime();
+	current_time = Math.floor(current_time) % 2000000000000;
+	current_time = current_time.toString();
+	var auth = hex_hmac_md5(PrivateKey, current_time+soapActionURI);
+	auth = auth.toUpperCase() + " " + current_time;
+
+    //Construct the HTML POST
+	$.ajax({
+		//url:"/HNAP1/prog.fcgi?"+"method=/HNAP1/"+aSoapAction,
+		url:"/HNAP1/",
+		type:"POST",
+		contentType:'text/xml; charset=utf-8',
+		headers:{
+			"SOAPAction":soapActionURI,
+			"HNAP_AUTH":auth
+		},
+		timeout:self.timeout,
+		data:body,
+		success: function(xml){
+			//parse xml to object data structure
+			var soapResult = $(xml).find(aSoapAction+"Result").text().toUpperCase();
+
+			//get result		
+			if(soapResult == "ERROR")
+			{
+				//console.log(soapAction+ "return error");
+				return deferred.reject();
+			}
+
+			for(var obj in self.list)
+			{
+				$(xml).find(self.list[obj].name + "Response").each(function(i){
+					self.parseHNAP(self.list[obj].name, $(this), self.list[obj].outputObj[i]);
+				});
+			}
+
+			deferred.resolve(self.list);
+		},
+		error: function(xhr, ajaxOptions, thrownError){
+			//alert(xhr.status);
+			//alert(thrownError);
+			deferred.reject();
+		}
+	});
+
+	//clear
+	this.multipleSoap = "";
+
+	return deferred.promise();
+}
+
+// Summary:
+//  Generate the xml content for the SOAP action
+SOAPAction.prototype.createValueBody = function(aPara)
+{
+	var body = "";
+
+    for (var obj in aPara)
+    {
+		//skip internal var or function name
+		if((obj.charAt(0) == '_')||(obj == "push"))
+			continue;
+
+		//array type
+		if($.isArray(aPara[obj]) == true)
+		{
+			for(var arrayObj in aPara[obj])
+			{
+				body += "<"+obj+">";
+				body += this.createValueBody(aPara[obj][arrayObj]);
+				body += "</"+obj+">";
+			}
+		}
+		else if((typeof obj != "string") || (obj.length > 0))	//object type or single data type
+        {
+			body += "<"+obj+">";
+            
+            // when we don't have children to set
+			if(($.type(aPara[obj]) == "object")&&(aPara[obj] != null))
+            {
+				body += this.createValueBody(aPara[obj]);
+            }
+            else
+            {            
+				body += aPara[obj];
+            }
+            
+			body += "</"+obj+">";
+        }
+        else	//empty data
+        {
+			body += "<" + obj + "/>";
+        }
+    }
+	return body;
+}
+
+// Summary:
+//  To create a SOAP XML content
+SOAPAction.prototype.createActionBody = function(aSoapAction, aPara)
+{
+	var body = "";
+
+    if ((typeof aPara == "object")&&(aPara != null))
+    {
+		body += "<" + aSoapAction + ' xmlns="' + SOAP_NAMESPACE + '">';
+		body += this.createValueBody(aPara);
+		body += "</" + aSoapAction + ">";
+    }
+    else
+    {
+		body += "<"+aSoapAction+' xmlns="'+SOAP_NAMESPACE+'" />';
+		
+    }
+    
+    return body;
+}
+
+SOAPAction.prototype.createSOAP = function(aPara)
+{
+	var body = '<?xml version="1.0" encoding="utf-8"?>';
+	body += '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">';
+	body += "<soap:Body>";
+
+	body += aPara;
+
+	body += "</soap:Body></soap:Envelope>";
+    return body;
+}
+
+// Summary:
+//  Send a SOAP action to the device
+SOAPAction.prototype.sendSOAPAction = function(aSoapAction, aPara, output)
+{
+	//init
+	var deferred = $.Deferred();	
+	var self = this;
+	//self.output = output;
+	
+    //SOAP Message to Send
+	var body = self.createActionBody(aSoapAction, aPara);
+	body = self.createSOAP(body);
+	var soapActionURI = '"'+SOAP_NAMESPACE + aSoapAction + '"';
+	
+	//auth
+	var PrivateKey = sessionStorage.getItem('PrivateKey');
+	if(PrivateKey == null)
+		PrivateKey = "withoutloginkey"; //For login action or another action without login.
+	
+	// Set Cookie
+	var cookie = sessionStorage.getItem('Cookie');
+	$.cookie('uid', cookie, { expires: 1, path: '/' });
+	
+	//The current time length should fit the size of integer in Code. The period of the current time is almost 30 years.
+	var current_time = new Date().getTime();
+	current_time = Math.floor(current_time) % 2000000000000;
+	current_time = current_time.toString();
+	var auth = hex_hmac_md5(PrivateKey, current_time+soapActionURI);
+	auth = auth.toUpperCase() + " " + current_time;
+
+    //Construct the HTML POST
+	$.ajax({
+		//url:"/HNAP1/prog.fcgi?"+"method=/HNAP1/"+aSoapAction,
+		url:"/HNAP1/",
+		type:"POST",
+		contentType:'text/xml; charset=utf-8',
+		headers:{
+			"SOAPAction":soapActionURI,
+			"HNAP_AUTH":auth
+		},
+		timeout:self.timeout,
+		data:body,
+		success: function(xml){
+			var result = self.parseHNAP(aSoapAction, $(xml).find(aSoapAction+"Response"), output);
+			if(result == false)
+			{
+				deferred.reject();
+			}
+			else
+			{
+				deferred.resolve(result);
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError){
+			//alert(xhr.status);
+			//alert(thrownError);
+			deferred.reject();
+		}
+	});
+
+	return deferred.promise();
+}
+
+// Summary:
+//  Copy a SOAP action structure (ex: Get => Set)
+SOAPAction.prototype.copyObject = function(dest, source)
+{
+    for (var destObj in dest)
+    {
+		for(var srcObj in source)
+		{
+			if(destObj == srcObj)
+			{
+				if($.type(dest[destObj]) == "object")
+				{
+
+					this.copyObject(dest[destObj], source[srcObj]);					
+				}
+				else
+				{
+					dest[destObj] = source[srcObj];
+					break;
+				}
+			}
+		}
+	}
+}

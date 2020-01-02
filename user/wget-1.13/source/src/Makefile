@@ -45,7 +45,7 @@
 # as that of the covered work.
 
 #
-# Version: 
+# Version: 1.13
 #
 
 
@@ -232,17 +232,17 @@ ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 pkglibexecdir = ${libexecdir}/${PACKAGE}
-ACLOCAL = ${SHELL} /home/xieshijing/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/missing --run aclocal-1.11
+ACLOCAL = ${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/missing --run aclocal-1.11
 ALLOCA = 
 ALLOCA_H = alloca.h
-AMTAR = ${SHELL} /home/xieshijing/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/missing --run tar
+AMTAR = ${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/missing --run tar
 APPLE_UNIVERSAL_BUILD = 0
 AR = ar
 ARFLAGS = cru
 ASM_SYMBOL_PREFIX = ""
-AUTOCONF = ${SHELL} /home/xieshijing/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/xieshijing/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/xieshijing/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/missing --run automake-1.11
+AUTOCONF = ${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/missing --run automake-1.11
 AWK = gawk
 BITSIZEOF_PTRDIFF_T = 
 BITSIZEOF_SIG_ATOMIC_T = 
@@ -251,7 +251,7 @@ BITSIZEOF_WCHAR_T =
 BITSIZEOF_WINT_T = 
 CC = /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -I/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j/include
+CFLAGS = -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j/include
 COMMENT_IF_NO_POD2MAN = 
 CONFIG_INCLUDE = src/config.h
 CPP = /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -E
@@ -278,8 +278,8 @@ GETADDRINFO_LIB =
 GETOPT_H = 
 GETTEXT_MACRO_VERSION = 0.17
 GLIBC21 = yes
-GMSGFMT = /usr/bin/msgfmt
-GMSGFMT_015 = /usr/bin/msgfmt
+GMSGFMT = /usr/local/bin/msgfmt
+GMSGFMT_015 = /usr/local/bin/msgfmt
 GNULIB_ACCEPT = 1
 GNULIB_ACCEPT4 = 0
 GNULIB_ATOLL = 0
@@ -783,7 +783,7 @@ INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 INTLLIBS = 
 INTL_MACOSX_LIBS = 
-LDFLAGS = -L/home/xieshijing/trunk/GPL_Code/source/user/openssl-1.0.2j
+LDFLAGS = -L/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/openssl-1.0.2j
 LEX = flex
 LEXLIB = 
 LEX_OUTPUT_ROOT = lex.yy
@@ -809,11 +809,11 @@ LTLIBMULTITHREAD = -lpthread
 LTLIBOBJS =  ${LIBOBJDIR}ftp-opie$U.lo ${LIBOBJDIR}openssl$U.lo ${LIBOBJDIR}http-ntlm$U.lo
 LTLIBPTH = 
 LTLIBTHREAD = 
-MAKEINFO = ${SHELL} /home/xieshijing/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/missing --run makeinfo
 MKDIR_P = /bin/mkdir -p
-MSGFMT = /usr/bin/msgfmt
-MSGFMT_015 = /usr/bin/msgfmt
-MSGMERGE = /usr/bin/msgmerge
+MSGFMT = /usr/local/bin/msgfmt
+MSGFMT_015 = /usr/local/bin/msgfmt
+MSGMERGE = /usr/local/bin/msgmerge
 NETINET_IN_H = 
 NEXT_ARPA_INET_H = <arpa/inet.h>
 NEXT_AS_FIRST_DIRECTIVE_ARPA_INET_H = <arpa/inet.h>
@@ -873,10 +873,10 @@ OBJEXT = o
 PACKAGE = wget
 PACKAGE_BUGREPORT = bug-wget@gnu.org
 PACKAGE_NAME = wget
-PACKAGE_STRING = wget 
+PACKAGE_STRING = wget 1.13
 PACKAGE_TARNAME = wget
 PACKAGE_URL = 
-PACKAGE_VERSION = 
+PACKAGE_VERSION = 1.13
 PATH_SEPARATOR = :
 PERL = /usr/local/bin/perl
 POD2MAN = /usr/bin/pod2man
@@ -1030,16 +1030,16 @@ UNDEFINE_STRTOK_R = 0
 UNISTD_H_HAVE_WINSOCK2_H = 0
 UNISTD_H_HAVE_WINSOCK2_H_AND_USE_SOCKETS = 0
 USE_NLS = no
-VERSION = 
+VERSION = 1.13
 WCHAR_T_SUFFIX = 
 WINT_T_SUFFIX = 
-XGETTEXT = /usr/bin/xgettext
-XGETTEXT_015 = /usr/bin/xgettext
+XGETTEXT = /usr/local/bin/xgettext
+XGETTEXT_015 = /usr/local/bin/xgettext
 XGETTEXT_EXTRA_OPTIONS =  --flag=error:3:c-format --flag=error_at_line:5:c-format --flag=asprintf:2:c-format --flag=vasprintf:2:c-format
-abs_builddir = /home/xieshijing/trunk/GPL_Code/source/user/wget-1.13/source/src
-abs_srcdir = /home/xieshijing/trunk/GPL_Code/source/user/wget-1.13/source/src
-abs_top_builddir = /home/xieshijing/trunk/GPL_Code/source/user/wget-1.13/source
-abs_top_srcdir = /home/xieshijing/trunk/GPL_Code/source/user/wget-1.13/source
+abs_builddir = /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/wget-1.13/source/src
+abs_srcdir = /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/wget-1.13/source/src
+abs_top_builddir = /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/wget-1.13/source
+abs_top_srcdir = /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/wget-1.13/source
 ac_ct_CC = 
 am__include = include
 am__leading_dot = .
@@ -1071,7 +1071,7 @@ host_vendor = buildroot
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/xieshijing/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/install-sh
+install_sh = ${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 lispdir = ${datarootdir}/emacs/site-lisp
@@ -1958,7 +1958,7 @@ version.c:  $(wget_SOURCES) ../lib/libgnu.a
 	echo '/* version.c */' > $@
 	echo '/* Autogenerated by Makefile - DO NOT EDIT */' >> $@
 	echo '' >> $@
-	echo 'const char *version_string = ""' >> $@
+	echo 'const char *version_string = "1.13"' >> $@
 	-hg log -R "$(top_srcdir)" -r . --template='" ({node|short})"\n' \
 	    2>/dev/null >> $@
 	echo ';' >> $@

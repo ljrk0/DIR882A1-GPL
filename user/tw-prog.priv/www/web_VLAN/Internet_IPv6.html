@@ -540,7 +540,8 @@ function showData(wanType)
 		$("#ra_lifetime").val(lan_ra_LifeTime);
 
 		var LanDhcpLifeTime = settings.IPv6_LanDhcpLifeTime;
-		$("#dhcp_lifetime").val(LanDhcpLifeTime);
+		//$("#dhcp_lifetime").val(LanDhcpLifeTime);
+		$("#dhcp_lifetime").val("43200");
 	}
 
 	internetV6_showGeneral(wanType);
@@ -1466,7 +1467,7 @@ function save_button_changed()
 		   								</tr>
 		   								<tr class="lan_dhcp2" style="display:none">
 		   									<th><script>I18N("h", "IPv6 Address Lifetime");</script>:</th>
-		   									<td><div><input class="styled-text" type="text" name="dhcp_lifetime" id="dhcp_lifetime" size="2" maxlength="5" style="width: 40px;" value="60"><script>I18N("h", "minutes");</script></div></td>
+		   									<td><div><input class="styled-text" type="text" name="dhcp_lifetime" id="dhcp_lifetime" size="2" maxlength="5" style="width: 40px;" value="60" disabled ><script>I18N("h", "minutes");</script></div></td>
 		   								</tr>
 		   								<tr class="lan_ra" style="display:table-row">
 		   									<th><script>I18N("h", "Router Advertisement Lifetime");</script>:</th>

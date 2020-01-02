@@ -1,747 +1,646 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns= "http://www.w3c.org/1999/xhtml">
+<html>
 
 <head>
 <title>D-LINK</title>
 <!-- for browser tab logo -->
 <link rel="icon" href="/image/dlink-favicon.ico">
-<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
-<meta http-equiv="X-UA-Compatible" content="IE=9">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="Content-Type" content="text/css">
-<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>
-<script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
-<script type="text/javascript" charset="utf-8" src="/js/initialCSS.js"></script>
+<link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="js/initialJQ.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/initialJSDefault.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialLibs.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/Public.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/menu.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/firmware.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.client.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/includeLang.js"></script>
 <script type="text/javascript">
-//xframeoption
-if(top!=self){top.location=self.location;}
+    //xframeoption
+    if(top!=self){top.location=self.location;}
+ 
+    //session
+    if (sessionStorage.getItem('PrivateKey') === null){
+        window.location.replace('../info/Login.html');
+    } 
 
-//session
-if (sessionStorage.getItem('PrivateKey') === null){
-	window.location.replace('../info/Login.html');
-}
+    var whichReq = "";
+    var show_dot = 0;
+    var reboot_id;
+    var timeout_id = -1;
+    var countTime = 0;
+    var totalTime = 0;
+    var spinnerObj;
 
-	var HNAP = new HNAP_XML();
-	var _ReciprocalNumber;
-	var percent_ReciprocalNumber = 0;
-	var get_TruePercent = 0;
-	var checkORdownloadFW = 0;
-	var GetStatusResult = 0;
-	var GetStatusCount = 0;
-	var Time_GetDetectFirmwarePointShow;
-	var Time_GetInternetConnectionStatus;
-	var Time_GetPollingFWDownload;
-	var Time_GetBackgroundPollingFWDownload;
-	var showPoint = 0;
-	var detectPopWindowAvailable = 0;
-	var CheckFirmwareStatus;
-	function Load_HTML()	{	$("#header").load("header.html");	}
-	function Initial()
-	{
-		initialMenu();
-		initialDetectRouterConnection();
-	}
-	function FWUpgrade_Check_btn()
-	{
-		changeTimeoutAction();
-		document.getElementById("CreatePopAlertMessage").style.display = "inline";
-		document.getElementById("FirmwareUpgrade_1").style.display = "inline";
-	}
-	function UpgradeFW()
-	{
-		stopTimeout();
-		document.getElementById("CreatePopAlertMessage").style.display = "inline";
-		document.getElementById("FirmwareUpgrade_1").style.display = "none";
-		document.getElementById("FirmwareUpgrade_3").style.display = "inline";
-		document.forms["fwupload"].submit();
-	}
-	function Start_PRN_FirmwareUpgrade()
-	{
-		get_TruePercent ++;
-		if (get_TruePercent > 100)
-		{
-			get_TruePercent = 100;
-			document.getElementById("upgrade_percentage").innerHTML = "";
-			document.getElementById("upgrade_percentage").innerHTML = get_TruePercent;
-		}
-		else
-		{
-			setTimeout("Start_PRN_FirmwareUpgrade()", parseInt(percent_ReciprocalNumber * 1000));
-			document.getElementById("upgrade_percentage").innerHTML = "";
-			document.getElementById("upgrade_percentage").innerHTML = get_TruePercent;
-		}
-	}
-	function Start_reciprocal_Number_FirmwareUpgrade()
-	{
-		if (_ReciprocalNumber >= 0)
-		{
-			_ReciprocalNumber --;
-			setTimeout("Start_reciprocal_Number_FirmwareUpgrade()", 1000);
-			if (get_TruePercent == 0)
-			{
-				get_TruePercent = 1;
-				setTimeout("Start_PRN_FirmwareUpgrade()", 1000);
-			}
-		}
-		else
-		{
-			sessionStorage.removeItem('hasNewFirmware');
-			sessionStorage.removeItem('newFWVersion');
-			document.getElementById("FirmwareUpgrade_2").style.display = "none";
-			document.getElementById("SuccessFirmwareUpgrade").style.display = "inline";
-		}
-	}
-	function GetXML()	{	HNAP.GetXMLAsync("GetFirmwareSettings", null, "GetValue", function(xml)	{	GetResult_1st(xml)});	}
-	function GetResult_1st(result_xml)
-	{
-		var GetResult_1st = result_xml.Get("GetFirmwareSettingsResponse/GetFirmwareSettingsResult");
-		if (GetResult_1st == "OK")
-		{
-			// FirmwareVersion Check
-			var getFirmwareVersion = result_xml.Get("GetFirmwareSettingsResponse/FirmwareVersion");
-			document.getElementById("Current_Firmware_Version").innerHTML = getFirmwareVersion;
-			// FirmwareDate Check
-			var getFirmwareDate = result_xml.Get("GetFirmwareSettingsResponse/FirmwareDate");
-			getFirmwareDate = getFirmwareDate.replace("T", " ");
-			document.getElementById("Current_Firmware_Date").innerHTML = getFirmwareDate;
-			if (sessionStorage.getItem('hasNewFirmware') == "true")
-			{
-				document.getElementById("CheckAndDownloadNewFirmware_Btn").setAttribute("class", "styled_button_dis");
-				document.getElementById("CheckAndDownloadNewFirmware_Btn").disabled = true;
-				Time_GetDetectFirmwarePointShow = window.clearInterval(Time_GetDetectFirmwarePointShow);
-				showPoint = 0;
-				Time_GetDetectFirmwarePointShow = self.setInterval("GetDetectFirmwarePointShow()",500);
-				HNAP.GetXMLAsync("GetFirmwareStatus", null, "GetValue", function(xml)	{	GetResult_2nd(xml)	});
-			}
+    // InitImage(basedImage);
 
-			document.getElementById("main").style.display = "inline";
-		}
-		else	{	if (DebugMode == 1)	{	alert("[!!GetXML Error!!] Function: GetResult_1st");	}	}
-	}
-	function GetResult_2nd(result_xml)
-	{
-		var GetResult_2nd = result_xml.Get("GetFirmwareStatusResponse/GetFirmwareStatusResult");
-		if (GetResult_2nd == "OK")
-		{
-			var getLastestFirmwareVersion = result_xml.Get("GetFirmwareStatusResponse/LatestFWVersion");
-			var getLastestFirmwareVersionDate = result_xml.Get("GetFirmwareStatusResponse/LatestFWVersionDate");
-			document.getElementById("firmware_table_1").style.display = "none";
-			document.getElementById("firmware_table_2").style.display = "inline";
-			document.getElementById("new_Firmware_Version").style.color = "#FF0000";
-			document.getElementById("new_Firmware_Version").innerHTML = getLastestFirmwareVersion;
-			document.getElementById("new_Firmware_Date").innerHTML = getLastestFirmwareVersionDate;
-			document.getElementById("CheckAndDownloadNewFirmware_Btn").onclick = function() { CheckAndDownloadNewFirmware(); };
-			document.getElementById("CheckAndDownloadNewFirmware_Btn").innerHTML = I18N("j", "Download New Firmware");
-			document.getElementById("CheckAndDownloadNewFirmware_Btn").setAttribute("class", "styled_button_s");
-			document.getElementById("CheckAndDownloadNewFirmware_Btn").disabled = false;
-			checkORdownloadFW = 1;
-		}
-		else	{	if (DebugMode == 1)	{	alert("[!!GetXML Error!!] Function: GetResult_2nd");	}	}
-	}
-	function returnToMain()
-	{
-		changeTimeoutAction();
-		
-		document.getElementById("CreatePopAlertMessage").style.display = "none";
-		document.getElementById("FirmwareUpgrade_1").style.display = "none";
-		document.getElementById("FirmwareUpgrade_2").style.display = "none";
-		document.getElementById("FirmwareUpgrade_3").style.display = "none";
-		document.getElementById("FailedFirmwareUpgrade").style.display = "none";
-		document.getElementById("SuccessFirmwareUpgrade").style.display = "none";
-	}
-	function returnToHome()	{	self.location.href = "/";	}
-	function Body_Onload()
-	{
-		if (COMM_GetURLParameter("UpdateResult") != "")
-		{
-			switch(COMM_GetURLParameter("UpdateResult"))
-			{
-				case "SUCCESS":
-					document.getElementById("closeCreatePopBtn2").style.display = "none";
-					document.getElementById("CreatePopAlertMessage").style.display = "inline";
-					document.getElementById("FirmwareUpgrade_2").style.display = "inline";
-					setTimeout("Start_FirmwareUpgrade()", 1000);
-					break;
-				default:
-					break;
-			}
-		}
-	}
-	function GetDetectFirmwarePointShow()
-	{
-		switch(showPoint)
-		{
-			case 0:	document.getElementById("firmware_Checking_Message").innerHTML = I18N("j", "Checking") + "&nbsp;&nbsp;&nbsp;&nbsp;";	showPoint ++;	break;
-			case 1:	document.getElementById("firmware_Checking_Message").innerHTML = I18N("j", "Checking") + "&nbsp;.&nbsp;&nbsp;";	showPoint ++;	break;
-			case 2:	document.getElementById("firmware_Checking_Message").innerHTML = I18N("j", "Checking") + "&nbsp;..&nbsp;";	showPoint ++;	break;
-			case 3:	document.getElementById("firmware_Checking_Message").innerHTML = I18N("j", "Checking") + "&nbsp;...";	showPoint = 0;	break;
-		}
-	}
-	function Start_FirmwareUpgrade()
-	{
-		// Shutdown Timer
-		//stopGetReciprocalTime(); // Time_GetReciprocalTime = window.clearInterval(Time_GetReciprocalTime);
-		HNAP.GetXMLAsync("GetFirmwareValidation", null, "GetValue", function(xml)	{	GetResult_SFU(xml)});
-	}
-	function GetResult_SFU(result_xml)
-	{
-		var GetResult_SFU = result_xml.Get("GetFirmwareValidationResponse/GetFirmwareValidationResult");
-		if (GetResult_SFU == "REBOOT" || GetResult_SFU == "OK")
-		{
-			var Get_CountDown = result_xml.Get("GetFirmwareValidationResponse/CountDown");
-			_ReciprocalNumber = new Number(Get_CountDown);
-			percent_ReciprocalNumber = parseFloat(_ReciprocalNumber / 100);
-			Start_reciprocal_Number_FirmwareUpgrade();
-		}
-		else if (GetResult_SFU == "ERROR")
-		{
-			document.getElementById("CreatePopAlertMessage").style.display = "inline";
-			document.getElementById("FailedFirmwareUpgrade").style.display = "inline";			
-			document.getElementById("FirmwareUpgrade_2").style.display = "none";
-		}
-		else	{	if (DebugMode == 1)	{	alert("[!!SetXML Error!!] Function: SetResult_SFU");	}	}
-	}
-	function ShowUploadButton(id, obj)
-	{
-		document.getElementById(id).innerHTML = obj.value.substr(obj.value.lastIndexOf('\\') + 1);
-		document.getElementById(id + "_Button").style.display = "table-row";
-	}
-	
-	function GetInternetConnectionStatus()
-	{
-		changeTimeoutAction();
-		
-		sessionStorage.setItem('hasNewFirmware', 'checknow');
-		document.getElementById("firmware_Checking_Message").innerHTML = I18N("j", "Checking") + "&nbsp;...";
-		Time_GetDetectFirmwarePointShow = window.clearInterval(Time_GetDetectFirmwarePointShow);
-		showPoint = 0;
-		Time_GetDetectFirmwarePointShow = self.setInterval("GetDetectFirmwarePointShow()",500);
-		if(GetStatusResult == 0)
-		{
-			GetStatusResult = 1;
-			HNAP.GetXMLAsync("GetCurrentInternetStatus", new Array("InternetStatus", "true"), "GetValue", function(xml)	{	GetResult_3rd(xml)	});
-		}
-		else
-		{
-			GetStatusCount ++;
-			HNAP.GetXMLAsync("GetCurrentInternetStatus", new Array("InternetStatus", "false"), "GetValue", function(xml)	{	GetResult_3rd(xml)	});
-		}
-	}
-	
-	function GetResult_3rd(result_xml)
-	{
-		if (result_xml != null)
-		{
-			var GetConnStatus = result_xml.Get("GetCurrentInternetStatusResponse/GetCurrentInternetStatusResult");
-			switch (GetConnStatus)
-			{
-				case "OK_DETECTING_2":
-					if (GetStatusCount <= 10)
-					{
-						// wait few seconds to get value
-						Time_GetInternetConnectionStatus = window.clearInterval(Time_GetInternetConnectionStatus);
-						Time_GetInternetConnectionStatus = self.setInterval("GetInternetConnectionStatus()",2000);
-						document.getElementById("new_Firmware_Version").innerHTML = "--";
-						document.getElementById("new_Firmware_Date").innerHTML = "--";
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").innerHTML = I18N("j", "Check for New Firmware");
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").setAttribute("class", "styled_button_dis");
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").disabled = true;
-					}
-					break;
-				case "OK_CONNECTED":
-					Time_GetInternetConnectionStatus = window.clearInterval(Time_GetInternetConnectionStatus);
-					document.getElementById("CheckAndDownloadNewFirmware_Btn").onclick = function() { CheckAndDownloadNewFirmware(); };
-					HNAP.GetXMLAsync("GetFirmwareStatus", null, "GetValue", function(xml)	{	GetResult_4th(xml)	});
-					break;
-				case "OK_NOTCONNECTED":
-				case "ERROR":
-					Time_GetInternetConnectionStatus = window.clearInterval(Time_GetInternetConnectionStatus);
-					Time_GetDetectFirmwarePointShow = window.clearInterval(Time_GetDetectFirmwarePointShow);
-					document.getElementById("firmware_Checking_Message").innerHTML = "";
-					document.getElementById("CheckAndDownloadNewFirmware_Btn").innerHTML = I18N("j", "Check for New Firmware");
-					document.getElementById("CheckAndDownloadNewFirmware_Btn").setAttribute("class", "styled_button_s");
-					document.getElementById("CheckAndDownloadNewFirmware_Btn").disabled = false;
-					GetStatusResult = 0;
-					break;
-			}
-		}
-		else	{	if (DebugMode == 1)	{	alert("[!!GetXML Error!!] Function: GetResult_3rd");	}	}
-	}
-	function GetResult_4th(result_xml)
-	{
-		if (result_xml != null)
-		{
-			switch (checkORdownloadFW)
-			{
-				case 0:
-					var getCurrentFirmwareVersion = result_xml.Get("GetFirmwareStatusResponse/CurrentFWVersion");
-					var getLastestFirmwareVersion = result_xml.Get("GetFirmwareStatusResponse/LatestFWVersion");
-					var getLastestFirmwareVersionDate = result_xml.Get("GetFirmwareStatusResponse/LatestFWVersionDate");
-					var getFirmwareDownloadURL = result_xml.Get("GetFirmwareStatusResponse/FWDownloadUrl");
-					if (getLastestFirmwareVersion == "." || getFirmwareDownloadURL == "" || getLastestFirmwareVersion == "null")
-					{
-						Time_GetDetectFirmwarePointShow = window.clearInterval(Time_GetDetectFirmwarePointShow);
-						document.getElementById("firmware_Checking_Message").innerHTML = I18N("j", "This firmware is the latest version.");
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").setAttribute("class", "styled_button_s");
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").disabled = false;
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").innerHTML = I18N("j", "Check for New Firmware");
-						GetStatusResult = 0;
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").onclick = function() { GetInternetConnectionStatus(); };
-					}
-					else if (getCurrentFirmwareVersion === getLastestFirmwareVersion)
-					{
-						Time_GetDetectFirmwarePointShow = window.clearInterval(Time_GetDetectFirmwarePointShow);
-						document.getElementById("firmware_Checking_Message").innerHTML = I18N("j", "This firmware is the latest version.");
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").setAttribute("class", "styled_button_s");
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").disabled = false;
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").innerHTML = I18N("j", "Check for New Firmware");
-						GetStatusResult = 0;
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").onclick = function() { GetInternetConnectionStatus(); };
-					}
-					else if (getCurrentFirmwareVersion > getLastestFirmwareVersion)
-					{
-						// Should not happen
-						Time_GetDetectFirmwarePointShow = window.clearInterval(Time_GetDetectFirmwarePointShow);
-						document.getElementById("firmware_Checking_Message").innerHTML = I18N("j", "This firmware is the latest version.");
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").setAttribute("class", "styled_button_s");
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").disabled = false;
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").innerHTML = I18N("j", "Check for New Firmware");
-						GetStatusResult = 0;
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").onclick = function() { GetInternetConnectionStatus(); };
-					}
-					else if (getCurrentFirmwareVersion < getLastestFirmwareVersion)
-					{
-						Time_GetDetectFirmwarePointShow = window.clearInterval(Time_GetDetectFirmwarePointShow);
-						document.getElementById("firmware_table_1").style.display = "none";
-						document.getElementById("firmware_table_2").style.display = "inline";
-						document.getElementById("new_Firmware_Version").style.color = "#FF0000";
-						document.getElementById("new_Firmware_Version").innerHTML = getLastestFirmwareVersion;
-						document.getElementById("new_Firmware_Date").innerHTML = getLastestFirmwareVersionDate;
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").setAttribute("class", "styled_button_s");
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").disabled = false;
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").innerHTML = I18N("j", "Download New Firmware");
-						checkORdownloadFW = 1;
-					}
-					else
-					{
-						Time_GetDetectFirmwarePointShow = window.clearInterval(Time_GetDetectFirmwarePointShow);
-						document.getElementById("firmware_Checking_Message").innerHTML = I18N("j", "This firmware is the latest version.");
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").setAttribute("class", "styled_button_s");
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").disabled = false;
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").innerHTML = I18N("j", "Check for New Firmware");
-						GetStatusResult = 0;
-						document.getElementById("CheckAndDownloadNewFirmware_Btn").onclick = function() { GetInternetConnectionStatus(); };
-					}
-					break;
-				case 1:
-					// Shutdown Timer
-					//stopGetReciprocalTime(); // Time_GetReciprocalTime = window.clearInterval(Time_GetReciprocalTime);
-					document.getElementById("CheckAndDownloadNewFirmware_Btn").setAttribute("class", "styled_button_dis");
-					document.getElementById("CheckAndDownloadNewFirmware_Btn").disabled = true;
-					document.getElementById("CheckAndDownloadNewFirmware_Btn").innerHTML = I18N("j", "Downloading");
-					document.getElementById("CreatePopAlertMessage").style.display = "inline";
-					document.getElementById("FirmwareUpgrade_Auto").style.display = "inline";
-					document.getElementById("closeCreatePopBtn2").style.display = "inline";
-					document.getElementById("download_percentage").innerHTML = "0";
-					detectPopWindowAvailable = 1;
-					HNAP.GetXMLAsync("StartFirmwareDownload", null, "GetXML", function(xml)	{	SetResult_1st(xml)	});
-					break;
-			}
-		}
-		else	{	if (DebugMode == 1)	{	alert("[!!GetXML Error!!] Function: GetResult_4th");	}	}
-	}
-	function CheckAndDownloadNewFirmware()
-	{
-		// Shutdown Timer
-		//stopGetReciprocalTime(); // Time_GetReciprocalTime = window.clearInterval(Time_GetReciprocalTime);
-		document.getElementById("CheckAndDownloadNewFirmware_Btn").setAttribute("class", "styled_button_dis");
-		document.getElementById("CheckAndDownloadNewFirmware_Btn").disabled = true;
-		document.getElementById("CheckAndDownloadNewFirmware_Btn").innerHTML = I18N("j", "Downloading");
-		document.getElementById("CreatePopAlertMessage").style.display = "inline";
-		document.getElementById("FirmwareUpgrade_Auto").style.display = "inline";
-		document.getElementById("closeCreatePopBtn2").style.display = "inline";
-		document.getElementById("download_percentage").innerHTML = "0";
-		detectPopWindowAvailable = 1;
-		HNAP.GetXMLAsync("StartFirmwareDownload", null, "GetXML", function(xml)	{	SetResult_1st(xml)	});
-	}
-	
-	function SetResult_1st(result_xml)
-	{
-		if (result_xml != null)	{	HNAP.SetXMLAsync("StartFirmwareDownload", result_xml, function(xml)	{	SetResult_2nd(xml);	});	}
-		else	{	if (DebugMode == 1)	{	alert("[!!SetXML Error!!] Function: SetResult_1st");	}	window.location.reload();	}
-	}
-	function SetResult_2nd(result_xml)
-	{
-		var SetResult_2nd = result_xml.Get("StartFirmwareDownloadResponse/StartFirmwareDownloadResult");
-		if (SetResult_2nd == "OK")		{	HNAP.GetXMLAsync("PollingFirmwareDownload", null, "GetXML", function(xml)	{	CheckFirmwareStatus = xml;	SetResult_3rd(xml)	});	}
-		if (SetResult_2nd == "ERROR")	{	if (DebugMode == 1)	{	alert("[!!SetXML Error!!] Function: SetResult_2nd");	}	window.location.reload();	}
-	}
-	function SetResult_3rd(result_xml)
-	{
-		if (result_xml != null)	{	HNAP.SetXMLAsync("PollingFirmwareDownload", result_xml, function(xml)	{	SetResult_4th(xml);	});	}
-		else	{	if (DebugMode == 1)	{	alert("[!!SetXML Error!!] Function: SetResult_3rd");	}	window.location.reload();	}
-	}
-	function SetResult_3rd_a()	{	HNAP.SetXMLAsync("PollingFirmwareDownload", CheckFirmwareStatus, function(xml)	{	SetResult_4th(xml);	});	}
-	function SetResult_3rd_b()	{	HNAP.SetXMLAsync("PollingFirmwareDownload", CheckFirmwareStatus, function(xml)	{	SetResult_4th_a(xml);	});	}
-	function SetResult_4th(result_xml)
-	{
-		var SetResult_4th = result_xml.Get("PollingFirmwareDownloadResponse/PollingFirmwareDownloadResult");
-		if (SetResult_4th == "OK")
-		{
-			var GetPollingFWDownloadResult = result_xml.Get("PollingFirmwareDownloadResponse/DownloadPercentage");
-			document.getElementById("download_percentage").innerHTML = GetPollingFWDownloadResult;
-			if (GetPollingFWDownloadResult != "100")
-			{
-				Time_GetPollingFWDownload = window.clearInterval(Time_GetPollingFWDownload);
-				Time_GetPollingFWDownload = self.setInterval("SetResult_3rd_a()",1000);
-			}
-			else
-			{
-				Time_GetPollingFWDownload = window.clearInterval(Time_GetPollingFWDownload);
-				if (detectPopWindowAvailable != 0)	{	self.location.href="UpdateFirmware.html?UpdateResult=SUCCESS";	}
-			}
-		}
-		if (SetResult_4th == "ERROR")	{	if (DebugMode == 1)	{	alert("[!!SetXML Error!!] Function: SetResult_4th");	}	window.location.reload();	}
-	}
-	function SetResult_4th_a(result_xml)
-	{
-		var SetResult_4th_a = result_xml.Get("PollingFirmwareDownloadResponse/PollingFirmwareDownloadResult");
-		if (SetResult_4th_a == "OK")
-		{
-			var GetPollingFWDownloadResult = result_xml.Get("PollingFirmwareDownloadResponse/DownloadPercentage");
-			if (GetPollingFWDownloadResult != "100")
-			{
-				Time_GetBackgroundPollingFWDownload = window.clearInterval(Time_GetBackgroundPollingFWDownload);
-				Time_GetBackgroundPollingFWDownload = self.setInterval("SetResult_3rd_b()",1000);
-			}
-			else
-			{
-				Time_GetBackgroundPollingFWDownload = window.clearInterval(Time_GetBackgroundPollingFWDownload);
-				document.getElementById("CheckAndDownloadNewFirmware_Btn").setAttribute("class", "styled_button_s");
-				document.getElementById("CheckAndDownloadNewFirmware_Btn").disabled = false;
-				document.getElementById("CheckAndDownloadNewFirmware_Btn").innerHTML = I18N("j", "Download New Firmware");
-			}
-		}
-		if (SetResult_4th == "ERROR")	{	if (DebugMode == 1)	{	alert("[!!SetXML Error!!] Function: SetResult_4th_a");	}	window.location.reload();	}
-	}
-	function closePOPWindow()
-	{
-		Time_GetPollingFWDownload = window.clearInterval(Time_GetPollingFWDownload);
-		Time_GetBackgroundPollingFWDownload = window.clearInterval(Time_GetBackgroundPollingFWDownload);
-		Time_GetBackgroundPollingFWDownload = self.setInterval("SetResult_3rd_b()",1000);
-		document.getElementById("CreatePopAlertMessage").style.display = "none";
-		document.getElementById("FirmwareUpgrade_Auto").style.display = "none";
-		document.getElementById("closeCreatePopBtn2").style.display = "none";
-		detectPopWindowAvailable = 0;
-		//setGetReciprocalTime(); // Time_GetReciprocalTime = self.setInterval("GetReciprocalTime()",1000);
-	}
+    $(document).ready(function() {
+        LoadHeader();
+        // InitMenu("Management", "Upgrade");
+        Initial();
+        setMenu("menu_Management");
+        getFirmwareInfo();
+        startTimeout();
 
-</script>
-<style>
-#gplLink {
-	margin-top : 15px;
-	color: #7d7d7d;
-    font-size: 10pt;
-}
-</style>
+        $('input[type=file]').on('change', function(evt) {
+            var file = prepareUpload(evt);
+            ShowUpgradeBtn(file);
+        });
+    });
+
+    function Initial() {
+        initialMenu();
+        // initialDetectRouterConnection();
+    }
+
+    function LoadHeader() {
+        $("#header").load("header.html");
+    }
+
+    function ShowPopupMsg(whichMsg) {
+        $(".myAlertPop_table_b").hide();
+        GetById("WarningMsgSection").style.display = "none";
+        GetById("CreatePopAlertMessage").style.display = "none";
+
+        if (whichMsg.length > 0) {
+            if ((whichMsg == "Upgrade") || (whichMsg == "Upload")) {
+                if (whichMsg == "Upgrade") {
+                    GetById("WarningMsgBtn").style.display = "";
+                    GetById("WarningMsg").innerHTML = I18N("j", "Do you want to upgrade Firmware?");
+                } else {
+                    GetById("WarningMsgBtn").style.display = "none";
+                    GetById("WarningMsg").innerHTML = I18N("j", "Please wait") + "...";
+                }
+
+                whichReq = whichMsg;
+                GetById("WarningMsgSection").style.display = "";
+            } else if (whichMsg == "Fail") {
+                $("#Confirm_btn").off('click').on('click', function() {
+                    resetFileSelect();
+                    ShowPopupMsg('');
+                });
+                $("#CompleteSection").show();
+            } else //Complete
+            {
+                $("#Confirm_btn").off('click').on('click', function() {
+                    RedirectHtmlPage();
+                });
+                GetById(whichMsg + "Section").style.display = "";
+            }
+
+            GetById("CreatePopAlertMessage").style.display = "";
+        } else {
+            whichReq = "";
+        }
+    }
+
+    function ShowUpgradeBtn(file) {
+        $("#file_info_conf").html(file.name);
+
+        $("#confirmUpgradeBtn").off('click').on("click", function() {
+            stopTimeout();
+            upgradeFirmware(file);
+        });
+        $("#UpgradeBtnSection").show();
+    }
+
+    function resetFileSelect() {
+        $("#file_info_conf").html("");
+        $("#uploadfile").val("");
+
+        $("#confirmUpgradeBtn").off("click");
+        $("#UpgradeBtnSection").hide();
+    }
+
+    function StartRebootCountDown() {
+        if (countTime == totalTime) {
+            if (spinnerObj) {
+                // stop the Spinner Object
+                spinnerObj.stop();
+            }
+
+            clearInterval(reboot_id);
+            GetById("CompleteMessage").innerHTML = I18N("j", "Firmware Upgrade success!");
+            ShowPopupMsg('Complete');
+        }
+
+        GetById("count_down").innerHTML = Math.ceil((++countTime / totalTime) * 100);
+    }
+
+    function getFirmwareInfo() {
+        GetFirmwareSettings().done(function(obj) {
+            $("#current_fw_version").html(obj.FirmwareVersion);
+            $("#current_fw_date").html(obj.FirmwareDate);
+        });
+    }
+
+    function checkNewFirmware() {
+        $("#CheckFWResult").show();
+        $("#CheckBtn").addClass("active").prop("disabled", true);
+        ShowCheckFWMsg();
+        var check_id = setInterval('ShowCheckFWMsg()', 500);
+
+        GetFirmwareStatus().done(function(obj) {
+            clearInterval(check_id);
+
+            var fwVer = obj.CurrentFWVersion;
+            var newVer = obj.LatestFWVersion;
+
+            if (fwVer < newVer) {
+                $("#CheckFWResult").hide();
+                $("#LatestFWSection").show();
+                $("#latest_fw_version").html(newVer);
+                $("#latest_fw_date").html(obj.LatestFWVersionDate);
+                $("#CheckBtn").hide();
+                $("#UpgradeBtn").show();
+            } else {
+                $("#CheckFWResult").html(I18N("j", "This firmware is the latest version."));
+            }
+            $("#CheckBtn").removeClass("active").prop("disabled", false);
+        }).fail(function() {
+            clearInterval(check_id);
+
+            $("#CheckFWResult").html(I18N("j", "This firmware is the latest version."));
+            $("#CheckBtn").removeClass("active").prop("disabled", false);
+        });
+
+    }
+
+    function ShowCheckFWMsg() {
+        var msg = I18N("j", "Scanning...");
+
+        for (var i = 0; i < show_dot; i++) {
+            msg += ".";
+        }
+
+        if (show_dot >= 5) {
+            show_dot = 0;
+        } else {
+            show_dot++;
+        }
+
+        $("#CheckFWResult").html(msg);
+    }
+
+    function upgradeFirmware(file) {
+        GetById("WarningMsg").innerHTML = I18N("j", "Please wait") + "..." ;
+        GetById("WarningMsgBtn").style.display = "none";
+
+        uploadFile("FirmwareUpload", "FWFile", file).done(function() {
+            do_upgrade();
+        }).fail(function() {
+            setTimeout(function(){
+                $("#CompleteMessage").html(I18N("j", "Firmware Upgrade failed!"));
+                ShowPopupMsg('Fail');
+            },1000);
+        });
+    }
+
+    function do_upgrade() {
+        ShowPopupMsg('Upload');
+        GetFirmwareValidation().done(function(countdown) {
+            totalTime = countdown;
+            countTime = 0;
+
+            spinnerObj = CreateSpinnerObj("SpinnerSection", opts);
+            ShowPopupMsg("Process");
+            reboot_id = setInterval('StartRebootCountDown()', 1000);
+        }).fail(function() {
+            $("#CompleteMessage").html(I18N("j", "Firmware Upgrade failed!"));
+            ShowPopupMsg('Fail');
+        });
+    }
+
+    function AutoUpgradeFirmware() {
+        spinnerObj = CreateSpinnerObj("DLSpinnerSection", opts);
+        ShowPopupMsg("Download");
+
+        StartFirmwareDownload().progress(function(val) {
+            $("#dl_count_down").html(val);
+        }).done(function() {
+            if (spinnerObj) {
+                // stop the Spinner Object
+                spinnerObj.stop();
+            }
+            do_upgrade();
+        }).fail(function() {
+            if (spinnerObj) {
+                // stop the Spinner Object
+                spinnerObj.stop();
+            }
+            ShowPopupMsg("Fail");
+        });
+    }
+
+    function StopDownloadFW() {
+        if (spinnerObj) {
+            // stop the Spinner Object
+            spinnerObj.stop();
+        }
+
+        // reset the timeout timer
+        timeout_id = InitTimeOut(timeout_id);
+        ShowPopupMsg('');
+    }
+
+    function RedirectHtmlPage() {
+        location.assign('/');
+    }
+
+    function checkBrowserVer() {
+        var browser = $.client.browser;
+        var version = $.client.version;
+
+        if (browser == "Explorer" && $.client.version < 10) {
+            alert(I18N("j", "The system doesn't support your browser."));
+        } else {
+            $('#uploadfile').trigger('click');
+        }
+    }
+    </script>
+    <style>
+    .block th {
+        min-width: 350px;
+        width: auto !important;
+        width: 420px;
+        font-weight: normal;
+        text-align: right;
+    }
+    
+    .btn_func {
+        min-width: 180px;
+        background: #4496a8;
+        color: #f5f5f5;
+        border-radius: 0;
+        padding: 10px 15px;
+    }
+    
+    .btn_func:focus,
+    .btn_func:hover {
+        background: #36899a;
+    }
+    
+    .info_left {
+        display: inline-block;
+        position: relative;
+        margin-top: 10px;
+        left: 148px;
+        /*min-height: 150px;*/
+        color: #555;
+    }
+    
+    .info_left > ul > li {
+        border: 0px solid;
+        text-align: right;
+        padding-top: 4px;
+        padding-bottom: 3px;
+    }
+    
+    .info_left > ul > li .tt {
+        width: 220px;
+        text-align: right;
+        display: inline-block;
+        font-size: 14px;
+    }
+    
+    .info_left > ul > li .dd {
+        width: 200px;
+        padding-left: 5px;
+        text-align: left;
+        display: inline-block;
+        font-size: 14px;
+    }
+    
+    .info_right {
+        float: right;
+        position: relative;
+        top: 10px;
+        color: #555;
+    }
+    
+    .info_right > div > ul {
+        border: 1px solid;
+        border-color: #4598aa;
+        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+        border-top-right-radius: 4px;
+        border-top-left-radius: 4px;
+    }
+    
+    .info_right > div > ul > li {
+        border: 0px;
+    }
+    
+    .info_center {
+        margin-top: 20px;
+    }
+    
+    table.manualFW {
+        position: relative;
+        top: 10px;
+        left: 167px;
+        color: #555;
+    }
+    
+    table.manualFW > tbody > tr {
+        height: 42px;
+    }
+    
+    table.manualFW > tbody > tr > td {
+        padding-left: 10px;
+        width: 212px;
+        text-align: right;
+    }
+    
+    #gplLink {
+        margin-top: 15px;
+        color: #7d7d7d;
+        font-size: 10pt;
+    }
+    #gplLink a{
+        color: #0000ee;
+        text-decoration: underline;
+    }
+
+    /*extender*/
+    #pagePath {
+        position: relative;
+        line-height: 50px;
+        font-size: 18px;
+        color: #aaaaaa;
+    }    
+    </style>
 </head>
 
-<body onload="Body_Onload()">
-	<div id="wrapper">
-		<!-- ------------------ Logo ----------------------- -->
-		<div id="header"></div>
-		<!-- ------------------ Menu ------------------------->
-		<div id="menu"></div>
-		<div id="menu_edge"></div>
-		<!-- ------------------ Content -------------------- -->
-		<div id="content">
-			<!-- ------------------ info -------------------- -->	
-	  		<div id="info">
-				<div id="FunctionName"><script>I18N("h", "Upgrade");</script></div>
-				<div id="wall"><img src="image/page_updateFW.png" alt="" width="195" height="119"/></div>
-				<div id="directions">
-			      	<script>I18N("h", "Your router can automatically detect firmware updates, but requires your authorization to install them. It is also possible to check for new firmware manually, upgrade firmware from a local file.");</script>
-					<div id="gplLink"><script>I18N("h", "GPL licenses");</script></div>
-				</div>
-			</div>
-			<!-- ------------------ funcBar -------------------- -->
-			<div id="funcBar">
-				<div id="pagePath">&nbsp;<script>I18N("h", "Management");</script>&nbsp;>>&nbsp;<script>I18N("h", "Upgrade");</script></div>
-				<ul id="rightFunc">
-				</ul>
-			</div>
-			<!----------------- Pop Alert Message ---------------->
-			<div id="CreatePopAlertMessage" style="display:none">
-				<div id="AlertPopRect">
-					<div id="AlertPopBody">
-						<div id="closeCreatePopBtn2" onclick="closePOPWindow()" style="cursor:pointer;display:none"></div>
-						<!---------- Firmware Upgrade Step 1 ---------->
-						<table class="myAlertPop_table_b" id="FirmwareUpgrade_1" border="0" cellspacing="0" style="display:none">
-						   <tbody>
-								 <tr>
-								 	<td colspan="2">
-										<div id="Information_pop_image"></div>
-									</td>
-								 </tr>
-								 <tr>
-									 <td colspan="2">
-									 	<div id="dialog_msg_black"><script>I18N("h", "Do you want to upgrade Firmware?");</script></div>
-									 </td>
-								 </tr>
-								 <tr>
-									 <td>
-									 	<div id="Confirm_btn" onclick="UpgradeFW()" style="cursor:pointer"><script>I18N("h", "OK");</script></div>
-									 </td>
-									 <td>
-									 	<div id="Confirm_btn" onclick="returnToMain()" style="cursor:pointer"><script>I18N("h", "Cancel");</script></div>
-									 </td>
-								 </tr>
-						   </tbody>
-						</table>
-						<!---------- Firmware Upgrade Step 2 ---------->
-						<table class="myAlertPop_table_b" id="FirmwareUpgrade_2" border="0" cellspacing="0" style="display:none">
-						   <tbody>
-								 <tr>
-								 	<td><label id="reciprocal_Number"><script>I18N("h", "Upgrading");</script></label><b>...</b><label id="upgrade_percentage">0</label>%</td>
-								 </tr>
-								 <tr>
-								 	<td>
-										<center><div id="Loading_pop_image"></div></center>
-									</td>
-								 </tr>
-								 <tr>
-								 	<td id="dialog_msg_red"><script>I18N("h", "Do not power off the device until the Firmware Upgrade is complete!");</script></td>
-								 </tr>
-						   </tbody>
-						</table>
-						<!---------- Firmware Upgrade Step 3 ---------->
-						<table class="myAlertPop_table_b" id="FirmwareUpgrade_3" border="0" cellspacing="0"  style="display:none">
-						   <tbody>
-								 <tr>
-								 	<td>
-										<center><div id="Information_pop_image"></div></center>
-									</td>
-								 </tr>
-								 <tr>
-								 <td><div id="dialog_msg_black"><script>I18N("h", "Uploading Firmware");</script>...</div></td>
-								 </tr>
-						   </tbody>
-						</table>
-						<!---------- Auto download Firmware---------->
-						<table class="myAlertPop_table_b" id="FirmwareUpgrade_Auto" border="0" cellspacing="0"  style="display:none">
-						   <tbody>
-								 <tr>
-								 	<td>
-								 		<center><label id="reciprocal_Number2"><script>I18N("h", "Downloading");</script></label><b>...</b><label id="download_percentage"></label>%</center>
-								 	</td>
-								 </tr>
-								 <tr>
-									 <td>
-									 	<center><div id="Loading_pop_image"></div></center>
-									 </td>
-								 </tr>
-								 <tr>
-									 <td id="dialog_msg_black"><script>I18N("h", "Please do not close the browser while the firmware is being downloaded!");</script></td>
-								 </tr>
-						   </tbody>
-						</table>
-						<!---------- Failed -  Firmware Upgrade ---------->
-						<table class="myAlertPop_table_b" id="FailedFirmwareUpgrade" border="0" cellspacing="0"  style="display:none">
-						   <tbody>
-								 <tr>
-								 	<td>
-										<center><div id="Warning_pop_image"></div></center>
-									</td>
-								 </tr>
-								 <tr>
-									 <td>
-									 	<div id="dialog_msg_red" ><script>I18N("h", "Firmware Upgrade failed!");</script></div>
-									 </td>
-								 </tr>
-								 <tr>
-									 <td>
-									 	<center><div id="Confirm_btn" onclick="returnToMain()" style="cursor:pointer"><script>I18N("h", "OK");</script></div></center>
-									 </td>
-								 </tr>
-						   </tbody>
-						</table>
-						<!---------- Success - Firmware Upgrade ---------->
-						<table class="myAlertPop_table_b" id="SuccessFirmwareUpgrade" border="0" cellspacing="0"  style="display:none">
-						   <tbody>
-								 <tr>
-								 	<td>
-										<center><div id="Information_pop_image"></div></center>
-									</td>
-								 </tr>
-								 <tr>
-									 <td>
-									 	<div id="dialog_msg_black"><script>I18N("h", "Firmware Upgrade success!");</script></div>
-									 </td>
-								 </tr>
-								 <tr>
-									 <td>
-									 	<center><div id="Confirm_btn" onclick="returnToHome()" style="cursor:pointer"><script>I18N("h", "OK");</script></div></center>
-									 </td>
-								 </tr>
-						   </tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-	    	<!-- ------------------ main ------------------------->
-	     	<div id="main" style="display:none">
-				<table class="block" border="0">
-				<tbody>
-					<tr>
-						<td colspan="3"><div class ="title"><script>I18N("h", "Firmware Information");</script></div></td>
-					</tr>
-					<tr>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td rowspan="4" style="width:280px"> <!-- let "checking" closer to current firmation information -->
-							<div id="firmware_table_1">
-								<!--
-								<table class="firmware_table" border="0" cellspacing="0" >
-								-->
-								<table border="0" cellspacing="0" >
-									<tr>
-										<td>
-											<center><label id="firmware_Checking_Message"></label></center>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<div id="firmware_table_2" style="display:none">
-								<table class="firmware_table2" border="0" cellspacing="0" >
-									<tr>
-										<td style="text-align:left;"> 
-											<span id="_3"><script>I18N("h", "New Firmware Version");</script></span>:
-										</td>
-										<td>
-											<span id="new_Firmware_Version">--</span>
-										</td>
-									</tr>
-									<tr>
-										<td style="text-align:left;">
-											<span id="_4"><script>I18N("h", "New Firmware Date");</script></span>:
-										</td>
-										<td>
-											<span id="new_Firmware_Date">--</span>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<th style="height:25px;"><script>I18N("h", "Current Firmware Version");</script>:</th>
-						<td style="min-width:200px;"><label id="Current_Firmware_Version"><script>I18N("h", "Not Available");</script></label></td>
-					</tr>
-					<tr>
-						<th style="height:25px;"><script>I18N("h", "Current Firmware Date");</script>:</th>
-						<td style="min-width:200px;"><label id="Current_Firmware_Date"><script>I18N("h", "Not Available");</script></label></td>
-					</tr>
-					<tr>
-						<th></th>
-						<td>&nbsp;</td>
-					</tr>
-					<tr>
-						<th></th>
-						<td>
-							<button type="button" id="CheckAndDownloadNewFirmware_Btn" class="styled_button_s" style="min-width:200px;" onclick="GetInternetConnectionStatus()"><script>I18N("h", "Check for New Firmware");</script></button>
-						</td>
-					</tr>
-				</tbody>
-			    </table>
-				<table class="block" border="0" cellspacing="0" style="display:none; margin: 10px 0 0 0;">
-				<tbody>
-					<tr>
-						<td><div class ="title"><script>I18N("h", "Language Pack Information");</script></div></td>
-					</tr>
-					<tr>
-						<th><script>I18N("h", "Current Language Pack");</script>:</th>
-						<td style="width: 150px;"><label id="Current_Language_Pack">Not Installed.</label></td>
-						<td><button type="button" class="styled_button_s" onclick=""><script>I18N("h", "Remove");</script></button></td>
-						<td><label id="Last_Language_Pack"></label></td>
-					</tr>
-				</tbody>
-			    </table>
-				<hr />
-				<table class="block" border="0">
-				<tbody>
-					<tr>
-						<td><div class ="title"><script>I18N("h", "Upgrade Manually");</script></div></td>
-					</tr>
-					<form id="fwupload" action="/HNAP1/prog.fcgi?method=/cgi-bin/fwupload.cgi" method="post" enctype="multipart/form-data">
-					<tr id="First_UF">
-						<th style="height:25px;"><script>I18N("h", "Upgrade Firmware");</script>:</th>
-						<td>
-					   		<div class="file-box">
-					   			<label for="select_Folder_a" class="styled_button_s" style="width:167px;"><script>I18N("h", "Select File");</script></label>
-					   			<input type="file" name="select_Folder_a" class="file" id="select_Folder_a" style="display:none" onclick="changeTimeoutAction();" onchange="ShowUploadButton('upload_File',this);" />
-					   		</div>
-					   	</td>
-					   	<td>
-					   		<label name="upload_File" id="upload_File" size="40" style="border:0px;height:40px;color:#4598AA" readonly></label>
-					   	</td>
-					</tr>
-					<tr id="upload_File_Button" style="display:none">
-						<th></th>
-						<td colspan="2">
-							<button type="button" class="styled_button_s" style="min-width:200px;" onclick="FWUpgrade_Check_btn(); "><script>I18N("h", "Upload");</script></button>
-						</td>
-					</tr>
-					</form>
-					<form id="fwupload2" action="/HNAP1/prog.fcgi?method=/cgi-bin/fwupload.cgi" method="post" enctype="multipart/form-data">
-					<tr id="Secondary_UF" style="display:none">
-						<th><script>I18N("h", "Upgrade Firmware");</script>:</th>
-						<td>
-							<div>
-								<span>
-									<input type="file" name="firmwareUpgrade" id="firmwareUpgrade" />
-									<button type="submit"><script>I18N("h", "Upload");</script></button>
-								</span>
-							</div>
-						</td>
-					</tr>
-					</form>
-					<tr style="display:none">
-						<th><script>I18N("h", "Add a Language Pack");</script>:</th>
-						<td>
-							<div class="file-box">
-					   			<button type="button" class="styled_button_s" onclick="document.getElementById('select_Folder_b').click()"><script>I18N("h", "Select File");</script></button>
-					   			<input type="file" name="select_Folder_b" class="file" id="select_Folder_b" style="display:none" onchange="ShowUploadButton('LanguageUpload_File',this);" />
-					   		</div>
-					   	</td>
-						<td>
-					   		<input type="text" name="LanguageUpload_File" id="LanguageUpload_File" size="30" style="border:0px;height:30px;color:#4598AA" readonly>
-					   	</td>
-					</tr>
-					<tr id="LanguageUpload_File_Button" style="display:none">
-						<th></th>
-						<td>
-							<button type="button" class="styled_button_s" onclick=""><script>I18N("h", "Upload");</script></button>
-						</td>
-					</tr>
-				</tbody>
-			    </table>
-			</div>
-		</div>
-		<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
-		<div id="DetectRouterConnection" style="display:none"></div>
-		<div id="footer">
-			<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>
-		</div>
-	</div>
+<body>
+    <div id="wrapper">
+        <div id="header"></div>
+        <div id="menu"></div>
+        <!-- Content -->
+        <div id="content">
+            <!-- info -->
+            <div id="info">
+                <div id="FunctionName">
+                    <script>I18N("h", "Upgrade");</script>
+                </div>
+                <div id="wallimage"><img width="195" height="119" src="image/page_updateFW.png"></div>
+                <div id="directions">
+                    <script>I18N("h", "Your router can automatically detect firmware updates, but requires your authorization to install them. It is also possible to check for new firmware manually, upgrade firmware from a local file.");</script>
+                    <div id="gplLink">
+                        <script>I18N("h", "GPL licenses");</script>
+                    </div>
+                </div>
+            </div>
+            <!-- id="info" -->
+            <!-- funcBar -->
+            <div id="funcBar">
+                <div id="pagePath">
+                    <script>I18N("h", "Management");</script> >> <script>I18N("h", "Upgrade");</script>
+                </div>
+                <ul id="rightFunc">
+                    <li style="display: block;"></li>
+                </ul>
+            </div>
+            <!-- id="funcBar" -->
+            <!-- main -->
+            <div id="main">
+                <div class="title">
+                    <script>I18N("h", "Firmware");</script>
+                </div>
+                <div class="info_left">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <span class="tt"><script>
+                                I18N("h", "Current Firmware Version");
+                                </script>: </span><span class="dd" id="current_fw_version"></span></li>
+                        <li class="list-group-item">
+                            <span class="tt"><script>
+                                I18N("h", "Current Firmware Date");
+                                </script>: </span><span class="dd" id="current_fw_date"></span></li>
+                    </ul>
+                </div>
+                <!-- class="info_left" -->
+                <div class="info_center">
+                    <!-- button -->
+                    <div style="">
+                        <ul id="LatestFWSection" class="list-group" style="display:none">
+                            <li class="list-group-item">
+                                <span class="tt">
+                                <script>I18N("h", "New Firmware Version");</script>: 
+                                </span>
+                                <span id="latest_fw_version"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="tt">
+                                <script>I18N("h", "New Firmware Date");</script>: 
+                                </span>
+                                <span id="latest_fw_date"></span></li>
+                        </ul>
+                        <span id="CheckFWResult" style="display:none;color:#4598aa;padding-left:395px;"></span>
+                    </div>
+                    <div style="text-align:center;padding-left:65px;">
+                        <button id="CheckBtn" type="button" class="btn btn-info btn_func" onclick="checkNewFirmware();">
+                            <script>I18N("h", "Check for New Firmware");</script>
+                        </button>
+                        <button id="UpgradeBtn" type="button" class="btn btn-info btn_func" style="display:none" onclick="AutoUpgradeFirmware();">
+                            <script>I18N("h", "Upgrade Firmware");</script>
+                        </button>
+                    </div>
+                </div>
+                <!-- class="info_right" -->
+                <hr />
+                <div class="title">
+                    <script>
+                    I18N("h", "Upgrade Manually");
+                    </script>
+                </div>
+                <table class="manualFW">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <script>
+                                I18N("h", "Upgrade Firmware");
+                                </script>:</td>
+                            <td style="text-align:left;">
+                                <button type="button" class="btn btn-info btn_func" style="width:180px" onclick="checkBrowserVer();">
+                                    <script>
+                                    I18N("h", "Select File");
+                                    </script>
+                                </button>
+                                <input type="file" id="uploadfile" style="display:none" onclick="changeTimeoutAction();" />
+                            </td>
+                            <td id="file_info_conf" style="color:#4598AA;padding-left:10px">
+                            </td>
+                        </tr>
+                        <tr id="UpgradeBtnSection" style="display:none;">
+                            <td></td>
+                            <td style="text-align:left;padding-top:10px;">
+                                <button type="button" id="UploadBtn" class="btn btn-info btn_func" style="width:180px" onclick="ShowPopupMsg('Upgrade');">
+                                    <script>
+                                    I18N("h", "Upload");
+                                    </script>
+                                </button>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- id="main" -->
+        </div>
+        <!-- id="content" -->
+        <!-- Popup Window -->
+        <div id="CreatePopAlertMessage" style="display:none">
+            <div id="AlertPopRect">
+                <div id="AlertPopBody">
+                    <table id="ProcessSection" class="myAlertPop_table_b" border="0" cellspacing="0" style="display:none">
+                        <tbody>
+                            <tr>
+                                <td align="center">
+                                    <div style="position:relative;top:-25px;"><strong><script>I18N("h", "Upgrading");</script>...&nbsp;<span id="count_down">0</span>%</strong></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="position:relative;top:-20px;left:85px"><span id="SpinnerSection"></span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table style="position:relative;top:70px">
+                                        <tr>
+                                            <td id="dialog_msg_black">
+                                                <label style="color:red">
+                                                    <script>
+                                                    I18N("h", "Do not power off the device until the Firmware Upgrade is complete!");
+                                                    </script>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="CompleteSection" class="myAlertPop_table_b" border="0" cellspacing="0" style="display:none">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <center>
+                                        <div id="Information_pop_image" style="background-size:24px 24px;"></div>
+                                    </center>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="dialog_msg_black">
+                                        <label id="CompleteMessage"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <center>
+                                        <div id="Confirm_btn" style="cursor:pointer">
+                                            <script>
+                                            I18N("h", "OK");
+                                            </script>
+                                        </div>
+                                    </center>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="DownloadSection" class="myAlertPop_table_b" border="0" cellspacing="0" style="display:none">"
+                        <tbody>
+                            <tr>
+                                <td align="right">
+                                    <div style="position:relative;top:-35px;right:5px">
+                                        <a href="javascript:StopDownloadFW()"><img src="image/closeDialog.png" width="20" height="21" border="0"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <div style="position:relative;top:-35px;"><strong><script>I18N("h", "Downloading");</script>...&nbsp;<span id="dl_count_down">0</span>%</strong></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="position:relative;top:-20px;left:85px"><span id="DLSpinnerSection"></span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table style="position:relative;top:60px">
+                                        <tr>
+                                            <td id="dialog_msg_black">
+                                                <label>
+                                                    <script>
+                                                    I18N("h", "Please do not close the browser while the firmware is being downloaded!");
+                                                    </script>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="WarningMsgSection" class="popMessage" style="display:none;">
+                        <div class="popMessage_icon" style="background-size:24px 24px;"></div>
+                        <table class="popMessage_infor">
+                            <tr>
+                                <td>
+                                    <div id="WarningMsg"></div>
+                                </td>
+                            </tr>
+                        </table>
+                        <table id="WarningMsgBtn" class="popMessage_button_table">
+                            <tr>
+                                <td>
+                                    <div style="position:absolute; width:130px; height:34px;top:-20px;" id="confirmUpgradeBtn" class="popMessage_button">
+                                        <script>
+                                        I18N("h", "OK");
+                                        </script>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="position:absolute; width:130px; height:34px;top:-20px;" class="popMessage_button" onclick="ShowPopupMsg('');">
+                                        <script>
+                                        I18N("h", "Cancel");
+                                        </script>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- id="WarningMsgSection" -->
+                </div>
+                <!-- id="AlertPopBody" -->
+            </div>
+            <!-- id="AlertPopRect" -->
+        </div>
+        <!-- id="CreatePopAlertMessage" -->
+    </div>
+    <!--  id="wrapper" -->
 
-<script type="text/javascript">
-	Load_HTML();
-	Initial();
-	setMenu("menu_Management");
-	GetXML();
-	startTimeout();
-</script>
+    <!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+    <div id="DetectRouterConnection" style="display:none"></div>
+
+    <div id="footer">
+        <div id="copyright">
+            <script>I18N("h", "COPYRIGHT");</script>
+        </div>
+    </div>
 </body>
+
 </html>

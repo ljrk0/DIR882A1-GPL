@@ -36,23 +36,9 @@ function CommonDeviceInfo()
 
 
 	this.helpVer = "";
-
-	this.featurevlanadvanced = true;
-
-	//extender mode
-	this.uiAdminAdvBlock_e = false;
-	this.supportRemoteManagement_e = false; 
-	this.featurePLC_e = false;
-	this.featureCovrWIFI_e = true;
-	this.featureWPS_e = false;
-	this.featureSmartConnect_e = false;
-	this.featureBundled_e = false;
-	this.featureQoSMgmtType_e = false;
-	this.featureQosManageByApp_e = false;
-	this.featureQoSSpeed_e = false;
-	this.featureSystemLog_e = false;
-	this.featureRebootSchedule_e = false;	
-
+	this.okcount = 0;
+	this.wizardcount = 40;
+	this.rebootcount = 120;
 }
 
 $.getScript("/config/deviceinfo.js", function(){

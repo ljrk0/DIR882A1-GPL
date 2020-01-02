@@ -32,6 +32,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 	var Limit_TotalStaticRouteRules = 24;
 	//data list
 	var datalist;
+	var textautoEU = "";
 
 	function Load_HTML()	{	$("#header").load("header.html");	}
 	function Initial()
@@ -41,7 +42,29 @@ if (sessionStorage.getItem('PrivateKey') === null){
 		
 		datalist = new Datalist();
 	}
-	function GetXML()	{	HNAP.GetXMLAsync("GetStaticRouteIPv4Settings", null, "GetValue", function(xml)	{	GetResult_1st(xml)	});	}
+	function GetXML()	{
+		if(currentDevice.featureVlanAdvanced) {
+			var getVersionInfo = HNAP.GetXMLAsync("GetVersionInfo", null, "GetValue", function(xml){
+				if(xml != null) {
+					textautoEU = xml.Get("GetVersionInfoResponse/WLANDomain-5G");
+					if(textautoEU.indexOf("EU") >= 0) {
+						$(".vlanInterface").show();
+					} else {
+						$(".vlanInterface").hide();
+					}
+
+					GetXML2();
+				}
+			});
+		} else {
+			GetXML2();
+		}
+	}
+
+	function GetXML2() {
+		HNAP.GetXMLAsync("GetStaticRouteIPv4Settings", null, "GetValue", function(xml)	{	GetResult_1st(xml)	});
+	}
+
 	function GetResult_1st(result_xml)
 	{
 		if (result_xml != null)
@@ -370,6 +393,8 @@ if (sessionStorage.getItem('PrivateKey') === null){
 									<div class="styled-select" tabindex="6">
 									<select style="width: 80px" name="sr_Interface" id="sr_Interface" >
 										<option value="WAN">WAN</option>
+										<option class="vlanInterface" value="IPTV VLAN">IPTV VLAN</option>
+										<option class="vlanInterface" value="VOIP VLAN">VOIP VLAN</option>
 									</select>
 									</div>
 								</td>
@@ -476,7 +501,8 @@ if (sessionStorage.getItem('PrivateKey') === null){
             var ipvalue = document.getElementById("sr_DestinationIP").value;
             var hostid = COMM_IPv4HOST(ipvalue, mask);
 
-            if(hostid==0 || hostid>=COMM_IPv4MAXHOST(mask)){
+            //if(hostid==0 || hostid>=COMM_IPv4MAXHOST(mask)){
+            if(hostid!=0){
                 returnVal = false;
             }else{
                 returnVal = true;
@@ -526,7 +552,9 @@ if (sessionStorage.getItem('PrivateKey') === null){
 					sr_DestinationIP: {
 						required: true,
 						checkIPFormat: true,
-                        checkIPAddress: true,
+						// sr_DestinationIP is subnet id, not IP address.
+						// 2017-09-28 --liushenghui
+                        //checkIPAddress: true,
                         hostidandmask: true
 					},
 					sr_Netmask: {
@@ -536,7 +564,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 					sr_Gateway: {
 						required: true,
 						checkIPFormat: true,
-						checkGateway: true
+						// checkGateway: true
 					},
 					sr_Metric: {
 						required: true,
@@ -549,7 +577,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 					},
 					sr_DestinationIP: {
 						required: jQuery.validator.messages.destinationIP,
-						hostidandmask: I18N("j", "err_address_Check")
+						hostidandmask: I18N("j", "Please enter a valid subnet id. (e.g. 10.0.0.0)")
 					},
 					sr_Netmask: {
 						required: jQuery.validator.messages.netmask

@@ -49,8 +49,8 @@ else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_878_VLAN), y)
 	$(ROMFSINST) web_VLAN /etc_ro/lighttpd/www/web
 	$(CP) web_VLAN/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
 else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_867), y)
-	$(ROMFSINST) web_867 /etc_ro/lighttpd/www/web
-	$(CP) web_867/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+	$(ROMFSINST) web_VLAN /etc_ro/lighttpd/www/web
+	$(CP) web_VLAN/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
 else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_1935), y)
 	$(ROMFSINST) web_1935 /etc_ro/lighttpd/www/web
 	$(CP) web_1935/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js

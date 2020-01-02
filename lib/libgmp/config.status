@@ -518,13 +518,13 @@ s,@INSTALL_DATA@,${INSTALL} -m 644,;t t
 s,@CYGPATH_W@,echo,;t t
 s,@PACKAGE@,gmp,;t t
 s,@VERSION@,4.2.2,;t t
-s,@ACLOCAL@,${SHELL} /home/xieshijing/trunk/GPL_Code/source/lib/libgmp/missing --run aclocal-1.8,;t t
-s,@AUTOCONF@,${SHELL} /home/xieshijing/trunk/GPL_Code/source/lib/libgmp/missing --run autoconf,;t t
-s,@AUTOMAKE@,${SHELL} /home/xieshijing/trunk/GPL_Code/source/lib/libgmp/missing --run automake-1.8,;t t
-s,@AUTOHEADER@,${SHELL} /home/xieshijing/trunk/GPL_Code/source/lib/libgmp/missing --run autoheader,;t t
-s,@MAKEINFO@,${SHELL} /home/xieshijing/trunk/GPL_Code/source/lib/libgmp/missing --run makeinfo,;t t
-s,@AMTAR@,${SHELL} /home/xieshijing/trunk/GPL_Code/source/lib/libgmp/missing --run tar,;t t
-s,@install_sh@,/home/xieshijing/trunk/GPL_Code/source/lib/libgmp/install-sh,;t t
+s,@ACLOCAL@,${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgmp/missing --run aclocal-1.8,;t t
+s,@AUTOCONF@,${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgmp/missing --run autoconf,;t t
+s,@AUTOMAKE@,${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgmp/missing --run automake-1.8,;t t
+s,@AUTOHEADER@,${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgmp/missing --run autoheader,;t t
+s,@MAKEINFO@,${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgmp/missing --run makeinfo,;t t
+s,@AMTAR@,${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgmp/missing --run tar,;t t
+s,@install_sh@,/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgmp/install-sh,;t t
 s,@STRIP@,/opt/buildroot-gcc463/usr/bin/mipsel-linux-strip,;t t
 s,@ac_ct_STRIP@,,;t t
 s,@INSTALL_STRIP_PROGRAM@,${SHELL} $(install_sh) -c -s,;t t

@@ -367,8 +367,7 @@ modules_install:
 		find $(ROMFSDIR)/lib/modules -type f -name "*o" | xargs -r $(STRIP) -R .comment -R .note -g --strip-unneeded; \
 	fi
 	
-#CONFIG_PRODUCT_AC2600 = MT7621_AC2600
-CONFIG_PRODUCT_DIR882 = DIR_882
+CONFIG_PRODUCT_DIR882 = DIR_882_VLAN
 CONFIG_PRODUCT_DIR882_LINUXDIR = linux-3.10.14.x
 
 DIR-882:

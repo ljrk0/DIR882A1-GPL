@@ -1,4 +1,4 @@
-cmd_scripts/unifdef := gcc -Wp,-MD,scripts/.unifdef.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer   -I/home/xieshijing/trunk/GPL_Code/source/linux-3.10.14.x/tools/include  -o scripts/unifdef scripts/unifdef.c  
+cmd_scripts/unifdef := gcc -Wp,-MD,scripts/.unifdef.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer   -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/tools/include  -o scripts/unifdef scripts/unifdef.c  
 
 source_scripts/unifdef := scripts/unifdef.c
 

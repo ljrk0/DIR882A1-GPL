@@ -313,7 +313,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 					// MTU
 					var PPTP_MTU = result_xml.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/MTU");
 					document.getElementById("mtu_PPTP_Input").value = PPTP_MTU;
-					if (PPTP_MTU == "1400")	{	document.getElementById("mtu_PPTP").options[0].selected = true;	}
+					if (PPTP_MTU == "1460")	{	document.getElementById("mtu_PPTP").options[0].selected = true;	}
 					else
 					{
 						document.getElementById("mtu_PPTP").options[1].selected = true;
@@ -387,7 +387,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 					// MTU
 					var PPTP_MTU = result_xml.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/MTU");
 					document.getElementById("mtu_PPTP_Input").value = PPTP_MTU;
-					if (PPTP_MTU == "1400")	{	document.getElementById("mtu_PPTP").options[0].selected = true;	}
+					if (PPTP_MTU == "1460")	{	document.getElementById("mtu_PPTP").options[0].selected = true;	}
 					else
 					{
 						document.getElementById("mtu_PPTP").options[1].selected = true;
@@ -466,7 +466,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 					// MTU
 					var L2TP_MTU = result_xml.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/MTU");
 					document.getElementById("mtu_L2TP_Input").value = L2TP_MTU;
-					if (L2TP_MTU == "1400")	{	document.getElementById("mtu_L2TP").options[0].selected = true;	}
+					if (L2TP_MTU == "1460")	{	document.getElementById("mtu_L2TP").options[0].selected = true;	}
 					else
 					{
 						document.getElementById("mtu_L2TP").options[1].selected = true;
@@ -542,7 +542,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 					// MTU
 					var L2TP_MTU = result_xml.Get("GetMultipleHNAPsResponse/GetWanSettingsResponse/MTU");
 					document.getElementById("mtu_L2TP_Input").value = L2TP_MTU;
-					if (L2TP_MTU == "1400")	{	document.getElementById("mtu_L2TP").options[0].selected = true;	}
+					if (L2TP_MTU == "1460")	{	document.getElementById("mtu_L2TP").options[0].selected = true;	}
 					else
 					{
 						document.getElementById("mtu_L2TP").options[1].selected = true;
@@ -991,7 +991,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 									break;
 							}
 							var MaximumTransmissionUnit_PPTP = document.getElementById("mtu_PPTP").value;
-							if (MaximumTransmissionUnit_PPTP == 1)	{	result_xml.Set("SetWanSettings/MTU", "1400");			}
+							if (MaximumTransmissionUnit_PPTP == 1)	{	result_xml.Set("SetWanSettings/MTU", "1460");			}
 							else	{	result_xml.Set("SetWanSettings/MTU", document.getElementById("mtu_PPTP_Input").value);	}
 							result_xml.Set("SetWanSettings/ConfigDNS/Primary", document.getElementById("primaryDNSAddress_PPTP").value);
 							result_xml.Set("SetWanSettings/ConfigDNS/Secondary", document.getElementById("secondaryDNSAddress_PPTP").value);
@@ -1026,7 +1026,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 									break;
 							}
 							var MaximumTransmissionUnit_PPTP = document.getElementById("mtu_PPTP").value;
-							if (MaximumTransmissionUnit_PPTP == 1)	{	result_xml.Set("SetWanSettings/MTU", "1400");			}
+							if (MaximumTransmissionUnit_PPTP == 1)	{	result_xml.Set("SetWanSettings/MTU", "1460");			}
 							else	{	result_xml.Set("SetWanSettings/MTU", document.getElementById("mtu_PPTP_Input").value);	}
 							result_xml.Set("SetWanSettings/ConfigDNS/Primary", document.getElementById("primaryDNSAddress_PPTP").value);
 							result_xml.Set("SetWanSettings/ConfigDNS/Secondary", document.getElementById("secondaryDNSAddress_PPTP").value);
@@ -1068,7 +1068,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 									break;
 							}
 							var MaximumTransmissionUnit_L2TP = document.getElementById("mtu_L2TP").value;
-							if (MaximumTransmissionUnit_L2TP == 1)	{	result_xml.Set("SetWanSettings/MTU", "1400");			}
+							if (MaximumTransmissionUnit_L2TP == 1)	{	result_xml.Set("SetWanSettings/MTU", "1460");			}
 							else	{	result_xml.Set("SetWanSettings/MTU", document.getElementById("mtu_L2TP_Input").value);	}
 							result_xml.Set("SetWanSettings/ConfigDNS/Primary", document.getElementById("primaryDNSAddress_L2TP").value);
 							result_xml.Set("SetWanSettings/ConfigDNS/Secondary", document.getElementById("secondaryDNSAddress_L2TP").value);
@@ -1103,7 +1103,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 									break;
 							}
 							var MaximumTransmissionUnit_L2TP = document.getElementById("mtu_L2TP").value;
-							if (MaximumTransmissionUnit_L2TP == 1)	{	result_xml.Set("SetWanSettings/MTU", "1400");			}
+							if (MaximumTransmissionUnit_L2TP == 1)	{	result_xml.Set("SetWanSettings/MTU", "1460");			}
 							else	{	result_xml.Set("SetWanSettings/MTU", document.getElementById("mtu_L2TP_Input").value);	}
 							result_xml.Set("SetWanSettings/ConfigDNS/Primary", document.getElementById("primaryDNSAddress_L2TP").value);
 							result_xml.Set("SetWanSettings/ConfigDNS/Secondary", document.getElementById("secondaryDNSAddress_L2TP").value);
@@ -1756,7 +1756,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 									</select>
 									</div>
 						       </td>
-						       <td><input class="styled-text" type="text" name="mtu_PPTP_Input" size="3" maxlength="5" id="mtu_PPTP_Input" value="1400" style="display: none;"></td>
+						       <td><input class="styled-text" type="text" name="mtu_PPTP_Input" size="3" maxlength="5" id="mtu_PPTP_Input" value="1460" style="display: none;"></td>
 						     </tr>
 					   </tbody>
 					</table>
@@ -1813,7 +1813,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 									</select>
 									</div>
 						       </td>
-						       <td><input class="styled-text" type="text" name="mtu_L2TP_Input" size="3" maxlength="5" id="mtu_L2TP_Input" value="1400" style="display: none;"></td>
+						       <td><input class="styled-text" type="text" name="mtu_L2TP_Input" size="3" maxlength="5" id="mtu_L2TP_Input" value="1460" style="display: none;"></td>
 						     </tr>
 					   </tbody>
 					</table>
@@ -2407,23 +2407,17 @@ if (sessionStorage.getItem('PrivateKey') === null){
 								}
 							
 
-								//serverIPAddress_PPTP,ipAddress_PPTP,gatewayIP_PPTP can't not the same
+								//serverIPAddress_PPTP,ipAddress_PPTP can't not the same
 								if(elem_id=="serverIPAddress_PPTP"){
 									if($('#ipAddress_PPTP_tr').css('display')!="none" && $('#advancedBlock').css('display')!="none"){
-										if($('#serverIPAddress_PPTP').val()==$('#ipAddress_PPTP').val() || $('#serverIPAddress_PPTP').val()==$('#gatewayIP_PPTP').val()){
+										if($('#serverIPAddress_PPTP').val()==$('#ipAddress_PPTP').val()){
 											return I18N("j","IP address cannot be the same.");
 										}
 									}	
 								}
 
 								if(elem_id=="ipAddress_PPTP"){
-									if($('#ipAddress_PPTP').val()==$('#serverIPAddress_PPTP').val() || $('#ipAddress_PPTP').val()==$('#gatewayIP_PPTP').val()){
-										return I18N("j","IP address cannot be the same.");
-									}
-								}
-
-								if(elem_id=="gatewayIP_PPTP"){
-									if($('#gatewayIP_PPTP').val()==$('#serverIPAddress_PPTP').val() || $('#gatewayIP_PPTP').val()==$('#ipAddress_PPTP').val()){
+									if($('#ipAddress_PPTP').val()==$('#serverIPAddress_PPTP').val()){
 										return I18N("j","IP address cannot be the same.");
 									}
 								}
@@ -2633,27 +2627,20 @@ if (sessionStorage.getItem('PrivateKey') === null){
 								}
 
 
-								//serverIPAddress_L2TP, ipAddress_L2TP, gatewayIP_L2TP can't not be the same
+								//serverIPAddress_L2TP, ipAddress_L2TP can't not be the same
 								if(elem_id=="serverIPAddress_L2TP"){
 									if($('#ipAddress_L2TP_tr').css('display')!="none" && $('#advancedBlock').css('display')!="none"){
-										if($('#serverIPAddress_L2TP').val()==$('#ipAddress_L2TP').val() || $('#serverIPAddress_L2TP').val()==$('#gatewayIP_L2TP').val()){
+										if($('#serverIPAddress_L2TP').val()==$('#ipAddress_L2TP').val()){
 											return I18N("j","IP address cannot be the same.");
 										}
 									}	
 								}
 
 								if(elem_id=="ipAddress_L2TP"){
-									if($('#ipAddress_L2TP').val()==$('#serverIPAddress_L2TP').val() || $('#ipAddress_L2TP').val()==$('#gatewayIP_L2TP').val()){
+									if($('#ipAddress_L2TP').val()==$('#serverIPAddress_L2TP').val()){
 										return I18N("j","IP address cannot be the same.");
 									}
 								}
-
-								if(elem_id=="gatewayIP_L2TP"){
-									if($('#gatewayIP_L2TP').val()==$('#serverIPAddress_L2TP').val() || $('#gatewayIP_L2TP').val()==$('#ipAddress_L2TP').val()){
-										return I18N("j","IP address cannot be the same.");
-									}
-								}
-
 
 							}
 							else

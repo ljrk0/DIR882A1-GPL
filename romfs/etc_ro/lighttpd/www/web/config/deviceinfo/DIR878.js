@@ -19,7 +19,7 @@ function DeviceInfo()
 	this.featureUserDevice = true;
 	this.featureTimeMachine = true;
 	this.featureAutoRebootCfg = true;
-	this.featureVlanAdvanced = false;
+	this.featureVlanAdvanced = true;
 	this.featureServiceProvider = true;
 	
 	this.helpVer = "";

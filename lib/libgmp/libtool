@@ -328,7 +328,7 @@ link_all_deplibs=unknown
 sys_lib_search_path_spec="/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/lib /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/lib /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/lib"
 
 # Run-time system search path for libraries
-sys_lib_dlsearch_path_spec="/lib /usr/lib /usr/lib/mysql "
+sys_lib_dlsearch_path_spec="/lib /usr/lib /usr/local/lib /usr/lib/mysql "
 
 # Fix the shell variable $srcfile for the compiler.
 fix_srcfile_path=""

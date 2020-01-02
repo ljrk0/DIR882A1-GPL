@@ -1,3 +1,4 @@
+kernel/arch/mips/ralink/ralink_wdt.ko
 kernel/kernel/configs.ko
 kernel/fs/binfmt_script.ko
 kernel/fs/mbcache.ko

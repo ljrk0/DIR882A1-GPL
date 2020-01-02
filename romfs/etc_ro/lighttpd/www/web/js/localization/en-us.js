@@ -104,7 +104,7 @@
 	"Disconnected": "Disconnected",
 	"DHCP": "Dynamic IP (DHCP)",
 	"Static": "Static IP (Static)",
-	"DHCPPPPoE": "Dynamic IP (PPPoE)",
+	"DHCPPPPoE": "Dynamic PPPoE",
 	"StaticPPPoE": "Static IP (PPPoE)",
 	"DynamicPPTP": "Dynamic IP (PPTP)",
 	"StaticPPTP": "Static IP (PPTP)",

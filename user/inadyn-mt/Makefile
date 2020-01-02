@@ -16,9 +16,9 @@ else ifeq ("$(CONFIG_PRODUCT)", "DIR_1935")
 CFLAGS += -DPRODUCT_DIR1935
 endif
 
-.PHONY: all build
+.PHONY: all build clean
 
-all: init build
+all: clean init build
 
 init:
 	cd $(SRCDIR); \
@@ -31,6 +31,12 @@ init:
 build:
 	cd $(SRCDIR); \
 	make all
+
+
+
+
+
+
 
 romfs:
 	$(ROMFSINST)   $(SRCDIR)/src/inadyn-mt /bin

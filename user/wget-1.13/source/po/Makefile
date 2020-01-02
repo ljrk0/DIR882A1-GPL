@@ -14,7 +14,7 @@
 GETTEXT_MACRO_VERSION = 0.17
 
 PACKAGE = wget
-VERSION = 
+VERSION = 1.13
 PACKAGE_BUGREPORT = bug-wget@gnu.org
 
 SHELL = /bin/sh
@@ -37,29 +37,29 @@ INSTALL_DATA = ${INSTALL} -m 644
 # We use $(mkdir_p).
 # In automake <= 1.9.x, $(mkdir_p) is defined either as "mkdir -p --" or as
 # "$(mkinstalldirs)" or as "$(install_sh) -d". For these automake versions,
-# ${SHELL} /home/xieshijing/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/install-sh does not start with $(SHELL), so we add it.
+# ${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/install-sh does not start with $(SHELL), so we add it.
 # In automake >= 1.10, /bin/mkdir -p is derived from ${MKDIR_P}, which is defined
 # either as "/path/to/mkdir -p" or ".../install-sh -c -d". For these automake
 # versions, $(mkinstalldirs) and $(install_sh) are unused.
-mkinstalldirs = $(SHELL) ${SHELL} /home/xieshijing/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/install-sh -d
-install_sh = $(SHELL) ${SHELL} /home/xieshijing/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/install-sh
+mkinstalldirs = $(SHELL) ${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/install-sh -d
+install_sh = $(SHELL) ${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/user/wget-1.13/source/build-aux/install-sh
 MKDIR_P = /bin/mkdir -p
 mkdir_p = /bin/mkdir -p
 
-GMSGFMT_ = /usr/bin/msgfmt
-GMSGFMT_no = /usr/bin/msgfmt
-GMSGFMT_yes = /usr/bin/msgfmt
+GMSGFMT_ = /usr/local/bin/msgfmt
+GMSGFMT_no = /usr/local/bin/msgfmt
+GMSGFMT_yes = /usr/local/bin/msgfmt
 GMSGFMT = $(GMSGFMT_$(USE_MSGCTXT))
-MSGFMT_ = /usr/bin/msgfmt
-MSGFMT_no = /usr/bin/msgfmt
-MSGFMT_yes = /usr/bin/msgfmt
+MSGFMT_ = /usr/local/bin/msgfmt
+MSGFMT_no = /usr/local/bin/msgfmt
+MSGFMT_yes = /usr/local/bin/msgfmt
 MSGFMT = $(MSGFMT_$(USE_MSGCTXT))
-XGETTEXT_ = /usr/bin/xgettext
-XGETTEXT_no = /usr/bin/xgettext
-XGETTEXT_yes = /usr/bin/xgettext
+XGETTEXT_ = /usr/local/bin/xgettext
+XGETTEXT_no = /usr/local/bin/xgettext
+XGETTEXT_yes = /usr/local/bin/xgettext
 XGETTEXT = $(XGETTEXT_$(USE_MSGCTXT))
 MSGMERGE = msgmerge
-MSGMERGE_UPDATE = /usr/bin/msgmerge --update
+MSGMERGE_UPDATE = /usr/local/bin/msgmerge --update
 MSGINIT = msginit
 MSGCONV = msgconv
 MSGFILTER = msgfilter
@@ -240,7 +240,7 @@ $(DOMAIN).pot-update: $(POTFILES) $(srcdir)/POTFILES.in remove-potcdate.sed
 	      --files-from=$(srcdir)/POTFILES.in \
 	      --copyright-holder='$(COPYRIGHT_HOLDER)' \
 	      --package-name="$${package_gnu}wget" \
-	      --package-version='' \
+	      --package-version='1.13' \
 	      --msgid-bugs-address="$$msgid_bugs_address" \
 	    ;; \
 	esac

@@ -133,8 +133,8 @@
             },
             "Singnet": {
                 "Internet": [10, 0],
-                "IPTV": [20, 0],
-                "VoIP": [30, 0]               
+                "IPTV": [20, 4],
+                "VoIP": [30, 1]               
             },
             "Time": {
                 "Internet": [0, 0],
@@ -165,6 +165,9 @@
             }
         }
         $("#ServiceProvider").change(function(){
+        	presetCheckBox("enablePriority", true);
+            $("#vlan_setting .pid").show();
+            
             var internetVlanId = $("#internetVlanId");
             var internet_pid = $("#internet_pid");
             var iptvVlanId = $("#iptvVlanId");
@@ -196,6 +199,14 @@
                     internet_pid.selectbox('attach');
                     iptv_pid.selectbox('attach');
                     voip_pid.selectbox('attach');                 
+                }
+            }
+
+            if(CountryCode.indexOf("SG") >= 0) {
+                if( $("#ServiceProvider").val() == 'TM Unifi') {
+                    $('#lan_port4').val('IPTV');
+                } else {
+                    $('#lan_port4').val('Internet');
                 }
             }
 
@@ -273,14 +284,53 @@
                     $('#' + interfaceSelect_List[i]).val('Internet');
                 }
                 $('#' + interfaceSelect_List[i]).selectbox('attach');
-            }
-        } else {
+            }                      
+        } else if(internetVlanId.val() != '0' && iptvVlanId.val() == '0' && voipVlanId.val() == '0') {
             for(var i in interfaceSelect_List) {
                 $('#' + interfaceSelect_List[i]).selectbox('detach');
                 $('#' + interfaceSelect_List[i] + ' > option[value="Bridge"]').show();
                 $('#' + interfaceSelect_List[i] + ' > option[value="Internet"]').show();
+                $('#' + interfaceSelect_List[i] + ' > option[value="IPTV"]').hide();
+                $('#' + interfaceSelect_List[i] + ' > option[value="VOIP"]').hide();
+                if($('#' + interfaceSelect_List[i]).val() == 'IPTV' || $('#' + interfaceSelect_List[i]).val() == 'VOIP') {
+                    $('#' + interfaceSelect_List[i]).val('Internet');
+                }
+                $('#' + interfaceSelect_List[i]).selectbox('attach');
+            }
+        } else if(internetVlanId.val() != '0' && iptvVlanId.val() == '0' && voipVlanId.val() != '0') {
+            for(var i in interfaceSelect_List) {
+                $('#' + interfaceSelect_List[i]).selectbox('detach');
+                $('#' + interfaceSelect_List[i] + ' > option[value="Bridge"]').hide();
+                $('#' + interfaceSelect_List[i] + ' > option[value="Internet"]').show();
                 $('#' + interfaceSelect_List[i] + ' > option[value="IPTV"]').show();
                 $('#' + interfaceSelect_List[i] + ' > option[value="VOIP"]').show();
+                if($('#' + interfaceSelect_List[i]).val() == 'Bridge') {
+                    $('#' + interfaceSelect_List[i]).val('Internet');
+                }
+                $('#' + interfaceSelect_List[i]).selectbox('attach');
+            }
+        } else if(internetVlanId.val() != '0' && iptvVlanId.val() != '0' && voipVlanId.val() == '0') {
+            for(var i in interfaceSelect_List) {
+                $('#' + interfaceSelect_List[i]).selectbox('detach');
+                $('#' + interfaceSelect_List[i] + ' > option[value="Bridge"]').hide();
+                $('#' + interfaceSelect_List[i] + ' > option[value="Internet"]').show();
+                $('#' + interfaceSelect_List[i] + ' > option[value="IPTV"]').show();
+                $('#' + interfaceSelect_List[i] + ' > option[value="VOIP"]').show();
+                if($('#' + interfaceSelect_List[i]).val() == 'Bridge') {
+                    $('#' + interfaceSelect_List[i]).val('Internet');
+                }
+                $('#' + interfaceSelect_List[i]).selectbox('attach');
+            }
+        } else {
+            for(var i in interfaceSelect_List) {
+                $('#' + interfaceSelect_List[i]).selectbox('detach');
+                $('#' + interfaceSelect_List[i] + ' > option[value="Bridge"]').hide();
+                $('#' + interfaceSelect_List[i] + ' > option[value="Internet"]').show();
+                $('#' + interfaceSelect_List[i] + ' > option[value="IPTV"]').show();
+                $('#' + interfaceSelect_List[i] + ' > option[value="VOIP"]').show();
+                if($('#' + interfaceSelect_List[i]).val() == 'Bridge') {
+                    $('#' + interfaceSelect_List[i]).val('Internet');
+                }                
                 $('#' + interfaceSelect_List[i]).selectbox('attach');
             }       
         }

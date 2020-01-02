@@ -1,3 +1,14 @@
+function SOAPGetFirmwareSettingsResponse()
+{
+	this.VendorName = "";
+	this.ModelName = "";
+	this.ModelRevision = "";
+	this.FirmwareVersion = "";
+	this.FirmwareDate = "";
+//	this.UpdateMethods = "";
+};
+
+
 /**
  * @constructor
  */
@@ -60,3 +71,11 @@ function SOAPGetFirmwareValidationResponse()
 	this.CountDown = "";
 };
 
+/**
+ * @constructor
+ */
+function SOAPGetConfigFileValidationResponse()
+{
+	this.IsValid = false;
+	this.CountDown = "";
+};

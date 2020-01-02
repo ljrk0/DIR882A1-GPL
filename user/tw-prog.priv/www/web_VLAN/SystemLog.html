@@ -403,7 +403,7 @@ $(document).ready(function(){
 		changeTimeoutAction();
 		
 		$.ajax({
-		      url : "dllog.cgi",
+		      url : "HNAP1/dllog.cgi",
 		      type : "post",  
 		      success : function(data) {
 			  window.location = "/messages";
@@ -461,7 +461,7 @@ $(document).ready(function(){
 						<tr>
 							<th><script>I18N("h", "System Log");</script>:</th>
 							<td width="200px">
-							<form id="dllogbin" action="dllog.cgi" method="post">
+							<form id="dllogbin" action="/HNAP1/dllog.cgi" method="post">
 			   				<div class="file-box">
 							<button type="button" class="styled_button_s" style="min-width:200px;" onclick="document.forms['dllogbin'].submit(); changeTimeoutAction();" ><script>I18N("h", "Check System Log");</script></button>
 							</div>
