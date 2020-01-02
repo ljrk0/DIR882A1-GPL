@@ -27,6 +27,7 @@ function SOAPRadioInfo()
 	this.RadioID = "";
 	this.Frequency = 2;
 	this.SupportedModes = new Array();
+	this.CountryCode = "";
 	this.Channels = new Array();
 	this.SupportedSecurity = $.makeArray(supportedSecurity);
 } 

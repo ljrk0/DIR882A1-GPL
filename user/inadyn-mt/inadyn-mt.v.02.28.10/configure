@@ -17,7 +17,6 @@
 ## -------------------- ##
 
 # Be more Bourne compatible
-autoreconf -i
 DUALCASE=1; export DUALCASE # for MKS sh
 if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then :
   emulate sh
@@ -5829,7 +5828,6 @@ cat >>$CONFIG_STATUS <<\_ASEOF || as_write_fail=1
 ## -------------------- ##
 
 # Be more Bourne compatible
-autoreconf -i
 DUALCASE=1; export DUALCASE # for MKS sh
 if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then :
   emulate sh

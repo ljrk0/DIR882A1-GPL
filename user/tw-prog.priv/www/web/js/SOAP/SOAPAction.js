@@ -96,8 +96,13 @@ SOAPAction.prototype.parseHNAP = function(soapAction, xml, output)
 							var tag = $(this);
 							var newObj = {};
 						
-							$.extend(true, newObj, outputObj[obj][0]);
-						
+							//$.extend(true, newObj, outputObj[obj][0]);
+							//0 < outputObj[obj].length && (newObj = outputObj[obj].slice(0, 1), newObj = JSON.parse(JSON.stringify(newObj[0])));
+							if(outputObj[obj].length > 0) {
+								newObj = outputObj[obj].slice(0, 1);
+								newObj = JSON.parse(JSON.stringify(newObj[0]))	
+							}
+							
 							newObj = xml2Object(newObj, tag);
 					
 							if(outputObj[obj].length == 0)

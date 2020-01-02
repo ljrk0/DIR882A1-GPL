@@ -277,6 +277,7 @@ SendSSDPAnnounce2(int s, const struct sockaddr * addr,
 	char buf[512];
 	char addr_str[64];
 	socklen_t addrlen;
+	int ss = -1;
 #ifdef ENABLE_WSC_SERVICE
 	if (port == WPS_PORT)
 	{
@@ -348,7 +349,15 @@ SendSSDPAnnounce2(int s, const struct sockaddr * addr,
 		upnp_bootid, upnp_bootid, upnp_configid);
 	addrlen = (addr->sa_family == AF_INET6)
 	          ? sizeof(struct sockaddr_in6) : sizeof(struct sockaddr_in);
-	n = sendto(s, buf, l, 0,
+
+	if( (ss = socket((addr->sa_family == AF_INET6) ? PF_INET6 : PF_INET, SOCK_DGRAM, 0)) < 0)
+	{
+		syslog(LOG_ERR, "%s: socket(udp): %m",
+		       "OpenAndConfSSDPReceiveSocket");
+		return -1;
+	}
+	
+	n = sendto(ss, buf, l, 0,
 	           addr, addrlen);
 	sockaddr_to_string(addr, addr_str, sizeof(addr_str));
 	syslog(LOG_INFO, "SSDP Announce %d bytes to %s ST: %.*s",n,
@@ -359,6 +368,7 @@ SendSSDPAnnounce2(int s, const struct sockaddr * addr,
 		/* XXX handle EINTR, EAGAIN, EWOULDBLOCK */
 		syslog(LOG_ERR, "sendto(udp): %m");
 	}
+	close(ss);
 }
 }
 

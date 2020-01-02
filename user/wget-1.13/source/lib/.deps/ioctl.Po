@@ -1,0 +1,38 @@
+ioctl.o: ioctl.c ../src/config.h sys/ioctl.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/ioctl.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/features.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_config.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/cdefs.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/ioctls.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/ioctls.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/ioctl.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm-generic/ioctl.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/ioctl-types.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/ttydefaults.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdarg.h
+
+../src/config.h:
+
+sys/ioctl.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/ioctl.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/features.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_config.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/cdefs.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/ioctls.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/ioctls.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/ioctl.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm-generic/ioctl.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/ioctl-types.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/ttydefaults.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdarg.h:

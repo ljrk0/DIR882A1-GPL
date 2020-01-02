@@ -932,5 +932,6 @@
 	"Device" : "设备",
 	"Export VPN Profile (iOS/Mac OS X)" : "Export VPN Profile (iOS/Mac OS X)",
 	"Time Machine" : "Time Machine",
-	"Select Volume" : "Select Volume"
+	"Select Volume" : "Select Volume",
+	"DFS enables you to use more channels to help find one with the least interference. \n\nHowever, please note that when using DFS, the router must scan for radar signals for a minute before using a channel, and will change channels automatically if radar signals are detected.": "DFS为降低干扰，使用了更多的通道，在使用 DFS时请注意，在检测到信息以前，路由每分钟会切换一次通道"
 }

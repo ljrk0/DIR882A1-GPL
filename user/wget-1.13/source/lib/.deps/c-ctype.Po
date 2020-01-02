@@ -1,0 +1,8 @@
+c-ctype.o: c-ctype.c ../src/config.h c-ctype.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdbool.h
+
+../src/config.h:
+
+c-ctype.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdbool.h:

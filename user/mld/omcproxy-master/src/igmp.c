@@ -71,7 +71,7 @@ void igmp_handle(struct mrib_querier *mrib, const struct igmphdr *igmp, size_t l
 	char addrbuf[INET_ADDRSTRLEN];
 	struct in6_addr group;
 
-	if (enable_flag & 0x1 == 0)
+	if ((enable_flag & 0x1) == 0)
 		return;
 
 	querier_map(&group, igmp->group);

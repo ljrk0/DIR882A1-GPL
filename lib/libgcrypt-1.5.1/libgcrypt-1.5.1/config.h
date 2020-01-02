@@ -16,7 +16,7 @@
 #define BUILD_REVISION "d2f2f90"
 
 /* The time this package was configured for a build */
-#define BUILD_TIMESTAMP "2017-10-11T03:55+0000"
+#define BUILD_TIMESTAMP "2018-07-03T09:01+0000"
 
 /* configure did not test for endianess */
 /* #undef DISABLED_ENDIAN_CHECK */

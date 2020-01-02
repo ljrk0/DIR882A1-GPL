@@ -167,7 +167,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 			case "REBOOT":
 				HNAP.GetXMLAsync("Reboot", null, "GetXML", function(xml)	{	SetResult_3th(xml)	});
 				break;
-			case "WAIT":
+			case "RESTART":
 				_ReciprocalNumber = 30;
 				Start_reciprocal_Number_RestoreConfiguration();
 				break;

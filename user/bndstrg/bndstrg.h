@@ -33,9 +33,13 @@
 #include <unistd.h>
 #include <time.h>
 
-
+#if defined(PRODUCT_DIR853_A1) ||defined(PRODUCT_DIR853_A2)||defined(PRODUCT_DIR1360)
+#define IFNAME_5G "ra0"
+#define IFNAME_2G "rax0"
+#else
 #define IFNAME_2G "ra0"
 #define IFNAME_5G "rai0"
+#endif
 
 #define HASH_TABLE_SIZE                 256
 #define MAC_ADDR_LEN				6

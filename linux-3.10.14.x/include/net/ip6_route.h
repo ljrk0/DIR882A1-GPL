@@ -88,6 +88,9 @@ extern int			ipv6_route_ioctl(struct net *net,
 						 void __user *arg);
 
 extern int			ip6_route_add(struct fib6_config *cfg);
+#ifdef CONFIG_IPV6_CE_ROUTER_TEST_DEBUG
+extern int			ip6_route_del_extern(struct fib6_config *cfg);
+#endif
 extern int			ip6_ins_rt(struct rt6_info *);
 extern int			ip6_del_rt(struct rt6_info *);
 

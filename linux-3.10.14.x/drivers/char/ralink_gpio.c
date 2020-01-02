@@ -2536,7 +2536,11 @@ int __init ralink_gpio_init(void)
 
 #ifdef CONFIG_RALINK_GPIO_LED
 	ralink_gpio_led_init_timer();
+#if defined (RALINK_GPIO_DIR_853)
+	led.gpio = 13;
+#else
 	led.gpio = 8;
+#endif
 	led.on = 4000;
 	led.off = 0;
 	led.blinks = 1;
@@ -2544,7 +2548,7 @@ int __init ralink_gpio_init(void)
 	led.times = 4000;
 	ralink_gpio_led_set(led);
 #endif
-	printk("Ralink gpio driver initialized\n");
+	printk("Ralink gpio driver initialized:power_gpio[%d]\n", led.gpio);
 	return 0;
 }
 

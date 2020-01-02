@@ -1648,6 +1648,100 @@ clear_iaconf(ialist)
 }
 
 extern int release_segment_prefix(struct pd_conf *pd , struct dhcp6_prefix *segment_prefix);
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+/*
+  * IPv6 CE-Router Test Debug:
+  * 1. The way of 'Host_conf' reference to the 'pd_conf' has changed.
+  * 2. So modify some codes Correspondingly.
+  * 2018-01-20 --liushenghui
+*/
+static void clear_hostconf(hlist)
+	struct host_conf *hlist;
+{
+	struct host_conf *host, *host_next;
+	struct dhcp6_listval *v;
+	struct pd_conf * pd = NULL;
+
+	for (host = hlist; host; host = host_next) {
+		host_next = host->next;
+
+		free(host->name);
+
+		//release segment in pd when we kill the host config (tom, 20101119)
+		if(host->pd_conf_name)
+		{
+			pd = find_pdconf(host->pd_conf_name);
+			if (pd)
+			{
+				TAILQ_FOREACH(v , &host->prefix_list , link)
+				{
+					if(v->type == DHCP6_LISTVAL_PREFIX6)
+						release_segment_prefix(pd , &v->val_prefix6);
+				}
+			}
+
+			free(host->pd_conf_name);
+		}
+
+		dhcp6_clear_list(&host->prefix_list);
+		dhcp6_clear_list(&host->addr_list);
+
+		if (host->duid.duid_id)
+			free(host->duid.duid_id);
+
+		if (host->pool.name)
+			free(host->pool.name);
+
+		free(host);
+	}
+}
+
+//this function will be called before program terminated
+int remove_all_gateway_rules()
+{
+	struct host_conf *host;
+	struct dynamic_hostconf *dynconf = NULL;
+	struct dhcp6_listval *v;
+	struct pd_conf * pd = NULL;
+
+	for(host = host_conflist; host; host = host->next)
+	{
+		if(host->pd_conf_name)
+		{
+			pd = find_pdconf(host->pd_conf_name);
+			if (pd)
+			{
+				TAILQ_FOREACH(v , &host->prefix_list , link)
+				{
+					if(v->type == DHCP6_LISTVAL_PREFIX6)
+						release_segment_prefix(pd , &v->val_prefix6);
+				}
+			}
+		}
+	}
+
+	TAILQ_FOREACH(dynconf, &dynamic_hostconf_head, link) 
+	{
+		if(dynconf->host->pd_conf_name)
+		{
+			pd = find_pdconf(dynconf->host->pd_conf_name);
+			if (pd)
+			{
+				TAILQ_FOREACH(v , &dynconf->host->prefix_list , link)
+				{
+					if(v->type == DHCP6_LISTVAL_PREFIX6)
+						release_segment_prefix(pd , &v->val_prefix6);
+				}
+			}
+		}
+	}
+
+	return 0;
+}
+
+#else
+
 static void clear_hostconf(hlist)
 	struct host_conf *hlist;
 {
@@ -1715,6 +1809,8 @@ int remove_all_gateway_rules()
 
 	return 0;
 }
+
+#endif
 
 static void
 clear_pdconf(hlist)
@@ -2077,6 +2173,36 @@ find_hostconf(duid)
 
 	return (NULL);
 }
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+
+const struct host_conf *
+find_static_hostconf(const struct duid * pDuid)
+{
+	const struct host_conf * pHost = NULL;
+
+	if (!pDuid || !pDuid->duid_id || pDuid->duid_len <= 0) {
+		dprintf(LOG_ERR, FNAME, "Invalid parameter!");
+		return (NULL);
+	}
+
+	for (pHost = host_conflist ; pHost ; pHost = pHost->next) {
+		if (!pHost->duid.duid_id || pHost->duid.duid_len <= 0) {
+			continue;
+		}
+
+		if (pHost->duid.duid_len == pDuid->duid_len &&
+			0 == memcmp(pHost->duid.duid_id, pDuid->duid_id,
+				pHost->duid.duid_len)
+		) {
+			return pHost;
+		}
+	}
+
+	return (NULL);
+}
+
+#endif
 
 //rbj, add for manual pd pool
 static int
@@ -2528,6 +2654,31 @@ is_available_in_pool(pool, addr)
 
 	return (0);
 }
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+
+int
+is_address_in_pool(struct pool_conf * pPool,
+					struct in6_addr * pAddr)
+{
+	if (!pAddr || !pPool) {
+		dprintf(LOG_ERR, FNAME, "Null pointer parameter!");
+		return -1;
+	}
+
+	if (in6_addr_cmp(pAddr, &pPool->min) >= 0 &&
+		in6_addr_cmp(pAddr, &pPool->max) <= 0 &&
+		!IN6_IS_ADDR_MULTICAST(pAddr) &&
+		!IN6_IS_ADDR_LINKLOCAL(pAddr) &&
+		!IN6_IS_ADDR_SITELOCAL(pAddr)) {
+
+		return 1;
+	}
+
+	return 0;
+}
+
+#endif
 
 static int 
 in6_addr_cmp(addr1, addr2)

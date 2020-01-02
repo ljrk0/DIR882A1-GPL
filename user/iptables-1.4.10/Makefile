@@ -381,6 +381,11 @@ v4_bin_links = iptables-xml
 v4_sbin_links = iptables iptables-restore iptables-save
 v6_sbin_links = ip6tables ip6tables-restore ip6tables-save
 pkgconfig_DATA = libiptc.pc xtables.pc
+
+ifeq ($(CONFIG_IPV6_CE_ROUTER_TEST_DEBUG), y)
+	CC += -D__CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+endif
+
 all:
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 

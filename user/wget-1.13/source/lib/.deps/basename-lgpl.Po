@@ -1,0 +1,28 @@
+basename-lgpl.o: basename-lgpl.c ../src/config.h dirname.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdbool.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
+ dosname.h string.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/string.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/features.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_config.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/cdefs.h
+
+../src/config.h:
+
+dirname.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdbool.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h:
+
+dosname.h:
+
+string.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/string.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/features.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_config.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/cdefs.h:

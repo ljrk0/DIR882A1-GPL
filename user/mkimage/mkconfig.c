@@ -12,6 +12,8 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "../../linux-3.10.14.x/include/linux/autoconf.h"
+
 #if defined(__BEOS__) || defined(__NetBSD__) || defined(__APPLE__)
 #include <inttypes.h>
 #endif
@@ -35,6 +37,14 @@ typedef		unsigned int	uint32_t;
 
 #ifndef	O_BINARY		/* should be define'd on __WIN32__ */
 #define O_BINARY	0
+#endif
+
+#define DATA_HEAR_LEN 0x2000
+#define DATA_RTDEV_LEN 0x2000
+#ifdef CONFIG_ADJUST_CONFIG_PARTITION 
+#define DATA_2860_LEN 0x8000
+#else
+#define DATA_2860_LEN 0x4000
 #endif
 
 #include <image.h>
@@ -112,7 +122,7 @@ NXTARG:		;
 		exit (EXIT_FAILURE);
 	}
 	
-	for(j = 0; j < 0x2000; j++)
+	for(j = 0; j < DATA_HEAR_LEN; j++)
 	{
 		if(1 != write(ifd_out, (char *)&def_ff, 1))
 		{
@@ -252,7 +262,7 @@ NXTARG:		;
 
 		if(2 == i)
 		{
-			for(j = 0; j < 0x4000-ui_len; j++)
+			for(j = 0; j < DATA_2860_LEN-ui_len; j++)
 			{
 				if(1 != write(ifd_tmp_out, (char *)&zero, 1))
 				{
@@ -272,7 +282,7 @@ NXTARG:		;
 		}
 		else
 		{
-			for(j = 0; j < 0x2000-ui_len; j++)
+			for(j = 0; j < DATA_RTDEV_LEN-ui_len; j++)
 			{
 				if(1 != write(ifd_tmp_out, (char *)&zero, 1))
 				{
@@ -352,7 +362,7 @@ NXTARG:		;
 
 	}while(--i);
 
-	for(j = 0; j < 0x8000; j++)
+	for(j = 0; j < 0xFFFF-DATA_HEAR_LEN-DATA_2860_LEN-DATA_RTDEV_LEN; j++)
 	{
 		if(1 != write(ifd_out, (char *)&zero, 1))
 		{

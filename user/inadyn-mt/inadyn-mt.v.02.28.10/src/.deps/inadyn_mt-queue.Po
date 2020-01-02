@@ -1,0 +1,134 @@
+inadyn_mt-queue.o: queue.c \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/stdlib.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/features.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/types.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/types.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/typesizes.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/pthreadtypes.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sched.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/time.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/endian.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/endian.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/byteswap.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap-common.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/select.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/select.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigset.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/time.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/sysmacros.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/alloca.h \
+ queue.h list.h threads_wrapper.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/pthread.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/sched.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_clk_tck.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/signal.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/initspin.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigthread.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/signum.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/siginfo.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigaction.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigcontext.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/sgidefs.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigstack.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/semaphore.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/errno.h \
+ /home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/errno.h \
+ /home/xieshijing/trunk/source/lib/include/linux/errno.h \
+ /home/xieshijing/trunk/source/lib/include/asm/errno.h \
+ /home/xieshijing/trunk/source/lib/include/asm-generic/errno-base.h \
+ safe_mem.h
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/stdlib.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/features.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/types.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/types.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/typesizes.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/pthreadtypes.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sched.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/time.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/endian.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/endian.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/byteswap.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap-common.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/select.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/select.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigset.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/time.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/sysmacros.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/alloca.h:
+
+queue.h:
+
+list.h:
+
+threads_wrapper.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/pthread.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/sched.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_clk_tck.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/signal.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/initspin.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigthread.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/signum.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/siginfo.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigaction.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigcontext.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/sgidefs.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigstack.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/semaphore.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/errno.h:
+
+/home/xieshijing/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/errno.h:
+
+/home/xieshijing/trunk/source/lib/include/linux/errno.h:
+
+/home/xieshijing/trunk/source/lib/include/asm/errno.h:
+
+/home/xieshijing/trunk/source/lib/include/asm-generic/errno-base.h:
+
+safe_mem.h:

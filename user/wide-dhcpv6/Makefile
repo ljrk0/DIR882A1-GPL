@@ -50,6 +50,17 @@ LIBOBJS += ifaddrs.o common.o if.o config.o timer.o lease.o base64.o auth.o dhcp
 
 APPLET=	dhcp6-multi #dhcp6c dhcp6s dhcp6relay dhcp6ctl
 
+#
+# IPv6 CE-Router Test Debug:
+# 1. Add the tool of informing that 'wide-dhcpv6' update the configuration.
+# 2. Add handling code of address and prefix update.
+# 2018-01-20 --liushenghui
+#
+ifeq ($(CONFIG_IPV6_CE_ROUTER_TEST_DEBUG), y)
+	CFLAGS += -D__CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	APPLET += dhcp6ctl
+endif
+
 INSTALL=/usr/bin/install -c
 INSTALL_PROGRAM=${INSTALL}
 INSTALL_DATA=${INSTALL} -m 644
@@ -82,7 +93,11 @@ dhcp6s:	$(SERVOBJS) $(LIBOBJS)
 dhcp6relay: $(RELAYOBJS) $(LIBOBJS)
 	$(CC) $(LDFLAGS) -o $@ $(RELAYOBJS) $(LIBOBJS) $(LIBS)
 dhcp6ctl: $(CTLOBJS)
+ifeq ($(CONFIG_IPV6_CE_ROUTER_TEST_DEBUG), y)
+	$(CC) $(LDFLAGS) -o $@ $(CTLOBJS) $(LIBS)
+else
 	$(CC) $(LDFLAGS) -o $@ $(CTLOBJS) $(LIBOBJS) $(LIBS)
+endif
 
 prompt:
 	@echo -e "\033[32mCompiling WIDE-DHCPV6 ...\033[0m"
@@ -123,6 +138,9 @@ romfs:
 	$(INSTALL) $(EXE) $(USRSBINDIR)
 #	ln -s -f dhcp6-multi $(INSTALLDIR)/wide-dhcpv6/usr/sbin/dhcp6c
 	ln -s -f $(EXE) $(USRSBINDIR)/dhcp6s
+ifeq ($(CONFIG_IPV6_CE_ROUTER_TEST_DEBUG), y)
+	$(INSTALL) dhcp6ctl $(USRSBINDIR)
+endif
 	  
 #install::
 #	-mkdir -p $(sbindir) $(mandir)/man5 $(mandir)/man8

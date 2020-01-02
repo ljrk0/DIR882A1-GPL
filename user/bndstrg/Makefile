@@ -15,7 +15,14 @@ ifeq ($(PLATFORM),mipsel)
 CROSS_COMPILE = mipsel-linux-
 endif
 
-CFLAGS += -O2 -Wall -g -lrt -I$(NVDIR)
+CFLAGS += -O2 -Wall -g -lrt -I$(NVDIR) -DNVRAM_LIB_SUPPORT
+ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A2")
+CFLAGS += -DPRODUCT_DIR853_A2
+else ifeq ("$(CONFIG_PRODUCT)", "DIR_1360")
+CFLAGS += -DPRODUCT_DIR1360
+else ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A1")
+CFLAGS += -DPRODUCT_DIR853_A1
+endif
 CC = $(CROSS_COMPILE)gcc
 
 BNDSTRG_OBJS = driver_wext.o eloop.o os_internal.o main.o util.o debug.o netlink.o

@@ -256,7 +256,18 @@ struct host_conf {
 
 	// PD information block (tom, 20101119)
 	// if we allocate prefix from PD block, this will not be null
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	/*
+	  * IPv6 CE-Router Test Debug:
+	  * 1. The configuration area is dynamically assigned and will be
+	  *   redistributed when configuring updates.
+	  * 2. So we can not directly reference the  address of configuration area.
+	  * 2018-01-20 --liushenghui
+	*/
+	char * pd_conf_name;
+#else
 	struct pd_conf *pd;
+#endif
 
 	/* address to be assigned for the host */
 	struct dhcp6_list addr_list;
@@ -360,6 +371,14 @@ extern struct dhcp6_if *find_ifconfbyname __P((char *));
 extern struct dhcp6_if *find_ifconfbyid __P((unsigned int));
 extern struct prefix_ifconf *find_prefixifconf __P((char *));
 extern struct host_conf *find_hostconf __P((struct duid *));
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+
+extern const struct host_conf *find_static_hostconf __P((const struct duid *));
+extern int is_address_in_pool __P((struct pool_conf *, struct in6_addr *));
+
+#endif
+
 extern int find_hostconf_noduid __P((struct dhcp6_if *, struct host_conf *, struct duid *, struct sockaddr *, struct dhcp6_list *, int));//add for manual pd pool
 extern struct pd_conf *find_pdconf __P((char *));
 extern struct authinfo *find_authinfo __P((struct authinfo *, char *));

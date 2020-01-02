@@ -20,9 +20,9 @@
 //#define __INTERNAL_USE_AHB_MODE__ 	(0)
 #define SKIP_BAD_BLOCK
 #define FACT_BBT
-#if defined(CONFIG_SUPPORT_OPENWRT)
+//#if defined(CONFIG_SUPPORT_OPENWRT)
 #define NAND_JFFS2_WORKAROUND
-#endif /* CONFIG_SUPPORT_OPENWRT */
+//#endif /* CONFIG_SUPPORT_OPENWRT */
 //#define UBIFS_ECC_0_PATCH
 
 #ifdef FACT_BBT

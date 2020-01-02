@@ -17,6 +17,10 @@
 <script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAction.js"></script>
 <script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPSchedule.js"></script>
 
+<script type="text/javascript" charset="utf-8" src="/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/firmware.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.client.js"></script>
+
 <script type="text/javascript">
 //xframeoption
 if(top!=self){top.location=self.location;}
@@ -142,11 +146,91 @@ if (sessionStorage.getItem('PrivateKey') === null){
 		document.getElementById("CreatePopAlertMessage").style.display = "inline";
 		document.getElementById("RCFCheck").style.display = "block";
 	}
-	function Device_RFC()
+	function Device_RFC(file)
 	{
 		stopTimeout();
-		document.forms["ulcfgbin"].submit();
+		//document.forms["ulcfgbin"].submit();
+		document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		document.getElementById("RCF").style.display = "inline";
+		document.getElementById("RCFCheck").style.display = "none";
+		document.getElementById("FailedRCF").style.display = "none";
+		document.getElementById("SuccessRCF").style.display = "none";
+		document.getElementById("REBOOTCheck").style.display = "none";
+		document.getElementById("REBOOT").style.display = "none";
+		document.getElementById("SuccessREBOOT").style.display = "none";
+		document.getElementById("FACTORYDEFAULTCheck").style.display = "none";
+		document.getElementById("FACTORYDEFAULT").style.display = "none";
+		document.getElementById("SuccessFACTORYDEFAULT").style.display = "none";
+		document.getElementById("saveRebootScheduleMsg").style.display = "none";
+
+		upgradeFirmware(file);
 	}
+
+
+
+/*new*/
+    function upgradeFirmware(file) {
+        uploadFile("ConfigFileUpload", "FWFile", file).done(function() {
+            do_upgrade();
+        }).fail(function() {
+            //$("#CompleteMessage").html(I18N("j", "Firmware Upgrade failed!"));
+            //ShowPopupMsg('Fail');
+        
+		document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		document.getElementById("RCF").style.display = "none";
+		document.getElementById("RCFCheck").style.display = "none";
+		document.getElementById("FailedRCF").style.display = "block";
+		document.getElementById("SuccessRCF").style.display = "none";
+		document.getElementById("REBOOTCheck").style.display = "none";
+		document.getElementById("REBOOT").style.display = "none";
+		document.getElementById("SuccessREBOOT").style.display = "none";
+		document.getElementById("FACTORYDEFAULTCheck").style.display = "none";
+		document.getElementById("FACTORYDEFAULT").style.display = "none";
+		document.getElementById("SuccessFACTORYDEFAULT").style.display = "none";
+		document.getElementById("saveRebootScheduleMsg").style.display = "none";
+        });
+    }
+
+    function do_upgrade() {
+        //ShowPopupMsg('Upload');
+        GetConfigFileValidation().done(function(countdown) {
+            //totalTime = countdown;
+            //countTime = 0;
+
+            //spinnerObj = CreateSpinnerObj("SpinnerSection", opts);
+            //ShowPopupMsg("Process");
+
+            //reboot_id = setInterval('StartRebootCountDown()', 1000);
+			_ReciprocalNumber = new Number(countdown);
+			//percent_ReciprocalNumber = parseFloat(_ReciprocalNumber / 100);
+
+
+			Start_reciprocal_Number_RestoreConfiguration();			          
+        }).fail(function() {
+            //$("#CompleteMessage").html(I18N("j", "Firmware Upgrade failed!"));
+            //ShowPopupMsg('Fail');
+
+			document.getElementById("CreatePopAlertMessage").style.display = "inline";
+			document.getElementById("RCF").style.display = "none";
+			document.getElementById("RCFCheck").style.display = "none";
+			document.getElementById("FailedRCF").style.display = "block";
+			document.getElementById("SuccessRCF").style.display = "none";
+			document.getElementById("REBOOTCheck").style.display = "none";
+			document.getElementById("REBOOT").style.display = "none";
+			document.getElementById("SuccessREBOOT").style.display = "none";
+			document.getElementById("FACTORYDEFAULTCheck").style.display = "none";
+			document.getElementById("FACTORYDEFAULT").style.display = "none";
+			document.getElementById("SuccessFACTORYDEFAULT").style.display = "none";
+			document.getElementById("saveRebootScheduleMsg").style.display = "none";
+
+        });
+    }
+/*new*/
+
+
+
+
+
 	function Start_reciprocal_Number_RestoreConfiguration()
 	{
 		if (_ReciprocalNumber >= 0)
@@ -338,6 +422,32 @@ if (sessionStorage.getItem('PrivateKey') === null){
 			setTimeout("returnToMain2()", 1000);
 		});
 	}
+
+
+
+$(function(){
+    $('#select_Folder').on('change', function(evt) {
+        var file = prepareUpload(evt);
+        ShowUpgradeBtn(file);
+        //console.log(file)
+    });
+
+
+
+    function ShowUpgradeBtn(file) {
+        $("#upload_File").text(file.name);
+        document.getElementById("upload_File_Button").style.display = "table-row";
+        $("#popMessage_button_upload").off('click').on("click", function() {
+        	//console.log("test")
+            stopTimeout();
+            Device_RFC(file);
+        });
+    }
+
+});
+
+
+
 	
 </script>
 </head>
@@ -385,7 +495,8 @@ if (sessionStorage.getItem('PrivateKey') === null){
 							<table class="popMessage_button_table">
 								 <tr>
 									 <td>
-									 	<div class="popMessage_button" onclick="Device_RFC()"><script>I18N("h", "OK");</script></div>
+									 	<div id="popMessage_button_upload" class="popMessage_button"><script>I18N("h", "OK");</script></div>
+									 	<!--onclick="Device_RFC()"-->
 									 </td>
 									 <td>
 									 	<div class="popMessage_button" onclick="returnToMain()"><script>I18N("h", "Cancel");</script></div>
@@ -584,20 +695,21 @@ if (sessionStorage.getItem('PrivateKey') === null){
 				 <tr>
 				   	<th><script>I18N("h", "Save Settings To Local Hard Drive");</script>:</th>
 				   	<td width="200px">
-			   		<form id="dlcfgbin" action="/HNAP1/prog.fcgi?method=/HNAP1/GetDownLoadCfg" method="post">
+			   		<form id="dlcfgbin" action="/HNAP1/dlcfg.cgi" method="post">
 			   			<div class="file-box">
 							<button type="button" class="styled_button_s" style="min-width:200px;" onclick="document.forms['dlcfgbin'].submit(); changeTimeoutAction();" ><script>I18N("h", "Save");</script></button>
 						</div>
 			 		</form>
 			 		</td>
 				 </tr>
-				 <form id="ulcfgbin" action="/HNAP1/prog.fcgi?method=/cgi-bin/seama.cgi" method="post" enctype="multipart/form-data">
+				 <form id="ulcfgbin" action="seama.cgi" method="post" enctype="multipart/form-data">
 					 <tr id="First_LSFLHD">
 					   	<th><script>I18N("h", "Load Settings From Local Hard Drive");</script>:</th>
 					   	<td>
 					   		<div class="file-box">
 					   			<label for="select_Folder" class="styled_button_s" style="min-width:168px;"><script>I18N("h", "Select File");</script></label>
-					   			<input type="file" name="select_Folder" id="select_Folder" style="display:none" onclick="changeTimeoutAction();" onchange="ShowUploadButton('upload_File',this);" />
+					   			<input type="file" name="select_Folder" id="select_Folder" style="display:none" onclick="changeTimeoutAction();" />
+					   			<!--onchange="ShowUploadButton('upload_File',this);"-->
 					   		</div>
 					   	</td>
 					   	<td>
@@ -613,7 +725,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 						</td>
 					</tr>
 				 </form>
-				 <form id="ulcfgbin2" action="/HNAP1/prog.fcgi?method=/cgi-bin/seama.cgi" method="post" enctype="multipart/form-data">
+				 <form id="ulcfgbin2" action="seama.cgi" method="post" enctype="multipart/form-data">
 				 <tr id="Secondary_LSFLHD" style="display:none">
 				   	<th><script>I18N("h", "Load Settings From Local Hard Drive");</script>:</th>
 					<td>

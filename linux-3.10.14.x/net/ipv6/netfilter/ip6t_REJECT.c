@@ -182,6 +182,59 @@ send_unreach(struct net *net, struct sk_buff *skb_in, unsigned char code,
 	icmpv6_send(skb_in, ICMPV6_DEST_UNREACH, code, 0);
 }
 
+#ifdef CONFIG_IPV6_CE_ROUTER_TEST_DEBUG
+
+/*
+  * IPv6 CE-Router Test Debug:
+  * 1. In RFC7083 L-14, The IPv6 CE router MUST send an ICMPv6
+  *   Destination Unreachable message, code 5 (Source address failed
+  *   ingress/egress policy) for packets forwarded to it that use an address
+  *   from a prefix that has been invalidated.
+  * 2017-10-16 --liushenghui
+*/
+static void
+handle_source_address_fail(struct net *net,
+								struct sk_buff *skb,
+								unsigned char code,
+								unsigned int hooknum)
+{
+	struct fib6_config cfg = {
+		.fc_table = RT6_TABLE_MAIN,
+		.fc_metric = IP6_RT_PRIO_KERN,
+		.fc_ifindex = skb->dev->ifindex,
+		.fc_dst_len = 128,
+		.fc_flags = RTF_UP,
+		.fc_nlinfo.nl_net = dev_net(skb->dev),
+		.fc_protocol = RTPROT_KERNEL,
+	};
+	struct fib6_config cfg_del;
+	const struct ipv6hdr * pHdr = NULL;
+
+	pHdr = ipv6_hdr(skb);
+	memcpy(&cfg.fc_dst, &pHdr->saddr, sizeof(struct in6_addr));
+	memcpy(&cfg_del, &cfg, sizeof (struct fib6_config));
+
+	/*
+	  * IPv6 CE-Router Test Debug:
+	  * 1. We have no routing to the source with invalidated prefix.
+	  * 2. So we add a temporary route to it.
+	  * 2017-10-16 --liushenghui
+	*/
+	ip6_route_add(&cfg);
+
+	send_unreach(net, skb, code, hooknum);
+
+	/*
+	  * IPv6 CE-Router Test Debug:
+	  * 1. Here, the routing decision has been done.
+	  * 2. So we remove the temporary route immediately.
+	  * 2017-10-16 --liushenghui
+	*/
+	ip6_route_del_extern(&cfg_del);
+}
+
+#endif
+
 static unsigned int
 reject_tg6(struct sk_buff *skb, const struct xt_action_param *par)
 {
@@ -205,6 +258,12 @@ reject_tg6(struct sk_buff *skb, const struct xt_action_param *par)
 	case IP6T_ICMP6_PORT_UNREACH:
 		send_unreach(net, skb, ICMPV6_PORT_UNREACH, par->hooknum);
 		break;
+#ifdef CONFIG_IPV6_CE_ROUTER_TEST_DEBUG
+	case IP6T_ICMP6_SRCADDR_FAIL:
+		handle_source_address_fail(net, skb,
+			IP6T_ICMP6_SRCADDR_FAIL, par->hooknum);
+		break;
+#endif
 	case IP6T_ICMP6_ECHOREPLY:
 		/* Do nothing */
 		break;

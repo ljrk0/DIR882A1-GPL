@@ -1,0 +1,14 @@
+stripslash.o: stripslash.c ../src/config.h dirname.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdbool.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
+ dosname.h
+
+../src/config.h:
+
+dirname.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdbool.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h:
+
+dosname.h:

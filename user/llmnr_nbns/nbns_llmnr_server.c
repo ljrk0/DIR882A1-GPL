@@ -66,11 +66,20 @@ struct nb_host_info* parse_response(char* buff, int buffsize)
 	int offset = 0;
 
 	if((response_header = malloc(sizeof(nbname_response_header_t))) == NULL) return NULL;
-	if((response_footer = malloc(sizeof(nbname_response_footer_t))) == NULL) return NULL;
+	if((response_footer = malloc(sizeof(nbname_response_footer_t))) == NULL) 
+	{
+		free(response_header);
+		return NULL;
+	}
 	bzero(response_header, sizeof(nbname_response_header_t));
 	bzero(response_footer, sizeof(nbname_response_footer_t));
 	
-	if((hostinfo = malloc(sizeof(struct nb_host_info))) == NULL) return NULL;
+	if((hostinfo = malloc(sizeof(struct nb_host_info))) == NULL) 
+	{
+		free(response_header);
+		free(response_footer);
+		return NULL;
+	}
 	hostinfo->header = NULL;
     hostinfo->names = NULL;
 	hostinfo->footer = NULL;
@@ -134,7 +143,13 @@ struct nb_host_info* parse_response(char* buff, int buffsize)
 	name_table_size = (response_header->number_of_names) * (sizeof(struct nbname));
 	if( offset+name_table_size >= buffsize) goto broken_packet;
 	
-	if((hostinfo->names = malloc(name_table_size))==NULL) return NULL;
+	if((hostinfo->names = malloc(name_table_size))==NULL) 
+	{
+		free(hostinfo);
+		free(response_header);
+		free(response_footer);
+		return NULL;
+	}
 	memcpy(hostinfo->names, buff + offset, name_table_size);
 	
 	offset+=name_table_size;
@@ -237,10 +252,14 @@ struct nb_host_info* parse_response(char* buff, int buffsize)
 	offset+=sizeof(response_footer->packet_sessions);
 #endif
 	/* Done with packet footer and the whole packet */
-
+	free(response_header);
+	free(response_footer);
 	return hostinfo;
 	
 	broken_packet: 
+		
+		free(response_header);
+		free(response_footer);
 		hostinfo->is_broken = offset;
 		return hostinfo;	
 };
@@ -300,6 +319,15 @@ void get_host_info(struct in_addr addr, char* buff, int buffsize)
 	};
 
 	save_hostinfo(addr, hostinfo);
+
+	if(hostinfo->names)
+	{
+		free(hostinfo->names);
+	}
+	if(hostinfo)
+	{
+		free(hostinfo);
+	}
     return;
 }
 

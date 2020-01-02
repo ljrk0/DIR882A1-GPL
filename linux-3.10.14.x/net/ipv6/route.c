@@ -68,6 +68,15 @@
 enum rt6_nud_state {
 	RT6_NUD_FAIL_HARD = -2,
 	RT6_NUD_FAIL_SOFT = -1,
+#ifdef CONFIG_IPV6_CE_ROUTER_TEST_DEBUG
+	/*
+	  * IPv6 CE-Router Test Debug:
+	  * 1. Add this state to reflect that the neigh state of 'NUD_NONE' is
+	  *   better than 'NUD_FAILED'.
+	  * 2017-10-31 --liushenghui
+	*/
+	RT6_NUD_NONE = 0,
+#endif
 	RT6_NUD_SUCCEED = 1
 };
 
@@ -562,6 +571,60 @@ static inline enum rt6_nud_state rt6_check_neigh(struct rt6_info *rt)
 	return ret;
 }
 
+#ifdef CONFIG_IPV6_CE_ROUTER_TEST_DEBUG
+
+/*
+  * IPv6 CE-Router Test Debug:
+  * 1. Check the neigh state of next-hop.
+  * 2. In RFC4861 section 6.3.6, the algorithm for selecting a router
+  *   depends in part on whether or not a router is known to be reachable.
+  * 2017-10-31 --liushenghui
+*/
+
+static inline enum rt6_nud_state rt6_check_neigh_state(struct rt6_info *rt)
+{
+	struct neighbour *neigh;
+	enum rt6_nud_state ret = RT6_NUD_FAIL_HARD;
+
+	if (rt->rt6i_flags & RTF_NONEXTHOP ||
+	    !(rt->rt6i_flags & RTF_GATEWAY))
+		return RT6_NUD_SUCCEED;
+
+	rcu_read_lock_bh();
+	neigh = __ipv6_neigh_lookup_noref(rt->dst.dev, &rt->rt6i_gateway);
+	if (neigh) {
+		read_lock(&neigh->lock);
+		if (neigh->nud_state & NUD_VALID)
+			ret = RT6_NUD_SUCCEED;
+		else if (neigh->nud_state == NUD_NONE)
+			ret = RT6_NUD_NONE;
+		else if (neigh->nud_state == NUD_FAILED)
+		{
+			/*
+			  * IPv6 CE-Router Test Debug:
+			  * 1. If the neigh state of next-hop referenced by the cache is
+			  *   NUD_FAILED, redo next-hop determination.
+			  * 2017-10-31 --liushenghui
+			*/
+			if (rt->rt6i_flags & RTF_CACHE)
+				ret = RT6_NUD_FAIL_HARD;
+			else
+				/*
+				  * IPv6 CE-Router Test Debug:
+				  * 1. It should have one router at least if no suitable router.
+				  * 2017-10-31 --liushenghui
+				*/
+				ret = RT6_NUD_FAIL_SOFT;
+		}
+		read_unlock(&neigh->lock);
+	}
+	rcu_read_unlock_bh();
+
+	return ret;
+}
+
+#endif
+
 static int rt6_score_route(struct rt6_info *rt, int oif,
 			   int strict)
 {
@@ -578,6 +641,27 @@ static int rt6_score_route(struct rt6_info *rt, int oif,
 		if (n < 0)
 			return n;
 	}
+#ifdef CONFIG_IPV6_CE_ROUTER_TEST_DEBUG
+	/*
+	  * IPv6 CE-Router Test Debug:
+	  * 1. Check the neigh state of next-hop.
+	  * 2. It will go here if no the 'RT6_LOOKUP_F_REACHABLE' flag, that is,
+	  *   the 'forwarding' flag is enabled.
+	  * 2017-10-31 --liushenghui
+	*/
+	else if (rt && (rt->rt6i_flags & RTF_GATEWAY)) {
+		int n = rt6_check_neigh_state(rt);
+
+		/*
+		  * IPv6 CE-Router Test Debug:
+		  * 1. The neigh state of next-hop is not good.
+		  * 2017-10-31 --liushenghui
+		*/
+		if (n <= 0)
+			return n;
+	}
+#endif
+
 	return m;
 }
 
@@ -595,6 +679,17 @@ static struct rt6_info *find_match(struct rt6_info *rt, int oif, int strict,
 	if (m == RT6_NUD_FAIL_SOFT && !IS_ENABLED(CONFIG_IPV6_ROUTER_PREF)) {
 		match_do_rr = true;
 		m = 0; /* lowest valid score */
+#ifdef CONFIG_IPV6_CE_ROUTER_TEST_DEBUG
+	/*
+	  * IPv6 CE-Router Test Debug:
+	  * 1. The score value of next-hops with the state of 'RT6_NUD_NONE'
+	  *   is better than thoses with 'RT6_NUD_FAIL_SOFT', but worse than
+	  *   thoses with 'RT6_NUD_SUCCEED'.
+	  * 2017-10-31 --liushenghui
+	*/
+	} else if (m == RT6_NUD_NONE) {
+		m = 1;
+#endif
 	} else if (m < 0) {
 		goto out;
 	}
@@ -1659,6 +1754,15 @@ static int ip6_route_del(struct fib6_config *cfg)
 	return err;
 }
 
+#ifdef CONFIG_IPV6_CE_ROUTER_TEST_DEBUG
+
+int ip6_route_del_extern(struct fib6_config *cfg)
+{
+	return ip6_route_del(cfg);
+}
+
+#endif
+
 static void rt6_do_redirect(struct dst_entry *dst, struct sock *sk, struct sk_buff *skb)
 {
 	struct net *net = dev_net(skb->dev);
@@ -1806,6 +1910,25 @@ static struct rt6_info *ip6_rt_copy(struct rt6_info *ort,
 		if ((ort->rt6i_flags & (RTF_DEFAULT | RTF_ADDRCONF)) ==
 		    (RTF_DEFAULT | RTF_ADDRCONF))
 			rt6_set_from(rt, ort);
+	#ifdef CONFIG_IPV6_CE_ROUTER_TEST_DEBUG
+		/*
+		  * IPv6 CE-Router Test Debug:
+		  * 1. It should copy the value of 'expires' if 'ort' has the
+		  *   'RTF_EXPIRES' flag.
+		  * 2. Otherwise, 'rt' will be detected as expired if the value
+		  *   of 'jiffies' is less than the max value of 'long'.
+		  * 3. If 'rt' is detected as expired, 'rt' will not be returned by
+		  *   lookup code and the same route with 'rt' will not be added
+		  *   into route table.
+		  * 4. Use the cleanup method of route cache to clear route cache,
+		  *   because the number of cache may grow rapidly and the
+		  *   expiration time of the original route may be too long.
+		  * 2017-10-23 --liushenghui
+		*/
+		else if (ort->rt6i_flags & RTF_EXPIRES)
+			rt6_set_from(rt, ort);
+	#endif
+
 		rt->rt6i_metric = 0;
 
 #ifdef CONFIG_IPV6_SUBTREES

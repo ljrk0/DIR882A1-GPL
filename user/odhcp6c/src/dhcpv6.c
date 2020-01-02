@@ -73,9 +73,17 @@ static reply_handler dhcpv6_handle_reply;
 static reply_handler dhcpv6_handle_advert;
 static reply_handler dhcpv6_handle_rebind_reply;
 static reply_handler dhcpv6_handle_reconfigure;
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+static int dhcpv6_commit_advert(_unused enum dhcpv6_msg orig,
+								_unused int iReplyResult);
+#else
 static int dhcpv6_commit_advert(void);
+#endif
 
 #ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+
+static char sIfName[IF_NAMESIZE] = { 0 };
+
 static long getSysUpTime(void);
 static void replace_one_state_with_another(
 							enum odhcp6c_state state1,
@@ -85,6 +93,15 @@ static void update_one_state_to_another(
 							enum odhcp6c_state state2,
 							uint32_t safe,
 							bool filterexcess);
+static int odhcp6c_get_state_number(enum odhcp6c_state state);
+
+extern int dad(const char * pIfName,
+		const struct in6_addr * pAddr,
+		int iPrefixLen);
+static int ia_na_dad(void);
+static int dhcpv6_check_options(enum dhcpv6_msg orig,
+								int iReplyResult);
+
 #endif
 
 #ifdef TW_DHCPV6_EXT
@@ -92,7 +109,7 @@ static void update_one_state_to_another(
 
 #ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
 struct odhcp6c_entry g_dhcpv6replyentry = {IN6ADDR_ANY_INIT, 0, 0, 0,
-		IN6ADDR_ANY_INIT, 0, 0, 0, 0, 0, 0};
+		IN6ADDR_ANY_INIT, 0, 0, 0, 0, 0, 0, 0};
 #else
 struct odhcp6c_entry g_dhcpv6replyentry = {IN6ADDR_ANY_INIT, 0, 0, 0,
 		IN6ADDR_ANY_INIT, 0, 0, 0, 0, 0};
@@ -106,8 +123,13 @@ static struct dhcpv6_retx dhcpv6_retx[_DHCPV6_MSG_MAX] = {
 			dhcpv6_handle_reconfigure, NULL},
 	[DHCPV6_MSG_SOLICIT] = {true, 1, DHCPV6_SOL_MAX_RT, 0, "SOLICIT",
 			dhcpv6_handle_advert, dhcpv6_commit_advert},
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	[DHCPV6_MSG_REQUEST] = {true, 1, DHCPV6_REQ_MAX_RT, 10, "REQUEST",
+			dhcpv6_handle_reply, dhcpv6_check_options},
+#else
 	[DHCPV6_MSG_REQUEST] = {true, 1, DHCPV6_REQ_MAX_RT, 10, "REQUEST",
 			dhcpv6_handle_reply, NULL},
+#endif
 	[DHCPV6_MSG_RENEW] = {false, 10, DHCPV6_REN_MAX_RT, 0, "RENEW",
 			dhcpv6_handle_reply, NULL},
 	[DHCPV6_MSG_REBIND] = {false, 10, DHCPV6_REB_MAX_RT, 0, "REBIND",
@@ -144,6 +166,10 @@ int init_dhcpv6(const char *ifname, unsigned int options, int sol_timeout)
 	sock = socket(AF_INET6, SOCK_DGRAM | SOCK_CLOEXEC, IPPROTO_UDP);
 	if (sock < 0)
 		return -1;
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	snprintf(sIfName, sizeof (sIfName), "%s", ifname);
+#endif
 
 	// Detect interface
 	struct ifreq ifr;
@@ -428,6 +454,31 @@ static void dhcpv6_send(enum dhcpv6_msg type, uint8_t trid[3], uint32_t ecs)
 	ia_na_len = sizeof(pa);
 	hdr_ia_na.len = htons(ntohs(hdr_ia_na.len) + ia_na_len);
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+
+	if (DHCPV6_MSG_DECLINE == type) {
+		size_t iNaEntryNum = 0;
+
+		for (size_t i = 0; i < ia_na_entries; ++i) {
+			if (e[i].iDeclineFlag != 1)
+				continue;
+
+			pa[iNaEntryNum].type = htons(DHCPV6_OPT_IA_ADDR);
+			pa[iNaEntryNum].len = htons(sizeof(pa[i]) - 4U);
+			pa[iNaEntryNum].addr = e[i].target;
+
+			pa[iNaEntryNum].preferred = htonl(e[i].preferred);
+			pa[iNaEntryNum].valid = htonl(e[i].valid);
+
+			++iNaEntryNum;
+		}
+
+		ia_na_len = iNaEntryNum * sizeof (struct dhcpv6_ia_addr);
+		hdr_ia_na.len = htons(sizeof(hdr_ia_na) - 4 + ia_na_len);
+	}
+
+#endif
+
 	// Reconfigure Accept
 	struct {
 		uint16_t type;
@@ -492,6 +543,26 @@ static void dhcpv6_send(enum dhcpv6_msg type, uint8_t trid[3], uint32_t ecs)
 		cnt = 9;
 		iov[IOV_ORO_REFRESH].iov_len = sizeof(oro_refresh);
 		hdr.oro_len = htons(oro_len + sizeof(oro_refresh));
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+
+	} else if (type == DHCPV6_MSG_DECLINE) {
+		/*
+		  * 1. At present there is no situations that need to refuse
+		  *   other options except for 'IA NA' option.
+		  * 2017-08-24 --liushenghui
+		*/
+		iov[IOV_ORO].iov_len = 0;
+		iov[IOV_HDR].iov_len -= 4;
+
+		if (0 == iov[IOV_IA_NA].iov_len) {
+			iov[IOV_HDR_IA_NA].iov_len = 0;
+		}
+
+		iov[IOV_IA_PD].iov_len = 0;
+
+#endif
+
 	} else if (!request_prefix) {
 		cnt = 13;
 	}
@@ -663,8 +734,24 @@ int dhcpv6_request(enum dhcpv6_msg type)
 		}
 
 		// Allow
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		if (retx->handler_finish)
+			len = retx->handler_finish(type, len);
+
+		/*
+		  * 1. The 'handler_finish' may takes a little time, so update
+		  *   'round_start' here.
+		  * 2. The 'elapsed' will not be update if no response, and it
+		  *   will result in sending one more dhcp packet. So update
+		  *   'elapsed' here.
+		  * 2017-08-29 --liushenghui
+		*/
+		round_start = odhcp6c_get_milli_time();
+		elapsed = round_start - start;
+	#else
 		if (retx->handler_finish)
 			len = retx->handler_finish();
+	#endif
 	} while (len < 0 && ((timeout == UINT32_MAX) || (elapsed / 1000 < timeout)) && 
 			(!retx->max_rc || rc < retx->max_rc));
 	return len;
@@ -873,10 +960,26 @@ static int dhcpv6_handle_advert(enum dhcpv6_msg orig, const int rc,
 		return -1;
 	}
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	/*
+	  * IPv6 CE-Router Test Debug:
+	  * 1. The Rebind messages ignore Reply messages which have no IA.
+	  * 2. In RFC3315 section 18.1.8, When the client receives a Reply
+	  *   message in response to a Renew or Rebind message, the client
+	  *   sends a Renew/Rebind if the IA is not in the Reply message.
+	  * 2017-08-29 --liushenghui
+	*/
+	if (na_mode != IA_MODE_NONE && !have_na &&
+		orig != DHCPV6_MSG_REBIND) {
+		cand.has_noaddravail = true;
+		cand.preference -= 1000;
+	}
+#else
 	if (na_mode != IA_MODE_NONE && !have_na) {
 		cand.has_noaddravail = true;
 		cand.preference -= 1000;
 	}
+#endif
 
 	if (pd_mode != IA_MODE_NONE) {
 		if (have_pd)
@@ -884,6 +987,31 @@ static int dhcpv6_handle_advert(enum dhcpv6_msg orig, const int rc,
 		else
 			cand.preference -= 2000;
 	}
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	/*
+	  * IPv6 CE-Router Test Debug:
+	  * 1. If a DHCP client fails to receive an expected response from a
+	  *   server, the client must retransmit its message according to the
+	  *   retransmission mechanism described in RFC3315 section 14.
+	  * 2. We ignore not satisfactory responses, and continue to wait
+	  *   other advertisements.
+	  * 3. RFC does not specify which options are required and CE-Router
+	  *   Test only demand IA_NA is a must.
+	  * 4. So only check IA_NA here.
+	  * 2017-09-05 --liushenghui
+	*/
+	if (DHCPV6_MSG_SOLICIT == orig &&
+		(
+		(na_mode != IA_MODE_NONE && !have_na)
+		)
+	) {
+		dhcpv6_retx[DHCPV6_MSG_SOLICIT].max_timeo = cand.sol_max_rt;
+		dhcpv6_retx[DHCPV6_MSG_INFO_REQ].max_timeo = cand.inf_max_rt;
+
+		return -1;
+	}
+#endif
 
 	if (cand.duid_len > 0) {
 		cand.ia_na = odhcp6c_move_state(STATE_IA_NA, &cand.ia_na_len);
@@ -894,19 +1022,35 @@ static int dhcpv6_handle_advert(enum dhcpv6_msg orig, const int rc,
 	return (rc > 1 || (pref == 255 && cand.preference > 0)) ? 1 : -1;
 }
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+
+static int dhcpv6_commit_advert(_unused enum dhcpv6_msg orig,
+								_unused int iReplyResult)
+{
+	return dhcpv6_promote_server_cand();
+}
+
+#else
 
 static int dhcpv6_commit_advert(void)
 {
 	return dhcpv6_promote_server_cand();
 }
 
+#endif
 
 static int dhcpv6_handle_rebind_reply(enum dhcpv6_msg orig, const int rc,
 		const void *opt, const void *end, const struct sockaddr_in6 *from)
 {
 	dhcpv6_handle_advert(orig, rc, opt, end, from);
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	if (dhcpv6_commit_advert(orig, 0) < 0)
+		return -1;
+#else
 	if (dhcpv6_commit_advert() < 0)
 		return -1;
+#endif
 
 	return dhcpv6_handle_reply(orig, rc, opt, end, from);
 }
@@ -1171,6 +1315,32 @@ static int dhcpv6_handle_reply(enum dhcpv6_msg orig, _unused const int rc,
 
 		t1 = refresh;
 	}
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	/*
+	  * IPv6 CE-Router Test Debug:
+	  * 1. In RFC3315 section 18.1.8, When the client receives a Reply
+	  *   message in response to a Renew or Rebind message, the client
+	  *   examines each IA independently.  For each IA in the original
+	  *   Renew or Rebind message, the client sends a Renew/Rebind
+	  *   if the IA is not in the Reply message.
+	  * 2. The default value for 'request_prefix' is -1, so you have to
+	  *   determine that there is IA_PD in the request by detecting that
+	  *   the value of 'request_prefix is' greater than zero.
+	  * 2017-11-05 --liushenghui
+	*/
+	if (ret > 0 &&
+		(DHCPV6_MSG_RENEW == orig || DHCPV6_MSG_REBIND== orig)
+	) {
+		if (request_prefix > 0 &&
+			0 == odhcp6c_get_state_number(STATE_IA_PD)
+		) {
+			ret = -1;
+			request_prefix = 0;
+		}
+	}
+#endif
+
 #ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
 	/*
 	  * 1. It need to restore the previous PDs from backup if
@@ -1190,6 +1360,18 @@ static int dhcpv6_handle_reply(enum dhcpv6_msg orig, _unused const int rc,
 		}
 	}
 	odhcp6c_clear_state(STATE_IA_PD_BAK);
+#endif
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	/*
+	  * IPv6 CE-Router Test Debug:
+	  * 1. Remove binding if handling reply fail.
+	  * 2017-08-29 --liushenghui
+	*/
+	if (DHCPV6_MSG_REBIND== orig && ret < 0) {
+		odhcp6c_clear_state(STATE_SERVER_ID);
+		odhcp6c_clear_state(STATE_SERVER_ADDR);
+	}
 #endif
 
 	return ret;
@@ -1214,7 +1396,7 @@ static int dhcpv6_parse_ia(void *opt, void *end)
 	dhcpv6_for_each_option(&ia_hdr[1], end, otype, olen, odata) {
 	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
 		struct odhcp6c_entry entry = {IN6ADDR_ANY_INIT, 0, 0, 0,
-				IN6ADDR_ANY_INIT, 0, 0, 0, 0, 0, 0};
+				IN6ADDR_ANY_INIT, 0, 0, 0, 0, 0, 0, 0};
 	#else
 		struct odhcp6c_entry entry = {IN6ADDR_ANY_INIT, 0, 0, 0,
 				IN6ADDR_ANY_INIT, 0, 0, 0, 0, 0};
@@ -1287,6 +1469,9 @@ static int dhcpv6_parse_ia(void *opt, void *end)
 			if (ok) {
 			#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
 				entry.iSysUpTime = getSysUpTime();
+
+				if (0 == entry.valid)
+					odhcp6c_update_entry(STATE_IA_PD_BAK, &entry, 0, false);
 			#endif
 				odhcp6c_update_entry(STATE_IA_PD, &entry, 0, false);
 				parsed_ia++;
@@ -1327,6 +1512,10 @@ static int dhcpv6_calc_refresh_timers(void)
 	size_t ia_na_entries, ia_pd_entries, i;
 	int64_t l_t1 = UINT32_MAX, l_t2 = UINT32_MAX, l_t3 = 0;
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	l_t3 = UINT32_MAX;
+#endif
+
 	e = odhcp6c_get_state(STATE_IA_NA, &ia_na_entries);
 	ia_na_entries /= sizeof(*e);
 	for (i = 0; i < ia_na_entries; i++) {
@@ -1336,8 +1525,20 @@ static int dhcpv6_calc_refresh_timers(void)
 		if (e[i].t2 < l_t2)
 			l_t2 = e[i].t2;
 
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		/*
+		  * IPv6 CE-Router Test Debug:
+		  * 1. Set t3 to minimum valid lifetime of IAs, so that restart the
+		  *   DHCP server discovery process and notify scripts to disable
+		  *   expired IAs.
+		  * 2017-08-28 --liushenghui
+		*/
+		if (e[i].valid < l_t3)
+			l_t3 = e[i].valid;
+	#else
 		if (e[i].valid > l_t3)
 			l_t3 = e[i].valid;
+	#endif
 	}
 
 	e = odhcp6c_get_state(STATE_IA_PD, &ia_pd_entries);
@@ -1349,14 +1550,35 @@ static int dhcpv6_calc_refresh_timers(void)
 		if (e[i].t2 < l_t2)
 			l_t2 = e[i].t2;
 
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		if (e[i].valid < l_t3)
+			l_t3 = e[i].valid;
+	#else
 		if (e[i].valid > l_t3)
 			l_t3 = e[i].valid;
+	#endif
 	}
 
 	if (ia_pd_entries || ia_na_entries) {
 		t1 = l_t1;
 		t2 = l_t2;
 		t3 = l_t3;
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		/*
+		  * 1. Handle the situation that t1, t2 is close with valid lifetime
+		  *   of IAs.
+		  * 2017-08-28 --liushenghui
+		*/
+		if (t3 <= t2) {
+			if (t3 <= 2) {
+				t1 = t2 = t3 = 0;
+			} else {
+				t2 = t3 - 1;
+				if (t2 <= t1)
+					t1 = t2 - 1;
+			}
+		}
+	#endif
 	} else {
 		t1 = 600;
 	}
@@ -1397,11 +1619,49 @@ static void dhcpv6_handle_status_code(const enum dhcpv6_msg orig,
 	switch (code) {
 	case DHCPV6_UnspecFail:
 		// Generic failure
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		/*
+		  * IPv6 CE-Router Test Debug:
+		  * 1. In RFC3315 section 18.1.8, If the client receives a Reply
+		  *   message with a Status Code containing UnspecFail, the client
+		  *   can retransmits the original message to the same server to
+		  *   retry the desired operation.
+		  * 2017-08-25 --liushenghui
+		*/
+		*ret = -1;
+	#else
 		*ret = 0;
+	#endif
 		break;
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	/*
+	  * IPv6 CE-Router Test Debug:
+	  * 1. In RFC3315 section 18.1.8, When the client receives a
+	  *   NotOnLink status from the server in response to a Request,
+	  *   the client can either re-issue the Request without specifying
+	  *   any addresses or restart the DHCP server discovery process.
+	  * 2017-08-25 --liushenghui
+	*/
+	case DHCPV6_NotOnLink:
+		if (DHCPV6_MSG_REQUEST == orig)
+			*ret = 0;
+		break;
+#endif
 
 	case DHCPV6_UseMulticast:
 		// TODO handle multicast status code
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		/*
+		  * IPv6 CE-Router Test Debug:
+		  * 1. In RFC3315 section 18.1.8, When the client receives a
+		  *   Reply message with a Status Code option with the value
+		  *   UseMulticast, the client resends the original message using
+		  *   multicast.
+		  * 2017-08-25 --liushenghui
+		*/
+		*ret = -1;
+	#endif
 		break;
 
 	case DHCPV6_NoAddrsAvail:
@@ -1557,6 +1817,7 @@ int dhcpv6_promote_server_cand(void)
 }
 
 #ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+
 static long getSysUpTime(void)
 {
     struct sysinfo info;
@@ -1613,6 +1874,86 @@ static void update_one_state_to_another(
 	for (i = 0 ; i < IEntryNum ; ++i) {
 		odhcp6c_update_entry(state2, &pEntry[i], safe, filterexcess);
 	}
+}
+
+/*
+  * 1. only apply to those states without auxiliary data.
+  * 2017-11-05 --liushenghui
+*/
+static int odhcp6c_get_state_number(enum odhcp6c_state state)
+{
+	struct odhcp6c_entry * pEntry = NULL;
+	size_t IEntryNum = 0;
+
+	pEntry = odhcp6c_get_state(state, &IEntryNum);
+	if (NULL == pEntry)
+		return 0;
+
+	IEntryNum /= sizeof (struct odhcp6c_entry);
+
+	return IEntryNum;
+}
+
+/*
+  * IPv6 CE-Router Test Debug:
+  * 1. In RFC3315 section 18.1.8, The client SHOULD perform duplicate
+  *   address detection [17] on each of the addresses in any IAs it receives
+  *   in the Reply message before using that address for traffic.
+  * 2017-08-24 --liushenghui
+*/
+static int ia_na_dad(void)
+{
+	struct odhcp6c_entry * pEntry = NULL;
+	size_t IEntryNum = 0;
+	size_t i = 0;
+	int iRet = 0;
+
+	pEntry = odhcp6c_get_state(STATE_IA_NA, &IEntryNum);
+	if (NULL == pEntry)
+		return 0;
+
+	IEntryNum /= sizeof (struct odhcp6c_entry);
+
+	for (i = 0 ; i < IEntryNum ; ++i) {
+		if (dad(sIfName, &pEntry[i].target, pEntry[i].length) < 0) {
+			iRet = -1;
+
+			pEntry[i].iDeclineFlag = 1;
+		}
+	}
+
+	return iRet;
+}
+
+static int dhcpv6_check_options(enum dhcpv6_msg orig,
+								int iReplyResult)
+{
+	if (DHCPV6_MSG_REQUEST == orig && iReplyResult > 0) {
+
+		if (ia_na_dad() < 0) {
+			/*
+			  * IPv6 CE-Router Test Debug:
+			  * 1. In RFC3315 section 18.1.8, If any of the addresses
+			  *   are found to be in use on the link, the client sends a
+			  *   Decline message to the server as described in section
+			  *   18.1.7.
+			  * 2017-08-24 --liushenghui
+			*/
+			dhcpv6_request(DHCPV6_MSG_DECLINE);
+			odhcp6c_clear_state(STATE_IA_NA);
+			return 0;
+		}
+
+		/*
+		  * 1. DAD need take a little time, so update t1, t2 and valid
+		  *   lifetime of some options here.
+		  * 2017-08-25 --liushenghui
+		*/
+		odhcp6c_expire();
+		dhcpv6_calc_refresh_timers();
+	}
+
+	return iReplyResult;
 }
 
 #endif

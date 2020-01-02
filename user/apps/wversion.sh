@@ -1,10 +1,19 @@
 #!/bin/sh
 
 PRODUCT_NAME=`cat ../../config/autoconf.h | grep CONFIG_CUSTOM_PRODUCT |cut -d ' ' -f 3 | sed 's/\"//g'`
-if [ "$PRODUCT_NAME" = "DIR-867" ]; then
+PRODUCT_NAME_EXT=`cat ../../config/autoconf.h | grep CONFIG_PRODUCT |cut -d ' ' -f 3 | sed 's/\"//g'`
+if [ "$PRODUCT_NAME" = "DIR-867" -o "$PRODUCT_NAME" = "DIR-1935" ]; then
 	PRODUCT_ID="AP-MSM001-0001-dlink-sdk-"	
 else
+	if [ "$PRODUCT_NAME_EXT" = "DIR_853_A1" -o "$PRODUCT_NAME_EXT" = "DIR_853_A2" ]; then
+		if [ "$PRODUCT_NAME_EXT" = "DIR_853_A1" ]; then
+		PRODUCT_ID="DIR-853_AX-"
+		else
+		PRODUCT_ID="DIR-853_A2-"
+		fi
+	else
 	PRODUCT_ID="AP-MTKH7-0002-dlink-sdk-"
+	fi
 fi
 BUILD_TIME=`date "+%Y-%m-%d %T"`
 SOFTWARE_VER_FILE="version.h"

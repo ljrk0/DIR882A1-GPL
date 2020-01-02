@@ -224,6 +224,15 @@ choice
 	select CHIP_MT7615E
 endchoice
 
+choice
+	prompt "Choose WiFi Driver Version"
+	config MT_DRIVER_4411
+	bool "MT_DRIVER_4411"
+
+	config MT_DRIVER_4421
+	bool "MT_DRIVER_4421"
+endchoice
+
 config  RT_FIRST_CARD
         string
         depends on ! FIRST_IF_NONE
@@ -371,6 +380,7 @@ endchoice
 #source "drivers/net/wireless/mt_wifi/embedded/Kconfig"
 source "drivers/net/wireless/MTK7615/mt_wifi/embedded/Kconfig"
 
+
 endif # WIFI_DRIVER
 
 #config WIFI_PKT_FWD
@@ -417,7 +427,9 @@ source "net/nat/hw_nat/Kconfig"
 config EXTEND_NVRAM
 	bool "Enable EXTEND NVRAM"
 	default n
-
+config ADJUST_CONFIG_PARTITION
+	bool "adjust config partition"
+	default n
 config KERNEL_ARP_SPOOFING_PROTECT
 	bool "kernel arp spoofing protect"
         default n

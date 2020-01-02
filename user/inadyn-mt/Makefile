@@ -12,11 +12,13 @@ else ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A2")
 CFLAGS += -DPRODUCT_DIR853_A2
 else ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A1") 
 CFLAGS += -DPRODUCT_DIR853_A1
+else ifeq ("$(CONFIG_PRODUCT)", "DIR_1935") 
+CFLAGS += -DPRODUCT_DIR1935
 endif
 
-.PHONY: all build clean
+.PHONY: all build
 
-all: clean init build
+all: init build
 
 init:
 	cd $(SRCDIR); \
@@ -29,12 +31,6 @@ init:
 build:
 	cd $(SRCDIR); \
 	make all
-
-clean:
-	cd $(SRCDIR); \
-	make clean ;\
-	rm -rf src/.deps \
-	rm -f src/config.h src/Makefile Makefile aclocal.m4 config.log man/Makefile
 
 romfs:
 	$(ROMFSINST)   $(SRCDIR)/src/inadyn-mt /bin

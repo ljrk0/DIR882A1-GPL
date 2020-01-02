@@ -1,250 +1,250 @@
 http_auth.lo: http_auth.c ../config.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/linux/autoconf.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/crypt.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/types.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/types.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h \
+ /home/xieshijing/trunk/GPL_Code/source/lib/include/linux/autoconf.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/crypt.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/types.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/types.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/typesizes.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/pthreadtypes.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sched.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/time.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/endian.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/endian.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/byteswap.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap-common.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/select.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/select.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigset.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/time.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/sysmacros.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/stat.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/stat.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sgidefs.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/fcntl.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/fcntl.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdlib.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/alloca.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdio.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_stdio.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/wchar.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wchar.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_mutex.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/pthread.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sched.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_clk_tck.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/signal.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/initspin.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigthread.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_pthread.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/typesizes.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/pthreadtypes.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sched.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/time.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/endian.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/endian.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/byteswap.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap-common.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/select.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/select.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigset.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/time.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/sysmacros.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/stat.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/stat.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sgidefs.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/fcntl.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/fcntl.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdlib.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/alloca.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdio.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_stdio.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/wchar.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wchar.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_mutex.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/pthread.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sched.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_clk_tck.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/signal.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/initspin.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigthread.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_pthread.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdarg.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/stdio_lim.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/string.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/errno.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/errno.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/linux/errno.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/asm/errno.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/asm-generic/errno-base.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/unistd.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix_opt.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/confname.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/getopt.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/ctype.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_touplow.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/stdio_lim.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/string.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/errno.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/errno.h \
+ /home/xieshijing/trunk/GPL_Code/source/lib/include/linux/errno.h \
+ /home/xieshijing/trunk/GPL_Code/source/lib/include/asm/errno.h \
+ /home/xieshijing/trunk/GPL_Code/source/lib/include/asm-generic/errno-base.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/unistd.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix_opt.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/confname.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/getopt.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/ctype.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_touplow.h \
  server.h base.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/time.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/limits.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/limits.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/time.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/limits.h \
+ /home/xieshijing/trunk/GPL_Code/source/lib/include/limits.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix1_lim.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/local_lim.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/linux/limits.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_local_lim.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix2_lim.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdint.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/inttypes.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix1_lim.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/local_lim.h \
+ /home/xieshijing/trunk/GPL_Code/source/lib/include/linux/limits.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_local_lim.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix2_lim.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdint.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/inttypes.h \
  buffer.h settings.h array.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/pcre-8.01/pcre.h \
- chunk.h keyvalue.h fdevent.h bitset.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/epoll.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/epoll.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/poll.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/poll.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/poll.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/signum.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/siginfo.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigaction.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigcontext.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigstack.h \
+ /home/xieshijing/trunk/GPL_Code/source/lib/pcre-8.01/pcre.h chunk.h \
+ keyvalue.h fdevent.h bitset.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/epoll.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/epoll.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/poll.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/poll.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/poll.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/signum.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/siginfo.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigaction.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigcontext.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigstack.h \
  sys-socket.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/socket.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/uio.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uio.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/socket.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sockaddr.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/asm/socket.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/asm/sockios.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/asm/ioctl.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/asm-generic/ioctl.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/ioctl.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/ioctls.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/asm/ioctls.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/ioctl-types.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/ttydefaults.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/in.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/in.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/tcp.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/un.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/arpa/inet.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netdb.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/rpc/netdb.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/netdb.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/socket.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/uio.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uio.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/socket.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sockaddr.h \
+ /home/xieshijing/trunk/GPL_Code/source/lib/include/asm/socket.h \
+ /home/xieshijing/trunk/GPL_Code/source/lib/include/asm/sockios.h \
+ /home/xieshijing/trunk/GPL_Code/source/lib/include/asm/ioctl.h \
+ /home/xieshijing/trunk/GPL_Code/source/lib/include/asm-generic/ioctl.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/ioctl.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/ioctls.h \
+ /home/xieshijing/trunk/GPL_Code/source/lib/include/asm/ioctls.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/ioctl-types.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/ttydefaults.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/in.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/in.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/tcp.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/un.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/arpa/inet.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netdb.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/rpc/netdb.h \
+ /home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/netdb.h \
  splaytree.h etag.h log.h http_auth.h plugin.h http_auth_digest.h \
  inet_ntop_cache.h stream.h md5.h
 
 ../config.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/linux/autoconf.h:
+/home/xieshijing/trunk/GPL_Code/source/lib/include/linux/autoconf.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/crypt.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/crypt.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/types.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/types.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/types.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/types.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h:
 
 /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/typesizes.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/typesizes.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/pthreadtypes.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/pthreadtypes.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sched.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sched.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/time.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/time.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/endian.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/endian.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/endian.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/endian.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/byteswap.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/byteswap.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap-common.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap-common.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/select.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/select.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/select.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/select.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigset.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigset.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/time.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/time.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/sysmacros.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/sysmacros.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/stat.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/stat.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/stat.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/stat.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sgidefs.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sgidefs.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/fcntl.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/fcntl.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/fcntl.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/fcntl.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdlib.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdlib.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/alloca.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/alloca.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdio.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdio.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_stdio.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_stdio.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/wchar.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/wchar.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wchar.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wchar.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_mutex.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_mutex.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/pthread.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/pthread.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sched.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sched.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_clk_tck.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_clk_tck.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/signal.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/signal.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/initspin.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/initspin.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigthread.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigthread.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_pthread.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_pthread.h:
 
 /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdarg.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/stdio_lim.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/stdio_lim.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/string.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/string.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/errno.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/errno.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/errno.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/errno.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/linux/errno.h:
+/home/xieshijing/trunk/GPL_Code/source/lib/include/linux/errno.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/asm/errno.h:
+/home/xieshijing/trunk/GPL_Code/source/lib/include/asm/errno.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/asm-generic/errno-base.h:
+/home/xieshijing/trunk/GPL_Code/source/lib/include/asm-generic/errno-base.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/unistd.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/unistd.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix_opt.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix_opt.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/confname.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/confname.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/getopt.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/getopt.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/ctype.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/ctype.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_touplow.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_touplow.h:
 
 server.h:
 
 base.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/time.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/time.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/limits.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/limits.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/limits.h:
+/home/xieshijing/trunk/GPL_Code/source/lib/include/limits.h:
 
 /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix1_lim.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix1_lim.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/local_lim.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/local_lim.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/linux/limits.h:
+/home/xieshijing/trunk/GPL_Code/source/lib/include/linux/limits.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_local_lim.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_local_lim.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix2_lim.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix2_lim.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdint.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdint.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/inttypes.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/inttypes.h:
 
 buffer.h:
 
@@ -252,7 +252,7 @@ settings.h:
 
 array.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/pcre-8.01/pcre.h:
+/home/xieshijing/trunk/GPL_Code/source/lib/pcre-8.01/pcre.h:
 
 chunk.h:
 
@@ -262,71 +262,71 @@ fdevent.h:
 
 bitset.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/epoll.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/epoll.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/epoll.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/epoll.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/poll.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/poll.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/poll.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/poll.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/poll.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/poll.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/signum.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/signum.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/siginfo.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/siginfo.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigaction.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigaction.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigcontext.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigcontext.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigstack.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigstack.h:
 
 sys-socket.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/socket.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/socket.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/uio.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/uio.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uio.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uio.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/socket.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/socket.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sockaddr.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sockaddr.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/asm/socket.h:
+/home/xieshijing/trunk/GPL_Code/source/lib/include/asm/socket.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/asm/sockios.h:
+/home/xieshijing/trunk/GPL_Code/source/lib/include/asm/sockios.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/asm/ioctl.h:
+/home/xieshijing/trunk/GPL_Code/source/lib/include/asm/ioctl.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/asm-generic/ioctl.h:
+/home/xieshijing/trunk/GPL_Code/source/lib/include/asm-generic/ioctl.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/ioctl.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/ioctl.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/ioctls.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/ioctls.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/include/asm/ioctls.h:
+/home/xieshijing/trunk/GPL_Code/source/lib/include/asm/ioctls.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/ioctl-types.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/ioctl-types.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/ttydefaults.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/ttydefaults.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/in.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/in.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/in.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/in.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/tcp.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/tcp.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/un.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/un.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/arpa/inet.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/arpa/inet.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netdb.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netdb.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/rpc/netdb.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/rpc/netdb.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/netdb.h:
+/home/xieshijing/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/netdb.h:
 
 splaytree.h:
 

@@ -36,6 +36,29 @@
 static void sighandler(int signal);
 static int usage(void);
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+
+static void wait_ra(void);
+
+/*
+  * IPv6 CE-Router Test Debug:
+  * 1. This flag is the switch which trigger dhcp solicit by ra.
+  * 2. To provide this flag is based on follow reasons:
+  *  2.1 RFC3315 don't define that dhcp solicit must be triggered by ra.
+  *  2.2 RFC4862 says that even if a link has no routers, the DHCPv6
+  *    service to obtain addresses may still be available.
+  * But:
+  *  2.3 The many links which have DHCPv6 server also have ra on the link.
+  *  2.4 This flag can provide to users to configure if their link have no ra.
+  *  2.5 The main reason for providing this function is convenient to the
+  *    CE-Router Test, it sometimes needs to receive the first dhcp solicit
+  *    message.
+  * 2017-09-05 --liushenghui
+*/
+static int iEnable_trigger_dhcp_solicit_by_ra = 1;
+
+#endif
+
 static uint8_t *state_data[_STATE_MAX] = {NULL};
 static size_t state_len[_STATE_MAX] = {0};
 
@@ -50,7 +73,17 @@ static time_t last_update = 0;
 
 static unsigned int min_update_interval = DEFAULT_MIN_UPDATE_INTERVAL;
 static unsigned int script_sync_delay = 10;
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+/*
+  * IPv6 CE-Router Test Debug:
+  * 1. Set 'ra-updated' to wait for other actions for 3 seconds.
+  * 2018-01-20 --liushenghui
+*/
+static unsigned int script_accu_delay = 3;
+#else
 static unsigned int script_accu_delay = 1;
+#endif
 
 int main(_unused int argc, char* const argv[])
 {
@@ -291,6 +324,11 @@ int main(_unused int argc, char* const argv[])
 		odhcp6c_clear_state(STATE_SIP_FQDN);
 		bound = false;
 
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		if (iEnable_trigger_dhcp_solicit_by_ra)
+			wait_ra();
+	#endif
+
 		syslog(LOG_NOTICE, "(re)starting transaction on %s", ifname);
 
 		signal_usr1 = signal_usr2 = false;
@@ -363,10 +401,10 @@ int main(_unused int argc, char* const argv[])
 			  * 1. The maximum waiting time of 10 seconds is too long.
 			  * 2. IPv6 CE-Router Test assume the maximum time of
 			  *   configuration takes effect is 6 seconds, after the reply.
-			  * 3. So reset it to 3.
+			  * 3. So reset it to 1.
 			  * 2017-08-05 --liushenghui
 			*/
-			script_call("bound", 3, true);
+			script_call("bound", 1, true);
 		#else
 			script_call("bound", script_sync_delay, true);
 		#endif
@@ -689,6 +727,9 @@ void odhcp6c_expire(void)
 	odhcp6c_expire_list(STATE_RA_SEARCH, elapsed);
 	odhcp6c_expire_list(STATE_IA_NA, elapsed);
 	odhcp6c_expire_list(STATE_IA_PD, elapsed);
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	odhcp6c_expire_list(STATE_RA_ROUTER, elapsed);
+#endif
 }
 
 
@@ -719,3 +760,38 @@ static void sighandler(int signal)
 	else
 		signal_term = true;
 }
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+
+extern int iReceive_ra_flag;
+
+static void wait_ra(void)
+{
+	size_t iRouter_len = 0;
+	struct timespec ts = {2, 0};
+
+	iReceive_ra_flag = 0;
+	odhcp6c_signal_process();
+	odhcp6c_get_state(STATE_RA_ROUTER, &iRouter_len);
+
+	/*
+	  * IPv6 CE-Router Test Debug:
+	  * 1. We start the DHCP server discovery process if one of the
+	  *   following conditions is satisfied:
+	  *   1.1 Receive a RA.
+	  *   1.2 The router list is not empty.
+	  * 2017-11-06 --liushenghui
+	*/
+	while (!iReceive_ra_flag && !iRouter_len) {
+		ts.tv_sec= 2;
+		ts.tv_nsec = 0;
+
+		while (nanosleep(&ts, &ts) < 0 && errno == EINTR);
+
+		odhcp6c_signal_process();
+		odhcp6c_get_state(STATE_RA_ROUTER, &iRouter_len);
+	}
+}
+
+#endif
+

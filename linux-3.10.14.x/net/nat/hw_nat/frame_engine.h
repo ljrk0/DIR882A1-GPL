@@ -496,7 +496,24 @@ enum FoeCpuReason {
 
 /* PPE_GLO_CFG, Offset=0x200 */
 #if defined (CONFIG_RALINK_MT7621) || defined (CONFIG_ARCH_MT7623)
+
+#ifdef CONFIG_IPV6_CE_ROUTER_TEST_DEBUG
+/*
+  * IPv6 CE-Router Test Debug:
+  * 1. In RFC4443 section 3.3, If a router receives a packet with
+  *   a Hop Limit of zero, it MUST discard the packet and originate
+  *   an ICMPv6 Time Exceeded message with Code 0 to the source
+  *   of the packet.
+  * 2. The 'hw_nat' module just discard the packet, and do not originate
+  *   an ICMPv6 Time Exceeded message.
+  * 3. So we put it into IPv6 protocol stack to handle.
+  * 2017-10-13 --liushenghui
+*/
+#define DFL_TTL0_DRP		(0)	/* 1:Drop, 0: Alert CPU */
+#else
 #define DFL_TTL0_DRP		(1)	/* 1:Drop, 0: Alert CPU */
+#endif
+
 #else
 #define DFL_TTL0_DRP		(0)	/* 1:Drop, 0: Alert CPU */
 #endif

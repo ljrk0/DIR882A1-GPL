@@ -3,13 +3,13 @@ libc/unistd/sysconf.os: libc/unistd/sysconf.c include/libc-symbols.h \
  include/bits/uClibc_config.h include/sys/cdefs.h include/libc-internal.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
  include/errno.h include/bits/errno.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
  include/limits.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
  include/bits/posix1_lim.h include/bits/local_lim.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
  include/bits/uClibc_local_lim.h include/bits/posix2_lim.h \
  include/bits/xopen_lim.h include/bits/stdio_lim.h include/grp.h \
  include/bits/types.h include/bits/wordsize.h include/bits/kernel_types.h \
@@ -31,9 +31,9 @@ libc/unistd/sysconf.os: libc/unistd/sysconf.c include/libc-symbols.h \
  include/bits/uClibc_touplow.h include/sys/syscall.h \
  include/bits/sysnum.h include/bits/syscalls.h include/sgidefs.h \
  include/bits/syscalls-common.h include/sys/sysinfo.h include/sys/param.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
- /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
+ /home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
  include/regex.h include/sys/resource.h include/bits/resource.h \
  include/string.h include/dirent.h include/bits/dirent.h \
  include/internal/parse_config.h
@@ -56,11 +56,11 @@ include/errno.h:
 
 include/bits/errno.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
 
 include/limits.h:
 
@@ -70,7 +70,7 @@ include/bits/posix1_lim.h:
 
 include/bits/local_lim.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
 
 include/bits/uClibc_local_lim.h:
 
@@ -184,11 +184,11 @@ include/sys/sysinfo.h:
 
 include/sys/param.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
 
-/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
+/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
 
 include/regex.h:
 
@@ -203,4 +203,4 @@ include/dirent.h:
 include/bits/dirent.h:
 
 include/internal/parse_config.h:
-cmd_libc_unistd_sysconf.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/unistd/sysconf.c -o libc/unistd/sysconf.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/unistd/sysconf.os -MD -MP -MF libc/unistd/.sysconf.os.dep
+cmd_libc_unistd_sysconf.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/unistd/sysconf.c -o libc/unistd/sysconf.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/xieshijing/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/unistd/sysconf.os -MD -MP -MF libc/unistd/.sysconf.os.dep

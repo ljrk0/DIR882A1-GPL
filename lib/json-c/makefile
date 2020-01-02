@@ -1,14 +1,25 @@
 TOPDIR=../
 include $(TOPDIR)Rules.mak
 
-LIBZLIB_SRC=json-c-0.11
-PKG_SOURCE:=json-c-0.11.tar.gz
+
+ifeq ($(CONFIG_MCAFEE_SUPPORT), y)
+	VERSION=0.12.1
+else 
+	VERSION=0.11
+endif
+
+LIBZLIB_SRC=json-c-$(VERSION)
+PKG_SOURCE:=json-c-$(VERSION).tar.gz
 DIRS := ${LIBZLIB_SRC}
 
 LIB_SHARED_FULLNAME=libjson.so.0.1.0
 LIB_SHARED_MAJOR=libjson.so.0
 LIB_SHARED=libjson.so
+ifeq ($(CONFIG_MCAFEE_SUPPORT), y)
+LIBC_SHARED_FULLNAME=libjson-c.so.2.0.2
+else
 LIBC_SHARED_FULLNAME=libjson-c.so.2.0.1
+endif
 LIBC_SHARED_MAJOR=libjson-c.so.2
 LIBC_SHARED=libjson-c.so
 
@@ -63,13 +74,13 @@ TARGET_CFLAGS += $(FPIC)
 LIB_LDFLAGS := $(subst -z defs,,$(LDFLAGS))
 
 all:  Makefile configure
-	make -C json-c-0.11 all
+	make -C $(LIBZLIB_SRC) all
 
 Makefile:
 	if [ ! -d $(LIBZLIB_SRC) ]; then\
-	  tar -xvf $(PKG_SOURCE); \
-	  cp config.h.in $(LIBZLIB_SRC); \
-	  cp json_object.c $(LIBZLIB_SRC); \
+	  	tar -xvf $(PKG_SOURCE); \
+		cp config_$(VERSION).h.in $(LIBZLIB_SRC)/config.h.in; \
+		cp json_object_$(VERSION).c $(LIBZLIB_SRC)/json_object.c; \
 	fi
 	
 	if [ ! -d $(LIBZLIB_SRC) ]; then\
@@ -78,7 +89,9 @@ Makefile:
 	fi;
 
 configure:
+ifeq ($(CONFIG_MCAFEE_SUPPORT), y)
 	(cd $(LIBZLIB_SRC); \
+		sed -i s/-Werror// Makefile.in tests/Makefile.in; \
 		if [ -x $(CONFIGURE_CMD) ]; then \
 			if [ ! -f $(CONFIG_LIB) ]; then \
 				make clean ; \
@@ -86,33 +99,51 @@ configure:
 			fi; \
 		fi; \
 	)
+else
+	(cd $(LIBZLIB_SRC); \
+#		sed -i s/-Werror// Makefile.in tests/Makefile.in; \
+		if [ -x $(CONFIGURE_CMD) ]; then \
+			if [ ! -f $(CONFIG_LIB) ]; then \
+				make clean ; \
+				LIBS="-lm" $(TARGET_CONFIGURE_OPTS) $(CONFIGURE_CMD) $(CONFOPTS) $(CONFIGURE_ARGS) ; \
+			fi; \
+		fi; \
+	)	
+endif
 
 # the is a proxy section --YY
 all-recursive: Makefile
-	make -C json-c-0.11 all-recursive
+	make -C $(LIBZLIB_SRC) all-recursive
 
 # the is a proxy section --YY
 all-am: Makefile
-	make -C json-c-0.11 all-am
+	make -C $(LIBZLIB_SRC) all-am
 
 # the is a proxy section --YY
 clean-am: Makefile
-	make -C json-c-0.11 clean-am
+	make -C $(LIBZLIB_SRC) clean-am
 
 clean: Makefile
-	make -C json-c-0.11 clean
+	make -C $(LIBZLIB_SRC) clean
 
 romfs:
 
 shared: all
-	$(INSTALL) -d $(TOPDIR)lib		
+	$(INSTALL) -d $(TOPDIR)lib
+ifeq ($(CONFIG_MCAFEE_SUPPORT), y)
+#	$(RM) $(TOPDIR)lib/$(LIB_SHARED)*
+	$(RM) $(TOPDIR)lib/$(LIBC_SHARED)*
+#	$(INSTALL) -m 644 $(LIBZLIB_SRC)/.libs/$(LIB_SHARED_FULLNAME) $(TOPDIR)lib
+#	$(LN) -sf $(LIB_SHARED_FULLNAME) $(TOPDIR)lib/$(LIB_SHARED)
+#	$(LN) -sf $(LIB_SHARED_FULLNAME) $(TOPDIR)lib/$(LIB_SHARED_MAJOR)
+else
 	$(RM) $(TOPDIR)lib/$(LIB_SHARED)*
 	$(RM) $(TOPDIR)lib/$(LIBC_SHARED)*
-	$(INSTALL) -m 644 json-c-0.11/.libs/$(LIB_SHARED_FULLNAME) $(TOPDIR)lib
+	$(INSTALL) -m 644 $(LIBZLIB_SRC)/.libs/$(LIB_SHARED_FULLNAME) $(TOPDIR)lib
 	$(LN) -sf $(LIB_SHARED_FULLNAME) $(TOPDIR)lib/$(LIB_SHARED)
 	$(LN) -sf $(LIB_SHARED_FULLNAME) $(TOPDIR)lib/$(LIB_SHARED_MAJOR)
-	
-	$(INSTALL) -m 644 json-c-0.11/.libs/$(LIBC_SHARED_FULLNAME) $(TOPDIR)lib
+endif	
+	$(INSTALL) -m 644 $(LIBZLIB_SRC)/.libs/$(LIBC_SHARED_FULLNAME) $(TOPDIR)lib
 	$(LN) -sf $(LIBC_SHARED_FULLNAME) $(TOPDIR)lib/$(LIBC_SHARED)
 	$(LN) -sf $(LIBC_SHARED_FULLNAME) $(TOPDIR)lib/$(LIBC_SHARED_MAJOR)
 

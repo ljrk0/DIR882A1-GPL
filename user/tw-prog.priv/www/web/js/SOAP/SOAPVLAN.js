@@ -5,6 +5,7 @@ function SOAPGetVLANSettings()
 {
 	this.Enabled = false;
 	this.PriorityEnabled = false;
+	this.ISPName = "Manual";
 	this.VLANIDInfoLists = new SOAPVLANIDInfoLists();
 	this.VLANRuleInfoLists = new SOAPVLANRuleInfoLists();
 };
@@ -16,6 +17,7 @@ function SOAPSetVLANSettings()
 {
 	this.Enabled = false;
 	this.PriorityEnabled = false;
+	this.ISPName = "";
 	this.VLANIDInfoLists = new SOAPVLANIDInfoLists();
 	this.VLANRuleInfoLists = new SOAPVLANRuleInfoLists();
 };

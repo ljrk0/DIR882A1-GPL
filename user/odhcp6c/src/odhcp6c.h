@@ -24,12 +24,33 @@
 #define ND_OPT_RECURSIVE_DNS 25
 #define ND_OPT_DNSSL 31
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+/*
+  * IPv6 CE-Router Test Debug:
+  * 1. In RFC7083 section 3, Updates to the value of SOL_MAX_RT
+  *   in Section 5.5 of RFC 3315 from 120 secs to 3600 secs.
+  * 2017-08-25 --liushenghui
+*/
+#define DHCPV6_SOL_MAX_RT 3600
+#else
 #define DHCPV6_SOL_MAX_RT 120
+#endif
+
 #define DHCPV6_REQ_MAX_RT 30
 #define DHCPV6_CNF_MAX_RT 4
 #define DHCPV6_REN_MAX_RT 600
 #define DHCPV6_REB_MAX_RT 600
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+/*
+  * IPv6 CE-Router Test Debug:
+  * 1. In RFC7083 section 3, Updates to the value of INF_MAX_RT
+  *   in Section 5.5 of RFC 3315 from 120 secs to 3600 secs.
+  * 2017-08-25 --liushenghui
+*/
+#define DHCPV6_INF_MAX_RT 3600
+#else
 #define DHCPV6_INF_MAX_RT 120
+#endif
 
 #define DEFAULT_MIN_UPDATE_INTERVAL 30
 
@@ -129,7 +150,16 @@ struct dhcpv6_retx {
 	uint8_t max_rc;
 	char name[8];
 	reply_handler *handler_reply;
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	/* 
+	  * IPv6 CE-Router Test Debug:
+	  * 1. Add two parameter for 'handler_finish'.
+	  * 2017-08-24 --liushenghui
+	*/
+	int(*handler_finish)(enum dhcpv6_msg orig, int iReplyResult);
+#else
 	int(*handler_finish)(void);
+#endif
 };
 
 // DHCPv6 Protocol Headers
@@ -313,6 +343,13 @@ struct odhcp6c_entry {
 	  * 2017-08-08 --liushenghui
 	*/
 	long iSysUpTime;
+	/* 
+	  * IPv6 CE-Router Test Debug:
+	  * 1. The flag indicate that we will decline this option to server.
+	  * 2. This member is used to send Decline Messages.
+	  * 2017-08-24 --liushenghui
+	*/
+	int iDeclineFlag;
 #endif
 	uint8_t auxtarget[];
 };
