@@ -41,7 +41,7 @@ benchmark.o: benchmark.c ../config.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/times.h \
  ../src/gcrypt.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/string.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/socket.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/uio.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uio.h \
@@ -149,7 +149,7 @@ benchmark.o: benchmark.c ../config.h \
 
 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/string.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h:
 
 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/socket.h:
 

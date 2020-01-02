@@ -39,6 +39,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <errno.h>
+#include <syslog.h>
 
 #include "config.h"
 #include "upnpdescstrings.h"
@@ -55,6 +56,24 @@
 /* SSDP ip/port */
 #define SSDP_PORT (1900)
 #define SSDP_MCAST_ADDR ("239.255.255.250")
+static int 
+DeleteMulticastMembership(int s, in_addr_t ifaddr)
+{
+	struct ip_mreq imr; /* Ip multicast membership */
+
+	/* setting up imr structure */
+	imr.imr_multiaddr.s_addr = inet_addr(SSDP_MCAST_ADDR);
+	/*imr.imr_interface.s_addr = htonl(INADDR_ANY);*/
+	imr.imr_interface.s_addr = ifaddr;	/*inet_addr(ifaddr);*/
+
+	if (setsockopt(s, IPPROTO_IP, IP_DROP_MEMBERSHIP, (void *)&imr, sizeof(struct ip_mreq)) < 0)
+	{
+		syslog(LOG_ERR, "setsockopt(udp, IP_ADD_MEMBERSHIP): %m");
+		return -1;
+	}
+
+	return 0;
+}
 
 static int
 AddMulticastMembership(int s, in_addr_t ifaddr)
@@ -120,10 +139,68 @@ OpenAndConfSSDPReceiveSocket()
 			       "Failed to add multicast membership for address %s\n", 
 			       lan_addr[i].str );
 		}
+		else
+		{
+			syslog(LOG_WARNING,
+		      	 	"success to add multicast membership for interface %s",
+		      		 lan_addr[i].str );
+		}
 	}
 
 	return s;
 }
+
+
+void SSDP_delete_multicast_membership(int s)
+{
+	int i = 1;
+	
+
+	i = n_lan_addr;
+	while(i>0)
+	{
+		i--;
+		if(DeleteMulticastMembership(s, lan_addr[i].addr.s_addr) < 0)
+		{
+			syslog(LOG_WARNING,
+			       "Failed to delete multicast membership for interface %s",
+			       lan_addr[i].str );
+		}
+		else
+		{
+			syslog(LOG_WARNING,
+			       "success to delete multicast membership for interface %s",
+			       lan_addr[i].str );
+		}
+	}
+	return;
+}
+
+void SSDP_add_multicast_membership(int s)
+{
+	int i = 1;
+	
+	
+	i = n_lan_addr;
+	while(i>0)
+	{
+		i--;
+		if(AddMulticastMembership(s, lan_addr[i].addr.s_addr) < 0)
+		{
+			syslog(LOG_WARNING,
+			       "Failed to add multicast membership for interface %s",
+			        lan_addr[i].str );
+		}
+		else
+		{
+			syslog(LOG_WARNING,
+			       "success to add multicast membership for interface %s",
+			       lan_addr[i].str );
+		}
+	}
+	return;
+}
+
 
 /* open the UDP socket used to send SSDP notifications to
  * the multicast group reserved for them */

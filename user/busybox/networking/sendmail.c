@@ -10,6 +10,30 @@
 
 #define INITIAL_STDIN_FILENO 3
 
+#define NONE          "\033[m"
+#define YELLOW        "\033[1;33m"
+
+#define SYSLOG
+
+#ifndef SYSLOG
+
+#define cprintf(fmt, args...) do { \
+	FILE *fp = fopen("/dev/console", "w"); \
+	if (fp) { \
+		fprintf(fp, YELLOW"%s:%4d %20s: ", __FILE__, __LINE__, __FUNCTION__); \
+		fprintf(fp, fmt , ## args); \
+		fprintf(fp, NONE); \
+		fclose(fp); \
+	} \
+} while (0)
+
+#else
+
+#include <syslog.h>
+#define cprintf(fmt, args...) syslog(LOG_INFO, fmt, ##args)
+
+#endif
+
 static void uuencode(char *fname, const char *text)
 {
 	enum {
@@ -159,6 +183,7 @@ static const char *command(const char *fmt, const char *param)
 	if (msg) {
 		msg = xasprintf(fmt, param);
 		printf("%s\r\n", msg);
+		cprintf("%s\r\n", msg);
 	}
 	fflush(stdout);
 	return msg;
@@ -177,7 +202,10 @@ static int smtp_checkp(const char *fmt, const char *param, int code)
 	while ((answer = xmalloc_fgetline(stdin)) != NULL)
 		if (strlen(answer) <= 3 || '-' != answer[3])
 			break;
+		else
+			cprintf("answer=%s\n", answer);
 	if (answer) {
+		cprintf("answer=%s\n", answer);
 		int n = atoi(answer);
 		alarm(0);
 		if (ENABLE_FEATURE_CLEAN_UP) {
@@ -260,7 +288,7 @@ static const char *parse_url(const char *url, const char **user, const char **pa
 {
 	// parse [user[:pass]@]host
 	// return host
-	char *s = strchr(url, '@');
+	char *s = strrchr(url, '@');
 	*user = *pass = NULL;
 	if (s) {
 		*s++ = '\0';
@@ -277,6 +305,7 @@ static const char *parse_url(const char *url, const char **user, const char **pa
 
 static void rcptto(const char *s)
 {
+	cprintf("s=%s\n", s);
 	smtp_checkp("RCPT TO:<%s>", s, 250);
 }
 
@@ -285,6 +314,7 @@ int sendgetmail_main(int argc UNUSED_PARAM, char **argv)
 {
 	llist_t *opt_attachments = NULL;
 	char *opt_from;
+	char *opt_host;
 	const char *opt_user;
 	const char *opt_pass;
 	enum {
@@ -304,9 +334,14 @@ int sendgetmail_main(int argc UNUSED_PARAM, char **argv)
 
 		OPTS_N = 1 << 8,        // sendmail: request notification
 		OPTS_f = 1 << 9,        // sendmail: sender address
+		OPTS_h = 1 << 10,       // sender host name
 	};
 	const char *options;
 	int opts;
+
+	#ifdef SYSLOG
+		openlog("[MAIL]", LOG_ODELAY, LOG_MAIL);
+	#endif
 
 	// init global variables
 	INIT_G();
@@ -319,7 +354,7 @@ int sendgetmail_main(int argc UNUSED_PARAM, char **argv)
 		// save initial stdin since body is piped!
 		xdup2(STDIN_FILENO, INITIAL_STDIN_FILENO);
 		opt_complementary = "w+:a::";
-		options = "w:H:St" "s:c:a:iN:f:";
+		options = "w:H:St" "s:c:a:iN:f:h:";
 		// body is pseudo attachment read from stdin
 		llist_add_to_end(&opt_attachments, (char *)"-");
 	} else {
@@ -328,9 +363,11 @@ int sendgetmail_main(int argc UNUSED_PARAM, char **argv)
 		opt_complementary = "-1:w+";
 		options = "w:H:St" "z";
 	}
+
 	opts = getopt32(argv, options,
 		&timeout /* -w */, &opt_connect /* -H */,
-		&opt_subject, &opt_charset, &opt_attachments, NULL, &opt_from
+		&opt_subject, &opt_charset, &opt_attachments, NULL, &opt_from,
+		&opt_host
 	);
 	//argc -= optind;
 	argv += optind;
@@ -399,31 +436,32 @@ int sendgetmail_main(int argc UNUSED_PARAM, char **argv)
 		}
 
 		// we should start with modern EHLO
-		if (250 != smtp_checkp("EHLO %s", sane(opt_from), -1)) {
-			smtp_checkp("HELO %s", opt_from, 250);
+		if (!(opts & OPTS_h)) {
+			if (250 != smtp_checkp("EHLO %s", sane(opt_from), -1)) {
+				smtp_checkp("HELO %s", opt_from, 250);
+			}
+		} else {
+			if (250 != smtp_checkp("EHLO %s", sane(opt_host), -1)) {
+				smtp_checkp("HELO %s", opt_host, 250);
+			}
 		}
 
-		// set sender
-		// NOTE: if password has not been specified
-		// then no authentication is possible
-		code = (opt_pass ? -1 : 250);
-		// first try softly without authentication
-		while (250 != smtp_checkp("MAIL FROM:<%s>", opt_from, code)) {
-			// MAIL FROM failed -> authentication needed
-			if (334 == smtp_check("AUTH LOGIN", -1)) {
-				uuencode(NULL, opt_user); // opt_user != NULL
-				smtp_check("", 334);
-				uuencode(NULL, opt_pass);
-				smtp_check("", 235);
-			}
-			// authenticated OK? -> retry to set sender
-			// but this time die on failure!
-			code = 250;
+		if (opt_user && opt_pass)
+		{
+			smtp_check("AUTH LOGIN", 334);
+
+			uuencode(NULL, opt_user); // opt_user != NULL
+			smtp_check("", 334);
+			uuencode(NULL, opt_pass);
+			smtp_check("", 235);
 		}
+
+		smtp_checkp("MAIL FROM:<%s>", opt_from, 250);
 
 		// recipients specified as arguments
 		while (*argv) {
 			// loose test on email address validity
+			cprintf("*argv=%s\n", *argv);
 			if (strchr(sane(*argv), '@')) {
 				rcptto(sane(*argv));
 				llist_add_to_end(&headers, xasprintf("To: %s", *argv));
@@ -443,9 +481,11 @@ int sendgetmail_main(int argc UNUSED_PARAM, char **argv)
 			char *s;
 			while ((s = xmalloc_reads(INITIAL_STDIN_FILENO, NULL, NULL)) != NULL) {
 				if (0 == strncasecmp("To: ", s, 4) || 0 == strncasecmp("Cc: ", s, 4)) {
+					cprintf("s=%s\n", s);
 					rcptto(sane(s+4));
 					llist_add_to_end(&headers, s);
 				} else if (0 == strncasecmp("Bcc: ", s, 5)) {
+					cprintf("s=%s\n", s);
 					rcptto(sane(s+5));
 					if (ENABLE_FEATURE_CLEAN_UP)
 						free(s);
@@ -454,12 +494,15 @@ int sendgetmail_main(int argc UNUSED_PARAM, char **argv)
 					opt_from = s+6;
 					opts |= OPTS_f;
 */				} else if (0 == strncmp("Subject: ", s, 9)) {
+					cprintf("s=%s\n", s);
 					opt_subject = s+9;
 					opts |= OPTS_s;
 				} else if (s[0]) {
 					// misc header
+					cprintf("s=%s\n", s);
 					llist_add_to_end(&headers, s);
 				} else {
+					cprintf("s=%s\n", s);
 					free(s);
 					break; // empty line
 				}
@@ -472,25 +515,31 @@ int sendgetmail_main(int argc UNUSED_PARAM, char **argv)
 		// put headers we could have preread with -t
 		for (l = headers; l; l = l->link) {
 			printf("%s\r\n", l->data);
+			cprintf("%s\r\n", l->data);
 			if (ENABLE_FEATURE_CLEAN_UP)
 				free(l->data);
 		}
 
 		// put address header
 		printf("From: %s\r\n", opt_from);
+		cprintf("From: %s\r\n", opt_from);
 
 		// put encoded subject
 		if (opts & OPTS_c)
 			sane((char *)opt_charset);
 		if (opts & OPTS_s) {
 			printf("Subject: =?%s?B?", opt_charset);
+			cprintf("Subject: =?%s?B?", opt_charset);
 			uuencode(NULL, opt_subject);
 			printf("?=\r\n");
+			cprintf("?=\r\n");
 		}
 
 		// put notification
 		if (opts & OPTS_N)
 			printf("Disposition-Notification-To: %s\r\n", opt_from);
+		if (opts & OPTS_N)
+			cprintf("Disposition-Notification-To: %s\r\n", opt_from);
 
 		// make a random string -- it will delimit message parts
 		srand(monotonic_us());
@@ -498,6 +547,14 @@ int sendgetmail_main(int argc UNUSED_PARAM, char **argv)
 
 		// put common headers and body start
 		printf(
+			"Message-ID: <%s>\r\n"
+			"Mime-Version: 1.0\r\n"
+			"%smultipart/mixed; boundary=\"%s\"\r\n"
+			, boundary
+			, "Content-Type: "
+			, boundary
+		);
+		cprintf(
 			"Message-ID: <%s>\r\n"
 			"Mime-Version: 1.0\r\n"
 			"%smultipart/mixed; boundary=\"%s\"\r\n"
@@ -528,6 +585,15 @@ int sendgetmail_main(int argc UNUSED_PARAM, char **argv)
 				, q
 				, "Content-Transfer-Encoding: base64\r\n"
 			);
+			cprintf(
+				fmt
+				, boundary
+				, "Content-Type: "
+				, p
+				, "Content-Disposition: inline"
+				, q
+				, "Content-Transfer-Encoding: base64\r\n"
+			);
 			p = "";
 			fmt =
 				"\r\n--%s\r\n"
@@ -543,6 +609,7 @@ int sendgetmail_main(int argc UNUSED_PARAM, char **argv)
 
 		// put message terminator
 		printf("\r\n--%s--\r\n" "\r\n", boundary);
+		cprintf("\r\n--%s--\r\n" "\r\n", boundary);
 
 		// leave "put message" mode
 		smtp_check(".", 250);
@@ -670,6 +737,10 @@ int sendgetmail_main(int argc UNUSED_PARAM, char **argv)
 		pop3_check("QUIT", NULL);
 	}
 #endif // ENABLE_FETCHMAIL
+
+	#ifdef SYSLOG
+		closelog();
+	#endif
 
 	return 0;
 }

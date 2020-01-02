@@ -10,7 +10,7 @@
 #include "flash_api.h"
 
 #include <linux/autoconf.h>
-
+#include <autoconf.h>
 char libnvram_debug = 0;
 #define LIBNV_PRINT(x, ...) do { if (libnvram_debug) printf("%s %d: " x, __FILE__, __LINE__, ## __VA_ARGS__); } while(0)
 #define LIBNV_ERROR(x, ...) do { printf("%s %d: ERROR! " x, __FILE__, __LINE__, ## __VA_ARGS__); } while(0)
@@ -28,22 +28,34 @@ static block_t fb[FLASH_BLOCK_NUM+EXTEND_BLOCK_NUM] =
 	{
 		.name = FB_2860_BLOCK_NAME,
 		.flash_offset =  0x2000,
+#if (defined CONFIG_DEFAULTS_MEDIATEK_DIR_882) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_882_PARSE_2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_878_PARSE_2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_867) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_853_A2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_853_A1)
+	.flash_max_len = ENV_BLK_SIZE*8,
+#else
 #ifdef CONFIG_CONFIG_SHRINK
 		.flash_max_len = ENV_BLK_SIZE*16,
 #else
 		.flash_max_len = ENV_BLK_SIZE*4,
 #endif
+#endif
 		.valid = 0
 	},
 	{
 		.name = "rtdev",
+#if (defined CONFIG_DEFAULTS_MEDIATEK_DIR_882) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_882_PARSE_2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_878_PARSE_2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_867) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_853_A2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_853_A1)
+		.flash_offset = 0xa000,
+#else
 		.flash_offset = 0x6000,
+#endif
 		.flash_max_len = ENV_BLK_SIZE*2,
 		.valid = 0
 	},
 	{
 		.name = "wifi3",
+#if (defined CONFIG_DEFAULTS_MEDIATEK_DIR_882) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_882_PARSE_2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_878_PARSE_2) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_867) || (defined CONFIG_DEFAULTS_MEDIATEK_DIR_853_A2)
+		.flash_offset = 0xc000,
+#else
 		.flash_offset = 0x8000,
+#endif
 		.flash_max_len = ENV_BLK_SIZE*2,
 		.valid = 0
 	},

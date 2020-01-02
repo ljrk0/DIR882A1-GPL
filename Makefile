@@ -371,7 +371,7 @@ modules_install:
 CONFIG_PRODUCT_AC2600 = DIR_882
 CONFIG_PRODUCT_AC2600_LINUXDIR = linux-3.10.14.x
 
-DIR-882:
+DIR_882:
 	#$(warning $(LINUXDIR))
 	#$(warning $(CONFIG_PRODUCT))
 	cp vendors/Mediatek/$(CONFIG_PRODUCT_AC2600)/config/product.config                          .config

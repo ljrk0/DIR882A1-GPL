@@ -35,6 +35,7 @@
 #define RET_550 33
 #define RET_260 34	// Added by PaN
 #define RET_261 35	// Added by PaN
+#define RET_211 36	// Added by PaN
 
 
 extern const char *ftp_returnstr[];

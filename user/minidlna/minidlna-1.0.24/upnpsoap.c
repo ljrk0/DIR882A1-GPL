@@ -947,10 +947,10 @@ callback(void *args, int argc, char **argv, char **azColName)
 				int srcw = atoi(strsep(&resolution, "x"));
 				int srch = atoi(resolution);
 				if( !dlna_pn ) {
-					add_resized_res(srcw, srch, 4096, 4096, "JPEG_LRG", detailID, passed_args);
+					//add_resized_res(srcw, srch, 4096, 4096, "JPEG_LRG", detailID, passed_args);
 				}
 				if( !dlna_pn || !strncmp(dlna_pn, "JPEG_L", 6) || !strncmp(dlna_pn, "JPEG_M", 6) ) {
-					add_resized_res(srcw, srch, 640, 480, "JPEG_SM", detailID, passed_args);
+					//add_resized_res(srcw, srch, 640, 480, "JPEG_SM", detailID, passed_args);
 				}
 				if( tn && atoi(tn) ) {
 					ret = strcatf(str, "&lt;res protocolInfo=\"http-get:*:%s:%s\"&gt;"

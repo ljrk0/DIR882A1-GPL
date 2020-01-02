@@ -8,20 +8,20 @@
  #	compiled by GNU C version 4.4.3, GMP version 5.0.5, MPFR version 3.1.1, MPC version 1.0.1
  # GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
  # options passed:  -nostdinc
- # -I /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include
+ # -I /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include
  # -I arch/mips/include/generated -I include
- # -I /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi
+ # -I /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi
  # -I arch/mips/include/generated/uapi
- # -I /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi
+ # -I /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi
  # -I include/generated/uapi
- # -I /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-ralink
- # -I /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic
- # -D __KERNEL__ -D VMLINUX_LOAD_ADDRESS=0xffffffff80001000 -D DATAOFFSET=0
- # -D CC_HAVE_ASM_GOTO -D KBUILD_STR(s)=#s
+ # -I /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-ralink
+ # -I /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic
+ # -D __KERNEL__ -D VMLINUX_LOAD_ADDRESS=0xffffffff00000000+0x81001000
+ # -D DATAOFFSET=0 -D CC_HAVE_ASM_GOTO -D KBUILD_STR(s)=#s
  # -D KBUILD_BASENAME=KBUILD_STR(devicetable_offsets)
  # -D KBUILD_MODNAME=KBUILD_STR(devicetable_offsets)
  # -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include
- # -include /home/guohongliang/work/new882/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/kconfig.h
+ # -include /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/kconfig.h
  # -MD scripts/mod/.devicetable-offsets.s.d
  # scripts/mod/devicetable-offsets.c -G 0 -mno-check-zero-division -mabi=32
  # -mno-abicalls -msoft-float -march=mips32r2 -mtune=mips32r2 -mllsc

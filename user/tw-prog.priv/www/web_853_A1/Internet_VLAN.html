@@ -1,0 +1,940 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml">
+
+<head>
+    <title>D-LINK</title>
+    <!-- for browser tab logo -->
+    <link rel="icon" href="/image/dlink-favicon.ico">
+    <link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.selectbox.css" />
+    <script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/initialCSS.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/initialValidate.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/VLAN.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAction.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPVLAN.js"></script>
+    <script>
+    //xframeoption
+    if (top != self) {
+        top.location = self.location;
+    }
+
+    //session
+    if (sessionStorage.getItem('PrivateKey') === null) {
+        window.location.replace('../info/Login.html');
+    }
+
+    $(document).ready(function() {
+        presetCheckBox("enableVLAN", true);
+        presetCheckBox("enablePriority", true);
+        document.getElementById("vlan_setting").style.display = "inline";
+
+        //jquery
+        $("div.checkbox_on" || "div.checkbox_off").click(function(e) {
+            var checkboxId = e.target.id + "_ck";
+            //console.log(checkboxId)
+            if (e.target.getAttribute("class") == "checkbox_on") {
+                var disable = I18N("j", "Disabled");
+                e.target.setAttribute("class", "checkbox_off");
+                e.target.setAttribute("className", "checkbox_off");
+                document.getElementById(e.target.id).innerHTML = '<input type="checkbox" name=' + e.target.id + ' id=' + checkboxId + ' checked>' + disable;
+                document.getElementById(checkboxId).checked = false;
+                if (checkboxId == "enableVLAN_ck") {
+                    document.getElementById("vlan_setting").style.display = "none";
+                }
+                if (checkboxId == "enablePriority_ck") {
+                    $("#vlan_setting .pid").hide();
+                }
+                changeFlag = true;
+                save_button_changed();
+            } else {
+                var enable = I18N("j", "Enabled");
+                e.target.setAttribute("class", "checkbox_on");
+                e.target.setAttribute("className", "checkbox_on");
+                document.getElementById(e.target.id).innerHTML = '<input type="checkbox" name=' + e.target.id + ' id=' + checkboxId + ' checked="">' + enable;
+                document.getElementById(checkboxId).checked = true;
+                if (checkboxId == "enableVLAN_ck") {
+                    document.getElementById("vlan_setting").style.display = "inline";
+                }
+                if (checkboxId == "enablePriority_ck") {
+                    $("#vlan_setting .pid").show();
+                }
+                changeFlag = true;
+                save_button_changed();
+            }
+        });
+    });
+    </script>
+    <script type="text/javascript">
+    var _ReciprocalNumber = 25;
+    //data list
+    var datalist;
+    var datalistRule;
+
+    function Load_HTML() {
+        $("#header").load("header.html");
+    }
+
+    function Initial() {
+        initialMenu();
+
+        datalist = new Datalist();
+        datalistRule = new DatalistRule();
+    }
+
+    function String_UC(str) {
+        str = str.toUpperCase();
+        return str;
+    }
+
+    function GetXML() {
+
+        var getVLANResponse = new SOAPGetVLANSettings();
+        var soapAction = new SOAPAction();
+        var result_VLANResponse = soapAction.sendSOAPAction("GetVLANSettings", null, getVLANResponse);
+
+        result_VLANResponse.done(function(obj) {
+            if (obj.Enabled == "true") {
+                presetCheckBox("enableVLAN", true);
+                document.getElementById("vlan_setting").style.display = "inline";
+                //console.log(priority)
+                var vlanIdList = obj.VLANIDInfoLists.VLANID;
+                var vlanRuleList = obj.VLANRuleInfoLists.VLANRule;
+
+                for (var num in vlanIdList) {
+                    var vlanId = vlanIdList[num];
+                    var service = vlanId.Service;
+                    var priority = vlanId.Priority;
+                    var vid = vlanId.VID;
+                    if (service == "Internet") {
+                        document.getElementById("internetVlanId").value = vid;
+                        document.getElementById("internet_pid").value = priority;
+                    }
+                    else if (service == "VOIP") {
+                        document.getElementById("voipVlanId").value = vid;
+                        document.getElementById("voip_pid").value = priority;
+                    }
+                    else if (service == "IPTV") {
+                        document.getElementById("iptvVlanId").value = vid;
+                        document.getElementById("iptv_pid").value = priority;
+                    }
+
+                    var data = new Data(service, vid, priority);
+                    datalist.push(data);
+                }
+
+                for (var ruleNum in vlanRuleList) {
+                    var vlanRule = vlanRuleList[ruleNum];
+                    var _interface = vlanRule.Interface;
+                    var serviceMapping = vlanRule.ServiceMapping;
+                    if (_interface == "LAN1")
+                        $("#lan_port1").val(serviceMapping);
+                    else if (_interface == "LAN2")
+                        $("#lan_port2").val(serviceMapping);
+                    else if (_interface == "LAN3")
+                        $("#lan_port3").val(serviceMapping);
+                    else if (_interface == "LAN4")
+                        $("#lan_port4").val(serviceMapping);
+                    else if (_interface == "WLAN")
+                        $("#wifi").val(serviceMapping);
+                    else if (_interface == "WLANGuestZone")
+                        $("#wifi_guestZone").val(serviceMapping);
+
+                    var dataRule = new DataRule(_interface, serviceMapping);
+                    datalistRule.push(dataRule);
+                }
+            } else {
+                presetCheckBox("enableVLAN", false);
+                document.getElementById("vlan_setting").style.display = "none";
+
+                //set default data when vlan is disable
+ 				var vlanIdList = obj.VLANIDInfoLists.VLANID;
+                var vlanRuleList = obj.VLANRuleInfoLists.VLANRule;
+
+                for (var num in vlanIdList) {
+                    var vlanId = vlanIdList[num];
+                    var service = vlanId.Service;
+                    var priority = vlanId.Priority;
+                    var vid = vlanId.VID;
+                    var data = new Data(service, vid, priority);
+                    datalist.push(data);
+                }
+
+                for (var ruleNum in vlanRuleList) {
+                    var vlanRule = vlanRuleList[ruleNum];
+                    var _interface = vlanRule.Interface;
+                    var serviceMapping = vlanRule.ServiceMapping;
+
+                    var dataRule = new DataRule(_interface, serviceMapping);
+                    datalistRule.push(dataRule);
+                }
+            }
+            //console.log(obj.PriorityEnabled)
+            if (obj.PriorityEnabled == "true") {
+                presetCheckBox("enablePriority", true);
+            } else {
+                presetCheckBox("enablePriority", false);
+                $("#vlan_setting .pid").hide();
+            }
+            document.getElementById("main").style.display = "inline";
+            var selectWidth = new Object;
+            selectWidth.width = 100
+            $("#internet_pid").selectbox(selectWidth);
+            $("#iptv_pid").selectbox(selectWidth);
+            $("#voip_pid").selectbox(selectWidth);
+
+            $("#lan_port2").selectbox();
+            $("#lan_port3").selectbox();
+
+            $("#lan_port1").selectbox();
+            $("#lan_port2").selectbox();
+            $("#lan_port3").selectbox();
+            $("#lan_port4").selectbox();
+            $("#wifi").selectbox();
+            $("#wifi_guestZone").selectbox();
+        }).fail(function(obj) {
+            document.getElementById("main").style.display = "inline";
+            var selectWidth = new Object;
+            selectWidth.width = 100
+            $("#internet_pid").selectbox(selectWidth);
+            $("#iptv_pid").selectbox(selectWidth);
+            $("#voip_pid").selectbox(selectWidth);
+            $("#lan_port1").selectbox();
+            $("#lan_port2").selectbox();
+            $("#lan_port3").selectbox();
+            $("#lan_port4").selectbox();
+            $("#wifi").selectbox();
+            $("#wifi_guestZone").selectbox();
+        });
+
+        /*
+        // data for test
+        var data = new Data("Internet", 3, null);
+        datalist.push(data);
+        data = new Data("IPTV", 4, null);
+        datalist.push(data);
+        data = new Data("VOIP", 5, null);
+        datalist.push(data);
+
+        var dataRule = new DataRule("LAN1", "Internet");
+        datalistRule.push(dataRule);
+        dataRule = new DataRule("LAN2", "IPTV");
+        datalistRule.push(dataRule);
+        dataRule = new DataRule("LAN3", "VOIP");
+        datalistRule.push(dataRule);
+        dataRule = new DataRule("LAN4", "Internet");
+        datalistRule.push(dataRule);
+        dataRule = new DataRule("WLAN", "IPTV");
+        datalistRule.push(dataRule);      
+        dataRule = new DataRule("WLANGuestZone", "VOIP");
+        datalistRule.push(dataRule);
+        */
+    }
+
+    function CheckConnectionStatus() {
+        //clearcode
+        var cleararray = ['internetVlanId','iptvVlanId','voipVlanId'];
+        var realcleararray = $.makeArray(cleararray);
+        $.map(realcleararray, function(val,i){
+            $('#'+val).val(clearcode($('#'+val).val()));
+        });
+
+        $.ajax({
+            cache: false,
+            url: "./js/CheckConnection",
+            timeout: 5000,
+            type: "GET",
+            success: function(data) {
+                SetXML();
+            },
+            error: function() {
+                document.getElementById("DetectRouterConnection").style.display = "inline";
+            }
+        });
+    }
+
+    function SetXML() {
+        document.getElementById("CreatePopAlertMessage").style.display = "inline";
+        document.getElementById("waitSettingFinish").style.display = "inline";
+        setTimeout("Start_reciprocal_Number_RestoreConfiguration()", 1000);
+        var soapAction = new SOAPAction();
+        var vlanSettings = new SOAPSetVLANSettings();
+        if (document.getElementById("enableVLAN_ck").checked) {
+            var priorityEnabled = document.getElementById("enablePriority_ck").checked;
+            if (priorityEnabled) {
+                vlanSettings.PriorityEnabled = "true";
+            } else {
+            	vlanSettings.PriorityEnabled = "false";
+            }
+            vlanSettings.Enabled = "true";
+            var setVlanIdInfo = new SOAPVLANIDInfoLists();
+            setVlanIdInfo.VLANID.length = 0;
+            for (var i = 0; i < datalist.length(); i++) {
+                var service = datalist.list[i].service;
+                var vlanId = new SOAPVLANID();
+                vlanId.Service = service;
+                if (service == "Internet") {
+                    vlanId.VID = document.getElementById("internetVlanId").value;
+                    if (priorityEnabled) {
+                        vlanId.Priority = document.getElementById("internet_pid").value;
+                    }
+                } else if (service == "IPTV") {
+                    vlanId.VID = document.getElementById("iptvVlanId").value;
+                    if (priorityEnabled) {
+                        vlanId.Priority = document.getElementById("iptv_pid").value;
+                    }
+                } else if (service == "VOIP") {
+                    vlanId.VID = document.getElementById("voipVlanId").value;
+                    if (priorityEnabled) {
+                        vlanId.Priority = document.getElementById("voip_pid").value;
+                    }
+                }
+
+
+                setVlanIdInfo.VLANID.push(vlanId);
+            }
+            vlanSettings.VLANIDInfoLists = setVlanIdInfo;
+
+            var setVlanRuleInfo = new SOAPVLANRuleInfoLists();
+            setVlanRuleInfo.VLANRule.length = 0;
+
+            for (var j = 0; j < datalistRule.length(); j++) {
+                var interface_ = datalistRule.list[j].interface_;
+                var vlanRule = new SOAPVLANRule();
+                vlanRule.Interface = interface_;
+                if (interface_ == "LAN1")
+                    vlanRule.ServiceMapping = document.getElementById("lan_port1").value;
+                else if (interface_ == "LAN2")
+                    vlanRule.ServiceMapping = document.getElementById("lan_port2").value;
+                else if (interface_ == "LAN3")
+                    vlanRule.ServiceMapping = document.getElementById("lan_port3").value;
+                else if (interface_ == "LAN4")
+                    vlanRule.ServiceMapping = document.getElementById("lan_port4").value;
+                else if (interface_ == "WLAN")
+                    vlanRule.ServiceMapping = document.getElementById("wifi").value;
+                else if (interface_ == "WLANGuestZone")
+                    vlanRule.ServiceMapping = document.getElementById("wifi_guestZone").value;
+
+                setVlanRuleInfo.VLANRule.push(vlanRule);
+            }
+            vlanSettings.VLANRuleInfoLists = setVlanRuleInfo;
+        } else {
+            vlanSettings.Enabled = "false";
+            vlanSettings.PriorityEnabled = "false";
+            var setVlanIdInfo = new SOAPVLANIDInfoLists();
+            setVlanIdInfo.VLANID.length = 0;
+            for (var i = 0; i < datalist.length(); i++) {
+                var service = datalist.list[i].service;
+                var vlanId = new SOAPVLANID();
+                vlanId.Service = service;
+                vlanId.VID = "";
+                vlanId.Priority = "";
+
+                setVlanIdInfo.VLANID.push(vlanId);
+            }
+            vlanSettings.VLANIDInfoLists = setVlanIdInfo;
+
+            var setVlanRuleInfo = new SOAPVLANRuleInfoLists();
+            setVlanRuleInfo.VLANRule.length = 0;
+
+            for (var j = 0; j < datalistRule.length(); j++) {
+                var interface_ = datalistRule.list[j].interface_;
+                var vlanRule = new SOAPVLANRule();
+                vlanRule.Interface = "";
+                vlanRule.ServiceMapping = "";
+
+                setVlanRuleInfo.VLANRule.push(vlanRule);
+            }
+            vlanSettings.VLANRuleInfoLists = setVlanRuleInfo;
+        }
+
+        var setVlanResult = soapAction.sendSOAPAction("SetVLANSettings", vlanSettings, null);
+
+        setVlanResult.done(function(obj) {}).fail(function(obj) {
+            // case 1: show error message
+            document.getElementById("waitSettingFinish").style.display = "none";
+            document.getElementById("FailedSettings").style.display = "inline";
+            // case 2: reload page
+            //waitSettingFinished();
+            return;
+        });
+    }
+
+    function waitSettingFinished() {
+        window.location.reload();
+    }
+
+    function Start_reciprocal_Number_RestoreConfiguration() {
+        if (_ReciprocalNumber >= 0) {
+            document.getElementById("reciprocal_Number").innerHTML = _ReciprocalNumber + " " + I18N("j", "Sec");
+            _ReciprocalNumber--;
+            setTimeout("Start_reciprocal_Number_RestoreConfiguration()", 1000);
+        } else {
+            document.getElementById("waitSettingFinish").style.display = "none";
+            document.getElementById("SuccessSettings").style.display = "inline";
+        }
+    }
+
+    function returnToHome() {
+        window.location.reload();
+    }
+
+    function CheckString(element, value) {
+        element.value = element.value.replace(/\s/g, "");
+    }
+    </script>
+    <script language="JavaScript">
+    // 2013/09/23 Timmy Modify
+    $(function() {
+        $("select").change(function() {
+            save_button_changed();
+        });
+        $("input").keydown(function() {
+            save_button_changed();
+        });
+    });
+
+    function save_button_changed() {
+        document.getElementById("Save_Disable_btn").style.display = "none";
+        document.getElementById("Save_btn").style.display = "block";
+        changeFlag = true;
+        changeTimeoutAction();
+    }
+    </script>
+</head>
+
+<body>
+    <form name="internet_form" id="internet_form" method="POST" action="">
+        <div id="wrapper">
+            <!-- ------------------ Logo ----------------------- -->
+            <div id="header"></div>
+            <!-- ------------------ Menu ------------------------->
+            <div id="menu"></div>
+            <div id="menu_edge"></div>
+            <!-- ------------------ Content -------------------- -->
+            <div id="content">
+                <!-- ------------------ info -------------------- -->
+                <div id="info">
+                    <div id="FunctionName">
+                        <script>
+                        I18N("h", "Internet");
+                        </script>
+                    </div>
+                    <div id="wallimage"><img src="image/page_vlan.png" alt="" width="195" height="119" /></div>
+                    <div id="directions">
+                        <script>
+                        I18N("h", "A Triple-Play (VLAN) is a switched network that is logically segmented by function, project team, or application, without regard to the physical location of the users. You can configure which hardware port will be assigned to a VLAN, and all packets from a network device in a VLAN will only be forwarded to other devices in the same VLAN.");
+                        </script>
+                    </div>
+                </div>
+                <!-- ------------------ funcBar -------------------- -->
+                <div id="funcBar">
+                    <div id="pagePath">
+                        <script>
+                        I18N("h", "Settings");
+                        </script> >>
+                        <script>
+                        I18N("h", "Internet");
+                        </script> >>
+                        <script>
+                        I18N("h", "VLAN");
+                        </script>
+                    </div>
+                    <ul id="rightFunc">
+                        <li style="display:block">
+                            <div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click();changeTimeoutAction();" style="cursor:pointer; display:none">
+                                <script>
+                                I18N("h", "Save");
+                                </script>
+                            </div>
+                        </li>
+                        <li style="display:block">
+                            <div id="Save_Disable_btn">
+                                <script>
+                                I18N("h", "Save");
+                                </script>
+                            </div>
+                        </li>
+                        <input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+                        <li style="display:block">
+                            <a href="javascript:CheckHTMLStatus('Internet');" style="text-decoration:none;" onclick="return confirmExit()">
+                                <div id="page_btn" class="linkstyle_1">
+                                    <script>
+                                    I18N("h", "IPv4");
+                                    </script>
+                                </div>
+                            </a>
+                        </li>
+                        <li style="display:block">
+                            <a href="javascript:CheckHTMLStatus('Internet_IPv6');" style="text-decoration:none;" onclick="return confirmExit()">
+                                <div id="page_btn" class="linkstyle_1">
+                                    <script>
+                                    I18N("h", "IPv6");
+                                    </script>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- ------------------ main -------------------- -->
+                <br />
+                <div id="main" style="display:none">
+                    <table class="block" style="margin-bottom:0;">
+                        <tr>
+                            <td colspan="2">
+                                <div class="title">
+                                    <script>
+                                    I18N("h", "Triple-Play");
+                                    </script>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <script>
+                                I18N("h", "Status");
+                                </script>:</th>
+                            <td>
+                                <div id="enableVLAN" class="checkbox_on">
+                                    <input type="checkbox" name="enableVLAN" id="enableVLAN_ck" checked>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="vlan_setting" style="display:none">
+                        <table class="block">
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <script>
+                                        I18N("h", "Priority ID");
+                                        </script>:</th>
+                                    <td>
+                                        <div id="enablePriority" class="checkbox_on">
+                                            <input type="checkbox" name="enablePriority" id="enablePriority_ck">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <script>
+                                        I18N("h", "Internet VLAN ID");
+                                        </script>:</th>
+                                    <td>
+                                        <input class="styled-text" type="text" name="internetVlanId" size="4" maxlength="4" id="internetVlanId">
+                                    </td>
+                                    <th class="pid">
+                                        <script>
+                                        I18N("h", "Priority ID");
+                                        </script>:</th>
+                                    <td class="pid">
+                                        <div class="styled-select">
+                                            <select name="internet_pid" id="internet_pid">
+                                                <option value="0" selected>0</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <script>
+                                        I18N("h", "IPTV VLAN ID");
+                                        </script>:</th>
+                                    <td>
+                                        <input class="styled-text" type="text" name="iptvVlanId" size="4" maxlength="4" id="iptvVlanId">
+                                    </td>
+                                    <th class="pid">
+                                        <script>
+                                        I18N("h", "Priority ID");
+                                        </script>:</th>
+                                    <td class="pid">
+                                        <div class="styled-select">
+                                            <select name="iptv_pid" id="iptv_pid">
+                                                <option value="0" selected>0</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <script>
+                                        I18N("h", "VOIP VLAN ID");
+                                        </script>:</th>
+                                    <td>
+                                        <input class="styled-text" type="text" name="voipVlanId" size="4" maxlength="4" id="voipVlanId">
+                                    </td>
+                                    <th class="pid">
+                                        <script>
+                                        I18N("h", "Priority ID");
+                                        </script>:</th>
+                                    <td class="pid">
+                                        <div class="styled-select">
+                                            <select name="voip_pid" id="voip_pid">
+                                                <option value="0" selected>0</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <hr />
+                        <table class="block">
+                            <tr>
+                                <td colspan="2">
+                                    <div class="title">
+                                        <script>
+                                        I18N("h", "Interface Traffic Type Setting");
+                                        </script>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <script>
+                                    I18N("h", "LAN Port 1");
+                                    </script>
+                                </th>
+                                <td>
+                                    <div class="styled-select">
+                                        <select name="lan_port1" id="lan_port1">
+                                            <option value="Internet" selected>Internet</option>
+                                            <option value="IPTV">IPTV</option>
+                                            <option value="VOIP">VOIP</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <script>
+                                    I18N("h", "LAN Port 2");
+                                    </script>
+                                </th>
+                                <td>
+                                    <div class="styled-select">
+                                        <select name="lan_port2" id="lan_port2">
+                                            <option value="Internet" selected>Internet</option>
+                                            <option value="IPTV">IPTV</option>
+                                            <option value="VOIP">VOIP</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <script>
+                                    I18N("h", "LAN Port 3");
+                                    </script>
+                                </th>
+                                <td>
+                                    <div class="styled-select">
+                                        <select name="lan_port3" id="lan_port3">
+                                            <option value="Internet" selected>Internet</option>
+                                            <option value="IPTV">IPTV</option>
+                                            <option value="VOIP">VOIP</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <script>
+                                    I18N("h", "LAN Port 4");
+                                    </script>
+                                </th>
+                                <td>
+                                    <div class="styled-select">
+                                        <select name="lan_port4" id="lan_port4">
+                                            <option value="Internet" selected>Internet</option>
+                                            <option value="IPTV">IPTV</option>
+                                            <option value="VOIP">VOIP</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <script>
+                                    I18N("h", "Wireless");
+                                    </script>
+                                </th>
+                                <td>
+                                    <div class="styled-select">
+                                        <select name="wifi" id="wifi">
+                                            <option value="Internet" selected>Internet</option>
+                                            <option value="IPTV">IPTV</option>
+                                            <option value="VOIP">VOIP</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <script>
+                                    I18N("h", "Wireless Guest Zone");
+                                    </script>
+                                </th>
+                                <td>
+                                    <div class="styled-select">
+                                        <select name="wifi_guestZone" id="wifi_guestZone">
+                                            <option value="Internet" selected>Internet</option>
+                                            <option value="IPTV">IPTV</option>
+                                            <option value="VOIP">VOIP</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div id="CreatePopAlertMessage" style="display:none">
+                    <div id="AlertPopRect">
+                        <div id="AlertPopBody">
+                            <table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <center>
+                                                <div id="Loading_pop_image2"></div>
+                                            </center>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label id="reciprocal_Number"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td id="dialog_msg_black2">
+                                            <script>
+                                            I18N("h", "Your changes are being saved.");
+                                            </script>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="myAlertPop_table_b" id="SuccessSettings" border="0" cellspacing="0" style="display:none">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <center>
+                                                <div id="Information_pop_image"></div>
+                                            </center>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div id="dialog_msg_black">
+                                                <script>
+                                                I18N("h", "The new settings have been saved.");
+                                                </script>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <center>
+                                                <div id="Confirm_btn" onclick="returnToHome()" style="cursor:pointer">
+                                                    <script>
+                                                    I18N("h", "OK");
+                                                    </script>
+                                                </div>
+                                            </center>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="myAlertPop_table_b" id="FailedSettings" border="0" cellspacing="0" style="display:none">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <center>
+                                                <div id="Error_pop_image"></div>
+                                            </center>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div id="dialog_msg_black">
+                                                <script>
+                                                I18N("h", "The new settings cannot be saved. Please try again.");
+                                                </script>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <center>
+                                                <div id="Confirm_btn" onclick="returnToHome()" style="cursor:pointer">
+                                                    <script>
+                                                    I18N("h", "OK");
+                                                    </script>
+                                                </div>
+                                            </center>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+                <div id="DetectRouterConnection" style="display:none"></div>
+                <div id="footer">
+                    <div id="copyright">
+                        <script>
+                        I18N("h", "COPYRIGHT");
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <!-- id="content" -->
+        </div>
+        <!-- id="wrapper" -->
+    </form>
+    <script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        /* Note: it should return "" if it does not have error check message. */
+        $.validator.addMethod("checkSetValues", function(value, element) {
+            var elem_id = element.id;
+            var error_msg = "";
+            var ValidNumRegex = /(^[0-9]+$)/;
+
+            if (document.getElementById("enableVLAN_ck").checked) {
+                if (!ValidNumRegex.test(value))
+                    return false;
+
+                if (elem_id == "internetVlanId") {
+                    if (value == "" || value == null)
+                        return false;
+                    else {
+                        if (value < 0 || value > 4094)
+                            return false;
+                    }
+                }
+
+                if (elem_id == "iptvVlanId") {
+                    if (value == "" || value == null)
+                        return false;
+                    else {
+                        if (value < 0 || value > 4094)
+                            return false;
+                    }
+                }
+
+                if (elem_id == "voipVlanId") {
+                    if (value == "" || value == null)
+                        return false;
+                    else {
+                        if (value < 0 || value > 4094)
+                            return false;
+                    }
+                }
+            }
+            return true;
+        }, "");
+
+        $.validator.addMethod("vlanvlauedifferent", function(value, element) {
+            var elem_id = element.id;
+            var internetVlanIdval = $('#internetVlanId').val();
+            var iptvVlanIdval = $('#iptvVlanId').val();
+            var voipVlanIdval = $('#voipVlanId').val();
+
+            if (document.getElementById("enableVLAN_ck").checked) {
+                if (elem_id == "internetVlanId") {
+                    if (internetVlanIdval == iptvVlanIdval || internetVlanIdval == voipVlanIdval) {
+                        return false;
+                    }
+                }
+
+                if (elem_id == "iptvVlanId") {
+                    if (iptvVlanIdval == internetVlanIdval || iptvVlanIdval == voipVlanIdval) {
+                        return false;
+                    }
+                }
+
+                if (elem_id == "voipVlanId") {
+                    if (voipVlanIdval == internetVlanIdval || voipVlanIdval == iptvVlanIdval) {
+                        return false;
+                    }
+                }
+
+            }
+            return true;
+        }, I18N("j", "VLAN ID cannot be the same."));
+
+
+        $('#internet_form').validate({
+            rules: {
+                internetVlanId: {
+                    required: true,
+                    checkSetValues: true,
+                    vlanvlauedifferent: true
+                },
+                iptvVlanId: {
+                    required: true,
+                    checkSetValues: true,
+                    vlanvlauedifferent: true
+                },
+                voipVlanId: {
+                    required: true,
+                    checkSetValues: true,
+                    vlanvlauedifferent: true
+                },
+            },
+            messages: {
+                internetVlanId: {
+                    required: jQuery.validator.messages.number,
+                    checkSetValues: I18N("j", "Please enter a value between 0 and 4094.")
+                },
+                iptvVlanId: {
+                    required: jQuery.validator.messages.number,
+                    checkSetValues: I18N("j", "Please enter a value between 0 and 4094.")
+                },
+                voipVlanId: {
+                    required: jQuery.validator.messages.number,
+                    checkSetValues: I18N("j", "Please enter a value between 0 and 4094.")
+                },
+            },
+            submitHandler: function(form) {
+                CheckConnectionStatus();
+            }
+        });
+    });
+    </script>
+    <script type="text/javascript">
+    Load_HTML();
+    Initial();
+    setMenu("menu_Settings");
+    GetXML();
+    startTimeout();
+    </script>
+</body>
+
+</html> 

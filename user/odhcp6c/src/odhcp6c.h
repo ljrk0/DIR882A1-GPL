@@ -264,6 +264,10 @@ enum odhcp6c_state {
 	STATE_S46_MAPE,
 	STATE_S46_LW,
 	STATE_PASSTHRU,
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	STATE_IA_PD_BAK,
+	STATE_RA_ROUTER,
+#endif
 	_STATE_MAX
 };
 
@@ -299,6 +303,17 @@ struct odhcp6c_entry {
 	uint32_t t1;
 	uint32_t t2;
 	uint32_t iaid;
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	/* 
+	  * IPv6 CE-Router Test Debug:
+	  * The system up time configuration is received.
+	  * 1. This member is used to prefix timeout in LAN.
+	  * 2. In RFC3633 section 5, A requesting router is required to terminate
+	  *   the use of a delegated prefix if the valid lifetime of the prefix expires.
+	  * 2017-08-08 --liushenghui
+	*/
+	long iSysUpTime;
+#endif
 	uint8_t auxtarget[];
 };
 

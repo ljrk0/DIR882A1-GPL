@@ -1,6 +1,11 @@
 #!/bin/sh
 
-PRODUCT_ID="AP-MTKH7-0002-dlink-sdk-"
+PRODUCT_NAME=`cat ../../config/autoconf.h | grep CONFIG_CUSTOM_PRODUCT |cut -d ' ' -f 3 | sed 's/\"//g'`
+if [ "$PRODUCT_NAME" = "DIR-867" ]; then
+	PRODUCT_ID="AP-MSM001-0001-dlink-sdk-"	
+else
+	PRODUCT_ID="AP-MTKH7-0002-dlink-sdk-"
+fi
 BUILD_TIME=`date "+%Y-%m-%d %T"`
 SOFTWARE_VER_FILE="version.h"
 echo $BUILD_TIME

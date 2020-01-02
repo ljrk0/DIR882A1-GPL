@@ -1,0 +1,364 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+
+<head>
+<title>D-LINK</title>
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="/css/jquery.selectbox.css" />
+<link rel="stylesheet" type="text/css" href="/css/style_h.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialCSS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialValidate.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/ConnectedClients.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/UserDevice_CreateRule.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPClientInfo.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/comm.js"></script>
+
+<script type="text/javascript">
+//xframeoption
+if(top!=self){top.location=self.location;}
+
+//session
+if (sessionStorage.getItem('PrivateKey') === null){
+	window.location.replace('../info/Login.html');
+}
+
+	var HNAP = new HNAP_XML();
+	var soapAction = new SOAPAction();
+	var set_Iteration;
+	// Detect how many PortForwarding we can use.
+	var Total_Device = 0;
+	// Set up the limit total Portforward
+	var Limit_TotalDevice = 24;
+	//var macIpMap = new Object();
+	var valueChanged = 0;
+	var orig_isAllow;
+	var macAddrList = new Array();
+	var delMACList = new Array();
+	
+	function Load_HTML()	{	$("#header").load("header.html");	}
+	function Initial()
+	{
+		initialMenu();
+		initialDetectRouterConnection();
+    	$("#ruleType").selectbox({width:330});
+        document.getElementById("main").style.display = "inline";
+    }
+
+	function setIteration(value)	{	set_Iteration = value;	}
+	function checkUpdate()	{	valueChanged = 1;	}
+
+	function client_editMac_Description(element, value)
+	{
+    	var get_Selection = element.options[value].text;
+    	document.getElementById("client_editMac").value = get_Selection;
+    	$("#client_editMac").valid();
+	}
+
+	function GetSchedule_List()
+	{
+		var xml_GetScheduleList = HNAP.GetXML("GetScheduleSettings");
+		tmpXML_ScheduleList = xml_GetScheduleList;
+		var schedule = document.getElementById("schedule");
+		var schedule_cnt = xml_GetScheduleList.Get("GetScheduleSettingsResponse/ScheduleInfoLists#");
+		tmpXML_ScheduleCnt = schedule_cnt;
+		var rule = $("#ruleType").val();
+		var option = document.createElement("option");
+		option.value = "Always";
+		option.selected = true;
+
+		if(rule == "1") {
+			option.innerHTML = "Always OFF";
+			schedule.options.add(option);
+		} else {
+			option.innerHTML = "Always";
+			schedule.options.add(option);
+		}
+
+		for (var j = 1; j <= schedule_cnt; j++)
+		{
+			var list = xml_GetScheduleList.Get("GetScheduleSettingsResponse/ScheduleInfoLists:" + j + "/ScheduleName");
+			//schedule.options.add(new Option(list, list));
+			$("#schedule").append('<option value="'+list+'">'+ AllEncode(decode_char_text(list)) +'</option>');
+		}
+		$("#schedule").selectbox();
+	}
+
+	function CheckConnectionStatus()
+	{
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 5000,
+			type : "GET",
+			success : function(data) { setDevice(); },
+			error : function() { document.getElementById("DetectRouterConnection").style.display = "inline"; }
+		});
+	}
+	
+	function waitSettingFinished()	{	window.location.reload();	}
+
+	function showWarnMsg() {
+		if (!confirm(I18N("j", "Adjusting the Parental Control will clear any currently set rules. Do you want to clear it?")))
+		{
+			return false;
+		}
+		else
+		{
+			var rule = $("#ruleType").val();
+			$("#schedule").selectbox('detach');
+			var schedule = document.getElementById("schedule");
+			if (rule == "1") {
+				schedule.options[0].innerHTML = "Always OFF";
+			} else {
+				schedule.options[0].innerHTML = "Always";
+			}
+			$("#schedule").selectbox('attach');
+
+			if(document.getElementById("tblDeviceList").rows.length > 1) {
+				$("#tblDeviceList").find("tr:gt(0)").remove();
+				Total_Device = 0;
+				check_TotalDevice(Limit_TotalDevice, Total_Device);
+				if ((orig_isAllow == true && $("#ruleType").val() == "1")
+					||(orig_isAllow == false && $("#ruleType").val() == "2")) {
+					delMACList = macAddrList;
+				} 
+			}			
+			return true;
+		}
+	}
+</script>
+
+<script language="JavaScript">
+	// 2013/07/30 Timmy Add
+	function focusToFirstIndex(str)
+	{
+		if (str.id == "save_buttonFocus")	{	if(window.event.keyCode == 9)	{	document.getElementById("deviceName").focus();	}	}
+		if (str.id == "save_buttonFocus2")	{	if(window.event.keyCode == 9)	{	document.getElementById("edit_DeviceName").focus();		}	}
+	}
+</script>
+<script language="JavaScript">
+	// 2013/09/23 Timmy Modify
+	$(function() {
+		$("select").change(function () {	
+			save_button_changed();	
+		});
+		$("input").keydown(function () {	save_button_changed();	});
+		$("#device_form  input").keyup(function(){
+			save_button_changed();
+		});
+
+		$("#device_form select").change(function () {	
+			save_button_changed();	
+		});
+
+		if (currentDevice.featureUsbPort) {
+			document.getElementById("userTab").style.display = "block";
+		} else {
+			document.getElementById("userTab").style.display = "none";
+		}
+	});
+	function save_button_changed()
+	{
+		document.getElementById("Save_Disable_btn").style.display = "none";
+		document.getElementById("Save_btn").style.display = "block";
+		changeFlag = true;
+		changeTimeoutAction();
+	}
+</script>
+<style>
+#createPop	{	display: none;	}
+#editPop 	{	display: none;	}
+.progressBar {
+	background-color: #fff;
+	height: 30px;
+	width: 300px;
+	border: 1px solid #4598aa;
+	color: #222;
+}
+.progressBar .bar {
+	background-color: #4598aa;
+	height: 30px;
+	width: 0px;
+}
+</style>
+
+</head>
+
+<body>
+	<div id="wrapper">
+		<!-- ------------------ Logo ----------------------- -->
+		<div id="header"></div>
+		<!-- ------------------ Menu ------------------------->
+		<div id="menu"></div>
+		<div id="menu_edge"></div>
+		<!-- ------------------ Content -------------------- -->
+		<div id="content">
+			<!-- ------------------ info -------------------- -->	
+	  		<div id="info"> 
+			    <div id="FunctionName"><script>I18N("h", "Device");</script></div>
+				<div id="wallimage"><img src="image/page_userDevice.png" alt="" width="195" height="119"/></div>
+		        <div id="directions">
+					<script>I18N("h", "Use this page to define device access rules. You may allow or deny access to the network, set parental controls, or allow VPN access.");</script>
+				</div>
+	    	</div>
+			<!-- ------------------ funcBar -------------------->
+			<div id="funcBar">
+				<div id="pagePath">&nbsp;<script>I18N("h", "User & Device");</script>&nbsp;>>&nbsp;<script>I18N("h", "Device");</script></div>
+				<ul id="rightFunc">
+					<li style="display:block"><div id="Save_btn" onclick="CheckConnectionStatus();changeTimeoutAction();" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li>
+					<li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+					<li style="display:none" id="userTab"><a href="javascript:CheckHTMLStatus('UserAndDevice');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "User");</script></div></a></li>
+					<!--<li style="display:block"><a href="javascript:CheckHTMLStatus('Group');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "Group");</script></div></a></li>-->
+				</ul>
+			</div>
+			<!-- ------------------ main -------------------- -->
+			<div id="main" style="display:none">
+                <div style="padding-top: 20px;">
+                    <select name="ruleType" id="ruleType" onchange="return showWarnMsg()">
+                        <option value="1" selected>Turn Parental Control on with BLOCK rules</option>
+                        <option value="2">Turn Parental Control on with ALLOW rules</option>
+                    </select>
+				</div>
+				<!-- ------------------ table -------------------- -->
+				<table class="myTable2" border="0" cellspacing="0" id="tblDeviceList">
+					<thead>
+					     <tr>
+                            <th><script>I18N("h", "Status");</script></th>
+                            <th><script>I18N("h", "Name");</script></th>
+                            <th><script>I18N("h", "MAC Address");</script></th>
+                            <!--
+                            <th><script>I18N("h", "IP");</script></th>
+                            -->
+                            <th><script>I18N("h", "Schedule");</script></th>
+                            <th><script>I18N("h", "Edit");</script></th>
+                            <th><script>I18N("h", "Delete");</script></th>
+					     </tr>
+					</thead>
+				</table>
+				<br /><br />
+					<button type="button" name="addRuleButton" id="addRuleButton" class="styled_button_s" onclick="addData('true')"><script>I18N("h", "Add Rule");</script></button>
+					&nbsp;&nbsp;<script>I18N("h", "Remaining");</script>:&nbsp;<label id="RemainingRules">24</label>
+				<br />
+		<form name="device_form" id="device_form" action="">
+		<input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+		<div id="editPop" style="display:none">
+			<div id="dialogBox"  style="width:550px">
+				<div id="closeCreatePopBtn" onclick="clearCreateDeviceRulePOP()" style="cursor:pointer"></div>
+				<table class="myCreatePop_table" border="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td colspan="3" class="popTitle" id="popTitle"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Name");</script>:</th>
+							<td colspan="3"><input class="styled-text" type="text" name="client_Name" size="25" id="client_Name" onchange="checkUpdate()"></td>
+						</tr>
+						<tr id="show_Vendor">
+							<th><script>I18N("h", "Vendor");</script>:</th>
+							<td id="client_Vendor" colspan="3">Unknown Vendor</td>
+						</tr>
+						<tr id="show_MACAddress">
+							<th><script>I18N("h", "MAC Address");</script>:</th>
+							<td id="client_MACAddress"></td>
+							<td id="show_editMac" valign="top" style="display:none"><input class="styled-text" type="text" name="client_editMac" maxlength="17" size="25" id="client_editMac" onchange="checkUpdate();" /></td>
+							<td id="show_select_editMac" valign="top" style="display:none">
+								<div class="styled-select">
+									<select name="select_client_editMac" id="select_client_editMac" onchange="client_editMac_Description(this, this.value)">
+										<option value="0" selected>&lt;&lt; MAC Address</option>
+									</select>
+								</div>
+							</td>
+						</tr>
+						<!--
+						<tr id="show_IPAdr">
+							<th><script>I18N("h", "IP Address");</script>:</th>
+							<td id="client_IPAdr">IP Address</td>
+						</tr>
+						<tr id="show_ReserveIP" onmousedown="return false">
+							<th><script>I18N("h", "Reserve IP");</script>:</th>
+							<td>
+							<input type="checkbox" class="chkbox" id="enableReserveIP" /><label for="enableReserveIP"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+							</td>
+						</tr>
+						<tr id="show_IPAdrReserve">
+							<th><script>I18N("h", "IP Address (Reserved)");</script>:</th>
+							<td><input class="styled-text" type="text" name="client_IPAdrReserve" size="25" id="client_IPAdrReserve" onchange="checkUpdate();"></td>
+						</tr>
+						<tr onmousedown="return false">
+							<th><script>I18N("h", "Parental Control");</script>:</th>
+							<td>
+							<input type="checkbox" class="chkbox" id="enableAccess" /><label for="enableAccess"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>				
+							</td>
+						</tr>
+						-->
+						<tr id="show_Schedule">
+							<th class="linkstyle_1"><a href="Schedule.html"><script>I18N("h", "Schedule");</script></a>:</th>
+							<td colspan="3">
+								<div class="styled-select">
+									<select name="schedule" id="schedule">
+										<!--<option value="Always" selected>Always OFF</option>-->
+									</select>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<center><button type="button" class="styled_button_s" id="save_buttonFocus" tabindex="4" onkeyup="focusToFirstIndex(this)" onclick="document.getElementById('sumbit_CheckData').click()"><script>I18N("h", "Apply");</script></button></center>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div> <!-- id="editPop" -->
+		</form>
+		</div> <!-- id="main" -->
+		<div id="CreatePopAlertMessage" style="display:none">
+			<div id="AlertPopRect">
+			<div id="AlertPopBody">
+				<table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0">
+				   <tbody>
+						 <tr>
+						 	<td>
+								<center><div id="Loading_pop_image2"></div></center>
+							</td>
+						 </tr>
+						 <tr>
+						 	<td><label id="reciprocal_Number"></label></td>
+						 </tr>
+						 <tr>
+						 	<td id="dialog_msg_black2"><script>I18N("h", "Your changes are being saved.");</script></td>
+						 </tr>
+				   </tbody>
+				</table>
+			</div>
+			</div>
+		 </div> <!-- id="CreatePopAlertMessage" -->
+		<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+		<div id="DetectRouterConnection" style="display:none"></div>
+		<div id="footer">
+			<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>
+		</div>
+	</div> <!-- id="content" -->
+</div> <!-- id="wrapper" -->
+<script type="text/javascript">
+	Load_HTML();
+	Initial();
+	setMenu("menu_Management");
+	Get_DeviceClientInfo();
+    GetSchedule_List();
+	LoadMACList();
+    setEvents();
+	setDeviceValidate();
+	startTimeout();
+</script>
+</body>
+</html> 

@@ -1638,6 +1638,7 @@ main(int argc, char * * argv)
 			FD_SET(shttpwpsl, &readset);
 			max_fd = MAX(max_fd, shttpwpsl);
 		}
+		
 		if(netlink_sock >= 0)
 		{
 			FD_SET(netlink_sock, &readset);

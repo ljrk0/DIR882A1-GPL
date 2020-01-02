@@ -110,6 +110,17 @@ struct AdvPrefix {
 	uint32_t		curr_validlft;
 	uint32_t		curr_preferredlft;
 
+	/* 
+	  * IPv6 CE-Router Test Debug:
+	  * The reference time of prefix life time.
+	  * 1. This member is the system up time configuration is received.
+	  * 2. This member is used to prefix timeout in LAN.
+	  * 3. In RFC3633 section 5, A requesting router is required to terminate
+	  *   the use of a delegated prefix if the valid lifetime of the prefix expires.
+	  * 2017-08-08 --liushenghui
+	*/
+	long			ReferenceTime;
+
 	/* Mobile IPv6 extensions */
 	int             	AdvRouterAddr;
 

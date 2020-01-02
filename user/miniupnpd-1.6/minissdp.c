@@ -32,6 +32,7 @@
 #define LL_SSDP_MCAST_ADDR ("FF02::C")
 #define SL_SSDP_MCAST_ADDR ("FF05::C")
 
+
 /* AddMulticastMembership()
  * param s		socket
  * param ifaddr	ip v4 address
@@ -164,6 +165,7 @@ OpenAndConfSSDPReceiveSocket(int ipv6)
 
 	return s;
 }
+
 
 /* open the UDP socket used to send SSDP notifications to
  * the multicast group reserved for them */

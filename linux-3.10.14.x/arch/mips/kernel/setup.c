@@ -447,6 +447,10 @@ static void __init bootmem_init(void)
 	 */
 	reserve_bootmem(PFN_PHYS(mapstart), bootmap_size, BOOTMEM_DEFAULT);
 
+#if defined (CONFIG_RALINK_MT7621)
+	/* Free memory up to start of kernel image */
+	free_bootmem(0x1000, ((unsigned long)&_text - 0x80001000));
+#endif
 	/*
 	 * Reserve initrd memory if needed.
 	 */
@@ -655,11 +659,13 @@ static void __init arch_mem_init(char **cmdline_p)
 	}
 #endif
 
-#if defined(CONFIG_SUPPORT_OPENWRT)
-#if defined(CONFIG_RALINK_MT7621) && defined(CONFIG_RT2880_DRAM_512M)
+/*
+#if (defined(CONFIG_SUPPORT_OPENWRT) || (CONFIG_RALINK_RAM_SIZE == 512))
+#if defined(CONFIG_RALINK_MT7621)
 	reserve_bootmem(0x1C000000, 64*1024*1024, BOOTMEM_DEFAULT);
 #endif
 #endif
+*/
 	mips_parse_crashkernel();
 #ifdef CONFIG_KEXEC
 	if (crashk_res.start != crashk_res.end)

@@ -64,6 +64,7 @@ prefix_init_defaults(struct AdvPrefix *prefix)
 
 	prefix->curr_validlft = prefix->AdvValidLifetime;
 	prefix->curr_preferredlft = prefix->AdvPreferredLifetime;
+	prefix->ReferenceTime = DFLT_ReferenceTime;
 }
 
 void
@@ -233,6 +234,14 @@ check_iface(struct Interface *iface)
 			flog(LOG_ERR, "AdvValidLifetime for %s (%u) must be "
 				"greater than AdvPreferredLifetime for",
 				iface->Name, prefix->AdvValidLifetime);
+			res = -1;
+		}
+
+		if (prefix->ReferenceTime < 0)
+		{
+			flog(LOG_ERR, "ReferenceTime for %s (%ld) must be "
+				"not less than 0",
+				iface->Name, prefix->ReferenceTime);
 			res = -1;
 		}
 

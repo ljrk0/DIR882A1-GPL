@@ -37,6 +37,7 @@
 #define REQ_DELE 22
 #define REQ_RNFR 23	// Added by PaN
 #define REQ_RNTO 24	// Added by PaN
+#define REQ_FEAT 25	// add liuchengchi : 20170525 : 增加编码格式支持
 
 
 /* additional routines */

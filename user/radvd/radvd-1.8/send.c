@@ -18,6 +18,10 @@
 #include "includes.h"
 #include "radvd.h"
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+#include <sys/sysinfo.h>
+#endif
+
 /*
  * Sends an advertisement for all specified clients of this interface
  * (or via broadcast, if there are no restrictions configured).
@@ -111,6 +115,10 @@ static void cease_adv_pfx_msg(const char *if_name, struct in6_addr *pfx, const i
 
 }
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+static long getSysUpTime(void);
+#endif
+
 int
 send_ra(struct Interface *iface, struct in6_addr *dest)
 {
@@ -132,6 +140,11 @@ send_ra(struct Interface *iface, struct in6_addr *dest)
 	unsigned char buff[MSG_SIZE_SEND];
 	size_t len = 0;
 	ssize_t err;
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	int iPrefix_num = 0;
+	long iSysUpTime = 0;
+#endif
 
 	/* First we need to check that the interface hasn't been removed or deactivated */
 	if(check_device(iface) < 0) {
@@ -219,9 +232,20 @@ send_ra(struct Interface *iface, struct in6_addr *dest)
 	 *	add prefix options
 	 */
 
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	iSysUpTime = getSysUpTime();
+#endif
+
 	while(prefix)
 	{
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		if ( prefix->enabled && prefix->curr_preferredlft > 0 &&
+			(DFLT_ReferenceTime == prefix->ReferenceTime ||
+			iSysUpTime - prefix->ReferenceTime < prefix->AdvValidLifetime)
+		)
+	#else
 		if( prefix->enabled && prefix->curr_preferredlft > 0 )
+	#endif
 		{
 			struct nd_opt_prefix_info *pinfo;
 
@@ -263,10 +287,28 @@ send_ra(struct Interface *iface, struct in6_addr *dest)
 			       sizeof(struct in6_addr));
 
 			send_ra_inc_len(&len, sizeof(*pinfo));
+
+		#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+			++iPrefix_num;
+		#endif
 		}
 
 		prefix = prefix->next;
 	}
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	/*
+	  * IPv6 CE-Router Test:
+	  * 1. In RFC7084 L-4, An IPv6 CE router MUST NOT advertise itself as a
+	  *   default router with a Router Lifetime [RFC4861] greater than zero if
+	  *   it has no prefixes configured or delegated to it.
+	  * 2017-08-05 --liushenghui
+	*/
+	if (0 == iPrefix_num)
+	{
+		radvert->nd_ra_router_lifetime = 0;
+	}
+#endif
 
 	route = iface->AdvRouteList;
 
@@ -516,3 +558,20 @@ send_ra(struct Interface *iface, struct in6_addr *dest)
 
 	return 0;
 }
+
+#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+static long
+getSysUpTime(void)
+{
+    struct sysinfo info;
+
+    if (sysinfo(&info) < 0)
+    {
+        fprintf(stderr, "sysinfo fail, errno=%d, err: %s\n",
+            errno, strerror(errno));
+    }
+
+    return info.uptime;
+}
+#endif
+

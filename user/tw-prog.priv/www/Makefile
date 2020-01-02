@@ -32,9 +32,26 @@ all: romfs
 
 romfs: 
 	$(RM) $(ROOTDIR)/romfs/etc_ro/lighttpd/www/*
-	$(ROMFSINST) web /etc_ro/lighttpd/www/web
 	echo "-------------------$(PRODUCT)------------------------"
+ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_882_PARSE_2), y)
+	$(ROMFSINST) web_PARSE_2 /etc_ro/lighttpd/www/web
+	$(CP) web_PARSE_2/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_882_VLAN), y)
+	$(ROMFSINST) web_VLAN /etc_ro/lighttpd/www/web
+	$(CP) web_VLAN/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_867), y)
+	$(ROMFSINST) web_867 /etc_ro/lighttpd/www/web
+	$(CP) web_867/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_853_A1), y)
+	$(ROMFSINST) web_853_A1 /etc_ro/lighttpd/www/web
+	$(CP) web_853_A1/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_853_A2), y)
+	$(ROMFSINST) web_853_A2 /etc_ro/lighttpd/www/web
+	$(CP) web_853_A2/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+else
+	$(ROMFSINST) web /etc_ro/lighttpd/www/web
 	$(CP) web/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+endif
 #	$(ROMFSINST) ../prog-cgi/src/fwupload.cgi /etc_ro/lighttpd/www/web/fwupload.cgi
 #	$(ROMFSINST) ../prog-cgi/src/dlcfg.cgi /etc_ro/lighttpd/www/web/dlcfg.cgi
 	$(ROMFSINST) ../prog-cgi/src/dllog.cgi /etc_ro/lighttpd/www/web/dllog.cgi	

@@ -355,13 +355,13 @@ ifeq	($(CONFIG_ROOTFS_IN_FLASH_NO_PADDING),y)
 else
 
 ifneq ($(CONFIG_KERNEL_START_ADDR),)
-	@cd $(IMAGEDIR) ; $(CUR_DIR)/mkimage -A mips -O linux -T kernel -C $(COMP) -a $(CONFIG_KERNEL_START_ADDR) -e $(shell readelf -h $(ROOTDIR)/$(LINUXDIR)/vmlinux | grep "Entry" | awk '{print $$4}') -n "Linux Kernel Image"  -d $(KERNELZ).$(COMP) $(IMAGE)
+	@cd $(IMAGEDIR) ; $(CUR_DIR)/mkimage -A mips -O linux -T kernel -C $(COMP) -a $(CONFIG_KERNEL_START_ADDR) -e $(shell readelf -h $(ROOTDIR)/$(LINUXDIR)/vmlinux | grep "Entry" | awk '{print $$4}') -n "Linux Kernel Image" -p $(CONFIG_CUSTOM_PRODUCT) -s $(CONFIG_CUSTOM_SW_EX_VERSION)$(CONFIG_CUSTOM_SW_IN_VERSION) -h $(CONFIG_CUSTOM_HW_VERSION) -d $(KERNELZ).$(COMP) $(IMAGE)
 else
-	@cd $(IMAGEDIR) ; $(CUR_DIR)/mkimage -A mips -O linux -T kernel -C $(COMP) -a 80001000 -e $(shell readelf -h $(ROOTDIR)/$(LINUXDIR)/vmlinux | grep "Entry" | awk '{print $$4}') -n "Linux Kernel Image" -p $(CONFIG_CUSTOM_PRODUCT) -s $(CONFIG_CUSTOM_SW_EX_VERSION)$(CONFIG_CUSTOM_SW_IN_VERSION) -h $(CONFIG_CUSTOM_HW_VERSION)  -d $(KERNELZ).$(COMP) $(IMAGE);\
+	@cd $(IMAGEDIR) ; $(CUR_DIR)/mkimage -A mips -O linux -T kernel -C $(COMP) -a 80001000 -e $(shell readelf -h $(ROOTDIR)/$(LINUXDIR)/vmlinux | grep "Entry" | awk '{print $$4}') -n "Linux Kernel Image" -p $(CONFIG_CUSTOM_PRODUCT) -s $(CONFIG_CUSTOM_SW_EX_VERSION)$(CONFIG_CUSTOM_SW_IN_VERSION) -h $(CONFIG_CUSTOM_HW_VERSION)  -d $(KERNELZ).$(COMP) $(IMAGE);
+endif
 	$(CUR_DIR)/mkconfig -2 $(CUR_DIR)/RT2860_default_vlan-factory -5 $(CUR_DIR)/RT2860AP-factory.dat -o $(IMAGEDIR)/config.bin
 	if [ -f $(UBOOT_DIR)/uboot.bin ]; then \
 	$(CUR_DIR)/mkuboot -f $(UBOOT_DIR)/uboot.bin -p $(CONFIG_CUSTOM_PRODUCT) -s $(CONFIG_CUSTOM_SW_EX_VERSION)$(CONFIG_CUSTOM_SW_IN_VERSION) -h $(CONFIG_CUSTOM_HW_VERSION) -o $(IMAGEDIR)/uboot_upload.bin; \
 	fi
-endif
 endif
 

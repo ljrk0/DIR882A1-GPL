@@ -28,6 +28,10 @@ if(top!=self){top.location=self.location;}
 if (sessionStorage.getItem('PrivateKey') === null){
 	window.location.replace('../info/Login.html');
 }
+
+	//textautoupdate
+	var textauto = true;
+	var textautoEU = "";
 	var smartTrue;
 	var covrTrue;
 	var _ReciprocalNumber = 25;
@@ -207,6 +211,14 @@ if (sessionStorage.getItem('PrivateKey') === null){
 		var resultRadio = soapAction.sendSOAPAction("GetWLanRadios", null, getWLanRadiosResponse);
 		var resultSchedule = soapAction.sendSOAPAction("GetScheduleSettings", null, getScheduleSettingsResponse);
 
+		if(textauto) {
+			var HNAP = new HNAP_XML();
+			var getVersionInfo = HNAP.GetXMLAsync("GetVersionInfo", null, "GetValue", function(xml){
+				if(xml != null) {
+					textautoEU = xml.Get("GetVersionInfoResponse/WLANDomain-5G");	
+				}
+			});
+		}
 		$.when(resultRadio, resultSchedule).done(function(){
 			for(var radioInfo in getWLanRadiosResponse.RadioInfos.RadioInfo)
 			{
@@ -889,6 +901,7 @@ if (sessionStorage.getItem('PrivateKey') === null){
 
 	function getCountryCodeEU () {
 		var returnValue = false;
+		var dtd = $.Deferred();
 		$.ajax({
 	    	url : "version.txt",
 	    	type : "post",
@@ -900,10 +913,12 @@ if (sessionStorage.getItem('PrivateKey') === null){
 				if (data.indexOf("EU") > CountryCode_5G) {
 					returnValue = true;
 				}
+				dtd.resolve(returnValue);
 	    	}
 	    });
 		
-		return returnValue;
+		// return returnValue;
+		return dtd.promise();
 	}
 
 	function showCoexistance(channelWidth)
@@ -918,30 +933,47 @@ if (sessionStorage.getItem('PrivateKey') === null){
 		}
 	}
 
-	function showdfs(band, channel)
-	{
-		if(channel == "0")
-		{
-			var isEU = getCountryCodeEU();
-
-			if(isEU) {
-				if (band == "5")
-					$("#show_dfs_5G").show();
-				else if (band == "52")
-					$("#show_dfs_5G2").show();
+	function showdfs(band, channel) {
+		if(channel == "0") {
+			var isEU;
+			if(textauto) {
+				isEU = textautoEU;
+					if(isEU.indexOf("EU") == 0) {
+						if (band == "5") {
+							$("#show_dfs_5G").show();
+						} else if(band == "52") {
+							$("#show_dfs_5G2").show();
+						}
+					} else {
+						if (band == "5") {
+							$("#show_dfs_5G").hide();
+						} else if(band == "52") {
+							$("#show_dfs_5G2").hide();
+						}
+					}
 			} else {
-				if (band == "5")
-					$("#show_dfs_5G").hide();
-				else if (band == "52")
-					$("#show_dfs_5G2").hide();
+				isEU = getCountryCodeEU();			
+
+			isEU.done(function(value) {
+				if(value) {
+					if (band == "5")
+						$("#show_dfs_5G").show();
+					else if (band == "52")
+						$("#show_dfs_5G2").show();
+				} else {
+					if (band == "5")
+						$("#show_dfs_5G").hide();
+					else if (band == "52")
+						$("#show_dfs_5G2").hide();
+				}
+			});
 			}
-		}
-		else
-		{
-			if (band == "5")
+		} else {
+			if(band == "5") {
 				$("#show_dfs_5G").hide();
-			else if (band == "52")
+			} else if(band == "52") {
 				$("#show_dfs_5G2").hide();
+			}
 		}
 	}
 	

@@ -33,7 +33,8 @@ PATH: /usr/bin
 PATH: /usr/local/sbin
 PATH: /usr/sbin
 PATH: /sbin
-PATH: /home/guohongliang/work/new882/trunk/GPL_Code/source/tools
+PATH: /home/xieshijing/bin
+PATH: /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/tools
 
 
 ## ----------- ##
@@ -2313,9 +2314,9 @@ configure:27662: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest  -Wa
 conftest.c:91:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:98:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:105:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
-/tmp/ccuUeGkt.o: In function `main':
+/tmp/ccCN7CKO.o: In function `main':
 conftest.c:(.text.startup+0x18): undefined reference to `attr_get'
-/tmp/ccuUeGkt.o:(.data.rel+0x0): undefined reference to `attr_get'
+/tmp/ccCN7CKO.o:(.data.rel+0x0): undefined reference to `attr_get'
 collect2: ld returned 1 exit status
 configure:27668: $? = 1
 configure: failed program was:
@@ -2459,9 +2460,9 @@ configure:27662: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest  -Wa
 conftest.c:93:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:100:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:107:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
-/tmp/ccfl67co.o: In function `main':
+/tmp/cc6s6rF4.o: In function `main':
 conftest.c:(.text.startup+0x18): undefined reference to `cputime'
-/tmp/ccfl67co.o:(.data.rel+0x0): undefined reference to `cputime'
+/tmp/cc6s6rF4.o:(.data.rel+0x0): undefined reference to `cputime'
 collect2: ld returned 1 exit status
 configure:27668: $? = 1
 configure: failed program was:
@@ -2619,9 +2620,9 @@ configure:27662: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest  -Wa
 conftest.c:96:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:103:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:110:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
-/tmp/ccbop1WS.o: In function `main':
+/tmp/ccqsniIm.o: In function `main':
 conftest.c:(.text.startup+0x18): undefined reference to `getsysinfo'
-/tmp/ccbop1WS.o:(.data.rel+0x0): undefined reference to `getsysinfo'
+/tmp/ccqsniIm.o:(.data.rel+0x0): undefined reference to `getsysinfo'
 collect2: ld returned 1 exit status
 configure:27668: $? = 1
 configure: failed program was:
@@ -2806,9 +2807,9 @@ configure:27662: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest  -Wa
 conftest.c:101:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:108:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:115:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
-/tmp/ccd2Pa7C.o: In function `main':
+/tmp/cc53yK7B.o: In function `main':
 conftest.c:(.text.startup+0x18): undefined reference to `obstack_vprintf'
-/tmp/ccd2Pa7C.o:(.data.rel+0x0): undefined reference to `obstack_vprintf'
+/tmp/cc53yK7B.o:(.data.rel+0x0): undefined reference to `obstack_vprintf'
 collect2: ld returned 1 exit status
 configure:27668: $? = 1
 configure: failed program was:
@@ -2950,9 +2951,9 @@ configure:27662: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest  -Wa
 conftest.c:102:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:109:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:116:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
-/tmp/cc8InJgl.o: In function `main':
+/tmp/ccdcZwpN.o: In function `main':
 conftest.c:(.text.startup+0x18): undefined reference to `processor_info'
-/tmp/cc8InJgl.o:(.data.rel+0x0): undefined reference to `processor_info'
+/tmp/ccdcZwpN.o:(.data.rel+0x0): undefined reference to `processor_info'
 collect2: ld returned 1 exit status
 configure:27668: $? = 1
 configure: failed program was:
@@ -3083,9 +3084,9 @@ configure:27662: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest  -Wa
 conftest.c:102:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:109:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:116:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
-/tmp/ccK5agRr.o: In function `main':
+/tmp/ccj5Y53R.o: In function `main':
 conftest.c:(.text.startup+0x18): undefined reference to `pstat_getprocessor'
-/tmp/ccK5agRr.o:(.data.rel+0x0): undefined reference to `pstat_getprocessor'
+/tmp/ccj5Y53R.o:(.data.rel+0x0): undefined reference to `pstat_getprocessor'
 collect2: ld returned 1 exit status
 configure:27668: $? = 1
 configure: failed program was:
@@ -3228,9 +3229,9 @@ configure:27662: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest  -Wa
 conftest.c:103:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:110:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:117:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
-/tmp/ccon7P1D.o: In function `main':
+/tmp/ccbvuHTY.o: In function `main':
 conftest.c:(.text.startup+0x18): undefined reference to `read_real_time'
-/tmp/ccon7P1D.o:(.data.rel+0x0): undefined reference to `read_real_time'
+/tmp/ccbvuHTY.o:(.data.rel+0x0): undefined reference to `read_real_time'
 collect2: ld returned 1 exit status
 configure:27668: $? = 1
 configure: failed program was:
@@ -3386,9 +3387,9 @@ configure:27662: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest  -Wa
 conftest.c:105:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:112:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:119:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
-/tmp/ccHYBpi0.o: In function `main':
+/tmp/ccjilE5c.o: In function `main':
 conftest.c:(.text.startup+0x18): undefined reference to `sigstack'
-/tmp/ccHYBpi0.o:(.data.rel+0x0): undefined reference to `sigstack'
+/tmp/ccjilE5c.o:(.data.rel+0x0): undefined reference to `sigstack'
 collect2: ld returned 1 exit status
 configure:27668: $? = 1
 configure: failed program was:
@@ -3522,9 +3523,9 @@ configure:27662: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest  -Wa
 conftest.c:105:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:112:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:119:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
-/tmp/cczduAG7.o: In function `main':
+/tmp/ccDR8O4j.o: In function `main':
 conftest.c:(.text.startup+0x18): undefined reference to `syssgi'
-/tmp/cczduAG7.o:(.data.rel+0x0): undefined reference to `syssgi'
+/tmp/ccDR8O4j.o:(.data.rel+0x0): undefined reference to `syssgi'
 collect2: ld returned 1 exit status
 configure:27668: $? = 1
 configure: failed program was:
@@ -3742,9 +3743,9 @@ configure:27662: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest  -Wa
 conftest.c:112:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:119:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
 conftest.c:126:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
-/tmp/ccsGxfWZ.o: In function `main':
+/tmp/ccDBNTnJ.o: In function `main':
 conftest.c:(.text.startup+0x18): undefined reference to `sysctlbyname'
-/tmp/ccsGxfWZ.o:(.data.rel+0x0): undefined reference to `sysctlbyname'
+/tmp/ccDBNTnJ.o:(.data.rel+0x0): undefined reference to `sysctlbyname'
 collect2: ld returned 1 exit status
 configure:27668: $? = 1
 configure: failed program was:
@@ -6666,7 +6667,7 @@ lex.yy.c:1049:17: warning: 'yyunput' defined but not used [-Wunused-function]
 lex.yy.c:1090:16: warning: 'input' defined but not used [-Wunused-function]
 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/lib/crt1.o: In function `__start':
 (.text+0x18): undefined reference to `main'
-/tmp/ccSAkPEC.o: In function `yylex':
+/tmp/ccvE3XPu.o: In function `yylex':
 conftest.c:(.text+0x1678): undefined reference to `yywrap'
 conftest.c:(.text+0x1680): undefined reference to `yywrap'
 collect2: ld returned 1 exit status
@@ -8713,14 +8714,14 @@ lt_lt_cv_sys_global_symbol_to_cdecl='""'
 ## ----------------- ##
 
 ABI='o32'
-ACLOCAL='${SHELL} /home/guohongliang/work/new882/trunk/GPL_Code/source/lib/libgmp/missing --run aclocal-1.8'
-AMTAR='${SHELL} /home/guohongliang/work/new882/trunk/GPL_Code/source/lib/libgmp/missing --run tar'
+ACLOCAL='${SHELL} /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/libgmp/missing --run aclocal-1.8'
+AMTAR='${SHELL} /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/libgmp/missing --run tar'
 ANSI2KNR=''
 AR='/opt/buildroot-gcc463/usr/bin/mipsel-linux-ar'
 AS='/opt/buildroot-gcc463/usr/bin/mipsel-linux-as'
-AUTOCONF='${SHELL} /home/guohongliang/work/new882/trunk/GPL_Code/source/lib/libgmp/missing --run autoconf'
-AUTOHEADER='${SHELL} /home/guohongliang/work/new882/trunk/GPL_Code/source/lib/libgmp/missing --run autoheader'
-AUTOMAKE='${SHELL} /home/guohongliang/work/new882/trunk/GPL_Code/source/lib/libgmp/missing --run automake-1.8'
+AUTOCONF='${SHELL} /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/libgmp/missing --run autoconf'
+AUTOHEADER='${SHELL} /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/libgmp/missing --run autoheader'
+AUTOMAKE='${SHELL} /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/libgmp/missing --run automake-1.8'
 AWK='gawk'
 BITS_PER_MP_LIMB='32'
 CALLING_CONVENTIONS_OBJS=''
@@ -8784,7 +8785,7 @@ M4='m4'
 MAINT='#'
 MAINTAINER_MODE_FALSE=''
 MAINTAINER_MODE_TRUE='#'
-MAKEINFO='${SHELL} /home/guohongliang/work/new882/trunk/GPL_Code/source/lib/libgmp/missing --run makeinfo'
+MAKEINFO='${SHELL} /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/libgmp/missing --run makeinfo'
 OBJDUMP='objdump'
 OBJEXT='o'
 PACKAGE='gmp'
@@ -8836,7 +8837,7 @@ host_os='linux-gnu'
 host_vendor='unknown'
 includedir='${prefix}/include'
 infodir='${prefix}/info'
-install_sh='/home/guohongliang/work/new882/trunk/GPL_Code/source/lib/libgmp/install-sh'
+install_sh='/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/lib/libgmp/install-sh'
 libdir='${exec_prefix}/lib'
 libexecdir='${exec_prefix}/libexec'
 localstatedir='${prefix}/var'

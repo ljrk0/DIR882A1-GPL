@@ -3,9 +3,9 @@ libpthread/linuxthreads.old/cancel.os: \
  include/bits/uClibc_arch_features.h include/features.h \
  include/bits/uClibc_config.h include/sys/cdefs.h include/libc-internal.h \
  include/errno.h include/bits/errno.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
  include/pthread.h include/sched.h include/bits/types.h \
  include/bits/wordsize.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
@@ -21,7 +21,7 @@ libpthread/linuxthreads.old/cancel.os: \
  include/limits.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
  include/bits/posix1_lim.h include/bits/local_lim.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
  include/bits/uClibc_local_lim.h include/bits/posix2_lim.h \
  include/bits/xopen_lim.h include/bits/stdio_lim.h include/setjmp.h \
  include/bits/setjmp.h include/sgidefs.h include/bits/signum.h \
@@ -51,15 +51,15 @@ libpthread/linuxthreads.old/cancel.os: \
  include/bits/sysnum.h include/bits/syscalls.h include/alloca.h \
  include/bits/syscalls-common.h include/rpc/rpc.h include/rpc/types.h \
  include/stdlib.h include/sys/param.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
  include/netinet/in.h include/sys/socket.h include/sys/uio.h \
  include/bits/uio.h include/bits/socket.h include/bits/sockaddr.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
- /home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
+ /home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h \
  include/bits/in.h include/rpc/xdr.h include/stdio.h \
  include/bits/uClibc_stdio.h include/wchar.h include/bits/uClibc_mutex.h \
  include/bits/uClibc_pthread.h \
@@ -84,11 +84,11 @@ include/errno.h:
 
 include/bits/errno.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
 
 include/pthread.h:
 
@@ -142,7 +142,7 @@ include/bits/posix1_lim.h:
 
 include/bits/local_lim.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
 
 include/bits/uClibc_local_lim.h:
 
@@ -260,11 +260,11 @@ include/stdlib.h:
 
 include/sys/param.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
 
 include/netinet/in.h:
 
@@ -278,13 +278,13 @@ include/bits/socket.h:
 
 include/bits/sockaddr.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
 
-/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
+/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
 
 include/bits/in.h:
 
@@ -319,4 +319,4 @@ include/rpc/svc.h:
 include/rpc/svc_auth.h:
 
 include/rpc/netdb.h:
-cmd_libpthread_linuxthreads.old_cancel.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libpthread/linuxthreads.old/cancel.c -o libpthread/linuxthreads.old/cancel.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/guohongliang/work/new882/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -DNOT_IN_libc -DIS_IN_libpthread -MT libpthread/linuxthreads.old/cancel.os -MD -MP -MF libpthread/linuxthreads.old/.cancel.os.dep
+cmd_libpthread_linuxthreads.old_cancel.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libpthread/linuxthreads.old/cancel.c -o libpthread/linuxthreads.old/cancel.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/xieshijing/SDK_5_0_2_0/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -DNOT_IN_libc -DIS_IN_libpthread -MT libpthread/linuxthreads.old/cancel.os -MD -MP -MF libpthread/linuxthreads.old/.cancel.os.dep

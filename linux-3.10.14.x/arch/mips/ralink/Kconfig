@@ -189,7 +189,15 @@ config  MT7621_ASIC
 	bool "MT7621-ASIC"
 	select USB_ARCH_HAS_HCD
 	select USB_ARCH_HAS_XHCI
+	select ZONE_DMA	
 
+config KERNEL_START_ADDR
+	hex
+	depends on  RALINK_MT7621
+	default 0x81001000 if RT2880_DRAM_64M
+	default 0x81001000 if RT2880_DRAM_128M
+	default 0x81001000 if RT2880_DRAM_256M
+	default 0x82001000 if RT2880_DRAM_512M
 endchoice
 
 endif

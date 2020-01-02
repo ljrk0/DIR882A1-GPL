@@ -346,6 +346,9 @@ bool ra_process(void)
 		entry->preferred = entry->valid;
 		changed |= odhcp6c_update_entry(STATE_RA_ROUTE, entry, 0, true);
 
+	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+		odhcp6c_update_entry(STATE_RA_ROUTER, entry, 0, true);
+	#endif
 		// Parse hoplimit
 		ra_conf_hoplimit(adv->nd_ra_curhoplimit);
 
