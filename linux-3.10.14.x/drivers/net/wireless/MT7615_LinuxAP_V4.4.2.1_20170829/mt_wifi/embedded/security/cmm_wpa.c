@@ -27,8 +27,11 @@
 	Paul Lin	03-11-28		Modify for supplicant
 */
 #include "rt_config.h"
+#ifdef DLINK_SUPERMESH_SUPPROT
 int dlink_mesh_client_auth(PHEADER_802_11 phdr, struct wifi_dev *wdev);
 int dlink_mesh_apcli_auth(MAC_TABLE_ENTRY *pEntry);
+int dlink_mesh_client_discon(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry, uint16_t reason);
+#endif
 
 /* --------------------EddySEC Start---------------- */
 
@@ -4220,6 +4223,7 @@ VOID WPABuildPairMsg4 (
 										  ifIdx,pAd->ApCfg.ApCliAutoConnectRunning[ifIdx]));
 			}
 #endif /* APCLI_AUTO_CONNECT_SUPPORT*/
+#ifdef DLINK_SUPERMESH_SUPPROT
 			/* dlink mesh: start */
 			if (pEntry->wdev->dlink_mesh_en)
 				{
@@ -4227,7 +4231,7 @@ VOID WPABuildPairMsg4 (
 				dlink_mesh_apcli_auth(pEntry);
 				}
 			/* dlink mesh: end */
-
+#endif
 #ifdef APCLI_SUPPORT
 #ifdef MWDS
 		if(pEntry &&
@@ -4688,12 +4692,15 @@ VOID PeerPairMsg3Action(
         return;
 	
 	if ((pHandshake4Way->AllowInsPTK == TRUE) && bWPA2) {
-		pEntry->CCMP_BC_PN = 0;
-		for (idx = 0; idx<LEN_KEY_DESC_RSC; idx++)
-			pEntry->CCMP_BC_PN += (pReceiveEapol->KeyDesc.KeyRsc[idx] << (idx*8));
-		pEntry->AllowUpdateRSC = FALSE;
-		MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%s(%d): update CCMP_BC_PN to %llu\n", 
-			__FUNCTION__, pEntry->wcid, pEntry->CCMP_BC_PN ));		
+            UCHAR kid = pEntry->SecConfig.LastGroupKeyId;
+
+            pEntry->CCMP_BC_PN[kid] = 0;
+            for (idx = 0; idx<(LEN_KEY_DESC_RSC-2); idx++)
+                pEntry->CCMP_BC_PN[kid] += ((UINT64)pReceiveEapol->KeyDesc.KeyRsc[idx] << (idx*8));
+            pEntry->Init_CCMP_BC_PN_Passed[kid] = FALSE;
+            pEntry->AllowUpdateRSC = FALSE;
+            MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%s(%d): update CCMP_BC_PN to %llu\n", 
+                __FUNCTION__, pEntry->wcid, pEntry->CCMP_BC_PN[kid] ));     
 	}
 
     /* Save Replay counter, it will use construct message 4*/
@@ -4762,11 +4769,12 @@ VOID PeerPairMsg4Action(
 #endif /* DOT1X_SUPPORT && RADIUS_ACCOUNTING_SUPPORT */
 
 	WifiSysUpdatePortSecur(pAd,pEntry);
+#ifdef DLINK_SUPERMESH_SUPPROT
 	/* dlink mesh: start */
 	pr_err("[DLINK_VENDOR_CHECK] STA authorized.\n");	//remove this after verified
 	dlink_mesh_client_auth(pHeader, pEntry->wdev);
 	/* dlink mesh: end */
-
+#endif
     MTWF_LOG(DBG_CAT_CLIENT, CATCLIENT_APCLI, DBG_LVL_TRACE,
 		("===> WifiSysUpdatePortSecur called by (%s), wcid=%d, PortSecured=%d\n",
 		__FUNCTION__, pEntry->wcid, STATE_PORT_SECURE));
@@ -4981,12 +4989,15 @@ VOID PeerGroupMsg1Action(
     if (WpaMessageSanity(pAd, pReceiveEapol, EapolLen, EAPOL_GROUP_MSG_1, pSecConfig, pEntry) == FALSE)
         return;
 	if (pEntry->AllowUpdateRSC == TRUE) {
-		pEntry->CCMP_BC_PN = 0;
-		for (idx = 0; idx<LEN_KEY_DESC_RSC; idx++)
-			pEntry->CCMP_BC_PN += (pReceiveEapol->KeyDesc.KeyRsc[idx] << (idx*8));	
-		pEntry->AllowUpdateRSC = FALSE;
-		MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%s(%d): update CCMP_BC_PN to %llu\n", 
-			__FUNCTION__, pEntry->wcid, pEntry->CCMP_BC_PN ));
+            UCHAR kid = pEntry->SecConfig.LastGroupKeyId;
+
+            pEntry->CCMP_BC_PN[kid] = 0;
+            for (idx = 0; idx<(LEN_KEY_DESC_RSC-2); idx++)
+                pEntry->CCMP_BC_PN[kid] += ((UINT64)pReceiveEapol->KeyDesc.KeyRsc[idx] << (idx*8)); 
+            pEntry->Init_CCMP_BC_PN_Passed[kid] = FALSE;        
+            pEntry->AllowUpdateRSC = FALSE;
+            MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%s(%d): update CCMP_BC_PN to %llu\n", 
+                __FUNCTION__, pEntry->wcid, pEntry->CCMP_BC_PN[kid] ));
 	}
 
     /* Save Replay counter, it will use to construct message 2*/
@@ -5495,7 +5506,13 @@ VOID WPAHandshakeMsgRetryExec(
                     /* send wireless event - for pairwise key handshaking timeout */
                     RTMPSendWirelessEvent(pAd, IW_PAIRWISE_HS_TIMEOUT_EVENT_FLAG, pEntry->Addr, pEntry->wdev->wdev_idx, 0);
                     MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("%s::4Way-MSG1 timeout with %02X:%02X:%02X:%02X:%02X:%02X\n", __FUNCTION__, PRINT_MAC(pHandshake->SAddr)));
-                    MlmeDeAuthAction(pAd, pEntry, REASON_4_WAY_TIMEOUT, FALSE);
+#ifdef DLINK_SUPERMESH_SUPPROT
+					/* dlink mesh: start */
+					pr_err("[DLINK_VENDOR_CHECK] STA AUTH FAILED.\n");	//remove this after verified
+					dlink_mesh_client_discon(pAd, pEntry, REASON_4_WAY_TIMEOUT);
+					/* dlink mesh: end */
+#endif
+					MlmeDeAuthAction(pAd, pEntry, REASON_4_WAY_TIMEOUT, FALSE);
                 }
                 else
                 {
@@ -5512,7 +5529,13 @@ VOID WPAHandshakeMsgRetryExec(
                     /* send wireless event - for pairwise key handshaking timeout */
                     RTMPSendWirelessEvent(pAd, IW_PAIRWISE_HS_TIMEOUT_EVENT_FLAG, pEntry->Addr, pEntry->wdev->wdev_idx, 0);
                     MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("%s::4Way-MSG3 timeout with %02X:%02X:%02X:%02X:%02X:%02X\n", __FUNCTION__, PRINT_MAC(pHandshake->SAddr)));
-                    MlmeDeAuthAction(pAd, pEntry, REASON_4_WAY_TIMEOUT, FALSE);
+#ifdef DLINK_SUPERMESH_SUPPROT
+					/* dlink mesh: start */
+					pr_err("[DLINK_VENDOR_CHECK] STA AUTH FAILED.\n");	//remove this after verified
+					dlink_mesh_client_discon(pAd, pEntry, REASON_4_WAY_TIMEOUT);
+					/* dlink mesh: end */
+#endif
+					MlmeDeAuthAction(pAd, pEntry, REASON_4_WAY_TIMEOUT, FALSE);
                 }
                 else
                 {

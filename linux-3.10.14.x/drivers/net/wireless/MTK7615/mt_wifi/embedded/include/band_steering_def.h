@@ -115,11 +115,13 @@ enum ACTION_CODE{
 	SET_AGE_TIME,
 	SET_HOLD_TIME,
 	SET_CHECK_TIME,
+	SET_OPR_STR_GAP_TIME,
 	SET_MNT_ADDR,
 	SET_CHEK_CONDITIONS,
 	INF_STATUS_RSP_DBDC,
 	SET_CND_PRIORITY,
-	NVRAM_UPDATE
+	NVRAM_UPDATE,
+	BNDSTRG_TABLE_FULL
 };
 
 typedef struct _BND_STRG_CLI_TABLE{
@@ -140,6 +142,7 @@ typedef struct _BND_STRG_CLI_TABLE{
 	UINT32	HoldTime;		/* Time for holding 2.4G connection rsp (ms) */
 	UINT32	CheckTime_5G;	/* Time for deciding if a client is 2.4G only (ms) */
 	UINT32	CheckTime_2G;	/* Time for deciding if a client is 5G only (ms) */
+	UINT32  OprStrGapTime;
 	RALINK_TIMER_STRUCT Timer;
 	CHAR	uc2GIfName[32];
 	CHAR	uc5GIfName[32];
@@ -302,7 +305,11 @@ typedef struct _BNDSTRG_OPS {
 			PBND_STRG_CLI_TABLE table,
 			UINT8 Band,
 			UINT32 Time);
-
+			
+	INT (*SetOprStrGapTime)(
+			PBND_STRG_CLI_TABLE table,
+			UINT32 Time);
+		
 	INT (*SetFrmChkFlag)(
 			PBND_STRG_CLI_TABLE table,
 			UINT32 FrmChkFlag);

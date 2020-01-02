@@ -1,7 +1,8 @@
 #include "rt_config.h"
+#ifdef DLINK_SUPERMESH_SUPPROT
 #include "dlink_mesh.h"
 extern int (*dlink_hook_set_mesh_ie)(UCHAR * mesh_ie, int maxlen);
-
+#endif
 
 ULONG build_vendor_ie(struct _RTMP_ADAPTER *pAd, 
         struct wifi_dev *wdev, UCHAR *frame_buffer
@@ -37,10 +38,11 @@ ULONG build_vendor_ie(struct _RTMP_ADAPTER *pAd,
     };
 #endif /* MT_MAC */
     ULONG vendor_ie_len = 0;
+#ifdef DLINK_SUPERMESH_SUPPROT
 	UCHAR mesh_ie[MESH_IE_MAX] = {0};
 	ULONG dlink_ie_len = 0;
 	ULONG mesh_ie_len = 0;
-
+#endif
     NdisZeroMemory(&ra_ie, sizeof(struct _ralink_ie));
 
     ra_ie.ie_hdr.eid = IE_VENDOR_SPECIFIC;
@@ -152,6 +154,7 @@ ULONG build_vendor_ie(struct _RTMP_ADAPTER *pAd,
          //       (frame_buffer+vendor_ie_len-mtk_ie_len), (mtk_ie.ie_hdr.len + 2));
 
         vendor_ie_len += mtk_vht_ie_len;
+#ifdef DLINK_SUPERMESH_SUPPROT
 		 /* dlink mesh: start */
 		 if (wdev->dlink_mesh_en && dlink_hook_set_mesh_ie) {
 		 	mesh_ie_len = dlink_hook_set_mesh_ie(mesh_ie, MESH_IE_MAX);
@@ -165,7 +168,7 @@ ULONG build_vendor_ie(struct _RTMP_ADAPTER *pAd,
 				}
 			}
 		 /* dlink mesh: end */
-
+#endif
 #ifdef WH_EVENT_NOTIFIER
         if(wdev->custom_vie.ie_hdr.len > 0)
         {

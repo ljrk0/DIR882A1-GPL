@@ -66,7 +66,7 @@ void process_netlink_msg(int sock)
                         dlog(LOG_DEBUG, 3, "%s, ifindex %d, flags is *NOT* running", ifname, ifinfo->ifi_index);
                 }
 
-	#ifdef __CONFIG_IPV6_CE_ROUTER_TEST_DEBUG__
+	#if 1
 		/*
 		  * IPv6 CE-Router Test Debug:
 		  * 1. There is a way via 'usr1' signal to inform radvd to

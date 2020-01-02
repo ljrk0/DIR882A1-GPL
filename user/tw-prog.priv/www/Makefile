@@ -27,9 +27,9 @@
 CP:=cp -fpR
 RM:=rm -rf
 ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A2")
-PRODUCT=$(shell echo $(CONFIG_PRODUCT) | sed s/-//g)
+PRODUCT=$(shell echo $(CONFIG_PRODUCT) | sed s/_//1)
 else ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A1")
-PRODUCT=$(shell echo $(CONFIG_PRODUCT) | sed s/-//g)
+PRODUCT=$(shell echo $(CONFIG_PRODUCT) | sed s/_//1)
 else
 PRODUCT=$(shell echo $(CONFIG_CUSTOM_PRODUCT) | sed s/-//g)
 endif
@@ -42,33 +42,42 @@ romfs:
 ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_882_PARSE_2), y)
 	$(ROMFSINST) web_PARSE_2 /etc_ro/lighttpd/www/web
 	$(CP) web_PARSE_2/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
-else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_882_VLAN), y)
-	$(ROMFSINST) web_VLAN /etc_ro/lighttpd/www/web
-	$(CP) web_VLAN/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
-else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_878_VLAN), y)
-	$(ROMFSINST) web_VLAN /etc_ro/lighttpd/www/web
-	$(CP) web_VLAN/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
-else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_867), y)
-	$(ROMFSINST) web_VLAN /etc_ro/lighttpd/www/web
-	$(CP) web_VLAN/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
-else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_1935), y)
-	$(ROMFSINST) web_1935 /etc_ro/lighttpd/www/web
-	$(CP) web_1935/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
-else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_853_A1), y)
-	$(ROMFSINST) web_853_A1 /etc_ro/lighttpd/www/web
-	$(CP) web_853_A1/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
-else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_853_A2), y)
-	$(ROMFSINST) web_853_A2 /etc_ro/lighttpd/www/web
-	$(CP) web_853_A2/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
-else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_1360), y)
-	$(ROMFSINST) web_1360 /etc_ro/lighttpd/www/web
-	$(CP) web_1360/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+	$(CP) web_new/image/DIR/* $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/image/
+#else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_882_VLAN), y)
+#	$(ROMFSINST) web_new /etc_ro/lighttpd/www/web
+#	$(CP) web_new/config/Router/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+#else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_878_VLAN), y)
+#	$(ROMFSINST) web_new /etc_ro/lighttpd/www/web
+#	$(CP) web_new/config/Router/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+#else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_867_VLAN), y)
+#	$(ROMFSINST) web_new /etc_ro/lighttpd/www/web
+#	$(CP) web_new/config/Router/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+#else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_2660), y)
+#	$(ROMFSINST) web_new /etc_ro/lighttpd/www/web
+#	$(CP) web_dlink/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+#else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_867), y)
+#	$(ROMFSINST) web_new /etc_ro/lighttpd/www/web
+#	$(CP) web_new/config/Router/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+#else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_1935), y)
+#	$(ROMFSINST) web_new /etc_ro/lighttpd/www/web
+#	$(CP) web_new/config/Router/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+#else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_853_A1), y)
+#	$(ROMFSINST) web_new /etc_ro/lighttpd/www/web
+#	$(CP) web_new/config/Router/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+#else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_853_A2), y)
+#	$(ROMFSINST) web_new /etc_ro/lighttpd/www/web
+#	$(CP) web_new/config/Router/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+#else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_1360), y)
+#	$(ROMFSINST) web_new /etc_ro/lighttpd/www/web
+#	$(CP) web_new/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
 else ifeq ($(CONFIG_DEFAULTS_MEDIATEK_DIR_878_CA), y)
 	$(ROMFSINST) web_878_CA /etc_ro/lighttpd/www/web
 	$(CP) web_878_CA/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+	$(CP) web_new/image/DIR/* $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/image/
 else
-	$(ROMFSINST) web /etc_ro/lighttpd/www/web
-	$(CP) web/config/deviceinfo/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+	$(ROMFSINST) web_new /etc_ro/lighttpd/www/web
+	$(CP) web_new/config/Router/$(PRODUCT).js $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/config/deviceinfo.js
+	$(CP) web_new/image/DIR/* $(ROOTDIR)/romfs/etc_ro/lighttpd/www/web/image/
 endif
 
 ifeq ($(CONFIG_SUPPORT_WIFI_CERT), y)

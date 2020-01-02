@@ -2932,6 +2932,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 					snprintf(tok_str, sizeof(tok_str), "SSID%d", i + 1);
 					if(RTMPGetKeyParameter(tok_str, tmpbuf, 33, pBuffer, FALSE))
 					{
+					#if 0
 						macptr = rstrtok(tmpbuf,";");
 						if (macptr == NULL)
 							continue; /* SSID(%i+1) is empty */
@@ -2942,6 +2943,20 @@ NDIS_STATUS	RTMPSetProfileParameters(
 						{
 							bSSIDxIsUsed = TRUE;
 						}
+					#else
+					/* T&W RaiderLu fixed SSID special character bug */
+						if (tmpbuf == NULL || strlen(tmpbuf) > 32)
+							continue; /* SSID(%i+1) is empty or over 32 */
+						NdisMoveMemory(pAd->ApCfg.MBSSID[i].Ssid, tmpbuf , strlen(tmpbuf));
+				    	pAd->ApCfg.MBSSID[i].Ssid[strlen(tmpbuf)] = '\0';
+						pAd->ApCfg.MBSSID[i].SsidLen = strlen((RTMP_STRING *) pAd->ApCfg.MBSSID[i].Ssid);
+						if (bSSIDxIsUsed == FALSE)
+						{
+							bSSIDxIsUsed = TRUE;
+						}
+						/* T&W RaiderLu set EdcaIdx to 0 */
+						pAd->ApCfg.MBSSID[i].wdev.EdcaIdx = 0;
+					#endif
 				    	MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("SSID[%d]=%s, EdcaIdx=%d\n", i, pAd->ApCfg.MBSSID[i].Ssid,
 							pAd->ApCfg.MBSSID[i].wdev.EdcaIdx));
 					}
@@ -3245,34 +3260,40 @@ NDIS_STATUS	RTMPSetProfileParameters(
 				pAd->ApCfg.DtimPeriod = (UCHAR) simple_strtol(tmpbuf, 0, 10);
 				MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("DtimPeriod=%d\n", pAd->ApCfg.DtimPeriod));
 			}
-#ifdef BAND_STEERING
-			/* Band Steering Enable/Disable */
-			if(RTMPGetKeyParameter("BandSteering", tmpbuf, 10, pBuffer, TRUE))
-			{
-				pAd->ApCfg.BandSteering = (UCHAR) simple_strtol(tmpbuf, 0, 10);
-				MTWF_LOG(DBG_CAT_CFG, DBG_CAT_AP, DBG_LVL_TRACE, ("BandSteering=%d\n", pAd->ApCfg.BandSteering));
-			}
-			if(RTMPGetKeyParameter("BndStrgBssIdx", tmpbuf, 10, pBuffer, TRUE))
-			{
-				for (i = 0, macptr = rstrtok(tmpbuf,";"); macptr; macptr = rstrtok(NULL,";"), i++)
-				{
-					pAd->ApCfg.BndStrgBssIdx[i] = simple_strtoul(macptr,0,10);		
-				}
-			}
-			if(RTMPGetKeyParameter("BndStrgCndChk", tmpbuf, 10, pBuffer, TRUE))
-			{
-				pAd->ApCfg.BndStrgConditionCheck = (UINT32) simple_strtol(tmpbuf, 0, 16);
-				MTWF_LOG(DBG_CAT_CFG, DBG_CAT_AP, DBG_LVL_TRACE, ("BndStrgCndChk=%x\n", pAd->ApCfg.BndStrgConditionCheck));
-			}
-			if(RTMPGetKeyParameter("BndStrgCndPriority", tmpbuf, 10, pBuffer, TRUE))
-			{
-				for (i = 0, macptr = rstrtok(tmpbuf,";"); macptr; macptr = rstrtok(NULL,";"), i++)
-				{
-					pAd->ApCfg.BndStrgCndPri[i] = simple_strtoul(macptr,0,10);
-				}
-				pAd->ApCfg.BndStrgCndPriSize = i;
-			}
+#if defined BAND_STEERING || defined BAND_STEERING_PLUS
+		// Read BandSteering profile parameters
+		BndStrgSetProfileParam(pAd,tmpbuf,pBuffer);
 #endif /* BAND_STEERING */
+//#ifdef BAND_STEERING
+//			/* Band Steering Enable/Disable */
+//			if(RTMPGetKeyParameter("BandSteering", tmpbuf, 10, pBuffer, TRUE))
+//			{
+//				pAd->ApCfg.BandSteering = (UCHAR) simple_strtol(tmpbuf, 0, 10);
+//				MTWF_LOG(DBG_CAT_CFG, DBG_CAT_AP, DBG_LVL_TRACE, ("BandSteering=%d\n", pAd->ApCfg.BandSteering));
+//			}
+//			if(RTMPGetKeyParameter("BndStrgBssIdx", tmpbuf, 10, pBuffer, TRUE))
+//			{
+//				for (i = 0, macptr = rstrtok(tmpbuf,";"); macptr; macptr = rstrtok(NULL,";"), i++)
+//				{
+//					pAd->ApCfg.BndStrgBssIdx[i] = simple_strtoul(macptr,0,10);		
+//
+//				}
+//			}
+//			if(RTMPGetKeyParameter("BndStrgCndChk", tmpbuf, 10, pBuffer, TRUE))
+//			{
+//				pAd->ApCfg.BndStrgConditionCheck = (UINT32) simple_strtol(tmpbuf, 0, 16);
+//				MTWF_LOG(DBG_CAT_CFG, DBG_CAT_AP, DBG_LVL_TRACE, ("BndStrgCndChk=%x\n", pAd->ApCfg.BndStrgConditionCheck));
+//			}
+//			if(RTMPGetKeyParameter("BndStrgCndPriority", tmpbuf, 10, pBuffer, TRUE))
+//			{
+//				for (i = 0, macptr = rstrtok(tmpbuf,";"); macptr; macptr = rstrtok(NULL,";"), i++)
+//				{
+//					pAd->ApCfg.BndStrgCndPri[i] = simple_strtoul(macptr,0,10);
+//
+//				}
+//				pAd->ApCfg.BndStrgCndPriSize = i;
+//			}
+//#endif /* BAND_STEERING */
 		}
 #endif /* CONFIG_AP_SUPPORT */
 	    /* TxPower */
@@ -3934,7 +3955,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 			/*AutoChannelSkipList*/
 			if (RTMPGetKeyParameter("AutoChannelSkipList", tmpbuf, 60, pBuffer, FALSE))
 			{
-				/*解决关闭autochannel后，还是会跳过信道*/
+				/*  */
 				if(tmpbuf && strlen(tmpbuf) > 0)
 					pAd->ApCfg.AutoChannelSkipListNum = delimitcnt(tmpbuf, ";") + 1;
 				else

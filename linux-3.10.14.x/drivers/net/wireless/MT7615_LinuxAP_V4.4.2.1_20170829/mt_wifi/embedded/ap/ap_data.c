@@ -26,7 +26,9 @@
 	--------	----------		----------------------------------------------
 */
 #include "rt_config.h"
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+#include "dlink_mesh.h"
+#endif
 #define FLG_IS_OUTPUT 1
 #define FLAG_IS_INPUT 0
 
@@ -3731,7 +3733,11 @@ INT APRxPktAllow(RTMP_ADAPTER *pAd, RX_BLK *pRxBlk)
 		BSS_STRUCT *pMbss = pEntry->pMbss;
 		if (pMbss != NULL)
 		{
+#ifdef DLINK_SUPERMESH_SUPPROT
+			pMbss->ReceivedByteCount = count_uint32_overflow(pMbss->ReceivedByteCount, pRxBlk->MPDUtotalByteCnt, &pMbss->ReceivedByteCountOverflowCount);
+#else
 			pMbss->ReceivedByteCount += pRxBlk->MPDUtotalByteCnt;
+#endif
 			pMbss->RxCount ++;
 		}
 	}

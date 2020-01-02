@@ -225,8 +225,27 @@ int login_main(int argc UNUSED_PARAM, char **argv)
 	char *opt_host = opt_host; /* for compiler */
 	char *opt_user = opt_user; /* for compiler */
 	char full_tty[TTYNAME_SIZE];
+	int iPpid = 0;
+	int iFromSh = 0;
 	USE_SELINUX(security_context_t user_sid = NULL;)
 	USE_FEATURE_UTMP(struct utmp utent;)
+#define INITPID    1
+
+	iPpid = getppid();
+	//init的进程号通常为1，如果后续有发现进程号不为1，则需要改变判断条件
+	if (iPpid == INITPID)
+	{
+		iFromSh = 1;
+	}
+
+#ifndef CLI_LOGIN
+	alarm(TIMEOUT);
+#else
+	if(!iFromSh)
+	{
+		alarm(TIMEOUT);
+	}
+#endif
 #if ENABLE_PAM
 	int pamret;
 	pam_handle_t *pamh;
@@ -483,7 +502,18 @@ int login_main(int argc UNUSED_PARAM, char **argv)
 	signal(SIGINT, SIG_DFL);
 
 	/* Exec login shell with no additional parameters */
+#ifdef CLI_LOGIN
+	if(iFromSh)
+	{
+		run_shell(pw->pw_shell, 1, NULL, NULL);
+	}
+	else
+	{
+		run_shell("/usr/bin/cli", 1, 0, 0);
+	}
+#else
 	run_shell(tmp, 1, NULL, NULL);
+#endif
 
 	/* return EXIT_FAILURE; - not reached */
 }

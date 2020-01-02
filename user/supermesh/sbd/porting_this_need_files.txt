@@ -1,0 +1,3 @@
+when porting this package need follows:
+libapson_mqtt_api.so
+libapsonpb.so

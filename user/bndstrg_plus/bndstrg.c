@@ -25,6 +25,10 @@
 int DebugLevel = DEBUG_ERROR;
 #define BNDSTRG_DAEMON_VER	"3.1.4"
 #define BNDSTRG_DAT_FILE_PATH	"/etc_ro/bndstrg.conf"
+#ifndef BNDSTRG_TBLSIZ_OPT
+#define BNDSTRG_TBLSIZ_OPT
+extern struct bndstrg bndstrg;
+#endif
 
 int	PriorityList[] = {	fBND_STRG_PRIORITY_RSSI_DIFF,
 						fBND_STRG_PRIORITY_5G_RSSI,
@@ -50,6 +54,10 @@ char *entry_match_steering_str[]={
 		"LB_CHANLOAD_IDLE",
 		"LB_CHANLOAD_ACTIVE",
 		"RSSI_UPSTEER",
+#ifdef VENDOR_IOS_SUPPORT
+		"IOS_STEER",
+#endif
+
 #ifdef 	VENDOR_FEATURE7_SUPPORT
 		"DOWNSTEER_CHLOAD_RSSI",
 		"UPSTEER_CHLOAD_RSSI",
@@ -107,6 +115,10 @@ struct bndstrg_command_id_name bndstrg_commands[] = {
 	{BND_SET_RSSI_DOWNSTEER, "RSSILowDownSteer"},
 	{BND_SET_RSSI_UPSTEER, "RSSIHighUpSteer"},
 	{BND_SET_NVRAM, "NVRAM"},
+#ifdef VENDOR_IOS_SUPPORT
+	{BND_SET_IOS_STEER_NUMBER, "IOSSteerNum"},
+#endif
+
 #ifdef	VENDOR_FEATURE7_SUPPORT
 	{BND_SET_RSSI_DISCONNECT, "RSSIDisconnect"},
 #endif
@@ -115,6 +127,9 @@ struct bndstrg_command_id_name bndstrg_commands[] = {
 extern struct bndstrg_drv_ops bndstrg_drv_wext_ops;
 
 /* static function declaration */
+#ifdef BNDSTRG_TBLSIZ_OPT
+static u32 find_max_elapsed_time_entry(struct bndstrg_cli_table *table,unsigned char *pAddr);
+#endif
 static int _bndstrg_event_on_off(struct bndstrg *bndstrg, u8 onoff, u8 band, u8 channel, char *ifname);
 static int _bndstrg_event_show_entries(struct bndstrg *bndstrg,struct bndstrg_msg *msg);
 static int _bndstrg_event_table_info(struct bndstrg *bndstrg);
@@ -141,6 +156,11 @@ struct bndstrg_iface * bndstrg_get_interface(
 struct bndstrg_iface * bndstrg_get_interface_by_channel(
     struct bndstrg_ctrl_iface *ctrl_iface,  
     u8 channel);
+struct bndstrg_cli_entry * bndstrg_get_driver_old_entry(
+	struct bndstrg *bndstrg,
+	struct bndstrg_iface *inf,
+	 unsigned char *pAddr
+	);
 
 char* getFormattedTime(void) {
 
@@ -1042,10 +1062,16 @@ if(table->BndStrgMode == POST_CONNECTION_STEERING && entry->connected_band != BA
 		{
 			entry->connected_band = BAND_2G;
 			table->active_client_2G ++;
-			if(table->active_client_2G >= inf->max_driver_table_size)
+			if(table->active_client_2G > inf->max_driver_table_size)
 			{
 				DBGPRINT(DEBUG_OFF, "2G driver table full\n");
+#ifdef BNDSTRG_TBLSIZ_OPT
+				entry->connected_band = BAND_INVALID;
+				table->active_client_2G --;
+				return;
+#else
 				bndstrg_stop(bndstrg,BNDSTRG_DRIVER_TBL_FULL);
+#endif
 			}
 			band_idx = IDX_2G;
 		}
@@ -1056,10 +1082,16 @@ if(table->BndStrgMode == POST_CONNECTION_STEERING && entry->connected_band != BA
             {
 				entry->connected_band = BAND_5G_H;
 				table->active_client_H5G ++;
-				if(table->active_client_H5G >= inf->max_driver_table_size)
+				if(table->active_client_H5G > inf->max_driver_table_size)
 				{
 					DBGPRINT(DEBUG_OFF, "5GH driver table full\n");
+#ifdef BNDSTRG_TBLSIZ_OPT
+					entry->connected_band = BAND_INVALID;
+					table->active_client_H5G --;
+					return;
+#else
 					bndstrg_stop(bndstrg,BNDSTRG_DRIVER_TBL_FULL);
+#endif
 				}
 				band_idx = IDX_5GH;
             }
@@ -1067,10 +1099,16 @@ if(table->BndStrgMode == POST_CONNECTION_STEERING && entry->connected_band != BA
             {
 				entry->connected_band = BAND_5G_L;
 				table->active_client_L5G ++;
-				if(table->active_client_L5G >= inf->max_driver_table_size)
+				if(table->active_client_L5G > inf->max_driver_table_size)
 				{
 					DBGPRINT(DEBUG_OFF, "5GL driver table full\n");
-					bndstrg_stop(bndstrg,BNDSTRG_DRIVER_TBL_FULL);	
+#ifdef BNDSTRG_TBLSIZ_OPT
+					entry->connected_band = BAND_INVALID;
+					table->active_client_L5G --;
+					return;
+#else
+					bndstrg_stop(bndstrg,BNDSTRG_DRIVER_TBL_FULL);
+#endif	
 				}
 				band_idx = IDX_5GL;
             }
@@ -1298,10 +1336,28 @@ int bndstrg_insert_entry(
 	int i;
 	unsigned char HashIdx;
 	struct bndstrg_cli_entry *entry = NULL, *this_entry = NULL;
+#ifdef BNDSTRG_TBLSIZ_OPT
+		struct bndstrg_cli_entry *entry_del = NULL;
+		struct bndstrg_iface *inf = NULL;
+#endif
 
 	if (table->Size >= table->max_steering_size) {
-		DBGPRINT(DEBUG_WARN, "%s(): Table is full!\n", __FUNCTION__);
-		return BND_STRG_TABLE_FULL;
+#ifdef BNDSTRG_TBLSIZ_OPT
+		entry_del = bndstrg_get_old_entry(table->bndstrg,NULL,pAddr);
+		if(entry_del) {
+			inf = bndstrg_get_interface_by_channel(&bndstrg.ctrl_iface,entry_del->Channel);
+			if (inf && entry_del->band!=BAND_INVALID) {
+				bndstrg_accessible_cli(&bndstrg,inf,entry_del,CLI_DEL);			
+			}
+		
+			bndstrg_delete_entry(table,entry_del->Addr,entry_del->TableIndex);
+		} 
+		else
+#endif
+		{
+			DBGPRINT(DEBUG_OFF, "%s(): Table is full!\n", __FUNCTION__);
+			return BND_STRG_TABLE_FULL;
+		}
 	}
 
 	for (i = 0; i< table->max_steering_size; i++)
@@ -1484,9 +1540,11 @@ int bndstrg_cli_event_req(
 	if (entry == NULL) {
 		ret_val = bndstrg_insert_entry(table, pSrcAddr, &entry);
 		if (ret_val == BND_STRG_TABLE_FULL) {
+			DBGPRINT(DEBUG_OFF, "[Warnning] detected BNDSTRG_DAEMON_TBL_FULL!\n");
+#ifndef BNDSTRG_TBLSIZ_OPT
 			bndstrg_stop(bndstrg,BNDSTRG_DAEMON_TBL_FULL);
-			ret_val = BND_STRG_UNEXP;
-			return ret_val;
+#endif
+			return BND_STRG_UNEXP;
 		}
 #ifdef BNDSTRG_NVRAM_SUPPORT
 		if (table->bndstrg->nvram_support && entry){
@@ -1636,6 +1694,32 @@ int bndstrg_cli_event_req(
 				entry->bActiveStatus = CLI_INIT;
 				entry->bConnStatus = FALSE;
 				entry->state = ENTRY_INIT;
+				if (entry->biOSEntry)
+				{
+					//reset counter for immediately connection
+					if(IS_2G_BAND(cli_event->Band))
+					{
+						entry->Control_Flags &= (~ fBND_STRG_CLIENT_SUPPORT_L5G);
+						entry->Control_Flags &= (~ fBND_STRG_CLIENT_SUPPORT_H5G);
+						entry->statistics[IDX_5GL].ProbeReqCount = 0;
+						entry->statistics[IDX_5GH].ProbeReqCount = 0;
+				 		entry->statistics[IDX_5GL].AuthReqCount = 0;
+				 		entry->statistics[IDX_5GH].AuthReqCount = 0;
+					}
+					else if(IS_5G_BAND(cli_event->Band))
+					{
+						entry->Control_Flags &= (~ fBND_STRG_CLIENT_SUPPORT_2G);
+						entry->statistics[IDX_2G].ProbeReqCount = 0;
+						entry->statistics[IDX_2G].AuthReqCount = 0;
+					}
+					entry->Control_Flags &= ~ (fBND_STRG_CLIENT_IS_2G_ONLY | fBND_STRG_CLIENT_IS_5G_ONLY);
+					DBGPRINT(DEBUG_OFF,("[re-steering needed] debug +\n"));
+					DBGPRINT(DEBUG_OFF,("ProbeReqCount[2g] = %u, ProbeReqCount[5gl] = %u, ProbeReqCount[5gh] = %u\n"), 
+						entry->statistics[IDX_2G].ProbeReqCount, entry->statistics[IDX_5GL].ProbeReqCount, entry->statistics[IDX_5GH].ProbeReqCount);
+					_bndstrg_print_ctrlflags(entry->Control_Flags);
+					DBGPRINT(DEBUG_OFF,("[re-steering needed] debug -\n"));
+					
+				}
 			}
 		}
 
@@ -1695,6 +1779,8 @@ int bndstrg_cli_event_req(
 				entry->low_rssi_bad_cnt = 0;
 				entry->good_rssi_cnt = 0;
 				if(entry->Operation_steered == TRUE){
+					if((entry->band & BAND_5G_L) == BAND_5G_L || (entry->band & BAND_5G_H) == BAND_5G_H)//success to steer to 5g,--
+						table->Operation_steered_num_5G --;
 					entry->Operation_steered = FALSE;
 					entry->Operation_steered_tick = 0;
 					INC(entry->CliSteerInfo.end_idx,table->max_steer_count);
@@ -1774,7 +1860,7 @@ static int _bndstrg_print_entry_statistics(struct bndstrg_entry_stat *statistics
 static int _bndstrg_print_ctrlflags(u32 flags)
 {
 #ifdef BND_STRG_DBG
-	BND_STRG_DBGPRINT(DEBUG_OFF,
+	BND_STRG_DBGPRINT(DEBUG_TRACE,
 						"\t\tSupport_2G = %s\n"
 						"\t\tSupport_L5G = %s\n"
 						"\t\tSupport_H5G = %s\n"
@@ -1980,7 +2066,10 @@ static int _bndstrg_print_entry(
 			}
 			printf("\n");
 		}
-		
+		if (entry->biOSEntry)
+		{
+			BND_STRG_DBGPRINT(DEBUG_OFF, "\t\tiOS entry, steer count= %d\n", entry->iOS_steered_cnt);
+		}
 		if (single_band == 1)
 		{
 			BND_STRG_DBGPRINT(DEBUG_OFF, "\t\tSINGLE BAND\n");
@@ -2188,6 +2277,10 @@ static int _bndstrg_event_table_info(struct bndstrg *bndstrg)
 							"\tRSSIDisconnect = %d (dB)\n"
 							"\tBlackListTime = %d (sec)\n"
 #endif
+#ifdef VENDOR_IOS_SUPPORT
+							"\tIOSSteerNum = %d\n"
+#endif
+
 							"\tAgeTime = %d (s)\n"
 							"\tDormantTime = %d (s)\n"
 							"\tHoldTime = %d (s)\n"
@@ -2225,6 +2318,11 @@ static int _bndstrg_event_table_info(struct bndstrg *bndstrg)
 							table->RSSIDisconnect,
 							table->BlackListTime,
 #endif
+#ifdef VENDOR_IOS_SUPPORT
+							table->IOSNumLimit,
+#endif
+
+
 							table->AgeTime,
 							table->DormantTime,
 							table->HoldTime,
@@ -2351,6 +2449,58 @@ static int _bndstrg_event_table_info(struct bndstrg *bndstrg)
 	return 0;
 }
 
+#ifdef BNDSTRG_TBLSIZ_OPT
+/* find an entry which have not connected to AP and didn't got any
+ * AUTH REQ yet, but has maximum elapsed time.
+*/
+static u32 find_max_elapsed_time_entry(
+	struct bndstrg_cli_table *table,
+	unsigned char *pAddr)
+{
+	u32 i = 0;
+	u32 entry_index = BND_STRG_MAX_TABLE_SIZE;
+	u32 max_elapsed_time = 0; 
+	u32 elapsed_time = 0; 
+	struct bndstrg_cli_entry *entry = NULL; 
+	u32 AuthReqCount = 0;
+
+	for (i = 0; i < BND_STRG_MAX_TABLE_SIZE; i++) {
+		entry = &table->Entry[i];
+		AuthReqCount = entry->statistics[0].AuthReqCount +
+			entry->statistics[1].AuthReqCount;
+		if (entry->bValid == TRUE &&
+			entry->band == 0 && /*entry is valid and not connect to ap*/
+			AuthReqCount == 0 && !MAC_ADDR_EQUAL(entry->Addr, pAddr)) /*delete entry not send auth*/
+		{
+			elapsed_time = bndstrg_get_entry_elapsed_time(entry);
+			//BND_STRG_DBGPRINT(DEBUG_OFF,
+				//		"0000---> find_max_elapsed:i = %d,elapsed_time=%ds \n", i,elapsed_time);
+			if(elapsed_time > max_elapsed_time) {
+				max_elapsed_time = elapsed_time;
+				entry_index = i;
+				BND_STRG_DBGPRINT(DEBUG_INFO,
+					"\t\t find an entry(entryidx=%d, elapsed_time=%ds)"
+					" which need be replace by current prob/auth request\n",
+					entry_index, max_elapsed_time);
+			}
+		}
+	}
+
+	if(entry_index < BND_STRG_MAX_TABLE_SIZE) {
+		entry = &table->Entry[entry_index];
+#ifdef BND_STRG_QA
+	if(MAC_ADDR_EQUAL(table->MonitorAddr, entry->Addr))
+		BND_STRG_DBGPRINT(DEBUG_OFF,
+			"\t\t find an entry(entryidx=%d, elapsed_time=%ds)"
+			"%02x:%02x:%02x:%02x:%02x:%02x,"
+			" which need be replace by current prob/auth request\n",
+			entry_index, max_elapsed_time, PRINT_MAC(entry->Addr));
+#endif	
+	}
+	return entry_index;
+}
+
+#endif
 static int _bndstrg_event_on_off(struct bndstrg *bndstrg, u8 onoff, u8 band, u8 channel, char *ifname)
 {
     struct bndstrg_cli_table *table = &bndstrg->table;
@@ -3270,7 +3420,7 @@ u8 bndstrg_check_entry_aged(struct bndstrg *bndstrg,
 		/* Update elapsed time */
 		entry->elapsed_time = elapsed_time;
 		
-			if (elapsed_time >= table->CheckTime &&
+			if (elapsed_time >= table->CheckTime && 
 				!(entry->Control_Flags & fBND_STRG_CLIENT_SUPPORT_L5G) &&
 				!(entry->Control_Flags & fBND_STRG_CLIENT_SUPPORT_H5G) &&
 				!(entry->Control_Flags & fBND_STRG_CLIENT_IS_2G_ONLY))
@@ -3453,6 +3603,10 @@ u8 bndstrg_mtk_rule_iterate(
 			    (table->PriorityList[i] != fBND_STRG_PRIORITY_LB_CND_CHANLOAD_ACTIVE) &&
 			    (table->PriorityList[i] != fBND_STRG_PRIORITY_LB_CND_MCS) &&
 			    (table->PriorityList[i] != fBND_STRG_PRIORITY_RSSI_UPSTEER)
+#ifdef VENDOR_IOS_SUPPORT
+				&&(table->PriorityList[i] != fBND_STRG_PRIORITY_IOS_STEER)
+#endif
+
 #ifdef VENDOR_FEATURE7_SUPPORT
 			    &&(table->PriorityList[i] != fBND_STRG_PRIORITY_DOWNSTEER_CHLOAD_RSSI)
 			    &&(table->PriorityList[i] != fBND_STRG_PRIORITY_UPSTEER_CHLOAD_RSSI)
@@ -3513,7 +3667,65 @@ u8 bndstrg_mtk_rule_iterate(
 					}
 				}
 				break;
-				
+#ifdef VENDOR_IOS_SUPPORT
+			case fBND_STRG_PRIORITY_IOS_STEER:
+
+				// For IOS entry, only steer one time.
+				if (entry->iOS_steered_cnt != 0 || entry->biOSEntry != TRUE)
+					break;
+
+				// IOS down steer,  when 5g band client  > IOSNumLimit || rssi is bad,  steer to 2.4g
+				if ((entry->bConnStatus) && 
+					((entry->band & pre_band[0]) == pre_band[0]) &&
+					//(entry->bAllowStaConnectImmediately) &&
+					(statistics_1st_band->got_cli_status))
+				{
+					if (table->active_client_5G > table->IOSNumLimit || 
+						(entry->low_rssi_bad_cnt >= RSSI_CHECK_COUNT))
+					{
+					 	DBGPRINT(DEBUG_OFF,RED("===hit iOS down steer [%02x:%02x:%02x:%02x:%02x:%02x] ===\n\n"), PRINT_MAC(entry->Addr));
+						entry->Operation_steered = TRUE;
+						entry->Control_Flags |= allow_to_connect_band_flag[1];
+						done = TRUE;
+						band = pre_band[1];
+						entry->Manipulable = TRUE;
+						//entry->bAllowStaConnectImmediately = FALSE;
+						entry->iOS_steered_cnt ++;
+						//decision made
+						break; 
+					}else
+						band = pre_band[0];
+				}
+
+				// IOS up steer, 
+				/* 1. 5g band client < 5
+				     2. RSSI is better than RSSIHighUpSteer.
+				*/
+				if ((entry->bConnStatus) && 
+					((entry->band & pre_band[1]) == pre_band[1]) &&
+					//(entry->bAllowStaConnectImmediately) &&
+					(statistics_2nd_band->got_cli_status))
+				{
+					BND_STRG_PRINTQAMSG(table,entry,"IOS_UPSTEER+++Addr=%02x:%02x:%02x:%02x:%02x:%02x,active_client_5G=%d,Operation_steered_5G=%d,IOSNumLimit=%d\n",
+						PRINT_MAC(entry->Addr),table->active_client_5G,table->Operation_steered_num_5G,table->IOSNumLimit);
+					if ((table->active_client_5G + table->Operation_steered_num_5G < table->IOSNumLimit) && 
+						(entry->good_rssi_cnt >= RSSI_CHECK_COUNT))
+					{
+						DBGPRINT(DEBUG_OFF,RED("===hit iOS up steer [%02x:%02x:%02x:%02x:%02x:%02x] ===\n\n"), PRINT_MAC(entry->Addr));
+						entry->Operation_steered = TRUE;
+						entry->Control_Flags |= allow_to_connect_band_flag[0];
+						done = TRUE;
+						band = pre_band[0];
+						entry->Manipulable = TRUE;
+						//entry->bAllowStaConnectImmediately = FALSE;
+						entry->iOS_steered_cnt ++;
+						//decision made
+						break; 
+					}else
+						band = pre_band[1];
+				}
+				break;
+#endif				
 			case fBND_STRG_PRIORITY_RSSI_DOWNSTEER:
 				if((entry->bConnStatus) &&
 					((entry->band & pre_band[0]) == pre_band[0]) &&
@@ -3823,6 +4035,9 @@ u8 bndstrg_mtk_rule_iterate(
 
 		if(done)  // break for loop if decision has made.
 		{
+           if(entry->Operation_steered && band == pre_band[0]){
+							table->Operation_steered_num_5G ++; 
+			} 
 			if(entry->match_steered_rule_id[compare_mode] != fBND_STRG_PRIORITY_BAND_PERSIST)
 				entry->match_steered_rule_id[compare_mode] = table->PriorityList[i];
 			if ((entry->match_steered_rule_id[compare_mode] != fBND_STRG_PRIORITY_DEFAULT_2G) &&
@@ -3895,14 +4110,27 @@ u8 bndstrg_client_band_update(
 	
 	if(inf_target->driver_table_size >=  inf_target->max_driver_table_size){
 		struct bndstrg_cli_entry *entry_del = NULL;
-		entry_del = bndstrg_get_old_entry(bndstrg, inf_target);
+		//DBGPRINT(DEBUG_ERROR,"LLLLLL,Band=%d ,Addr = %0x:%0x:%0x:%0x:%0x:%0x\n",inf_target->Band,PRINT_MAC(entry->Addr));
+		entry_del = bndstrg_get_driver_old_entry(bndstrg, inf_target,entry->Addr);
 		if(entry_del){
+		//	DBGPRINT(DEBUG_ERROR,"6--->DEL Band =%d, Addr = %0x:%0x:%0x:%0x:%0x:%0x,,table size=%d,max size=%d\n",inf_target->Band,PRINT_MAC(entry_del->Addr),inf_target->driver_table_size,inf_target->max_driver_table_size);
 			bndstrg_accessible_cli(bndstrg, inf_target, entry_del, CLI_DEL);
 			bndstrg_delete_entry(table,entry_del->Addr,entry_del->TableIndex);
+		//	DBGPRINT(DEBUG_ERROR,"1---> ADD Band =%d, Addr = %0x:%0x:%0x:%0x:%0x:%0x\n",inf_target->Band,PRINT_MAC(entry->Addr));
 			bndstrg_accessible_cli(bndstrg, inf_target, entry, CLI_ADD);
 			entry->band = band;
-		}	
-	}else{
+		}
+#ifdef BNDSTRG_TBLSIZ_OPT
+		else
+		{
+          //  DBGPRINT(DEBUG_ERROR,"MMMMM\n"); 
+			return FALSE; /* do not add deleted entry into blacklist of source interface */
+		}
+#endif
+
+	}
+	else{
+	    //DBGPRINT(DEBUG_ERROR,"2---> ADD Band =%d, Addr = %0x:%0x:%0x:%0x:%0x:%0x,table size=%d\n",inf_target->Band,PRINT_MAC(entry->Addr),inf_target->driver_table_size);
 		bndstrg_accessible_cli(bndstrg, inf_target, entry, CLI_ADD);
 		entry->band = band;
 	}
@@ -3943,7 +4171,8 @@ u8 bndstrg_association_steering(
 		struct bndstrg *bndstrg)
 {
 	u8 band = BAND_INVALID; 
-	
+   // BND_STRG_PRINTQAMSG(table, entry,GRN("%s[%d],%02x:%02x:%02x:%02x:%02x:%02x,BINGO\n\n"),
+		//		__func__,__LINE__, PRINT_MAC(entry->Addr));	
 	if (!table)
 	{
 		DBGPRINT(DEBUG_ERROR,"%s(): Error! table is NULL!\n", __FUNCTION__);
@@ -3953,15 +4182,16 @@ u8 bndstrg_association_steering(
 	{
 		DBGPRINT(DEBUG_ERROR,RED("%s(): Error! entry is NULL!\n"), __FUNCTION__);
 		return FALSE;
-	}
-				
+	}					
     if (!IS_BND_STRG_DUAL_BAND_CLIENT(entry->Control_Flags)) 
 	{
-        if (entry->Control_Flags & fBND_STRG_CLIENT_IS_2G_ONLY)
+
+		if (entry->Control_Flags & fBND_STRG_CLIENT_IS_2G_ONLY)
 		{
             entry->Manipulable = FALSE;
 			entry->Control_Flags |= fBND_STRG_CLIENT_ALLOW_TO_CONNET_2G;
 			band = BAND_2G;
+
 		}
 		else if(entry->Control_Flags & fBND_STRG_CLIENT_IS_5G_ONLY)
 		{
@@ -3979,6 +4209,7 @@ u8 bndstrg_association_steering(
 			{
                 entry->Control_Flags |= fBND_STRG_CLIENT_ALLOW_TO_CONNET_L5G;
 				band = BAND_5G_L;
+
             }
 		}else if(!IS_2G_BAND(table->Band)){
 			if (IS_BND_STRG_H5G_L5G_BAND_CLIENT(entry->Control_Flags))
@@ -4083,6 +4314,8 @@ u8 bndstrg_steer_sta(struct bndstrg *bndstrg, struct bndstrg_cli_entry *entry)
 		{
 			entry->Operation_steered_tick = 0;
 			entry->Operation_steered = FALSE;
+		    if((entry->band & BAND_5G_L) == BAND_5G_L || (entry->band & BAND_5G_H) == BAND_5G_H)//fail to steer to 5g,--
+				table->Operation_steered_num_5G --;
 		}
 
 		if ((table->BtmMode == BTM_Only) && 
@@ -4398,6 +4631,43 @@ void bndstrg_send_heartbeat(struct bndstrg *bndstrg)
        		bndstrg_inf_status_query(bndstrg, (char*)inf->ucIfName, HEARTBEAT_MONITOR);
 	}
 }
+void bndstrg_tasks_per_second(void *eloop_data, void *user_ctx)
+{
+	struct bndstrg *bndstrg = (struct bndstrg*) user_ctx;
+	struct bndstrg_cli_table *table = &bndstrg->table;
+	int i;
+
+	if(table->BndStrgMode & POST_CONNECTION_STEERING){
+		if(table->chanload_priority_enabled == TRUE) {
+			bndstrg_chanload_status_polling(bndstrg,table);
+		}
+		/*
+		bndstrg_polling_connected_sta(bndstrg, (table->bndstrg_run_time % table->polling_sta_period));
+		*/
+		/* huaming: polling each sta every time, will this waste cpu resource a lot? */
+		for (i = 0; i < MAX_INF_NUM; i++)
+			bndstrg_polling_connected_sta(bndstrg, i);
+		
+		if(table->chanload_priority_enabled == TRUE){ 
+			/*heavy chanload update*/
+			bndstrg_chanload_heavy_update(bndstrg);
+			/*update connect STA */
+			bndstrg_sta_update(bndstrg);
+		}
+		
+		table->bndstrg_run_time++;
+		/*printf("%s() runtime=%llu\n\n", __func__, bndstrg->table.bndstrg_run_time);*/
+		
+		if((table->bndstrg_run_time % table->dynamic_bndstrg_period) == 0)
+			bndstrg_operation_steering(table, bndstrg);
+	}else if(table->chanload_priority_enabled){
+		bndstrg_chanload_status_polling(bndstrg,table);
+		bndstrg_chanload_heavy_update(bndstrg);
+	}
+	
+	bndstrg_send_heartbeat(bndstrg);
+	eloop_register_timeout(1, 0, bndstrg_tasks_per_second, NULL, bndstrg);
+}
 
 void bndstrg_periodic_exec(void *eloop_data, void *user_ctx)
 {
@@ -4499,12 +4769,34 @@ void bndstrg_periodic_exec(void *eloop_data, void *user_ctx)
 				if (!entry->bConnStatus)
 					continue;
 			}
+			//For IOS immediately connect
+			if (entry->biOSEntry == TRUE && entry->state == ENTRY_INIT &&
+				(entry->statistics[IDX_5GL].ProbeReqCount> 0 || entry->statistics[IDX_5GH].ProbeReqCount > 0||
+				entry->statistics[IDX_5GL].AuthReqCount > 0 || entry->statistics[IDX_5GH].AuthReqCount > 0))
+			{
+				entry->Control_Flags |= fBND_STRG_CLIENT_IS_5G_ONLY;
+				BND_STRG_PRINTQAMSG(table, entry,GRN("%s[%d]:Detect IOT issue, treat Ios STA %02x:%02x:%02x:%02x:%02x:%02x band:%d, as 5G_ONLY STA.\n\n"),
+					__func__,__LINE__, PRINT_MAC(entry->Addr), entry->band);
+				DBGPRINT(DEBUG_TRACE,("ProbeReqCount[2g] = %u, ProbeReqCount[5gl] = %u, ProbeReqCount[5gh] = %u\n"), 
+						entry->statistics[IDX_2G].ProbeReqCount, entry->statistics[IDX_5GL].ProbeReqCount, entry->statistics[IDX_5GH].ProbeReqCount);
+				_bndstrg_print_ctrlflags(entry->Control_Flags);
+			}
+			if (entry->biOSEntry == TRUE && entry->state == ENTRY_INIT &&
+					(entry->statistics[IDX_2G].ProbeReqCount> 0 || entry->statistics[IDX_2G].AuthReqCount > 0))
+			{
+				entry->Control_Flags |= fBND_STRG_CLIENT_IS_2G_ONLY;
+				BND_STRG_PRINTQAMSG(table, entry,GRN("%s[%d]:Detect IOT issue, treat Ios STA %02x:%02x:%02x:%02x:%02x:%02x band:%d, as 2G_ONLY STA.\n\n"),
+					__func__,__LINE__, PRINT_MAC(entry->Addr), entry->band);
+				DBGPRINT(DEBUG_TRACE,("ProbeReqCount[2g] = %u, ProbeReqCount[5gl] = %u, ProbeReqCount[5gh] = %u\n"), 
+						entry->statistics[IDX_2G].ProbeReqCount, entry->statistics[IDX_5GL].ProbeReqCount, entry->statistics[IDX_5GH].ProbeReqCount);
+				_bndstrg_print_ctrlflags(entry->Control_Flags);
+			}
 
 			/* For disconnected STA, process association steering */
 			if((table->BndStrgMode & PRE_CONNECTION_STEERING) &&
-			    (entry->enable_compare_flag) && (entry->Channel == 0))
+			    (entry->enable_compare_flag) && (entry->Channel == 0)){
 				bndstrg_association_steering(table, entry, bndstrg);
-
+			}
 			/* Handle Assoc Probe info missmatch case*/
 			if((entry->AssocProbeInfoMissMatch == TRUE) && (entry->state == ENTRY_ASSOC_RCD)){
 				entry->bConnStatus = TRUE;
@@ -4516,29 +4808,10 @@ void bndstrg_periodic_exec(void *eloop_data, void *user_ctx)
 		    break;
 	}
 
-	if(table->BndStrgMode & POST_CONNECTION_STEERING){
-		if(table->chanload_priority_enabled == TRUE) {
-			bndstrg_chanload_status_polling(bndstrg,table);
-		}
-		bndstrg_polling_connected_sta(bndstrg, (table->bndstrg_run_time % table->polling_sta_period));
-		if(table->chanload_priority_enabled == TRUE){ 
-			/*heavy chanload update*/
-			bndstrg_chanload_heavy_update(bndstrg);
-			/*update connect STA */
-			bndstrg_sta_update(bndstrg);
-		}
-		
-		table->bndstrg_run_time++;
-		if((table->bndstrg_run_time % table->dynamic_bndstrg_period) == 0)
-			bndstrg_operation_steering(table, bndstrg);
-	}else if(table->chanload_priority_enabled){
-		bndstrg_chanload_status_polling(bndstrg,table);
-		bndstrg_chanload_heavy_update(bndstrg);
-	}
-	bndstrg_send_heartbeat(bndstrg);
-
+	
 end_of_periodic_exec:
-	eloop_register_timeout(1, 0, bndstrg_periodic_exec, NULL, bndstrg);
+	return;
+	//eloop_register_timeout(1, 0, bndstrg_periodic_exec, NULL, bndstrg);
 
 }
 
@@ -4655,6 +4928,14 @@ void BndStrg_Update_Default_Param(struct bndstrg_cli_table *table)
 			else
 				table->nvram_reset = FALSE;
 		}
+#ifdef VENDOR_IOS_SUPPORT
+		if (BndStrgGetKeyParameter("IOSSteerNum", keyvalue, buf)) {
+				table->IOSNumLimit = strtol(keyvalue, NULL, 10);
+				if (table->IOSNumLimit > MAX_IOS_NUM)
+					table->IOSNumLimit = MAX_IOS_NUM;
+		}
+#endif
+
 #ifdef VENDOR_FEATURE7_SUPPORT
 		if (BndStrgGetKeyParameter("RSSIDisconnect", keyvalue, buf)) {
 			value = strtol(keyvalue, NULL, 10);
@@ -4759,6 +5040,9 @@ int bndstrg_table_init(struct bndstrg_cli_table *table)
 	table->single_band_timeout = BND_STRG_SINGLE_BAND_TIMEOUT;
 	table->nvram_table_size = NVRAM_TABLE_SIZE;
 	table->nvram_reset = FALSE;
+#ifdef VENDOR_IOS_SUPPORT
+	table->IOSNumLimit = MAX_IOS_NUM;
+#endif
 	BndStrg_Update_Default_Param(table);
 	{
 		u8 bDefault_set = FALSE;
@@ -4833,7 +5117,7 @@ int bndstrg_init(struct bndstrg *bndstrg,
 	bndstrg_nvram_read_all(bndstrg);
 
 	if (ret == BND_STRG_SUCCESS)
-		ret = eloop_register_timeout(1, 0, bndstrg_periodic_exec, NULL, bndstrg);
+		ret = eloop_register_timeout(1, 0, bndstrg_tasks_per_second, NULL, bndstrg);
 	return 0;
 }
 
@@ -4959,14 +5243,21 @@ struct bndstrg_iface * bndstrg_get_interface_by_channel(
 
 struct bndstrg_cli_entry * bndstrg_get_old_entry(
 	struct bndstrg *bndstrg,
-	struct bndstrg_iface *inf)
+	struct bndstrg_iface *inf,
+	 unsigned char *pAddr
+	)
 {
 	u8 i, elapsed_time = 0, max_elapsed_time = 0, count=0;
 	struct bndstrg_cli_table *table = &bndstrg->table;
 	struct bndstrg_cli_entry * entry = NULL, *temp_entry = NULL;
+#ifdef BNDSTRG_TBLSIZ_OPT
+	u32 entry_index = 0;
+#endif
 
 	for(i=0; i<table->max_steering_size; i++){
 		temp_entry = & table->Entry[i];
+		//BND_STRG_DBGPRINT(DEBUG_OFF,
+		//				"8--> get_old_entry [%d]: temp_entry =%0x:%0x:%0x:%0x:%0x:%0x\n",i, PRINT_MAC(temp_entry->Addr));
 		if (temp_entry->bValid == TRUE)
 		{
 			count ++;
@@ -4986,10 +5277,81 @@ struct bndstrg_cli_entry * bndstrg_get_old_entry(
 			break;
 	}
 	if(!entry){
+#ifdef BNDSTRG_TBLSIZ_OPT
+				entry_index = find_max_elapsed_time_entry(table,pAddr);
+				if(entry_index >= BND_STRG_MAX_TABLE_SIZE) {
+					BND_STRG_DBGPRINT(DEBUG_OFF,
+						"\t%s(): cannot find old entry to delete,pAddr =%0x:%0x:%0x:%0x:%0x:%0x\n", __func__,PRINT_MAC(pAddr));
+					return NULL;
+		}
+		entry = &table->Entry[entry_index];
+#else
 		bndstrg_stop(bndstrg, BNDSTRG_LIMIT);
+#endif
 	}
 	return entry;
-};
+}
+struct bndstrg_cli_entry * bndstrg_get_driver_old_entry(
+	struct bndstrg *bndstrg,
+	struct bndstrg_iface *inf,
+	 unsigned char *pAddr
+	)
+{
+	u8 i, elapsed_time = 0, max_elapsed_time = 0, count=0;
+	struct bndstrg_cli_table *table = &bndstrg->table;
+	struct bndstrg_cli_entry * entry = NULL, *temp_entry = NULL;
+    u32 AuthReqCount = 0;
+
+	for(i=0; i<table->max_steering_size; i++){
+		temp_entry = & table->Entry[i];
+		//BND_STRG_DBGPRINT(DEBUG_OFF,
+		//				"8--> get_old_entry [%d]: temp_entry =%0x:%0x:%0x:%0x:%0x:%0x\n",i, PRINT_MAC(temp_entry->Addr));
+		if (temp_entry->bValid == TRUE)
+		{
+			count ++;
+			elapsed_time = bndstrg_get_elapsed_time(temp_entry->tp);
+			if(temp_entry->bConnStatus ||
+				temp_entry->Operation_steered ||
+				inf->Band != temp_entry->band ||
+				(!IS_BND_STRG_DUAL_BAND_CLIENT(temp_entry->Control_Flags) &&
+				elapsed_time < (table->CheckTime + 20))||MAC_ADDR_EQUAL(temp_entry->Addr, pAddr) || temp_entry->band == BAND_INVALID)
+				continue;
+			if(elapsed_time > max_elapsed_time){
+				max_elapsed_time = elapsed_time;
+				entry = temp_entry;
+			}
+		}
+		if(count >= table->Size)
+			break;
+	}
+	if(!entry){
+       max_elapsed_time = 0;
+	   count = 0;
+       for(i=0; i<table->max_steering_size; i++){
+	   	temp_entry = & table->Entry[i];
+		if (temp_entry->bValid == TRUE)
+		{
+            count ++;
+			if(temp_entry->bConnStatus || temp_entry->Operation_steered || (inf && !(inf->Band & temp_entry->band)) || temp_entry->band == BAND_INVALID ||MAC_ADDR_EQUAL(temp_entry->Addr, pAddr) )
+				continue;
+			AuthReqCount = temp_entry->statistics[0].AuthReqCount + temp_entry->statistics[1].AuthReqCount + temp_entry->statistics[2].AuthReqCount;
+            if (AuthReqCount == 0) {
+				elapsed_time = bndstrg_get_elapsed_time(temp_entry->tp);
+                if(elapsed_time > max_elapsed_time){
+                   max_elapsed_time = elapsed_time;
+				   entry = temp_entry;
+                }
+             }
+		}
+		if(count >= table->Size)
+			break;	
+       }
+	}
+	if(!entry){
+        return NULL;
+	}
+	return entry;
+}
 
 void bndstrg_stop(struct bndstrg *bndstrg, u8 reason_code)
 {
@@ -5194,6 +5556,13 @@ void bndstrg_update_probe_info(	struct bndstrg *bndstrg,
 		}
 		entry->Nss = Nss;
 	}
+	//For IOS immediately connect
+	if (cli_probe->bIosCapable == TRUE && 
+		entry->Operation_steered == FALSE && entry->bConnStatus == FALSE)
+	{
+		//entry->bAllowStaConnectImmediately = TRUE;
+		entry->biOSEntry = TRUE;
+	}
 	return;
 }
 
@@ -5209,7 +5578,7 @@ void bndstrg_update_auth_info(	struct bndstrg *bndstrg,
 
 #ifdef BND_STRG_QA
 	BND_STRG_PRINTQAMSG(table, entry," [%s] %02x:%02x:%02x:%02x:%02x:%02x, Band:%s, Channel:%d Auth, rssi = %hhd/%hhd/%hhd/%hhd\n",
-			inf->ucIfName,PRINT_MAC(cli_event->Addr), bndstrg_get_entry_band(cli_event->Band), cli_event->Channel, rssi[0], rssi[1], rssi[2], rssi[3]);
+			inf->ucIfName,PRINT_MAC(cli_event->Addr),bndstrg_get_entry_band(cli_event->Band), cli_event->Channel, rssi[0], rssi[1], rssi[2], rssi[3]);
 #endif /* BND_STRG_QA */
 
 	for ( i = 1; i < 4; i++)
@@ -5218,6 +5587,17 @@ void bndstrg_update_auth_info(	struct bndstrg *bndstrg,
 			MaxRssi = max(MaxRssi, rssi[i]);
 	}			
 	bndstrg_update_entry_statistics_control_flags(bndstrg, entry, inf, inf->Band, MaxRssi, APMT2_PEER_AUTH_REQ);
+#ifdef	VENDOR_IOS_SUPPORT
+		if (entry->Operation_steered == FALSE&&
+		    entry->bConnStatus == FALSE &&
+	        entry->statistics[IDX_5GL].ProbeReqCount == 0 &&
+	        entry->statistics[IDX_5GH].ProbeReqCount == 0 &&
+	        entry->statistics[IDX_2G].ProbeReqCount == 0)
+		{
+			entry->biOSEntry = TRUE;
+		}
+#endif
+
 	return;
 }
 

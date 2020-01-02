@@ -32,7 +32,10 @@
  */
 
 #include "rt_config.h"
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+#include "dlink_mesh.h"
+PUCHAR dlink_mesh_gz_rx_filter(RTMP_ADAPTER *pAd, PNDIS_PACKET pPkt, UINT infIdx);
+#endif
 #ifdef CONFIG_HOTSPOT
 extern BOOLEAN hotspot_rx_handler(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry, RX_BLK *pRxBlk);
 #endif /* CONFIG_HOTSPOT */
@@ -96,52 +99,70 @@ VOID Update_Rssi_Sample(
 /* this function ONLY if not allow pn replay attack and drop packet */
 static BOOLEAN check_rx_pkt_pn_allowed(RTMP_ADAPTER *pAd, RX_BLK *rx_blk) 
 {
-	MAC_TABLE_ENTRY *pEntry = NULL;
-	BOOLEAN isAllow = TRUE;
-	FRAME_CONTROL *pFmeCtrl = (FRAME_CONTROL *)rx_blk->FC;
+    MAC_TABLE_ENTRY *pEntry = NULL;
+    BOOLEAN isAllow = TRUE;
+    FRAME_CONTROL *pFmeCtrl = (FRAME_CONTROL *)rx_blk->FC;
 
-	if (pFmeCtrl->Wep == 0)
-		return TRUE;
-	
-	if (!VALID_UCAST_ENTRY_WCID(pAd, rx_blk->wcid))
-		return TRUE;
-	
-	pEntry = &pAd->MacTab.Content[rx_blk->wcid];
+    if (pFmeCtrl->Wep == 0)
+        return TRUE;
 
-	if (!pEntry || !pEntry->wdev) 
-		return TRUE;
+    if (!VALID_UCAST_ENTRY_WCID(pAd, rx_blk->wcid))
+        return TRUE;
 
-		
-	if (rx_blk->pRxInfo->Mcast || rx_blk->pRxInfo->Bcast) {
-		UINT32 GroupCipher = pEntry->SecConfig.GroupCipher;
-		
-		if (IS_CIPHER_CCMP128(GroupCipher) || IS_CIPHER_CCMP256(GroupCipher) ||
-			IS_CIPHER_GCMP128(GroupCipher) || IS_CIPHER_GCMP256(GroupCipher) ||
-			IS_CIPHER_TKIP(GroupCipher)) {	
-			
-			if (rx_blk->CCMP_PN < pEntry->CCMP_BC_PN) {
-				MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("BC, %s (%d) Reject: come-in the %llu and now is %llu\n", 
-					__FUNCTION__, pEntry->wcid, rx_blk->CCMP_PN, pEntry->CCMP_BC_PN));
-				isAllow = FALSE;
-			} else {
-				MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("BC, %s (%d) OK: come-in the %llu and now is %llu\n", 
-					__FUNCTION__, pEntry->wcid, rx_blk->CCMP_PN, pEntry->CCMP_BC_PN));
-				pEntry->CCMP_BC_PN = rx_blk->CCMP_PN;
-			}
-		}	
-	} 
-#ifdef PN_UC_REPLAY_DETECTION_SUPPORT	
-	else {		
-		UCHAR TID = rx_blk->TID;
-		if (pAd->)
-		if (rx_blk->CCMP_PN < pEntry->CCMP_UC_PN[TID]) {
-			MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_ERROR, ("UC, %s (%d) Reject: come-in the %llu and now is %llu\n", 
-				__FUNCTION__, pEntry->wcid, rx_blk->CCMP_PN, pEntry->CCMP_UC_PN[TID]));
-			isAllow = FALSE;
-		} else {
-			pEntry->CCMP_UC_PN[TID] = rx_blk->CCMP_PN;
-		}
-	}
+    pEntry = &pAd->MacTab.Content[rx_blk->wcid];
+
+    if (!pEntry || !pEntry->wdev) 
+        return TRUE;
+ 
+    if (rx_blk->key_idx > 3) {
+        return TRUE;
+    }
+
+    if (rx_blk->pRxInfo->Mcast || rx_blk->pRxInfo->Bcast) {
+        UINT32 GroupCipher = pEntry->SecConfig.GroupCipher;
+        UCHAR key_idx = rx_blk->key_idx;
+
+        if (IS_CIPHER_CCMP128(GroupCipher) || IS_CIPHER_CCMP256(GroupCipher) ||
+                IS_CIPHER_GCMP128(GroupCipher) || IS_CIPHER_GCMP256(GroupCipher) ||
+                IS_CIPHER_TKIP(GroupCipher)) {
+
+            if (pEntry->Init_CCMP_BC_PN_Passed[key_idx] == FALSE) {
+                if (rx_blk->CCMP_PN >= pEntry->CCMP_BC_PN[key_idx]) {
+                    MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("BC, %s (%d)(%d) OK: 1st come-in the %llu and now is %llu\n", 
+                                __FUNCTION__, pEntry->wcid, key_idx, rx_blk->CCMP_PN, pEntry->CCMP_BC_PN[key_idx]));
+                    pEntry->CCMP_BC_PN[key_idx] = rx_blk->CCMP_PN;
+                    pEntry->Init_CCMP_BC_PN_Passed[key_idx] = TRUE;
+                }
+                else {
+                    MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("BC, %s (%d)(%d) Reject: 1st come-in the %llu and now is %llu\n", 
+                                __FUNCTION__, pEntry->wcid, key_idx, rx_blk->CCMP_PN, pEntry->CCMP_BC_PN[key_idx]));                        
+                    isAllow = FALSE;
+                }
+            } else {
+                if (rx_blk->CCMP_PN <= pEntry->CCMP_BC_PN[key_idx]) {
+                    MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("BC, %s (%d)(%d) Reject: come-in the %llu and now is %llu\n", 
+                                __FUNCTION__, pEntry->wcid, key_idx, rx_blk->CCMP_PN, pEntry->CCMP_BC_PN[key_idx]));
+                    isAllow = FALSE;
+                } else {
+                    MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("BC, %s (%d)(%d) OK: come-in the %llu and now is %llu\n", 
+                                __FUNCTION__, pEntry->wcid, key_idx, rx_blk->CCMP_PN, pEntry->CCMP_BC_PN[key_idx]));
+                    pEntry->CCMP_BC_PN[key_idx] = rx_blk->CCMP_PN;
+                }
+            }
+        }
+    }
+#ifdef PN_UC_REPLAY_DETECTION_SUPPORT   
+    else {      
+        UCHAR TID = rx_blk->TID;
+        if (rx_blk->CCMP_PN < pEntry->CCMP_UC_PN[TID]) {
+            MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_ERROR, 
+                ("UC, %s (%d) Reject: come-in the %llu and now is %llu\n", 
+                        __FUNCTION__, pEntry->wcid, rx_blk->CCMP_PN, pEntry->CCMP_UC_PN[TID]));
+            isAllow = FALSE;
+        } else {
+            pEntry->CCMP_UC_PN[TID] = rx_blk->CCMP_PN;
+        }
+    }
 #endif /* PN_UC_REPLAY_DETECTION_SUPPORT */
 
 	return isAllow;
@@ -368,6 +389,14 @@ VOID Announce_or_Forward_802_3_Packet(
 #ifdef CONFIG_WLAN_LAN_BY_PASS_HWNAT
 		pAd->HwnatCurWdevIdx = wdev_idx;
 #endif
+#ifdef DLINK_SUPERMESH_SUPPROT
+		/* dlink mesh: start */
+		if (dlink_mesh_gz_rx_filter(pAd, pPacket, wdev_idx)!= NULL) {
+			RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_FAILURE);
+			return;
+			}
+		/* dlink mesh: end */
+#endif		
 		announce_802_3_packet(pAd, pPacket,op_mode);
 	}
 #ifndef RTMP_UDMA_SUPPORT	
@@ -2844,7 +2873,11 @@ VOID dev_rx_802_3_data_frm(RTMP_ADAPTER *pAd, RX_BLK *pRxBlk)
 	pAd->MacTab.tr_entry[pEntry->wcid].NoDataIdleCount = 0;
 
 #ifdef CONFIG_AP_SUPPORT
+#ifdef DLINK_SUPERMESH_SUPPROT
+	pEntry->RxBytes = count_uint32_overflow(pEntry->RxBytes, pRxBlk->MPDUtotalByteCnt, &pEntry->RxBytesOverflowCount);
+#else
 	pEntry->RxBytes += pRxBlk->MPDUtotalByteCnt;
+#endif
 	pEntry->OneSecRxBytes += pRxBlk->MPDUtotalByteCnt;
 	pAd->RxTotalByteCnt += pRxBlk->MPDUtotalByteCnt;
 	INC_COUNTER64(pEntry->RxPackets);

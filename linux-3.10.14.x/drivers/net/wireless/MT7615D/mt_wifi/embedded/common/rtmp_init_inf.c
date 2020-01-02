@@ -574,7 +574,21 @@ VOID RTMPDrvOpen(VOID *pAdSrc)
 			DfsZeroWaitStart(pAd, TRUE);
 	}
 #endif /* defined(MT_DFS_SUPPORT) && defined(BACKGROUND_SCAN_SUPPORT) */
+#ifdef BAND_STEERING_PLUS
+#ifdef CONFIG_AP_SUPPORT
+    if (pAd->ApCfg.BandSteering) {
+        PBND_STRG_CLI_TABLE table;
 
+        table = Get_BndStrgTable(pAd, BSS0);
+		if (table) {
+            /* Inform daemon interface ready */
+            struct wifi_dev *wdev = &pAd->ApCfg.MBSSID[BSS0].wdev;
+
+            BndStrg_SetInfFlags(pAd, wdev, table, TRUE);
+        }
+    }
+#endif /* CONFIG_AP_SUPPORT */
+#endif /* BAND_STEERING */
 }
 
 
@@ -866,6 +880,17 @@ VOID RTMPInfClose(VOID *pAdSrc)
 	}
 #endif /*CONFIG_AP_SUPPROT*/
 
+#ifdef BAND_STEERING_PLUS
+		if (pAd->ApCfg.BandSteering) {
+			PBND_STRG_CLI_TABLE table;
+
+			table = Get_BndStrgTable(pAd, BSS0);
+			if (table) {
+				/* Inform daemon interface down */
+				BndStrg_SetInfFlags(pAd, wdev, table, FALSE);
+			}
+		}
+#endif /* BAND_STEERING */
 
 #ifdef RT_CFG80211_SUPPORT			
 	pAd->cfg80211_ctrl.beaconIsSetFromHostapd = FALSE;

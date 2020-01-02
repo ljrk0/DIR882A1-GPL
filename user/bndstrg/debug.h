@@ -31,7 +31,7 @@ extern int DebugLevel;
 {                                       \
 	if (Level <= DebugLevel)          \
 	{                                   \
-		printf("[%s] [%s]", __TIME__,__FUNCTION__);	\
+		printf("[%s] [%s]", getFormattedTime(),__FUNCTION__);	\
 		printf( fmt, ## args);          \
 	}                                   \
 }
@@ -47,8 +47,10 @@ extern int DebugLevel;
 
 #define BND_STRG_DBGPRINT(Level, fmt, args...) \
 {                                       \
-	if (Level <= DebugLevel)          \
+	if (Level <= DebugLevel){          \
+		printf("[%s]",getFormattedTime()); \
 		printf( fmt, ## args);          \
+	}					\
 }
 
 #else /* BND_STRG_DBG */
@@ -71,5 +73,5 @@ extern int DebugLevel;
 #endif /* BND_STRG_QA */
 
 void hex_dump(char *str, unsigned char *pSrcBufVA, unsigned int SrcBufLen);
-
+char* getFormattedTime(void);
 #endif /* __DEBUG_H__ */

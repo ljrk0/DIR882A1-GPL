@@ -23,27 +23,27 @@ libc/inet/rpc/svc_udp.os: libc/inet/rpc/svc_udp.c include/libc-symbols.h \
  include/limits.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
  include/bits/posix1_lim.h include/bits/local_lim.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
  include/bits/uClibc_local_lim.h include/bits/posix2_lim.h \
  include/bits/xopen_lim.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
  include/netinet/in.h include/stdint.h include/sys/socket.h \
  include/sys/uio.h include/bits/uio.h include/bits/socket.h \
  include/bits/sockaddr.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h \
  include/bits/in.h include/rpc/xdr.h include/rpc/auth.h \
  include/rpc/clnt.h include/sys/un.h include/rpc/rpc_msg.h \
  include/rpc/auth_unix.h include/rpc/auth_des.h include/rpc/svc.h \
  include/rpc/svc_auth.h include/rpc/netdb.h include/errno.h \
  include/bits/errno.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h
 
 include/libc-symbols.h:
 
@@ -161,7 +161,7 @@ include/bits/posix1_lim.h:
 
 include/bits/local_lim.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
 
 include/bits/uClibc_local_lim.h:
 
@@ -169,11 +169,11 @@ include/bits/posix2_lim.h:
 
 include/bits/xopen_lim.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
 
 include/netinet/in.h:
 
@@ -189,13 +189,13 @@ include/bits/socket.h:
 
 include/bits/sockaddr.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
 
 include/bits/in.h:
 
@@ -223,9 +223,9 @@ include/errno.h:
 
 include/bits/errno.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
-cmd_libc_inet_rpc_svc_udp.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/inet/rpc/svc_udp.c -o libc/inet/rpc/svc_udp.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -fno-strict-aliasing -MT libc/inet/rpc/svc_udp.os -MD -MP -MF libc/inet/rpc/.svc_udp.os.dep
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+cmd_libc_inet_rpc_svc_udp.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/inet/rpc/svc_udp.c -o libc/inet/rpc/svc_udp.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -fno-strict-aliasing -MT libc/inet/rpc/svc_udp.os -MD -MP -MF libc/inet/rpc/.svc_udp.os.dep

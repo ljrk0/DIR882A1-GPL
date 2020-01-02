@@ -26,7 +26,9 @@
 #include	"rt_config.h"
 
 #define MCAST_WCID_TO_REMOVE 0 //Pat: TODO
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+extern int dlink_mesh_info_channel(RTMP_ADAPTER *pAd, struct wifi_dev *wdev, uint8_t channel);
+#endif
 INT MCSMappingRateTable[] =
 	{    2,  4, 11, 22, 12,  18,  24,  36, 48,  72,  96, 108, 109, 110, 111, 112,/* CCK and OFDM */
 		13, 26, 39, 52, 78, 104, 117, 130, 26,  52,  78, 104, 156, 208, 234, 260,
@@ -715,7 +717,11 @@ INT	rtmp_set_channel(RTMP_ADAPTER *pAd, struct wifi_dev *wdev, UCHAR Channel)
 #endif /* APCLI_AUTO_CONNECT_SUPPORT */
 		}
 #endif /* CONFIG_AP_SUPPORT */
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+	/* dlink mesh: start */
+	dlink_mesh_info_channel(pAd, wdev, Channel);
+	/* dlink mesh: end */
+#endif
 	return Success;
 }
 

@@ -55,6 +55,12 @@ void die(int status)
 	exit(status);
 }
 
+#define DBG_MSG(fmt, arg...)    do {    FILE *log_fp = fopen("/var/debug.log", "a"); \
+                                                fprintf(log_fp, "%s:%s:%d:" fmt "\n", __FILE__, __func__, __LINE__, ##arg); \
+                                                fclose(log_fp); \
+                                        } while(0)
+
+
 /* Initialize frame types to RFC 2516 values.  Some broken peers apparently
    use different frame types... sigh... */
 
@@ -532,21 +538,29 @@ waitForPADO(PPPoEConnection *conn, int timeout)
 
 	    while(1) {
 		r = select(conn->discoverySocket+1, &readable, NULL, NULL, &tv);
+		DBG_MSG( "----r=%d\n",r);
 		if (r >= 0 || errno != EINTR) break;
 	    }
 	    if (r < 0) {
 		perror("select (waitForPADO)");
+		DBG_MSG("select (waitForPADO)");
 		return;
 	    }
-	    if (r == 0) return;        /* Timed out */
+	    if (r == 0)
+	    {
+	    	DBG_MSG("PADO timeout\n");
+			return;        /* Timed out */
+	    }
 	}
-	
+	DBG_MSG("get packet ready\n");
 	/* Get the packet */
 	receivePacket(conn->discoverySocket, &packet, &len);
-
+	DBG_MSG("get packet finish\n");
 	/* Check length */
 	if (ntohs(packet.length) + HDR_SIZE > len) {
 	    fprintf(stderr, "Bogus PPPoE length field (%u)\n",
+		   (unsigned int) ntohs(packet.length));
+		DBG_MSG("Bogus PPPoE length field (%u)\n",
 		   (unsigned int) ntohs(packet.length));
 	    continue;
 	}
@@ -555,32 +569,37 @@ waitForPADO(PPPoEConnection *conn, int timeout)
 	/* If it's not a Discovery packet, loop again */
 	if (etherType(&packet) != Eth_PPPOE_Discovery) continue;
 #endif
-
+		DBG_MSG("----1------\n");
 	if (conn->debugFile) {
 	    dumpPacket(conn->debugFile, &packet, "RCVD");
 	    fprintf(conn->debugFile, "\n");
 	    fflush(conn->debugFile);
 	}
+	DBG_MSG("----2------\n");
 	/* If it's not for us, loop again */
 	if (!packetIsForMe(conn, &packet)) continue;
-
+	DBG_MSG("----3------\n");
 	if (packet.code == CODE_PADO) {
 	    if (BROADCAST(packet.ethHdr.h_source)) {
 		fprintf(stderr, "Ignoring PADO packet from broadcast MAC address\n");
 		continue;
 	    }
+		DBG_MSG("----4------\n");
 	    parsePacket(&packet, parsePADOTags, &pc);
 	    if (conn->error)
 		return;
+		DBG_MSG("----5------\n");
 	    if (!pc.seenACName) {
 		fprintf(stderr, "Ignoring PADO packet with no AC-Name tag\n");
 		continue;
 	    }
+		DBG_MSG("----7------\n");
 	    if (!pc.seenServiceName) {
 		fprintf(stderr, "Ignoring PADO packet with no Service-Name tag\n");
 		continue;
 	    }
 	    conn->numPADOs++;
+		DBG_MSG("----8------\n");
 	    printf("--------------------------------------------------\n");
 		system("touch /var/PPPoEDetect");
 	    if (pc.acNameOK && pc.serviceNameOK) {
@@ -598,6 +617,7 @@ waitForPADO(PPPoEConnection *conn, int timeout)
 		conn->discoveryState = STATE_RECEIVED_PADO;		
 		break;
 	    }
+		DBG_MSG("----9------\n");
 	}
     } while (conn->discoveryState != STATE_RECEIVED_PADO);
 }
@@ -624,13 +644,16 @@ discovery(PPPoEConnection *conn)
 	padiAttempts++;
 	if (padiAttempts > MAX_PADI_ATTEMPTS) {
 	    fprintf(stderr, "Timeout waiting for PADO packets\n");
+		DBG_MSG("Timeout waiting for PADO packets\n");
 	    close(conn->discoverySocket);
 	    conn->discoverySocket = -1;
 		system("nvram_set 2860 wan_wan0_pppoe_detect 0");
 		//system("rm -rf /var/PPPoEDetect");
 	    return;
 	}
+	DBG_MSG("try time:%d\n",padiAttempts);
 	sendPADI(conn);
+	DBG_MSG("send PADI finish\n");
 	conn->discoveryState = STATE_SENT_PADI;
 	waitForPADO(conn, timeout);
     } while (!conn->numPADOs);

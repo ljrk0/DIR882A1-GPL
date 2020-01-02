@@ -2536,7 +2536,7 @@ int __init ralink_gpio_init(void)
 
 #ifdef CONFIG_RALINK_GPIO_LED
 	ralink_gpio_led_init_timer();
-#if defined (RALINK_GPIO_DIR_853)
+#if defined (RALINK_GPIO_DIR_853) || defined (RALINK_GPIO_DIR_1360)
 	led.gpio = 13;
 #else
 	led.gpio = 8;

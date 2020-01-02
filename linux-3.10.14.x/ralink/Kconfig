@@ -228,6 +228,7 @@ choice
 	prompt "Choose WiFi Driver Version"
 	config MT_DRIVER_4411
 	bool "MT_DRIVER_4411"
+	default y
 
 	config MT_DRIVER_4421
 	bool "MT_DRIVER_4421"
@@ -379,8 +380,6 @@ endchoice
 #source "drivers/net/wireless/rlt_wifi/Kconfig"
 #source "drivers/net/wireless/mt_wifi/embedded/Kconfig"
 source "drivers/net/wireless/MTK7615/mt_wifi/embedded/Kconfig"
-
-
 endif # WIFI_DRIVER
 
 #config WIFI_PKT_FWD

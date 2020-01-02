@@ -4597,12 +4597,15 @@ VOID PeerPairMsg3Action(
         return;
 
 	if ((pHandshake4Way->AllowInsPTK == TRUE) && bWPA2) {
-		pEntry->CCMP_BC_PN = 0;
-		for (idx = 0; idx<LEN_KEY_DESC_RSC; idx++)
-			pEntry->CCMP_BC_PN += (pReceiveEapol->KeyDesc.KeyRsc[idx] << (idx*8));
-		pEntry->AllowUpdateRSC = FALSE;
-		MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%s(%d): update CCMP_BC_PN to %llu\n", 
-			__FUNCTION__, pEntry->wcid, pEntry->CCMP_BC_PN ));		
+            UCHAR kid = pEntry->SecConfig.LastGroupKeyId;
+
+            pEntry->CCMP_BC_PN[kid] = 0;
+            for (idx = 0; idx<(LEN_KEY_DESC_RSC-2); idx++)
+                pEntry->CCMP_BC_PN[kid] += ((UINT64)pReceiveEapol->KeyDesc.KeyRsc[idx] << (idx*8));
+            pEntry->Init_CCMP_BC_PN_Passed[kid] = FALSE;
+            pEntry->AllowUpdateRSC = FALSE;
+            MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%s(%d): update CCMP_BC_PN to %llu\n", 
+                __FUNCTION__, pEntry->wcid, pEntry->CCMP_BC_PN[kid] ));     
 	}
 	
 	/* Save Replay counter, it will use construct message 4*/
@@ -4864,12 +4867,15 @@ VOID PeerGroupMsg1Action(
         return;
 
 	if (pEntry->AllowUpdateRSC == TRUE) {
-		pEntry->CCMP_BC_PN = 0;
-		for (idx = 0; idx<LEN_KEY_DESC_RSC; idx++)
-			pEntry->CCMP_BC_PN += (pReceiveEapol->KeyDesc.KeyRsc[idx] << (idx*8));	
-		pEntry->AllowUpdateRSC = FALSE;
-		MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%s(%d): update CCMP_BC_PN to %llu\n", 
-			__FUNCTION__, pEntry->wcid, pEntry->CCMP_BC_PN ));
+            UCHAR kid = pEntry->SecConfig.LastGroupKeyId;
+
+            pEntry->CCMP_BC_PN[kid] = 0;
+            for (idx = 0; idx<(LEN_KEY_DESC_RSC-2); idx++)
+                pEntry->CCMP_BC_PN[kid] += ((UINT64)pReceiveEapol->KeyDesc.KeyRsc[idx] << (idx*8)); 
+            pEntry->Init_CCMP_BC_PN_Passed[kid] = FALSE;        
+            pEntry->AllowUpdateRSC = FALSE;
+            MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%s(%d): update CCMP_BC_PN to %llu\n", 
+                __FUNCTION__, pEntry->wcid, pEntry->CCMP_BC_PN[kid] ));
 	}
 	
 	/* Save Replay counter, it will use to construct message 2*/

@@ -30,11 +30,12 @@
 #include "ft.h"
 #include "ft_cmm.h"
 #endif /* DOT11R_FT_SUPPORT */
+#ifdef DLINK_SUPERMESH_SUPPROT
 #include "dlink_mesh.h"
 extern int  (*dlink_hook_chk_client)(unsigned char *mac, unsigned char *mesh_ie, int len);
-extern void (*dlink_hook_get_mesh_ie)(unsigned char* bssid, unsigned char* mie, int len);
+extern int  (*dlink_hook_get_mesh_ie)(unsigned char* bssid, unsigned char* mie, int len);
 extern UCHAR	DLINK_OUI[];
-
+#endif
 extern UCHAR	CISCO_OUI[];
 
 extern UCHAR	WPA_OUI[];
@@ -643,14 +644,15 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 
 
 			}
+#ifdef DLINK_SUPERMESH_SUPPROT
 			/* dlink mesh: start */
 			else if (NdisEqualMemory(pEid->Octet, DLINK_OUI, 3) && dlink_hook_get_mesh_ie)
-				{
-				ie_list->vendor_ie.is_dlink_mesh = TRUE;
-				dlink_hook_get_mesh_ie(ie_list->Bssid, pEid->Octet + 3, pEid->Len);
-				}
+			{
+				if (dlink_hook_get_mesh_ie(ie_list->Bssid, pEid->Octet + 3, pEid->Len))
+					ie_list->vendor_ie.is_dlink_mesh = TRUE;
+			}
 			/* dlink mesh: end */
-
+#endif
 
 			break;
 
@@ -1451,6 +1453,7 @@ BOOLEAN PeerProbeReqSanity(
 #endif /* CONFIG_AP_SUPPORT */
 #endif /* WSC_INCLUDED */
                 }
+#ifdef DLINK_SUPERMESH_SUPPROT
 				/* dlink mesh: start */
 				else if (NdisEqualMemory(eid_data, DLINK_OUI, 3) && dlink_hook_chk_client)
 					{
@@ -1461,7 +1464,7 @@ BOOLEAN PeerProbeReqSanity(
 						}
 					}
 				/* dlink mesh: end */
-
+#endif
 				break;
 
 #ifdef CONFIG_HOTSPOT

@@ -4,9 +4,9 @@ libc/inet/ifaddrs.os: libc/inet/ifaddrs.c include/libc-symbols.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
  include/alloca.h include/bits/stackinfo.h include/assert.h \
  include/errno.h include/bits/errno.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
  include/ifaddrs.h include/sys/socket.h include/sys/uio.h \
  include/sys/types.h include/bits/types.h include/bits/wordsize.h \
  include/bits/kernel_types.h include/bits/typesizes.h \
@@ -18,14 +18,14 @@ libc/inet/ifaddrs.os: libc/inet/ifaddrs.c include/libc-symbols.h \
  include/bits/socket.h include/limits.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
  include/bits/posix1_lim.h include/bits/local_lim.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
  include/bits/uClibc_local_lim.h include/bits/posix2_lim.h \
  include/bits/xopen_lim.h include/bits/stdio_lim.h \
  include/bits/sockaddr.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h \
  include/net/if.h include/netinet/in.h include/stdint.h \
  include/bits/wchar.h include/bits/in.h include/netpacket/packet.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdbool.h \
@@ -36,10 +36,26 @@ libc/inet/ifaddrs.os: libc/inet/ifaddrs.c include/libc-symbols.h \
  include/bits/sigthread.h include/bits/uClibc_pthread.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdarg.h \
  include/string.h include/sys/ioctl.h include/bits/ioctls.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/ioctls.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/ioctls.h \
  include/bits/ioctl-types.h include/sys/ttydefaults.h include/unistd.h \
  include/bits/posix_opt.h include/bits/environments.h \
- include/bits/confname.h include/bits/getopt.h libc/inet/netlinkaccess.h
+ include/bits/confname.h include/bits/getopt.h libc/inet/netlinkaccess.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/types.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/int-ll64.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/bitsperlong.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/bitsperlong.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/rtnetlink.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/types.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/posix_types.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/stddef.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/posix_types.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/netlink.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/kernel.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/sysinfo.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/socket.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/if_link.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/if_addr.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/neighbour.h
 
 include/libc-symbols.h:
 
@@ -65,11 +81,11 @@ include/errno.h:
 
 include/bits/errno.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
 
 include/ifaddrs.h:
 
@@ -125,7 +141,7 @@ include/bits/posix1_lim.h:
 
 include/bits/local_lim.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
 
 include/bits/uClibc_local_lim.h:
 
@@ -137,13 +153,13 @@ include/bits/stdio_lim.h:
 
 include/bits/sockaddr.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
 
 include/net/if.h:
 
@@ -195,7 +211,7 @@ include/sys/ioctl.h:
 
 include/bits/ioctls.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/ioctls.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/ioctls.h:
 
 include/bits/ioctl-types.h:
 
@@ -212,4 +228,36 @@ include/bits/confname.h:
 include/bits/getopt.h:
 
 libc/inet/netlinkaccess.h:
-cmd_libc_inet_ifaddrs.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/inet/ifaddrs.c -o libc/inet/ifaddrs.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -DRESOLVER="\"resolv.c\"" -MT libc/inet/ifaddrs.os -MD -MP -MF libc/inet/.ifaddrs.os.dep
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/types.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/int-ll64.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/bitsperlong.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/bitsperlong.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/rtnetlink.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/types.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/posix_types.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/stddef.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/posix_types.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/netlink.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/kernel.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/sysinfo.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/socket.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/if_link.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/if_addr.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/neighbour.h:
+cmd_libc_inet_ifaddrs.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/inet/ifaddrs.c -o libc/inet/ifaddrs.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -DRESOLVER="\"resolv.c\"" -MT libc/inet/ifaddrs.os -MD -MP -MF libc/inet/.ifaddrs.os.dep

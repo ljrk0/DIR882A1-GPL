@@ -1,1 +1,1 @@
-cmd_net/nat/hw_nat/hw_nat.ko := /opt/buildroot-gcc463/usr/bin/mipsel-linux-ld -r  -m elf32ltsmip -T /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/scripts/module-common.lds --build-id  -o net/nat/hw_nat/hw_nat.ko net/nat/hw_nat/hw_nat.o net/nat/hw_nat/hw_nat.mod.o
+cmd_net/nat/hw_nat/hw_nat.ko := /opt/buildroot-gcc463/usr/bin/mipsel-linux-ld -r  -m elf32ltsmip -T /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/scripts/module-common.lds --build-id  -o net/nat/hw_nat/hw_nat.ko net/nat/hw_nat/hw_nat.o net/nat/hw_nat/hw_nat.mod.o

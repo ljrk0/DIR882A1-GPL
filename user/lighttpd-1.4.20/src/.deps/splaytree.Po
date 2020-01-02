@@ -1,76 +1,76 @@
 splaytree.o: splaytree.c \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdlib.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdlib.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/types.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/types.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/typesizes.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/pthreadtypes.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sched.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/time.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/endian.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/endian.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/byteswap.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap-common.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/select.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/select.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigset.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/time.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/sysmacros.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/alloca.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/assert.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/types.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/types.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/typesizes.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/pthreadtypes.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sched.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/time.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/endian.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/endian.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/byteswap.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap-common.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/select.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/select.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigset.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/time.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/sysmacros.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/alloca.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/assert.h \
  splaytree.h
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdlib.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdlib.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h:
 
 /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/types.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/types.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/types.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/types.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/typesizes.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/typesizes.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/pthreadtypes.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/pthreadtypes.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sched.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sched.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/time.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/time.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/endian.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/endian.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/endian.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/endian.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/byteswap.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/byteswap.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap-common.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap-common.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/select.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/select.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/select.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/select.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigset.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigset.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/time.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/time.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/sysmacros.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/sysmacros.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/alloca.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/alloca.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/assert.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/assert.h:
 
 splaytree.h:

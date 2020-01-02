@@ -6,12 +6,12 @@ libc/misc/ftw/ftw.os: libc/misc/ftw/ftw.c include/libc-symbols.h \
  include/bits/typesizes.h include/bits/pthreadtypes.h \
  include/bits/sched.h include/bits/dirent.h include/errno.h \
  include/bits/errno.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
  include/sys/syscall.h include/bits/sysnum.h include/bits/posix1_lim.h \
  include/bits/local_lim.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
  include/bits/uClibc_local_lim.h include/ftw.h include/sys/types.h \
  include/time.h include/endian.h include/bits/endian.h include/byteswap.h \
  include/bits/byteswap.h include/bits/byteswap-common.h \
@@ -26,9 +26,9 @@ libc/misc/ftw/ftw.os: libc/misc/ftw/ftw.c include/libc-symbols.h \
  include/bits/environments.h include/bits/confname.h \
  include/bits/getopt.h include/ctype.h include/bits/uClibc_touplow.h \
  include/sys/param.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
  include/assert.h
 
 include/libc-symbols.h:
@@ -63,11 +63,11 @@ include/errno.h:
 
 include/bits/errno.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
 
 include/sys/syscall.h:
 
@@ -77,7 +77,7 @@ include/bits/posix1_lim.h:
 
 include/bits/local_lim.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
 
 include/bits/uClibc_local_lim.h:
 
@@ -151,11 +151,11 @@ include/bits/uClibc_touplow.h:
 
 include/sys/param.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
 
 include/assert.h:
-cmd_libc_misc_ftw_ftw.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/misc/ftw/ftw.c -o libc/misc/ftw/ftw.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/misc/ftw/ftw.os -MD -MP -MF libc/misc/ftw/.ftw.os.dep
+cmd_libc_misc_ftw_ftw.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/misc/ftw/ftw.c -o libc/misc/ftw/ftw.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/misc/ftw/ftw.os -MD -MP -MF libc/misc/ftw/.ftw.os.dep

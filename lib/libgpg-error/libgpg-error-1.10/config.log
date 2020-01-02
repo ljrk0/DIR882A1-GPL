@@ -27,6 +27,7 @@ uname -v = #1 SMP Tue Jul 12 17:53:37 UTC 2016
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
 
+PATH: /home/zhangtianchuan/trunk/klocwork/bin
 PATH: /usr/local/bin
 PATH: /bin
 PATH: /usr/bin
@@ -34,7 +35,7 @@ PATH: /usr/local/sbin
 PATH: /usr/sbin
 PATH: /sbin
 PATH: /home/zhangtianchuan/bin
-PATH: /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/tools
+PATH: /home/zhangtianchuan/trunk/GPL_Code/source/tools
 
 
 ## ----------- ##
@@ -63,7 +64,7 @@ configure:2963: result: mipsel-unknown-linux-gnu
 configure:2987: autobuild project... libgpg-error
 configure:2989: autobuild revision... 1.10
 configure:2993: autobuild hostname... wireless
-configure:3002: autobuild timestamp... 20190301-011429
+configure:3002: autobuild timestamp... 20190703-170340
 configure:3016: checking for mipsel-linux-gcc
 configure:3043: result: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc
 configure:3312: checking for C compiler version
@@ -923,16 +924,16 @@ lt_cv_sys_max_cmd_len=1966080
 ## Output variables. ##
 ## ----------------- ##
 
-ACLOCAL='${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run aclocal-1.10'
+ACLOCAL='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run aclocal-1.10'
 AMDEPBACKSLASH='\'
 AMDEP_FALSE='#'
 AMDEP_TRUE=''
-AMTAR='${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run tar'
+AMTAR='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run tar'
 AR='"/opt/buildroot-gcc463/usr/bin"/mipsel-linux-ar'
 AS='"/opt/buildroot-gcc463/usr/bin"/mipsel-linux-as '
-AUTOCONF='${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run autoconf'
-AUTOHEADER='${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run autoheader'
-AUTOMAKE='${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run automake-1.10'
+AUTOCONF='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run autoconf'
+AUTOHEADER='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run autoheader'
+AUTOMAKE='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run automake-1.10'
 AWK='gawk'
 BUILD_FILEVERSION=''
 BUILD_TIMESTAMP=''
@@ -991,7 +992,7 @@ LTLIBOBJS=''
 MAINT='#'
 MAINTAINER_MODE_FALSE=''
 MAINTAINER_MODE_TRUE='#'
-MAKEINFO='${SHELL} /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run makeinfo'
+MAKEINFO='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/missing --run makeinfo'
 MKDIR_P='/bin/mkdir -p'
 MSGFMT='/usr/local/bin/msgfmt'
 MSGFMT_015='/usr/local/bin/msgfmt'
@@ -1051,7 +1052,7 @@ host_vendor='unknown'
 htmldir='${docdir}'
 includedir='${prefix}/include'
 infodir='${datarootdir}/info'
-install_sh='$(SHELL) /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/install-sh'
+install_sh='$(SHELL) /home/zhangtianchuan/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/install-sh'
 libdir='${exec_prefix}/lib'
 libexecdir='${exec_prefix}/libexec'
 localedir='${datarootdir}/locale'

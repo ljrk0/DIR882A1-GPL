@@ -46,6 +46,9 @@
 #define LAN_NAME_DNS_RELAY_ENABLE "dns_relay_enable"
 #define LAN_NAME_MGT_LINK  "management_link"
 
+#define WAN_NAME_INTERNET_INDEX			"WAN01"
+#define WAN_NAME_IPTV_INDEX				"WAN02"
+#define WAN_NAME_VOIP_INDEX				"WAN03"
 
 #define WAN_NAME_ENABLE             "enable"
 #define WAN_NAME_UNIT               "unit"
@@ -66,6 +69,15 @@
 #define WAN_NAME_HWNAME             "hwname"
 #define WAN_NAME_DESC               "desc"
 #define WAN_NAME_VLANID             "vlanid"
+#define WAN_NAME_STATUS             	"status"
+#define WAN_NAME_MULTICAST				"multicast"
+#define WAN_NAME_MULTICAST_IPV4			"multicast_ipv4"
+#define WAN_NAME_MULTICAST_IPV6			"multicast_ipv6"
+#define WAN_NAME_DEVICE_VENDOR_CLASS	"device_vendor_class"
+#define WAN_NAME_DNS_CUSTOM				"dns_custom"
+#define WAN_NAME_DNS_MANUAL				"dns_manual"
+#define WAN_NAME_MAC_CLONE_ENABLE		"mac_clone_enable"
+#define WAN_NAME_CLONE_MAC				"clone_mac"
 
 #define WAN_NAME_HWADDR             "hwaddr"
 #define WAN_NAME_PPPOE_IFNAME       "pppoe_ifname"
@@ -78,6 +90,25 @@
 #define WAN_NAME_PPPOE_MRU          "pppoe_mru"
 #define WAN_NAME_PPPOE_DEMAND       "pppoe_demand"    
 #define WAN_NAME_PPPOE_IDLETIME     "pppoe_idletime"
+#define WAN_NAME_PPPOE_MANUAL_ACTION	"pppoe_manual_action"
+#define WAN_NAME_PPPOE_AUTORECONN		"pppoe_autoreconn"
+#define WAN_NAME_PPPOE_STATIC			"pppoe_static"
+
+#define WAN_NAME_VPN_CLIENT				"vpn_client"
+#define WAN_NAME_VPN_NETMASK			"vpn_netmask"
+#define WAN_NAME_VPN_GATEWAY			"vpn_gateway"
+#define WAN_NAME_VPN_DNS				"vpn_dns"
+#define WAN_NAME_VPN_DEMAND				"vpn_demand"
+#define WAN_NAME_VPN_IDLETIME			"vpn_idletime"
+#define WAN_NAME_VPN_AUTORECONN			"vpn_autoreconn"
+#define WAN_NAME_VPN_BASICCONN			"vpn_basicconn"
+#define WAN_NAME_VPN_SERVER				"vpn_server"
+#define WAN_NAME_VPN_MTU				"vpn_mtu"
+#define WAN_NAME_VPN_MRU				"vpn_mru"
+#define WAN_NAME_VPN_IFNAME				"vpn_ifname"
+#define WAN_NAME_VPN_USERNAME			"vpn_username"
+#define WAN_NAME_VPN_PASSWD				"vpn_passwd"
+#define WAN_NAME_VPN_MANUAL_ACTION		"vpn_manual_action"
 
 #define WAN_NAME_PPTP_IFNAME        "pptp_ifname"               
 #define WAN_NAME_PPTP_USERNAME      "pptp_username"            
@@ -103,6 +134,7 @@
 #define WAN_NAME_L2TP_MTU           "l2tp_mtu"                  
 
 #define WAN_NAME_USB_MODEM_ISP            "modem_isp"
+#define WAN_NAME_USB_MODEM_COUNTRY		  "modem_country"
 #define WAN_NAME_USB_MODEM_CARD_MODE      "modem_card_mode"
 #define WAN_NAME_USB_MODEM_APN            "modem_apn"
 #define WAN_NAME_USB_MODEM_DIALNUM        "modem_dialnum"
@@ -247,6 +279,9 @@
 #define NETWORK_STATUS_DISCONNECTED						"Disconnected"
 #define NETWORK_STATUS_CONNECTING						"Connecting"
 
+#define NETWORK_STATUS_LIMITED_CONNECTION				"LIMITED_CONNECTION"
+#define NETWORK_STATUS_CONNECTED						"CONNECTED"
+#define NETWORK_STATUS_DISCONNECTED						"DISCONNECTED"
 #define CONF_VALUE_DYNAMIC								"Dynamic"
 #define CONF_VALUE_STATIC								"Static"
 
@@ -292,6 +327,7 @@ enum {
 #define DEFAULT_LAN_PREFIX_LENGTH    		64
 #define DEFAULT_LAN_DHCPPD_VLDTIME    		2592000
 #define DEFAULT_LAN_DHCPPD_PREFTIME    		604800
+#define DEFAULT_LAN_DHCP_LIFETIME 			10080
 
 #define DEFAULT_ULA_PREFIX  		"fd08:26b9:2481:1::"
 

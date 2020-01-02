@@ -146,10 +146,10 @@ int stad_get_type_by_mac(char *mac, ST_CLIENT_INFO *pst_client_info)
 					strcpy(pst_client_info->Type, "WiFi_2.4G");
 					break;
 			case TW_USER_DEVICE_TYPE_24G_GUEST:  // 3
-					strcpy(pst_client_info->Type, "WiFi_2.4G_guest");
+					strcpy(pst_client_info->Type, "WiFi_2.4G_Guest");
 					break;
 			case TW_USER_DEVICE_TYPE_5G_GUEST:   // 4
-					strcpy(pst_client_info->Type, "WiFi_5G_guest");
+					strcpy(pst_client_info->Type, "WiFi_5G_Guest");
 					break;
 			default:
 					strcpy(pst_client_info->Type, "LAN");
@@ -224,7 +224,7 @@ int stad_get_type_by_mac(char *mac, ST_CLIENT_INFO *pst_client_info)
 			{
 				if(NULL != strstr(buf, mac))
 				{
-					strcpy(pst_client_info->Type, "WiFi_2.4G_guest");
+					strcpy(pst_client_info->Type, "WiFi_2.4G_Guest");
 					pclose(file);
 					goto exit;
 				}
@@ -246,7 +246,7 @@ int stad_get_type_by_mac(char *mac, ST_CLIENT_INFO *pst_client_info)
 			{
 				if(NULL != strstr(buf, mac))
 				{
-					strcpy(pst_client_info->Type, "WiFi_5G_guest");
+					strcpy(pst_client_info->Type, "WiFi_5G_Guest");
 					pclose(file);
 					goto exit;
 				}
@@ -400,7 +400,7 @@ int stad_get_ipaddr_by_mac(char *mac, ST_CLIENT_INFO *pst_client_info)
 
 	while(j--)
 	{
-	    if(!strcmp(pst_client_info->Type, "WiFi_2.4G") || !strcmp(pst_client_info->Type, "WiFi_5G")|| !strcmp(pst_client_info->Type, "WiFi_2.4G_guest")||!strcmp(pst_client_info->Type, "WiFi_5G_guestG")){
+	    if(!strcmp(pst_client_info->Type, "WiFi_2.4G") || !strcmp(pst_client_info->Type, "WiFi_5G")|| !strcmp(pst_client_info->Type, "WiFi_2.4G_Guest")||!strcmp(pst_client_info->Type, "WiFi_5G_Guest")){
 			strncpy(pst_client_info->IPv4Address, stArpInfo[j].IPAddress, sizeof(pst_client_info->IPv4Address));
 			break;
 		}
@@ -415,10 +415,10 @@ int stad_get_ipaddr_by_mac(char *mac, ST_CLIENT_INFO *pst_client_info)
 				if(!strcmp(stArpInfo[j].szDevice, "br1"))
 				{
 					if(!strcmp(pst_client_info->Type, "WiFi_2.4G"))
-						strcpy(pst_client_info->Type, "WiFi_2.4G_guest");
+						strcpy(pst_client_info->Type, "WiFi_2.4G_Guest");
 
 					if(!strcmp(pst_client_info->Type, "WiFi_5G"))
-						strcpy(pst_client_info->Type, "WiFi_5G_guest");
+						strcpy(pst_client_info->Type, "WiFi_5G_Guest");
 				}
 				break;
 			}
@@ -729,7 +729,7 @@ int  stad_process(struct sta_msg * recv_msg)
 	iFlock = file_lock(MACLIST_FILE_LOCK);
 
 	
-	/* �жϸ�mac�Ƿ���ڣ����ھ͸���**/
+	/* �жϸ�mac�Ƿ���ڣ����ھ͸���?*/
 	sprintf(mac_addr, "%02x:%02x:%02x:%02x:%02x:%02x", recv_msg->mac_addr[0], recv_msg->mac_addr[1], recv_msg->mac_addr[2],
 		recv_msg->mac_addr[3], recv_msg->mac_addr[4], recv_msg->mac_addr[5]);
 

@@ -386,10 +386,10 @@ static inline BOOLEAN WscCheckWSCHeader(UCHAR *pData)
 #define WSC_SCSTATE_CONFIGURED		0x02
 
 /* Common definition */
-#define	WSC_MANUFACTURE		"Ralink Technology, Corp."
+#define	WSC_MANUFACTURE		"D-link Corporation."
 #ifdef CONFIG_AP_SUPPORT
-#define	AP_WSC_MODEL_NAME		"Ralink Wireless Access Point"
-#define	AP_WSC_DEVICE_NAME		"RalinkAPS"
+#define	AP_WSC_MODEL_NAME		"Dlink Router"
+#define	AP_WSC_DEVICE_NAME		CONFIG_CUSTOM_PRODUCT
 #endif /* CONFIG_AP_SUPPORT */
 #define	WSC_MODEL_NUMBER	"RT2860"
 #define	WSC_MODEL_SERIAL	"12345678"

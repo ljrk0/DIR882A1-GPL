@@ -27,13 +27,16 @@
  */
 
 #include "rt_config.h"
+#ifdef DLINK_SUPERMESH_SUPPROT
 #include "dlink_mesh.h"
-int dlink_mesh_update_scantab(BSS_ENTRY *bss_entry, BCN_IE_LIST *ie_list, char rssi);
 int dlink_mesh_collect_rssi(BCN_IE_LIST *ie_list, char rssi);
 int dlink_mesh_monitor_client(RTMP_ADAPTER *pAd, MLME_QUEUE_ELEM *Elem, struct wifi_dev *wdev);
 int dlink_mesh_ignore_client(unsigned char *mac);
+int dlink_mesh_need_autoch_init(RTMP_ADAPTER *pAd);
 extern int (*dlink_hook_search_monitor_list)(unsigned char *mac);
-
+extern int (*dlink_hook_update_mesh_ie)(unsigned char* bssid);
+extern int (*dlink_hook_set_mesh_ie)(UCHAR *mesh_ie, int maxlen);
+#endif
 #ifdef WH_EZ_SETUP
 #ifdef DUAL_CHIP
 extern NDIS_SPIN_LOCK ez_conn_perm_lock;
@@ -66,6 +69,13 @@ VOID APPeerProbeReqAction(
 	BSS_STRUCT *mbss;
 	struct wifi_dev *wdev;
 	struct dev_rate_info *rate;
+#ifdef DLINK_SUPERMESH_SUPPROT
+	/* dlink mesh: start */
+	UCHAR mesh_ie[MESH_IE_MAX] = {0};
+	ULONG dlink_ie_len = 0;
+	ULONG mesh_ie_len = 0;
+	/* dlink mesh: end */
+#endif
 #ifdef BAND_STEERING
 	BOOLEAN bBndStrgCheck = TRUE;
 	BOOLEAN bAllowStaConnectInHt = FALSE;
@@ -111,7 +121,7 @@ VOID APPeerProbeReqAction(
 MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%s():shiang! PeerProbeReqSanity failed!\n", __FUNCTION__));
 		return;
 	}
-
+#ifdef DLINK_SUPERMESH_SUPPROT
 		/* dlink mesh: start */
 		if (dlink_mesh_ignore_client(pFrame->Hdr.Addr2))
 			{
@@ -119,7 +129,7 @@ MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%s():shiang! PeerProbeReqSan
 			return;
 			}
 		/* dlink mesh: end */
-
+#endif
 	for(apidx=0; apidx<pAd->ApCfg.BssidNum; apidx++)
 	{
 		mbss = &pAd->ApCfg.MBSSID[apidx];
@@ -145,14 +155,16 @@ MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%s():shiang! PeerProbeReqSan
 		if (Elem->Channel != wdev->channel) {
 			continue;
 		}
+#ifdef DLINK_SUPERMESH_SUPPROT
 		/* dlink mesh: start */
-		if (wdev->dlink_mesh_en && ProbeReqParam.is_dlink_mesh!=TRUE)
+		if ((wdev->dlink_mesh_en || wdev->dlink_mesh_scan_en) && 
+			ProbeReqParam.is_dlink_mesh!=TRUE)
 			{
 			//pr_info("[MTWF][%s]: %s ignore probe req from %pM.\n", __func__, wdev->if_dev->name, ProbeReqParam.Addr2);
 			continue;
 			}
 		/* dlink mesh: end */
-
+#endif
 		PhyMode = wdev->PhyMode;
 
 #ifdef WH_EZ_SETUP
@@ -243,13 +255,14 @@ MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%s():shiang! PeerProbeReqSan
 #endif /* WH_EZ_SETUP */
 				continue; /* check next BSS */
 		}
+#ifdef DLINK_SUPERMESH_SUPPROT
 		/* dlink mesh: start */
 		if (dlink_hook_search_monitor_list && dlink_hook_search_monitor_list(pFrame->Hdr.Addr2))
 			{
 			dlink_mesh_monitor_client(pAd, Elem, wdev);
 			}
 		/* dlink mesh: end */
-
+#endif
 
 #ifdef BAND_STEERING
 	if (pAd->ApCfg.BandSteering
@@ -1060,7 +1073,25 @@ MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("%s():shiang! PeerProbeReqSan
 	, SUBTYPE_PROBE_RSP
 #endif
 	);
+#ifdef DLINK_SUPERMESH_SUPPROT
+	/* dlink mesh: start */
+	/* dlink ie in probe response for create connection is built in build_vendor_ie function.
+		build_vendor_ie is shared by several function, so add dlink ie for scan response here
+	*/
+	if (wdev->dlink_mesh_scan_en && dlink_hook_set_mesh_ie) {
+		mesh_ie_len = dlink_hook_set_mesh_ie(mesh_ie, MESH_IE_MAX);
+		if (mesh_ie_len > 0) {
+			MakeOutgoingFrame((pOutBuffer + FrameLen),
+					&dlink_ie_len,
+					mesh_ie_len,
+					mesh_ie,
+					END_OF_ARGS);
 
+			FrameLen += dlink_ie_len;
+		}
+	}
+	/* dlink mesh: end */
+#endif
 	{
         // Question to Rorscha: bit4 in old chip is used? but currently is using for 2.4G 256QAM
 
@@ -1615,19 +1646,18 @@ VOID APPeerBeaconAction(
                 if(pAd->ScanTab.BssEntry[BssIdx].bSupportMWDS != bSupportMWDS)
                     pAd->ScanTab.BssEntry[BssIdx].bSupportMWDS = bSupportMWDS;
             }
-			   /* dlink mesh: start */
-			   if (ie_list->vendor_ie.is_dlink_mesh==TRUE)
-			   	{
-			   	dlink_mesh_update_scantab(&(pAd->ScanTab.BssEntry[BssIdx]), ie_list, RealRssi);
-				}
-			   /* dlink mesh: end */
+
         }
+#ifdef DLINK_SUPERMESH_SUPPROT
 		/* dlink mesh: start */
-		else if (ie_list->vendor_ie.is_dlink_mesh==TRUE)
+		if (ie_list->vendor_ie.is_dlink_mesh==TRUE)
 			{
-			dlink_mesh_collect_rssi(ie_list, RealRssi);         
+            dlink_mesh_collect_rssi(ie_list, RealRssi);
+            if (dlink_hook_update_mesh_ie)
+                dlink_hook_update_mesh_ie(ie_list->Bssid);
 			}
 			/* dlink mesh: end */
+#endif
 #endif /* MWDS */
 	}
 	/* sanity check fail, ignore this frame */
@@ -2247,8 +2277,15 @@ find_next_channel:
 		{
 			if (pAd->ApCfg.bAutoChannelAtBootup == TRUE)/* iwpriv set auto channel selection */
 			{
-				APAutoChannelInit(pAd);
-				pAd->ApCfg.AutoChannel_Channel = pAd->ChannelList[0].Channel;
+#ifdef DLINK_SUPERMESH_SUPPROT
+				/* dlink mesh: start */
+				if (dlink_mesh_need_autoch_init(pAd) == 1)
+				/* dlink mesh: end */
+#endif
+				{
+					APAutoChannelInit(pAd);
+					pAd->ApCfg.AutoChannel_Channel = pAd->ChannelList[0].Channel;
+				}
 			}
 		}
 #endif /* CONFIG_AP_SUPPORT */
@@ -2475,20 +2512,18 @@ VOID APPeerBeaconAtScanAction(RTMP_ADAPTER *pAd, MLME_QUEUE_ELEM *Elem)
                 
                 if(pAd->ScanTab.BssEntry[Idx].bSupportMWDS != bSupportMWDS)
                     pAd->ScanTab.BssEntry[Idx].bSupportMWDS = bSupportMWDS;
-				/* dlink mesh: start */
-				if (ie_list->vendor_ie.is_dlink_mesh==TRUE)
-					{
-					dlink_mesh_update_scantab(&(pAd->ScanTab.BssEntry[Idx]), ie_list, RealRssi);
-					}
-				/* dlink mesh: end */
             }
-			/* dlink mesh: start */
-			else if (ie_list->vendor_ie.is_dlink_mesh==TRUE)
-				{
-				dlink_mesh_collect_rssi(ie_list, RealRssi);         
-				}
-				/* dlink mesh: end */
         }
+#ifdef DLINK_SUPERMESH_SUPPROT
+        /* dlink mesh: start */
+        if (ie_list->vendor_ie.is_dlink_mesh==TRUE)
+        {
+            dlink_mesh_collect_rssi(ie_list, RealRssi);
+            if (dlink_hook_update_mesh_ie)
+                dlink_hook_update_mesh_ie(ie_list->Bssid);
+        }
+        /* dlink mesh: end */
+#endif
 #endif /* MWDS */
 #ifdef APCLI_SUPPORT
 #ifdef WH_EVENT_NOTIFIER

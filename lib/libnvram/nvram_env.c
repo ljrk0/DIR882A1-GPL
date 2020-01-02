@@ -14,6 +14,16 @@
 char libnvram_debug = 0;
 #define LIBNV_PRINT(x, ...) do { if (libnvram_debug) printf("%s %d: " x, __FILE__, __LINE__, ## __VA_ARGS__); } while(0)
 #define LIBNV_ERROR(x, ...) do { printf("%s %d: ERROR! " x, __FILE__, __LINE__, ## __VA_ARGS__); } while(0)
+#if 1	
+#define LOGFILE_CONSOLE	"/dev/console"
+#define LOG_MSG_TO_CONSOLE(fmt, ...)	do {	FILE *logcgi_fp = fopen(LOGFILE_CONSOLE, "a"); \
+						fprintf(logcgi_fp, "%s:%s:%d:--------------------->" fmt "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__); \
+						fclose(logcgi_fp); \
+					} while(0)
+#else 
+#define LOG_MSG_TO_CONSOLE(fmt, ...)	do {;\
+					} while(0)
+#endif
 
 static block_t fb[FLASH_BLOCK_NUM+EXTEND_BLOCK_NUM] =
 {
@@ -359,7 +369,20 @@ char const *nvram_bufget(int index, char *name)
 #endif
 
 	idx = cache_idx(index, name);
-
+	if(-1 == idx)
+	{
+#ifdef CONFIG_KERNEL_NVRAM
+		if(strlen(nvr.value)>0)
+#endif		
+		{
+			LOG_MSG_TO_CONSOLE("reinit	nvram fb index=%d table when name=%s cannot find!\n",index,name);
+			nvram_close(index);
+			nvram_init(index);
+			idx = cache_idx(index, name);
+			LOG_MSG_TO_CONSOLE("after reinit index=%d  name=%s	idx=%d\n",index,name,idx);
+		}
+	}
+			
 	if (-1 != idx) {
 		if (fb[index].cache[idx].value) {
 			//duplicate the value in case caller modify it
@@ -476,8 +499,8 @@ int nvram_commit(int index)
 	//LIBNV_PRINT("--> nvram_commit %d\n", index);
 	LIBNV_CHECK_INDEX(-1);
 	LIBNV_CHECK_VALID();
-	factory_mode = nvram_get(CONFIG2_NVRAM, "factory_mode");
-	if(1 == atoi(factory_mode))
+	//如果是非工厂模式,commit才能将factory_mode设为用户配置
+	if(access("/private/factory_mode", 0)==0)
 	{
 		nvram_safe_set("factory_mode", "2");
 	}

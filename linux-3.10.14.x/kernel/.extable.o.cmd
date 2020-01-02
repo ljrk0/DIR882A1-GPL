@@ -1,4 +1,4 @@
-cmd_kernel/extable.o := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -Wp,-MD,kernel/.extable.o.d  -nostdinc -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include -Iarch/mips/include/generated  -Iinclude -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi -Iarch/mips/include/generated/uapi -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi -Iinclude/generated/uapi -include /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/kconfig.h -D__KERNEL__ -DVMLINUX_LOAD_ADDRESS=0xffffffff00000000+0x81001000 -DDATAOFFSET=0 -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -O2 -mno-check-zero-division -mabi=32 -G 0 -mno-abicalls -fno-pic -pipe -msoft-float -ffreestanding -march=mips32r2 -Wa,-mips32r2 -Wa,--trap -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-ralink -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fomit-frame-pointer -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO    -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(extable)"  -D"KBUILD_MODNAME=KBUILD_STR(extable)" -c -o kernel/extable.o kernel/extable.c
+cmd_kernel/extable.o := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -Wp,-MD,kernel/.extable.o.d  -nostdinc -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -I/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include -Iarch/mips/include/generated  -Iinclude -I/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi -Iarch/mips/include/generated/uapi -I/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi -Iinclude/generated/uapi -include /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/kconfig.h -D__KERNEL__ -DVMLINUX_LOAD_ADDRESS=0xffffffff00000000+0x81001000 -DDATAOFFSET=0 -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -O2 -mno-check-zero-division -mabi=32 -G 0 -mno-abicalls -fno-pic -pipe -msoft-float -ffreestanding -march=mips32r2 -Wa,-mips32r2 -Wa,--trap -I/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-ralink -I/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fomit-frame-pointer -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO    -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(extable)"  -D"KBUILD_MODNAME=KBUILD_STR(extable)" -c -o kernel/extable.o kernel/extable.c
 
 source_kernel/extable.o := kernel/extable.c
 
@@ -38,29 +38,29 @@ deps_kernel/extable.o := \
     $(wildcard include/config/phys/addr/t/64bit.h) \
     $(wildcard include/config/64bit.h) \
   include/uapi/linux/types.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/types.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/types.h \
     $(wildcard include/config/64bit/phys/addr.h) \
   include/asm-generic/int-ll64.h \
   include/uapi/asm-generic/int-ll64.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/bitsperlong.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/bitsperlong.h \
   include/asm-generic/bitsperlong.h \
   include/uapi/asm-generic/bitsperlong.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/types.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/posix_types.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/types.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/posix_types.h \
   include/linux/stddef.h \
   include/uapi/linux/stddef.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/posix_types.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/sgidefs.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/posix_types.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/posix_types.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/sgidefs.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/posix_types.h \
   arch/mips/include/generated/asm/trace_clock.h \
   include/asm-generic/trace_clock.h \
   include/linux/kallsyms.h \
     $(wildcard include/config/kallsyms.h) \
   include/linux/errno.h \
   include/uapi/linux/errno.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/errno.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/errno.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/errno-base.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/errno.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/errno.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/errno-base.h \
   include/linux/kernel.h \
     $(wildcard include/config/preempt/voluntary.h) \
     $(wildcard include/config/debug/atomic/sleep.h) \
@@ -74,11 +74,11 @@ deps_kernel/extable.o := \
     $(wildcard include/config/modules.h) \
     $(wildcard include/config/modversions.h) \
     $(wildcard include/config/unused/symbols.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/linkage.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/linkage.h \
   include/linux/bitops.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/bitops.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/bitops.h \
     $(wildcard include/config/cpu/mipsr2.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/barrier.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/barrier.h \
     $(wildcard include/config/cpu/has/sync.h) \
     $(wildcard include/config/cpu/cavium/octeon.h) \
     $(wildcard include/config/sgi/ip28.h) \
@@ -86,45 +86,45 @@ deps_kernel/extable.o := \
     $(wildcard include/config/weak/ordering.h) \
     $(wildcard include/config/smp.h) \
     $(wildcard include/config/weak/reordering/beyond/llsc.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/addrspace.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/addrspace.h \
     $(wildcard include/config/cpu/r8000.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/spaces.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/spaces.h \
     $(wildcard include/config/32bit.h) \
     $(wildcard include/config/kvm/guest.h) \
     $(wildcard include/config/dma/noncoherent.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/const.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/byteorder.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/const.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/byteorder.h \
   include/linux/byteorder/little_endian.h \
   include/uapi/linux/byteorder/little_endian.h \
   include/linux/swab.h \
   include/uapi/linux/swab.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/swab.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/swab.h \
   include/linux/byteorder/generic.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu-features.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu-features.h \
     $(wildcard include/config/sys/supports/micromips.h) \
     $(wildcard include/config/cpu/mipsr2/irq/vi.h) \
     $(wildcard include/config/cpu/mipsr2/irq/ei.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu-info.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu-info.h \
     $(wildcard include/config/mips/mt/smp.h) \
     $(wildcard include/config/mips/mt/smtc.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cache.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cache.h \
     $(wildcard include/config/mips/l1/cache/shift.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/kmalloc.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/kmalloc.h \
     $(wildcard include/config/dma/coherent.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/cpu-feature-overrides.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/war.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/cpu-feature-overrides.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/war.h \
     $(wildcard include/config/cpu/r4000/workarounds.h) \
     $(wildcard include/config/cpu/r4400/workarounds.h) \
     $(wildcard include/config/cpu/daddi/workarounds.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-ralink/war.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-ralink/war.h \
   include/asm-generic/bitops/non-atomic.h \
   include/asm-generic/bitops/fls64.h \
   include/asm-generic/bitops/ffz.h \
   include/asm-generic/bitops/find.h \
     $(wildcard include/config/generic/find/first/bit.h) \
   include/asm-generic/bitops/sched.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/arch_hweight.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/arch_hweight.h \
   include/asm-generic/bitops/arch_hweight.h \
   include/asm-generic/bitops/const_hweight.h \
   include/asm-generic/bitops/le.h \
@@ -144,11 +144,11 @@ deps_kernel/extable.o := \
   include/linux/string.h \
     $(wildcard include/config/binary/printf.h) \
   include/uapi/linux/string.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/string.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/string.h \
     $(wildcard include/config/cpu/r3000.h) \
   include/uapi/linux/kernel.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/sysinfo.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/div64.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/sysinfo.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/div64.h \
   include/asm-generic/div64.h \
   include/linux/ptrace.h \
     $(wildcard include/config/have/hw/breakpoint.h) \
@@ -214,7 +214,7 @@ deps_kernel/extable.o := \
     $(wildcard include/config/preempt/count.h) \
     $(wildcard include/config/mm/owner.h) \
   include/uapi/linux/sched.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/param.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/param.h \
   include/asm-generic/param.h \
     $(wildcard include/config/hz.h) \
   include/uapi/asm-generic/param.h \
@@ -239,20 +239,20 @@ deps_kernel/extable.o := \
   include/linux/thread_info.h \
   include/linux/bug.h \
     $(wildcard include/config/generic/bug.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/bug.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/bug.h \
     $(wildcard include/config/bug.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/break.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/break.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/break.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/break.h \
   include/asm-generic/bug.h \
     $(wildcard include/config/generic/bug/relative/pointers.h) \
     $(wildcard include/config/debug/bugverbose.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/thread_info.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/thread_info.h \
     $(wildcard include/config/page/size/4kb.h) \
     $(wildcard include/config/page/size/8kb.h) \
     $(wildcard include/config/page/size/16kb.h) \
     $(wildcard include/config/page/size/32kb.h) \
     $(wildcard include/config/page/size/64kb.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/processor.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/processor.h \
     $(wildcard include/config/cavium/octeon/cvmseg/size.h) \
     $(wildcard include/config/mips/mt/fpaff.h) \
     $(wildcard include/config/cpu/has/prefetch.h) \
@@ -260,12 +260,12 @@ deps_kernel/extable.o := \
     $(wildcard include/config/debug/per/cpu/maps.h) \
     $(wildcard include/config/disable/obsolete/cpumask/functions.h) \
   include/linux/bitmap.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/cachectl.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mipsregs.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/cachectl.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mipsregs.h \
     $(wildcard include/config/cpu/vr41xx.h) \
     $(wildcard include/config/mips/huge/tlb/support.h) \
     $(wildcard include/config/cpu/micromips.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/hazards.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/hazards.h \
     $(wildcard include/config/cpu/mipsr1.h) \
     $(wildcard include/config/mips/alchemy.h) \
     $(wildcard include/config/cpu/bmips.h) \
@@ -274,22 +274,22 @@ deps_kernel/extable.o := \
     $(wildcard include/config/cpu/r5500.h) \
     $(wildcard include/config/cpu/xlr.h) \
     $(wildcard include/config/cpu/sb1.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/prefetch.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/prefetch.h \
   include/linux/list.h \
     $(wildcard include/config/debug/list.h) \
   include/linux/poison.h \
     $(wildcard include/config/illegal/pointer/value.h) \
   include/linux/irqflags.h \
     $(wildcard include/config/trace/irqflags/support.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/irqflags.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/irqflags.h \
     $(wildcard include/config/irq/cpu.h) \
   include/linux/bottom_half.h \
   include/linux/spinlock_types.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/spinlock_types.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/spinlock_types.h \
   include/linux/lockdep.h \
     $(wildcard include/config/lock/stat.h) \
   include/linux/rwlock_types.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/spinlock.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/spinlock.h \
   include/linux/rwlock.h \
   include/linux/spinlock_api_smp.h \
     $(wildcard include/config/inline/spin/lock.h) \
@@ -324,15 +324,15 @@ deps_kernel/extable.o := \
   include/linux/atomic.h \
     $(wildcard include/config/arch/has/atomic/or.h) \
     $(wildcard include/config/generic/atomic64.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/atomic.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cmpxchg.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/atomic.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cmpxchg.h \
   include/asm-generic/cmpxchg-local.h \
   include/asm-generic/atomic-long.h \
   include/asm-generic/atomic64.h \
   include/linux/math64.h \
   include/uapi/linux/time.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/param.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/timex.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/param.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/timex.h \
   include/linux/jiffies.h \
   include/linux/rbtree.h \
   include/linux/nodemask.h \
@@ -352,7 +352,7 @@ deps_kernel/extable.o := \
   include/linux/auxvec.h \
   include/uapi/linux/auxvec.h \
   arch/mips/include/generated/uapi/asm/auxvec.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/auxvec.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/auxvec.h \
   include/linux/rwsem.h \
     $(wildcard include/config/rwsem/generic/spinlock.h) \
   include/linux/rwsem-spinlock.h \
@@ -371,12 +371,12 @@ deps_kernel/extable.o := \
     $(wildcard include/config/sparsemem.h) \
     $(wildcard include/config/sparsemem/vmemmap.h) \
   include/generated/bounds.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/page.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/page.h \
     $(wildcard include/config/cpu/mips32.h) \
     $(wildcard include/config/flatmem.h) \
     $(wildcard include/config/need/multiple/nodes.h) \
   include/linux/pfn.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/io.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/io.h \
     $(wildcard include/config/pci.h) \
   include/asm-generic/iomap.h \
     $(wildcard include/config/has/ioport.h) \
@@ -384,28 +384,28 @@ deps_kernel/extable.o := \
   include/asm-generic/pci_iomap.h \
     $(wildcard include/config/no/generic/pci/ioport/map.h) \
     $(wildcard include/config/generic/pci/iomap.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/pgtable-bits.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/pgtable-bits.h \
     $(wildcard include/config/cpu/tx39xx.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/ioremap.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/mangle-port.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/ioremap.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/mangle-port.h \
     $(wildcard include/config/swap/io/space.h) \
   include/asm-generic/memory_model.h \
     $(wildcard include/config/discontigmem.h) \
   include/asm-generic/getorder.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mmu.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/ptrace.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mmu.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/ptrace.h \
     $(wildcard include/config/cpu/has/smartmips.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/isadep.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/ptrace.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/isadep.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/ptrace.h \
   arch/mips/include/generated/asm/cputime.h \
   include/asm-generic/cputime.h \
     $(wildcard include/config/virt/cpu/accounting.h) \
   include/asm-generic/cputime_jiffies.h \
   include/linux/smp.h \
     $(wildcard include/config/use/generic/smp/helpers.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/smp.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/smp.h \
     $(wildcard include/config/kexec.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/smp-ops.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/smp-ops.h \
     $(wildcard include/config/smp/up.h) \
     $(wildcard include/config/mips/cmp.h) \
   arch/mips/include/generated/asm/percpu.h \
@@ -435,19 +435,19 @@ deps_kernel/extable.o := \
   include/linux/highuid.h \
   include/uapi/linux/ipc.h \
   arch/mips/include/generated/uapi/asm/ipcbuf.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/ipcbuf.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/sembuf.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/ipcbuf.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/sembuf.h \
   include/linux/signal.h \
     $(wildcard include/config/old/sigaction.h) \
   include/uapi/linux/signal.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/signal.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/signal.h \
     $(wildcard include/config/trad/signals.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/signal.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/signal-defs.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/sigcontext.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/sigcontext.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/siginfo.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/siginfo.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/signal.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/signal-defs.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/sigcontext.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/sigcontext.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/siginfo.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/siginfo.h \
   include/asm-generic/siginfo.h \
   include/uapi/asm-generic/siginfo.h \
   include/linux/pid.h \
@@ -500,8 +500,8 @@ deps_kernel/extable.o := \
     $(wildcard include/config/debug/objects/timers.h) \
   include/linux/ktime.h \
     $(wildcard include/config/ktime/scalar.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/topology.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/topology.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/topology.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/topology.h \
   include/asm-generic/topology.h \
   include/linux/proportions.h \
   include/linux/percpu_counter.h \
@@ -509,12 +509,12 @@ deps_kernel/extable.o := \
     $(wildcard include/config/seccomp.h) \
     $(wildcard include/config/seccomp/filter.h) \
   include/uapi/linux/seccomp.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/seccomp.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/seccomp.h \
     $(wildcard include/config/mips32/o32.h) \
     $(wildcard include/config/mips32/n32.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/unistd.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/unistd.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/unistd.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/unistd.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/unistd.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/unistd.h \
   include/linux/rculist.h \
   include/linux/rtmutex.h \
     $(wildcard include/config/debug/rt/mutexes.h) \
@@ -522,7 +522,7 @@ deps_kernel/extable.o := \
     $(wildcard include/config/debug/pi/list.h) \
   include/linux/resource.h \
   include/uapi/linux/resource.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/resource.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/resource.h \
   include/asm-generic/resource.h \
   include/uapi/asm-generic/resource.h \
   include/linux/hrtimer.h \
@@ -569,11 +569,11 @@ deps_kernel/extable.o := \
   include/linux/bit_spinlock.h \
   include/linux/path.h \
   include/linux/stat.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/stat.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/stat.h \
   include/uapi/linux/stat.h \
   include/linux/radix-tree.h \
   include/linux/semaphore.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/fiemap.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/fiemap.h \
   include/linux/shrinker.h \
   include/linux/migrate_mode.h \
   include/linux/percpu-rwsem.h \
@@ -581,14 +581,14 @@ deps_kernel/extable.o := \
     $(wildcard include/config/blk/cgroup.h) \
     $(wildcard include/config/blk/dev/integrity.h) \
   include/uapi/linux/fs.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/limits.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/ioctl.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/ioctl.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/limits.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/ioctl.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/ioctl.h \
   include/asm-generic/ioctl.h \
   include/uapi/asm-generic/ioctl.h \
   include/linux/quota.h \
     $(wildcard include/config/quota/netlink/interface.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/dqblk_xfs.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/dqblk_xfs.h \
   include/linux/dqblk_v1.h \
   include/linux/dqblk_v2.h \
   include/linux/dqblk_qtree.h \
@@ -597,9 +597,9 @@ deps_kernel/extable.o := \
   include/linux/nfs_fs_i.h \
   include/linux/fcntl.h \
   include/uapi/linux/fcntl.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/fcntl.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/fcntl.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/ftrace.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/fcntl.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/fcntl.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/ftrace.h \
   include/linux/memory.h \
     $(wildcard include/config/memory/hotplug/sparse.h) \
     $(wildcard include/config/mem/block/size.h) \
@@ -625,7 +625,7 @@ deps_kernel/extable.o := \
     $(wildcard include/config/pm/clk.h) \
     $(wildcard include/config/pm/generic/domains.h) \
   include/linux/ratelimit.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/device.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/device.h \
   include/linux/pm_wakeup.h \
   include/linux/module.h \
     $(wildcard include/config/module/sig.h) \
@@ -636,10 +636,10 @@ deps_kernel/extable.o := \
     $(wildcard include/config/debug/set/module/ronx.h) \
   include/linux/kmod.h \
   include/linux/elf.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/elf.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/elf.h \
     $(wildcard include/config/mips32/compat.h) \
   include/uapi/linux/elf.h \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/elf-em.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/elf-em.h \
   include/linux/moduleparam.h \
     $(wildcard include/config/alpha.h) \
     $(wildcard include/config/ia64.h) \
@@ -648,7 +648,7 @@ deps_kernel/extable.o := \
   include/linux/static_key.h \
   include/linux/jump_label.h \
     $(wildcard include/config/jump/label.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/module.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/module.h \
     $(wildcard include/config/cpu/mips32/r1.h) \
     $(wildcard include/config/cpu/mips32/r2.h) \
     $(wildcard include/config/cpu/mips64/r1.h) \
@@ -663,7 +663,7 @@ deps_kernel/extable.o := \
     $(wildcard include/config/cpu/rm7000.h) \
     $(wildcard include/config/cpu/loongson1.h) \
     $(wildcard include/config/cpu/xlp.h) \
-  /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/uaccess.h \
+  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/uaccess.h \
     $(wildcard include/config/eva.h) \
   arch/mips/include/generated/asm/sections.h \
   include/asm-generic/sections.h \

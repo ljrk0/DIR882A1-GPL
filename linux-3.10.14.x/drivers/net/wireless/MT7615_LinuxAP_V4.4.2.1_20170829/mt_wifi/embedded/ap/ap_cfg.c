@@ -30,7 +30,10 @@
 #ifdef RLM_CAL_CACHE_SUPPORT
 #include "phy/rlm_cal_cache.h"
 #endif /* RLM_CAL_CACHE_SUPPORT */
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+int dlink_mesh_scan_setup(RTMP_ADAPTER *pAd, RTMP_STRING *arg);
+int dlink_mesh_info_channel(RTMP_ADAPTER *pAd, struct wifi_dev *wdev, uint8_t channel);
+#endif
 #define A_BAND_REGION_0				0
 #define A_BAND_REGION_1				1
 #define A_BAND_REGION_2				2
@@ -7678,6 +7681,16 @@ INT Set_AutoChannelSel_Proc(
 		pAd->ApCfg.AutoChannelAlg = ChannelAlgCCA;
 	else if (strcmp(arg,"3") == 0)
 		pAd->ApCfg.AutoChannelAlg = ChannelAlgBusyTime;
+#ifdef DLINK_SUPERMESH_SUPPROT
+	/* dlink mesh: start */
+	else if (strcmp(arg,"0") == 0)
+	{
+		pAd->ApCfg.AutoChannelAlg = 0;
+		pr_info("[MTWF][%s]: AutoChannelSel is disabled\n", __func__);
+		return TRUE;
+	}
+	/* dlink mesh: end */
+#endif
 	else
 	{
 		MTWF_LOG(DBG_CAT_CFG, DBG_SUBCAT_ALL, DBG_LVL_ERROR, ("Set_AutoChannelSel_Proc Alg isn't defined\n"));
@@ -7719,7 +7732,14 @@ INT Set_PartialScan_Proc(RTMP_ADAPTER *pAd, RTMP_STRING *arg)
         (pObj->ioctl_if_type != INT_MAIN) &&
         (pObj->ioctl_if_type != INT_MBSSID))
 		return FALSE;
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+	/* dlink mesh: start */
+	if (dlink_mesh_scan_setup(pAd, arg) == FALSE)
+	{
+		return FALSE;
+	}
+	/* dlink mesh: end */
+#endif
     ifIndex = pObj->ioctl_if;
     bPartialScanning = simple_strtol(arg, 0, 10);
     if(bPartialScanning > 0)
@@ -11158,7 +11178,11 @@ INT Set_ApCli_Channel_Proc(
 
 	MTWF_LOG(DBG_CAT_CLIENT, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("I/F(apcli%d) Set_ApCli_Channel_Proc = %d\n",
 					pObj->ioctl_if, Channel));
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+	/* dlink mesh: start */
+	dlink_mesh_info_channel(pAd, wdev, Channel);
+	/* dlink mesh: end */
+#endif
 	return TRUE;
 }
 

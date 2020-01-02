@@ -84,6 +84,9 @@
 #define MAX_REF_INF_NUM         3
 #define CHANLOAD_HEAVY_CNT         10
 #define MAX_STEERING_COUNT		10
+#ifdef VENDOR_IOS_SUPPORT
+#define MAX_IOS_NUM             5
+#endif
 #define DWELL_TIME				300			// time in sec 
 #define MAX_STEER_TIME_WINDOW	2*60*60 	// time in sec  
 #define BND_STRG_DATA_SAMPLE	10 			// no of sample used to calculate avarage utilization 
@@ -97,7 +100,7 @@
 #define MCS_BAD_COUNT 			10
 #define RSSI_CHECK_COUNT 		10
 #define IDLE_RXTX_BYTE_COUNT	30
-#define ENTRY_BACKUP_TIME 		30	
+#define ENTRY_BACKUP_TIME 		10	
 #define BND_STRG_PRIORITY_MAX	32
 #define FILE_BUFFER_SIZE		1024
 #ifndef H_CHANNEL_BIGGER_THAN
@@ -144,6 +147,9 @@ enum BND_STRG_PRIORITY_FLAGS {
 	fBND_STRG_PRIORITY_LB_CND_CHANLOAD_IDLE,
 	fBND_STRG_PRIORITY_LB_CND_CHANLOAD_ACTIVE,
 	fBND_STRG_PRIORITY_RSSI_UPSTEER,
+#ifdef VENDOR_IOS_SUPPORT
+	fBND_STRG_PRIORITY_IOS_STEER,
+#endif
 #ifdef VENDOR_FEATURE7_SUPPORT
 	fBND_STRG_PRIORITY_DOWNSTEER_CHLOAD_RSSI,
 	fBND_STRG_PRIORITY_UPSTEER_CHLOAD_RSSI,
@@ -196,6 +202,9 @@ enum bndstrg_command {
 	BND_SET_RSSI_DOWNSTEER,
 	BND_SET_RSSI_UPSTEER,
 	BND_SET_NVRAM,
+#ifdef VENDOR_IOS_SUPPORT
+	BND_SET_IOS_STEER_NUMBER,
+#endif
 #ifdef	VENDOR_FEATURE7_SUPPORT
 	BND_SET_RSSI_DISCONNECT,
 #endif
@@ -429,6 +438,8 @@ struct bndstrg_cli_entry {
 	u8				TableIndex;
 	u8				bActiveStatus;
 	u8				bConnStatus;
+	u8				biOSEntry;
+	u8				iOS_steered_cnt;
 	u8				Channel;
 	u8				insert_from_which_channel;
 	u32 			Control_Flags;
@@ -477,6 +488,11 @@ struct bndstrg_cli_table {
 	s8	 	RssiLow;			/* if Rssi5G < RssiLow, then this client cannot connect to 5G */
 	s8		RSSILowDownSteer;
 	s8		RSSIHighUpSteer;
+#ifdef	VENDOR_IOS_SUPPORT
+	u8		IOSNumLimit;
+#endif
+	u8		Operation_steered_num_5G;
+	
 #ifdef	VENDOR_FEATURE7_SUPPORT
 	s8		RSSIDisconnect;
 	u8		BlackListTime;
@@ -552,6 +568,7 @@ struct bnd_msg_heartbeat {
 
 struct bnd_msg_cli_probe {
 	u8 bAllowStaConnectInHt;
+	u8 bIosCapable;   //For IOS immediately connect
 	u8	bVHTCapable;
 	u8	Nss;
 	signed char	Rssi[4];
@@ -780,13 +797,16 @@ int bndstrg_init(struct bndstrg *bndstrg, struct bndstrg_event_ops *event_ops, i
 int bndstrg_deinit(struct bndstrg *bndstrg);
 void bndstrg_run(struct bndstrg *bndstrg);
 void bndstrg_stop(struct bndstrg *bndstrg, u8 reason_code);
-struct bndstrg_cli_entry * bndstrg_get_old_entry(struct bndstrg *bndstrg, struct bndstrg_iface *inf);
+struct bndstrg_cli_entry * bndstrg_get_old_entry(struct bndstrg *bndstrg, struct bndstrg_iface *inf,unsigned char *pAddr);
 u8 bndstrg_client_band_update(struct bndstrg *bndstrg,struct bndstrg_cli_entry *entry,u8 band);
 void bndstrg_cli_status_rsp (struct bndstrg *bndstrg, struct bnd_msg_cli_status_rsp *cli_status_rsp);
 void bndstrg_update_btm_status(struct bndstrg *bndstrg, struct bndstrg_cli_entry *entry);
 void bndstrg_update_probe_info(struct bndstrg *bndstrg, struct bndstrg_iface *inf,struct bndstrg_cli_entry *entry, struct bnd_msg_cli_event *cli_event);
 void bndstrg_update_auth_info(struct bndstrg *bndstrg, struct bndstrg_iface *inf,struct bndstrg_cli_entry *entry, struct bnd_msg_cli_event *cli_event);
 void bndstrg_update_white_black_list(struct bndstrg *bndstrg,struct bndstrg_iface *inf, unsigned char *macAddr, u8 list_type, int deladd);
+
+void bndstrg_periodic_exec(void *eloop_data, void *user_ctx);
+void bndstrg_tasks_per_second(void *eloop_data, void *user_ctx);
 
 #define IS_VALID_MAC(addr) \
 	((addr[0])|(addr[1])|(addr[2])|(addr[3])|(addr[4])|(addr[5]))

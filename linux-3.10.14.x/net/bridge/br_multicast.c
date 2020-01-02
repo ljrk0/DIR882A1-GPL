@@ -1619,7 +1619,7 @@ void br_multicast_init(struct net_bridge *br)
 	br->hash_max = 512;
 
 	br->multicast_router = 1;
-	br->multicast_querier = 1;
+	br->multicast_querier = 0;
 	br->multicast_last_member_count = 2;
 	br->multicast_startup_query_count = 2;
 

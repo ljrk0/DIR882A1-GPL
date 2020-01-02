@@ -50,9 +50,9 @@
 #ifdef ROAMING_ENHANCE_SUPPORT
 #include <net/arp.h>
 #endif /* ROAMING_ENHANCE_SUPPORT */
-
+#ifdef DLINK_SUPERMESH_SUPPROT
 int dlink_mesh_apcli_loss(RTMP_ADAPTER *pAd, APCLI_STRUCT *pApCliEntry, uint16_t reason);
-
+#endif
 #ifdef MAC_REPEATER_SUPPORT
 VOID ReptWaitLinkDown(REPEATER_CLIENT_ENTRY *pReptEntry);
 #endif /*MAC_REPEATER_SUPPORT*/
@@ -2011,6 +2011,7 @@ VOID ApCliIfMonitor(RTMP_ADAPTER *pAd)
 		{
 			MTWF_LOG(DBG_CAT_CLIENT, CATCLIENT_APCLI, DBG_LVL_TRACE, ("ApCliIfMonitor: IF(apcli%d) - no Beancon is received from root-AP.\n", index));
 			MTWF_LOG(DBG_CAT_CLIENT, CATCLIENT_APCLI, DBG_LVL_TRACE, ("ApCliIfMonitor: Reconnect the Root-Ap again.\n"));
+#ifdef DLINK_SUPERMESH_SUPPROT
 			/* dlink mesh: start */
 			if (pAd->ApCfg.ApCliTab[index].wdev.dlink_mesh_en)
 			{
@@ -2018,7 +2019,7 @@ VOID ApCliIfMonitor(RTMP_ADAPTER *pAd)
 				dlink_mesh_apcli_loss(pAd, &pAd->ApCfg.ApCliTab[index], 54097);
 			}
 			/* dlink mesh: end */
-			
+#endif			
 
 #ifdef CONFIG_MULTI_CHANNEL
 			if(pAd->Mlme.bStartMcc == TRUE)

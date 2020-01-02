@@ -1767,6 +1767,11 @@ struct wifi_dev{
 	/* Flag migrate from pAd partially */
 	UINT32 OpStatusFlags;
 	BOOLEAN bAllowBeaconing; /* Device opened and ready for beaconing */
+#ifdef BAND_STEERING_PLUS
+#ifdef CONFIG_AP_SUPPORT
+	BOOLEAN bInfReady;
+#endif /* CONFIG_AP_SUPPORT */
+#endif /* BAND_STEERING */
 };
 
 struct greenap_ctrl {
@@ -3190,7 +3195,8 @@ typedef struct _MAC_TABLE_ENTRY {
 #ifdef PN_UC_REPLAY_DETECTION_SUPPORT
 	UINT64 CCMP_UC_PN[NUM_OF_TID];	
 #endif /* PN_UC_REPLAY_DETECTION_SUPPORT */
-	UINT64 CCMP_BC_PN;
+	UINT64 CCMP_BC_PN[4];
+        BOOLEAN Init_CCMP_BC_PN_Passed[4];
 	BOOLEAN AllowUpdateRSC;
 } MAC_TABLE_ENTRY, *PMAC_TABLE_ENTRY;
 
@@ -3727,6 +3733,14 @@ typedef struct _AP_ADMIN_CONFIG {
 #ifdef BAND_STEERING
 	BND_STRG_CLI_TABLE BndStrgTable;
 #endif
+#endif /* BAND_STEERING */
+#ifdef BAND_STEERING_PLUS
+	BOOLEAN BandSteering;
+	UINT8	BndStrgBssIdx[HW_BEACON_MAX_NUM];
+	BND_STRG_CLI_TABLE BndStrgTable[DBDC_BAND_NUM];
+	UINT32	BndStrgHeartbeatCount;
+	UINT32	BndStrgHeartbeatMonitor;
+	UINT32	BndStrgHeartbeatNoChange;
 #endif /* BAND_STEERING */
 #ifdef VENDOR_FEATURE6_SUPPORT
     UINT16 BSSEnabled; 		// each bit stands for a BSS
@@ -6154,6 +6168,7 @@ typedef struct _PEER_PROBE_REQ_PARAM {
 	CHAR Ssid[MAX_LEN_OF_SSID];
 	UCHAR SsidLen;
 	BOOLEAN bRequestRssi;
+	BOOLEAN IsFromIos; //For IOS immediately connect
 #ifdef CONFIG_HOTSPOT
 	BOOLEAN IsIWIE;
 	BOOLEAN IsIWCapability;
@@ -6161,7 +6176,7 @@ typedef struct _PEER_PROBE_REQ_PARAM {
 	BOOLEAN IsHessid;
 	UINT8 AccessNetWorkType;
 #endif /* CONFIG_HOTSPOT */
-#ifdef BAND_STEERING
+#if defined BAND_STEERING || defined BAND_STEERING_PLUS
 	BOOLEAN IsHtSupport;
 	BOOLEAN IsVhtSupport;
 	UINT32 RxMCSBitmask;

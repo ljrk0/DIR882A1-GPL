@@ -34,8 +34,14 @@
 #ifdef DOT11V_WNM_SUPPORT
 #include "wnm.h"
 #endif /* DOT11V_WNM_SUPPORT */
-UCHAR DLINK_OUI[] = {0x00, 0x05, 0x5d};
 
+#ifdef DLINK_SUPERMESH_SUPPROT
+int dlink_mesh_scan_interval(RTMP_ADAPTER *pAd);
+int dlink_mesh_site_survey(RTMP_ADAPTER *pAd, UCHAR ScanType, struct wifi_dev *wdev);
+
+
+//UCHAR DLINK_OUI[] = {0x00, 0x05, 0x5d};
+#endif
 UCHAR CISCO_OUI[] = {0x00, 0x40, 0x96};
 UCHAR RALINK_OUI[]  = {0x00, 0x0c, 0x43};
 #if (defined(WH_EZ_SETUP) || defined(MWDS))
@@ -1783,7 +1789,11 @@ VOID MlmePeriodicExec(
 		pAd->ScanCtrl.PartialScan.NumOfChannels == DEFLAUT_PARTIAL_SCAN_CH_NUM)
 	{
 	    UCHAR ScanType = SCAN_ACTIVE;
+#ifdef DLINK_SUPERMESH_SUPPROT
+		if ((pAd->ScanCtrl.PartialScan.BreakTime++ % dlink_mesh_scan_interval(pAd)) == 0) {
+#else
 		if ((pAd->ScanCtrl.PartialScan.BreakTime++ % DEFLAUT_PARTIAL_SCAN_BREAK_TIME) == 0) {
+#endif
 			if (!ApScanRunning(pAd)) {
                 struct wifi_dev *pwdev = pAd->ScanCtrl.PartialScan.pwdev;
                 if(pwdev)
@@ -1800,7 +1810,15 @@ VOID MlmePeriodicExec(
                     }
 #endif /* APCLI_SUPPORT */
 #endif /* WSC_AP_SUPPORT */
-                    ApSiteSurvey_by_wdev(pAd, NULL, ScanType, FALSE, pwdev);
+#ifdef DLINK_SUPERMESH_SUPPROT
+					/* dlink mesh: start */				 
+					if (dlink_mesh_site_survey(pAd, ScanType, pwdev) == 0)
+					/* dlink mesh: end */
+#endif
+					{
+					  ApSiteSurvey_by_wdev(pAd, NULL, ScanType, FALSE, pwdev);
+					}
+
                  }
 			}
 		}

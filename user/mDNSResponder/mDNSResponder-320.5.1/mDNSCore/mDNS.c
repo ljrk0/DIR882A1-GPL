@@ -5774,11 +5774,11 @@ mDNSlocal mDNSu8 *ProcessQuery(mDNS *const m, const DNSMessage *const query, con
 		DNSQuestion pktq, *q;
 		ptr = getQuestion(query, ptr, end, InterfaceID, &pktq);	// get the question...
 		if (!ptr) goto exit;
-			
+#if 0			
 	    if(!(pktq.qclass & kDNSQClass_UnicastResponse)) {
             pktq.qclass |= kDNSQClass_UnicastResponse;
 	    }			
-
+#endif
 		// The only queries that *need* a multicast response are:
 		// * Queries sent via multicast
 		// * from port 5353

@@ -108,7 +108,7 @@
 #define HAVE_GETHOSTBYNAME 1
 
 /* Define to 1 if you have the `getifaddrs' function. */
-/* #undef HAVE_GETIFADDRS */
+#define HAVE_GETIFADDRS 1
 
 /* Define to 1 if you have the `getpagesize' function. */
 #define HAVE_GETPAGESIZE 1

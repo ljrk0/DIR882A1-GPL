@@ -165,7 +165,7 @@ lock_old_archive_extraction=no
 LTCC="/opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc "
 
 # LTCC compiler flags.
-LTCFLAGS="-O2 -fomit-frame-pointer -pipe  -Dlinux -D__linux__ -Dunix -DEMBED -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/include -DCONFIG_UCLIBC_0_9_33_2  -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source "
+LTCFLAGS="-O2 -fomit-frame-pointer -pipe  -Dlinux -D__linux__ -Dunix -DEMBED -I/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include -I/home/zhangtianchuan/trunk/GPL_Code/source/lib/include -DCONFIG_UCLIBC_0_9_33_2  -I/home/zhangtianchuan/trunk/GPL_Code/source "
 
 # Take the output of nm and produce a listing of raw symbols and C names.
 global_symbol_pipe="sed -n -e 's/^.*[	 ]\\([ABCDGIRSTW][ABCDGIRSTW]*\\)[	 ][	 ]*\\([_A-Za-z][_A-Za-z0-9]*\\)\$/\\1 \\2 \\2/p' | sed '/ __gnu_lto/d'"

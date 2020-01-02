@@ -1,3 +1,4 @@
+kernel/drivers/usb/storage/usb-storage.ko
 kernel/net/netfilter/nf_conntrack_proto_gre.ko
 kernel/net/netfilter/nf_conntrack_pptp.ko
 kernel/net/netfilter/nf_conntrack_sip.ko

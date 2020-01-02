@@ -433,6 +433,7 @@ image:
 	[ -d $(IMAGEDIR) ] || mkdir $(IMAGEDIR)
 	$(MAKEARCH) -C vendors image
 	cp $(IMAGEDIR)/$(USER)_uImage DIR882_uImage.img
+	rm -rf linux-3.10.14.x/kernel/config_data.gz
 #	make -f $(TFTPDIR)/Makefile.16M
 
 .PHONY: release

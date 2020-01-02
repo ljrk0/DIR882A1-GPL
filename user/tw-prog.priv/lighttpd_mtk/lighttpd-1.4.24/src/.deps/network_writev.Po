@@ -1,0 +1,494 @@
+network_writev.o: network_writev.c network_backends.h ../config.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/autoconf.h \
+ settings.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/types.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/features.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_config.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/cdefs.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/types.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/wordsize.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/typesizes.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/pthreadtypes.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/sched.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/time.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/endian.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/endian.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/byteswap.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/byteswap.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/byteswap-common.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/select.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/select.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/sigset.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/time.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/sysmacros.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/sendfile.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/uio.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uio.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/mman.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/mman.h \
+ base.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/time.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/stat.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/stat.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sgidefs.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/syslimits.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/limits.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/posix1_lim.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/local_lim.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/linux/limits.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_local_lim.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/posix2_lim.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/xopen_lim.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/stdio_lim.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdint.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/stdint.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/wchar.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/inttypes.h \
+ buffer.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/stdlib.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/waitflags.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/waitstatus.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/alloca.h \
+ array.h /home/zhangtianchuan/trunk/GPL_Code/source/lib/pcre-8.01/pcre.h \
+ chunk.h sys-mmap.h keyvalue.h fdevent.h bitset.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/epoll.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/epoll.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/poll.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/poll.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/poll.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/signal.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/signum.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/siginfo.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/sigaction.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/sigcontext.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/sigstack.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/ucontext.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/sigthread.h \
+ sys-socket.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/socket.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/socket.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/sockaddr.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/socket.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/sockios.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/ioctl.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/asm-generic/ioctl.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/ioctl.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/ioctl.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/ioctls.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/ioctls.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/ioctl-types.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/ttydefaults.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/netinet/in.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/in.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/netinet/tcp.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/un.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/string.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/arpa/inet.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/netdb.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/rpc/netdb.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/netdb.h \
+ splaytree.h etag.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/unistd.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/posix_opt.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/environments.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/confname.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/getopt.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/e_os2.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/opensslconf.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/comp.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/crypto.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/stdio.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_stdio.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/wchar.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_mutex.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/pthread.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sched.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_clk_tck.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/initspin.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_pthread.h \
+ /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdarg.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/stack.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/safestack.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/opensslv.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ossl_typ.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/symhacks.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/bio.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/buffer.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/evp.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/objects.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/obj_mac.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/asn1.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/bn.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ec.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ecdsa.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ecdh.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/rsa.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dsa.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dh.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/sha.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509_vfy.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/lhash.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pkcs7.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pem.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pem2.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/hmac.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/kssl.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl2.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl3.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/tls1.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dtls1.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pqueue.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl23.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/srtp.h \
+ network.h server.h log.h stat_cache.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/resource.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/resource.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/errno.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/errno.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/errno.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/errno.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/errno.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm-generic/errno-base.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/fcntl.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/fcntl.h \
+ /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/assert.h
+
+network_backends.h:
+
+../config.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/autoconf.h:
+
+settings.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/types.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/features.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_config.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/cdefs.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/types.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/wordsize.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/typesizes.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/pthreadtypes.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/sched.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/time.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/endian.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/endian.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/byteswap.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/byteswap.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/byteswap-common.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/select.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/select.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/sigset.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/time.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/sysmacros.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/sendfile.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/uio.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uio.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/mman.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/mman.h:
+
+base.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/time.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/stat.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/stat.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sgidefs.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/syslimits.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/limits.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/posix1_lim.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/local_lim.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/linux/limits.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_local_lim.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/posix2_lim.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/xopen_lim.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/stdio_lim.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdint.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/stdint.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/wchar.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/inttypes.h:
+
+buffer.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/stdlib.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/waitflags.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/waitstatus.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/alloca.h:
+
+array.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/lib/pcre-8.01/pcre.h:
+
+chunk.h:
+
+sys-mmap.h:
+
+keyvalue.h:
+
+fdevent.h:
+
+bitset.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/epoll.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/epoll.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/poll.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/poll.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/poll.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/signal.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/signum.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/siginfo.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/sigaction.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/sigcontext.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/sigstack.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/ucontext.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/sigthread.h:
+
+sys-socket.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/socket.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/socket.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/sockaddr.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/socket.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/sockios.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/ioctl.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/asm-generic/ioctl.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/ioctl.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/ioctl.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/ioctls.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/ioctls.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/ioctl-types.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/ttydefaults.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/netinet/in.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/in.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/netinet/tcp.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/un.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/string.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/arpa/inet.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/netdb.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/rpc/netdb.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/netdb.h:
+
+splaytree.h:
+
+etag.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/unistd.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/posix_opt.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/environments.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/confname.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/getopt.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/e_os2.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/opensslconf.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/comp.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/crypto.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/stdio.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_stdio.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/wchar.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_mutex.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/pthread.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sched.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_clk_tck.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/initspin.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_pthread.h:
+
+/opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdarg.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/stack.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/safestack.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/opensslv.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ossl_typ.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/symhacks.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/bio.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/buffer.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/evp.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/objects.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/obj_mac.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/asn1.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/bn.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ec.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ecdsa.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ecdh.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/rsa.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dsa.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dh.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/sha.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/x509_vfy.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/lhash.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pkcs7.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pem.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pem2.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/hmac.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/kssl.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl2.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl3.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/tls1.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/dtls1.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/pqueue.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/ssl23.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/user/openssl-1.0.2j/include/openssl/srtp.h:
+
+network.h:
+
+server.h:
+
+log.h:
+
+stat_cache.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/resource.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/resource.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/errno.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/errno.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/errno.h:
+
+/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/errno.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/errno.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm-generic/errno-base.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/fcntl.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/fcntl.h:
+
+/opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/assert.h:

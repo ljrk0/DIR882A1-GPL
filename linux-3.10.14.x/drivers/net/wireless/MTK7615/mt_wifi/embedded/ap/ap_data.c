@@ -3655,6 +3655,16 @@ INT APRxFowardHandle(RTMP_ADAPTER *pAd, struct wifi_dev *wdev, PNDIS_PACKET pPac
 	pMbss = &pAd->ApCfg.MBSSID[wdev->func_idx];
 	pHeader802_3 = GET_OS_PKT_DATAPTR(pPacket);
 
+	if((((pHeader802_3[12] << 8) | pHeader802_3[13]) == 0x0806) &&	(RTPKT_TO_OSPKT(pPacket)->len >= 1496) ) //2017-11-07 add patch fixed incorrect arp pkt unaligned panic case, should release it 
+	{
+		printk("ARP pkt len is(%d) \n", RTPKT_TO_OSPKT(pPacket)->len);
+		return FALSE;	
+	}
+
+	/* only one connected sta, directly to upper layer */
+	if (pAd->MacTab.Size <= 1)
+		return TRUE;
+
 	/* by default, announce this pkt to upper layer (bridge) and not to air */
 	to_os = TRUE;
 	to_air = FALSE;

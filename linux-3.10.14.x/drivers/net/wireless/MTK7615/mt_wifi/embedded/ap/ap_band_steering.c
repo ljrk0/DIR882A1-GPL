@@ -161,6 +161,18 @@ INT Set_BndStrg_CheckTime2G(
 	return TRUE;
 }
 
+INT Set_BndStrg_OprStrGapTime(
+	PRTMP_ADAPTER	pAd,
+	RTMP_STRING			*arg)
+{
+	UINT32 GapTime = (UINT32) simple_strtol(arg, 0, 16);
+	PBND_STRG_CLI_TABLE table = P_BND_STRG_TABLE;
+	if (table->Ops)
+		table->Ops->SetOprStrGapTime(table, GapTime);
+	return TRUE;
+}
+
+
 INT Set_BndStrg_FrmChkFlag(
 	PRTMP_ADAPTER	pAd,
 	RTMP_STRING		*arg)
@@ -226,6 +238,7 @@ INT BndStrg_Init(PRTMP_ADAPTER pAd)
 	MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF, (YLW("%s()\n"), __FUNCTION__));
 
 	ret_val = BndStrg_TableInit(pAd, table);
+	pAd->ApCfg.BandStrgDTableFull = FALSE;
 
 
 	if (ret_val != BND_STRG_SUCCESS)
@@ -973,6 +986,15 @@ static BOOLEAN D_CheckConnectionReq(
 
 		if (table->Ops)
 			entry = table->Ops->TableLookup(table, pSrcAddr);
+        if(entry)
+        	{
+#ifdef BND_STRG_QA
+              BND_STRG_PRINTQAMSG(table, pSrcAddr,
+											(("%02x:%02x:%02x:%02x:%02x:%02x RITS entry is exist ,IsInf2G=%d ,frame_check_flags =%d,Control_Flags=%d\n"),
+											PRINT_MAC(pSrcAddr),IsInf2G,frame_check_flags,entry->Control_Flags));
+#endif
+
+        	}
 
 		if (entry/* || table->Band == BAND_5G*/) {
 			if (pAd->CommonCfg.dbdc_mode == TRUE) { // have to check entry connection flags for processing or not
@@ -1209,6 +1231,23 @@ static INT D_SetHoldTime(
 	return TRUE;
 }
 
+static INT D_SetOprStrGapTime(
+			PBND_STRG_CLI_TABLE table,
+			UINT32	Time)
+{
+	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER) table->priv;
+	BNDSTRG_MSG msg;
+
+	table->OprStrGapTime = Time;
+	MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF, 
+			("%s(): OprStrGapTime = %u\n", __FUNCTION__, table->OprStrGapTime));
+
+	msg.Action = SET_OPR_STR_GAP_TIME;
+	msg.Time = table->OprStrGapTime;
+	D_BndStrgSendMsg(pAd, &msg);
+
+	return TRUE;
+}
 
 static INT D_SetCheckTime(
 			PBND_STRG_CLI_TABLE table,
@@ -1394,7 +1433,17 @@ static VOID D_MsgHandle(
 						BndStrg_DeleteEntry(table, entry->Addr, i);
 					}
 				}
+				D_SetOprStrGapTime(table,table->OprStrGapTime);
 				table->DaemonPid = 0xffffffff;
+				}
+			break;
+		case BNDSTRG_TABLE_FULL:
+			{
+			if(msg->OnOff)
+				pAd->ApCfg.BandStrgDTableFull = TRUE;
+			else
+				pAd->ApCfg.BandStrgDTableFull = FALSE;
+
 			}
 			break;
 		default:
@@ -1416,6 +1465,7 @@ BNDSTRG_OPS D_BndStrgOps = {
 	.SetAgeTime = D_SetAgeTime,
 	.SetHoldTime = D_SetHoldTime,
 	.SetCheckTime = D_SetCheckTime,
+	.SetOprStrGapTime = D_SetOprStrGapTime,
 	.SetFrmChkFlag = D_SetFrmChkFlag,
 	.SetCndChkFlag = D_SetCndChkFlag,
 	.SetCndPriority = D_SetCndPriority,

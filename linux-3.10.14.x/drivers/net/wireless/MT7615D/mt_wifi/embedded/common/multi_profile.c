@@ -233,6 +233,57 @@ static INT multi_profile_merge_separate(
 #ifdef CONFIG_AP_SUPPORT
 #ifdef MBSS_SUPPORT
 /*
+*perband
+*/
+static INT multi_profile_merge_perband(
+	struct mpf_data *data,
+	UCHAR *parm,
+	UCHAR *buf1,
+	UCHAR *buf2,
+	UCHAR *final)
+{
+	CHAR tmpbuf1[TEMP_STR_SIZE]= "";
+	CHAR tmpbuf2[TEMP_STR_SIZE]= "";
+	CHAR value[TEMP_STR_SIZE]="";
+	UCHAR i, j;
+	CHAR *tmpbuf;
+	CHAR *macptr;
+
+	if (!buf1 || !buf2) 
+		return NDIS_STATUS_FAILURE;
+
+	if(RTMPGetKeyParameter(parm, tmpbuf1, TEMP_STR_SIZE, buf1, TRUE) !=TRUE) {
+		return NDIS_STATUS_SUCCESS;
+	}
+
+	if(RTMPGetKeyParameter(parm, tmpbuf2, TEMP_STR_SIZE, buf2, TRUE) != TRUE) {
+		return NDIS_STATUS_SUCCESS;
+	}
+	os_zero_mem(value,sizeof(value));
+
+	/*check number of perband parameter mode*/
+	for (i = 0, macptr = rstrtok(tmpbuf1,";"); macptr; macptr = rstrtok(NULL,";"), i++){
+		/*do nothing*/
+	}
+	for (j = 0, macptr = rstrtok(tmpbuf2,";"); macptr; macptr = rstrtok(NULL,";"), j++){
+		/*do nothing*/
+	}
+	
+	if(i > 1 || j > 1) {
+		multi_profile_merge_separate(parm,buf1,buf2,final);
+	} else {
+		for(i = 0; i < data->total_num; i++) {
+			tmpbuf = (i < data->pf1_num) ? tmpbuf1 : tmpbuf2;
+			snprintf(value,sizeof(value),"%s%s;",value,tmpbuf);
+		}
+		RTMPSetKeyParameter(parm,value, TEMP_STR_SIZE,final, TRUE);
+	}	
+	
+	return NDIS_STATUS_SUCCESS;
+}
+
+
+/*
 * MACAddress$Idx
 */
 static INT multi_profile_merge_mac_address(
@@ -758,7 +809,7 @@ static INT multi_profile_merge_mbss(
 	/*merge HT_MCS*/
 	multi_profile_merge_separate("HT_MCS",buf1,buf2,final);
 	/*merge HT_BW*/
-	multi_profile_merge_separate("HT_BW",buf1,buf2,final);
+	multi_profile_merge_perband(data,"HT_BW",buf1,buf2,final);
 	/*merge HT_STBC*/
 	multi_profile_merge_separate("HT_STBC",buf1,buf2,final);
 	/*merge HT_LDPC*/
@@ -1162,6 +1213,85 @@ static INT multi_profile_merge_apcli(
 	return NDIS_STATUS_SUCCESS;
 }
 #endif /*APCLI_SUPPORT*/
+
+#if defined BAND_STEERING || defined BAND_STEERING_PLUS
+static INT multi_profile_merge_bandsteering(
+	struct mpf_data *data,
+	CHAR *buf1,
+	CHAR *buf2,
+	CHAR *final)
+{
+	//multi_profile_merge_separate("BndStrgBssIdx",buf1,buf2,final);
+	//return NDIS_STATUS_SUCCESS;
+
+	CHAR tmpbuf[TEMP_STR_SIZE]= "";
+	CHAR tmpbuf2[TEMP_STR_SIZE]= "";
+	CHAR value[TEMP_STR_SIZE]="";
+	RTMP_STRING *macptr = NULL;
+	int i=0;
+
+	if (!buf1 || !buf2) 
+		return NDIS_STATUS_FAILURE;
+
+	if(RTMPGetKeyParameter("BndStrgBssIdx", tmpbuf, TEMP_STR_SIZE, buf1, TRUE)) {
+		for (i = 0, macptr = rstrtok(tmpbuf,";"); macptr; macptr = rstrtok(NULL,";"), i++)
+		{
+			if(i == data->pf1_num)
+				break;
+			
+			if(i == 0)
+				snprintf((value + strlen(value)),sizeof(value),"%s",macptr);
+			else
+				snprintf((value + strlen(value)),sizeof(value),";%s",macptr);
+		}
+		if(i < data->pf1_num)
+		{
+			for(; i < data->pf1_num; i++){
+				if(i == 0)
+					snprintf((value + strlen(value)),sizeof(value),"%s","1");
+				else
+					snprintf((value + strlen(value)),sizeof(value),";%s","0");
+			}
+		}	
+	}else{
+		for(i = 0; i < data->pf1_num; i++)
+		{
+			if(i==0)
+				snprintf((value + strlen(value)),sizeof(value),"%s","1");
+			else
+				snprintf((value + strlen(value)),sizeof(value),";%s","0");
+		}
+	}
+	
+	if(RTMPGetKeyParameter("BndStrgBssIdx", tmpbuf2, TEMP_STR_SIZE, buf2, TRUE)){
+		for (i = 0, macptr = rstrtok(tmpbuf2,";"); macptr; macptr = rstrtok(NULL,";"), i++)
+		{
+			if(i == data->pf2_num)
+				break;
+			snprintf((value + strlen(value)),sizeof(value),";%s",macptr);
+		}
+		if(i < data->pf2_num)
+		{
+			for(; i < data->pf2_num; i++){
+				if(i == 0)
+					snprintf((value + strlen(value)),sizeof(value),";%s","1");
+				else
+					snprintf((value + strlen(value)),sizeof(value),";%s","0");
+			}
+		}
+	}else{
+		for(i = 0; i < data->pf2_num; i++)
+		{
+			if(i==0)
+				snprintf((value + strlen(value)),sizeof(value),";%s","1");
+			else
+				snprintf((value + strlen(value)),sizeof(value),";%s","0");
+		}
+	}
+	RTMPSetKeyParameter("BndStrgBssIdx",value, TEMP_STR_SIZE,final, TRUE);	 
+	return NDIS_STATUS_SUCCESS;
+}
+#endif
 
 /*
 * BssidNum
@@ -1621,6 +1751,10 @@ static INT multi_profile_merge(
 		if(multi_profile_merge_apcli(buf1,buf2,final) != NDIS_STATUS_SUCCESS)
 			return retval;
 #endif /*APCLI_SUPPORT*/
+#if defined BAND_STEERING || defined BAND_STEERING_PLUS
+		if(multi_profile_merge_bandsteering(data,buf1,buf2,final) != NDIS_STATUS_SUCCESS)
+			return retval;
+#endif /* BAND_STEERING */
 	}
 #endif /*CONFIG_AP_SUPPORT*/
 	if (multi_profile_merge_gi(buf1, buf2, final) != NDIS_STATUS_SUCCESS)

@@ -49,7 +49,9 @@
 #include <sys/ioctl.h>
 #endif
 
+#ifndef CONFIG_TZ_LOCATION
 #include "nvram.h"
+#endif
 
 #define ENABLE_DEBUG
 
@@ -114,6 +116,11 @@ static struct timeval time_of_send;
 static int live=0;
 static int set_clock=0;   /* non-zero presumably needs root privs */
 
+#ifdef CONFIG_TZ_LOCATION
+/* termination after time synchronization success */
+static int iTermination_after_success = 0;
+#endif
+
 /* when present, debug is a true global, shared with phaselock.c */
 #ifdef ENABLE_DEBUG
 int debug=0;
@@ -123,7 +130,13 @@ int debug=0;
 #define DEBUG_OPTION
 #endif
 
+#ifndef CONFIG_TZ_LOCATION
 #define NTP_SYNC_TIME_EXEC_PATH "/tmp/ntp_sync_event"
+#endif
+
+#ifdef CONFIG_TZ_LOCATION
+#define NTP_SYNC_SUCCESS_STATUS 0
+#endif
 
 int get_current_freq(void)
 {
@@ -274,6 +287,8 @@ int rfc1305print(uint32_t *data, struct ntptime *arrival)
 		/* divide xmttime.fine by 4294.967296 */
 		tv_set.tv_usec = USEC(xmttime.fine);
 
+#ifndef CONFIG_TZ_LOCATION
+
         // check timezone token
         char *pszTZOffset=NULL;
         int Hours = 0, Minutes =0;
@@ -295,9 +310,17 @@ int rfc1305print(uint32_t *data, struct ntptime *arrival)
         if(daylight)
             tv_set.tv_sec += 3600;
 
+#endif
+
 		if (settimeofday(&tv_set,NULL)<0) {
 			perror("settimeofday");
 			//exit(1); // mark by EAP, do not exit when finish setting the device time
+
+		#ifdef CONFIG_TZ_LOCATION
+			if (iTermination_after_success) {
+				exit(1);
+			}
+		#endif
 		}
 		if (debug) {
 			printf("set time to %lu.%.6lu\n", tv_set.tv_sec, tv_set.tv_usec);
@@ -443,7 +466,15 @@ void primary_loop(int usd, int num_probes, int interval, int goodness)
 			get_packet_timestamp(usd, &udp_arrival_ntp);
 			check_source(pack_len, &sa_xmit, sa_xmit_len);
 			error = rfc1305print(incoming_word, &udp_arrival_ntp);
+
+		#ifndef CONFIG_TZ_LOCATION
 			system(NTP_SYNC_TIME_EXEC_PATH);
+		#else
+			if (iTermination_after_success) {
+				exit(NTP_SYNC_SUCCESS_STATUS);
+			}
+		#endif
+
 			/* udp_handle(usd,incoming,pack_len,&sa_xmit,sa_xmit_len); */
 			
 		} else {
@@ -490,10 +521,17 @@ void do_replay(void)
 
 void usage(char *argv0)
 {
+#ifndef CONFIG_TZ_LOCATION
 	fprintf(stderr,
 	"Usage: %s [-c count] [-d] [-g goodness] -h hostname [-i interval]\n"
 	"\t[-l] [-p port] [-r] [-s] \n",
 	argv0);
+#else
+	fprintf(stderr,
+	"Usage: %s [-c count] [-d] [-g goodness] -h hostname [-i interval]\n"
+	"\t[-l] [-p port] [-r] [-s] [-q] \n",
+	argv0);
+#endif
 }
 
 int main(int argc, char *argv[]) {
@@ -508,9 +546,15 @@ int main(int argc, char *argv[]) {
 	int goodness=0;
 	char *hostname=NULL;          /* must be set */
 	int replay=0;                 /* replay mode overrides everything */
-
+#ifdef CONFIG_TZ_LOCATION
+	int iConnect_retry_count = 0;
+#endif
 	for (;;) {
+	#ifndef CONFIG_TZ_LOCATION
 		c = getopt( argc, argv, "c:" DEBUG_OPTION "g:h:i:lp:rs");
+	#else
+		c = getopt( argc, argv, "c:" DEBUG_OPTION "g:h:i:lp:rsq");
+	#endif
 		if (c == EOF) break;
 		switch (c) {
 			case 'c':
@@ -543,6 +587,11 @@ int main(int argc, char *argv[]) {
 				set_clock++;
 				//probe_count = 1; // mark by EAP, keep probe_count the same without "-s"
 				break;
+		#ifdef CONFIG_TZ_LOCATION
+			case 'q':
+				iTermination_after_success = 1;
+				break;
+		#endif
 			default:
 				usage(argv[0]);
 				exit(1);
@@ -556,6 +605,9 @@ int main(int argc, char *argv[]) {
 		usage(argv[0]);
 		exit(1);
 	}
+
+#ifndef CONFIG_TZ_LOCATION
+
 	if (debug) {
 		printf("Configuration:\n"
 		"  -c probe_count %d\n"
@@ -569,6 +621,26 @@ int main(int argc, char *argv[]) {
 		probe_count, debug, goodness, hostname, cycle_time,
 		live, udp_local_port, set_clock );
 	}
+
+#else
+
+	if (debug) {
+		printf("Configuration:\n"
+		"  -c probe_count %d\n"
+		"  -d (debug)     %d\n"
+		"  -g goodness    %d\n"
+		"  -h hostname    %s\n"
+		"  -i interval    %d\n"
+		"  -l live        %d\n"
+		"  -p local_port  %d\n"
+		"  -s set_clock   %d\n"
+		"  -q iTermination_after_success   %d\n",
+		probe_count, debug, goodness, hostname, cycle_time,
+		live, udp_local_port, set_clock, iTermination_after_success);
+	}
+
+#endif
+
 retry:
 	/* Startup sequence */
 	usd = -1;
@@ -579,19 +651,42 @@ retry:
 
 	if ( setup_transmit(usd, hostname, NTP_PORT) ) // by EAP
     {
-        sleep(5); // retry after 5 s
+    #ifdef CONFIG_TZ_LOCATION
+		if (iTermination_after_success)
+		{
+			if (probe_count > 0)
+			{
+				++iConnect_retry_count;
+
+				if (iConnect_retry_count >= probe_count)
+				{
+					exit(1);
+				}
+			}
+
+			sleep(cycle_time);
+		}
+		else
+	#endif
+		sleep(5); // retry after 5 s
 		if(-1 != usd)
 		{
 			close(usd);
 		}
-        goto retry;
-    }
-
+		goto retry;
+	}
 	primary_loop(usd, probe_count, cycle_time, goodness);
 
 	if(-1 != usd)
 	{
 		close(usd);
 	}
-	return 0;
+#ifdef CONFIG_TZ_LOCATION
+	if (iTermination_after_success)
+	{
+		return 1;
+	}
+	else
+#endif
+	exit(1);
 }

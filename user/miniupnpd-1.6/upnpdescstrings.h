@@ -42,7 +42,22 @@
 #define WLANDEV_MODELNAME			"D-Link Router"
 #define WLANDEV_MODELDESCRIPTION	"D-Link Router"
 //Ralink :  need to modified
+#if defined(PRODUCT_DIR878)
 #define WLANDEV_MODELNUMBER			"DIR-878"
+#define WLANDEV_FRIENDLYNAME		"DIR-878"
+#elif defined(PRODUCT_DIR882)
+#define WLANDEV_MODELNUMBER			"DIR-882"
+#define WLANDEV_FRIENDLYNAME		"DIR-882"
+#elif defined(PRODUCT_DIR867)
+#define WLANDEV_MODELNUMBER			"DIR-867"
+#define WLANDEV_FRIENDLYNAME		"DIR-867"
+#elif defined(PRODUCT_DIR853_A2)||defined(PRODUCT_DIR853_A1)
+#define WLANDEV_MODELNUMBER			"DIR-853"
+#define WLANDEV_FRIENDLYNAME		"DIR-853"
+#elif defined(PRODUCT_DIR1935)
+#define WLANDEV_MODELNUMBER			"DIR-1935"
+#define WLANDEV_FRIENDLYNAME		"DIR-1935"
+#endif
 #define WLANDEV_MODELURL			"http://www.dlink.com"
 //#define WLANDEV_UPC					"MINIUPNPD"
 #endif /* ENABLE_WSC_SERVICE */

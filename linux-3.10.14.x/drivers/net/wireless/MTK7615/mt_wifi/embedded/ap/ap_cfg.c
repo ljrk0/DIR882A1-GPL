@@ -1704,6 +1704,7 @@ static struct {
 	{"BndStrgHoldTime", 	Set_BndStrg_HoldTime},
 	{"BndStrg5GCheckTime", 	Set_BndStrg_CheckTime5G},
 	{"BndStrg2GCheckTime", 	Set_BndStrg_CheckTime2G},
+	{"BndStrgOprStrGapTime", Set_BndStrg_OprStrGapTime},
 	{"BndStrgCndChk", 	Set_BndStrg_CndChkFlag},
 	{"BndStrgFrmChk", 	Set_BndStrg_FrmChkFlag},
 	{"BndStrgCndPriority", Set_BndStrg_CndPriority},

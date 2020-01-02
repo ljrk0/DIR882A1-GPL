@@ -19,9 +19,9 @@ libc/pwd_grp/putspent.os: libc/pwd_grp/putspent.c include/libc-symbols.h \
  include/bits/select.h include/sys/sysmacros.h include/alloca.h \
  include/bits/stackinfo.h include/stdint.h include/string.h \
  include/errno.h include/bits/errno.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
  include/assert.h include/ctype.h include/bits/uClibc_touplow.h \
  include/pwd.h include/grp.h include/paths.h include/shadow.h
 
@@ -123,11 +123,11 @@ include/errno.h:
 
 include/bits/errno.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
 
 include/assert.h:
 
@@ -142,4 +142,4 @@ include/grp.h:
 include/paths.h:
 
 include/shadow.h:
-cmd_libc_pwd_grp_putspent.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/pwd_grp/putspent.c -o libc/pwd_grp/putspent.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/pwd_grp/putspent.os -MD -MP -MF libc/pwd_grp/.putspent.os.dep
+cmd_libc_pwd_grp_putspent.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/pwd_grp/putspent.c -o libc/pwd_grp/putspent.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/pwd_grp/putspent.os -MD -MP -MF libc/pwd_grp/.putspent.os.dep

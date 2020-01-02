@@ -296,7 +296,7 @@ void groups_update_state(struct groups *groups,
 	bool created = false, changed = false;
 	char addrbuf[INET6_ADDRSTRLEN];
 	inet_ntop(AF_INET6, groupaddr, addrbuf, sizeof(addrbuf));
-	L_DEBUG("%s: %s (+%d sources) => %d", __FUNCTION__, addrbuf, (int)len, update);
+	L_DEBUG("%s: %s (+%d sources) => %d ", __FUNCTION__, addrbuf, (int)len, update);
 
 	struct group *group = groups_get_group(groups, groupaddr, &created);
 	if (!group) {
@@ -310,6 +310,8 @@ void groups_update_state(struct groups *groups,
 	omgp_time_t now = omgp_time();
 	omgp_time_t next_event = OMGP_TIME_MAX;
 	struct groups_config *cfg = IN6_IS_ADDR_V4MAPPED(&group->addr) ? &groups->cfg_v4 : &groups->cfg_v6;
+	
+	L_DEBUG("%s: group->compat_v2_until=%x, group->compat_v1_until=%x, now=%x", __FUNCTION__, group->compat_v2_until, group->compat_v1_until, now);
 
 	// Backwards compatibility modes
 	if (group->compat_v2_until > now || group->compat_v1_until > now) {
@@ -338,6 +340,8 @@ void groups_update_state(struct groups *groups,
 
 	bool include = group->exclude_until <= now;
 	bool is_include = update == UPDATE_IS_INCLUDE || update == UPDATE_TO_IN || update == UPDATE_ALLOW;
+	
+	L_DEBUG("%s: include=%d, update=%d", __FUNCTION__, include, update);
 
 	int llqc = cfg->last_listener_query_count;
 	omgp_time_t mali = now + (cfg->robustness * cfg->query_interval) + cfg->query_response_interval;
@@ -403,8 +407,8 @@ void groups_update_state(struct groups *groups,
 
 		querier_clear_sources(group);
 		list_splice(&saved, &group->sources);
-		group->exclude_until = mali;
 
+		group->exclude_until = mali;
 		if (next_event > mali)
 			next_event = mali;
 	}
@@ -455,6 +459,7 @@ void groups_update_state(struct groups *groups,
 		group->next_generic_transmit = now;
 		group->retransmit = llqc;
 		next_event = now;
+		changed = true;
 	}
 
 	if (changed && groups->cb_update)

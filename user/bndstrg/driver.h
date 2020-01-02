@@ -31,6 +31,7 @@ struct bndstrg_drv_ops {
 	int (*drv_inf_status_query)(void *drv_data, const char *ifname);
 	int (*drv_bndstrg_onoff)(void *drv_data, const char *ifname, u8 onoff);
 	int (*drv_nvram_update)(void *drv_data, const char *ifname, struct bndstrg_nvram_client *entry, u8 action);
+	int (*drv_bndstrg_tablefull)(void *drv_data, const char *ifname, u8 tablefull);
 };
 
 #endif /* __DRIVER_H__ */

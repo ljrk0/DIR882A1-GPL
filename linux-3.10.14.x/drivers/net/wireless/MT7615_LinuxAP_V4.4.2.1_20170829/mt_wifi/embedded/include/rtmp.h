@@ -1869,9 +1869,12 @@ struct wifi_dev{
 #ifdef WH_EVENT_NOTIFIER
 	struct Custom_VIE custom_vie;
 #endif /* WH_EVENT_NOTIFIER */
+#ifdef DLINK_SUPERMESH_SUPPROT
 	/* d-link mesh */
-BOOLEAN dlink_mesh_en;
-
+	BOOLEAN dlink_mesh_scan_en;
+	BOOLEAN dlink_mesh_en;
+	UINT32 dlink_isolation_flag;
+#endif
 };
 #ifdef WH_EZ_SETUP
 #ifdef EZ_REGROUP_SUPPORT
@@ -2171,6 +2174,9 @@ typedef struct _BSS_STRUCT {
 	UCHAR ipv6LinkLocalSrcAddr[16]; // Ipv6 link local address for this MBSS as per it's BSSID
 	UINT16 MldQryChkSum; // Chksum to use in MLD query msg on this MBSS
 #endif
+	ULONG ReceivedByteCountOverflowCount;
+	ULONG TransmittedByteOverflowCount;
+
 } BSS_STRUCT;
 
 #endif /* CONFIG_AP_SUPPORT */
@@ -3299,7 +3305,8 @@ typedef struct _MAC_TABLE_ENTRY {
 #ifdef PN_UC_REPLAY_DETECTION_SUPPORT
 	UINT64 CCMP_UC_PN[NUM_OF_TID];	
 #endif /* PN_UC_REPLAY_DETECTION_SUPPORT */
-	UINT64 CCMP_BC_PN;
+	UINT64 CCMP_BC_PN[4];
+        BOOLEAN Init_CCMP_BC_PN_Passed[4];
 	BOOLEAN AllowUpdateRSC;
 
 #ifdef WH_EZ_SETUP
@@ -3321,7 +3328,11 @@ typedef struct _MAC_TABLE_ENTRY {
 	UCHAR tick_sec;
 	unsigned char is_peer_entry_apcli; /*This will be used for Force Roam to detect the CLI and Third Party STA*/
 #endif
+#ifdef DLINK_SUPERMESH_SUPPROT
 	unsigned long dlink_mesh_time;
+	ULONG TxBytesOverflowCount;
+	ULONG RxBytesOverflowCount;
+#endif
 } MAC_TABLE_ENTRY, *PMAC_TABLE_ENTRY;
 
 
@@ -4457,6 +4468,11 @@ typedef struct _SCAN_CTRL_{
 	RALINK_TIMER_STRUCT APScanTimer;
 #endif /* CONFIG_AP_SUPPORT */
 	PARTIAL_SCAN PartialScan;
+#ifdef DLINK_SUPERMESH_SUPPROT
+	/* dlink mesh: start */
+	PVOID DLinkScan;
+	/* dlink mesh: end */
+#endif
 }SCAN_CTRL;
 
 
@@ -6235,8 +6251,9 @@ typedef struct _PEER_PROBE_REQ_PARAM {
 #ifdef WH_EVENT_NOTIFIER
     IE_LISTS ie_list;
 #endif /* WH_EVENT_NOTIFIER */
-BOOLEAN is_dlink_mesh;
-
+#ifdef DLINK_SUPERMESH_SUPPROT
+	BOOLEAN is_dlink_mesh;
+#endif
 } PEER_PROBE_REQ_PARAM, *PPEER_PROBE_REQ_PARAM;
 
 

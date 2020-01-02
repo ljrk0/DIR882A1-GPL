@@ -29,9 +29,9 @@
 #include <ap_vow.h>
 #endif /* VOW_SUPPORT */
 
-
+#ifdef DLINK_SUPERMESH_SUPPROT
 extern int (*dlink_hook_mesh_stacount)(uint32_t cnt);
-
+#endif
 
 VOID TRTableEntryDump(RTMP_ADAPTER *pAd, INT tr_idx, const RTMP_STRING *caller, INT line)
 {
@@ -700,6 +700,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 				pEntry->PrivacyFilter = Ndis802_11PrivFilterAcceptAll;
 				pEntry->StaIdleTimeout = pAd->ApCfg.StaIdleTimeout;
 				pAd->ApCfg.MBSSID[pEntry->func_tb_idx].StaCount++;
+#ifdef DLINK_SUPERMESH_SUPPROT
 				/* dlink mesh: start */
 				if (wdev->dlink_mesh_en && dlink_hook_mesh_stacount)
 					{
@@ -707,6 +708,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 					dlink_hook_mesh_stacount(pAd->ApCfg.MBSSID[pEntry->func_tb_idx].StaCount);
 					}
 				/* dlink mesh: end */
+#endif
 				pAd->ApCfg.EntryClientCount++;
 #ifdef VOW_SUPPORT
                 //vow_set_client(pAd, pEntry->func_tb_idx, pEntry->wcid);
@@ -1099,6 +1101,7 @@ BOOLEAN MacTableDeleteEntry(RTMP_ADAPTER *pAd, USHORT wcid, UCHAR *pAddr)
 				IgmpGroupDelMembers(pAd, (PUCHAR)pEntry->Addr, wdev, pEntry->wcid);
 #endif /* IGMP_SNOOP_SUPPORT */
 				pAd->ApCfg.MBSSID[pEntry->func_tb_idx].StaCount--;
+#ifdef DLINK_SUPERMESH_SUPPROT
 				/* dlink mesh: start */
 				if (wdev->dlink_mesh_en && dlink_hook_mesh_stacount)
 					{
@@ -1106,7 +1109,7 @@ BOOLEAN MacTableDeleteEntry(RTMP_ADAPTER *pAd, USHORT wcid, UCHAR *pAddr)
 					dlink_hook_mesh_stacount(pAd->ApCfg.MBSSID[pEntry->func_tb_idx].StaCount);
 					}
 				/* dlink mesh: end */
-
+#endif
 				pAd->ApCfg.EntryClientCount--;
 
 #ifdef HOSTAPD_SUPPORT

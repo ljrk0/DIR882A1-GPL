@@ -91,19 +91,29 @@ int client_set(struct client *client, const struct in6_addr *group,
 	if (family == AF_INET)
 	{
 		sprintf(buff,"iptables -t nat -D PREROUTING -d %s -j ACCEPT 2>/dev/null\n",
-		    inet_ntoa(in_addr->sin_addr));
+			    inet_ntoa(in_addr->sin_addr));
+		system(buff);
+
+      sprintf(buff,"iptables -t nat -D PREROUTING -d 224.0.0.1 -j ACCEPT 2>/dev/null\n",
+			    inet_ntoa(in_addr->sin_addr));
 		system(buff);
 	}
-
+	
 	int fd = (family == AF_INET) ? client->igmp_fd : client->mld_fd;
-	setsockopt(fd, sol, MCAST_LEAVE_GROUP, filter, sizeof(struct group_req));
+   setsockopt(fd, sol, MCAST_LEAVE_GROUP, filter, sizeof(struct group_req));
+   
 	if (!include || cnt > 0) {
 		if (family == AF_INET)
 		{
 			sprintf(buff,"iptables -t nat -I PREROUTING -d %s -j ACCEPT 2>/dev/null\n",
 			    inet_ntoa(in_addr->sin_addr));
 			system(buff);
-		}		
+
+         sprintf(buff,"iptables -t nat -I PREROUTING -d 224.0.0.1 -j ACCEPT 2>/dev/null\n",
+			    inet_ntoa(in_addr->sin_addr));
+			system(buff);
+		}
+		
 		if (setsockopt(fd, sol, MCAST_JOIN_GROUP, filter, sizeof(struct group_req))
 				&& family == AF_INET && errno == ENOBUFS) {
 			L_WARN("proxy: kernel denied joining multicast group. check igmp_max_memberships?");

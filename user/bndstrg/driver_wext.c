@@ -81,7 +81,7 @@ static void driver_wext_event_wireless(struct driver_wext_data *drv,
 				break;
 
 			default:
-				//DBGPRINT(DEBUG_ERROR, "unkwnon event type(%d)\n", iwe->u.data.flags);
+				DBGPRINT(DEBUG_ERROR, "unkwnon event type(%d)\n", iwe->u.data.flags);
 				break; 
 			}
 
@@ -159,11 +159,8 @@ static int driver_wext_accessible_cli(
 	memcpy(msg.Addr, entry->Addr, MAC_ADDR_LEN);
 	msg.TableIndex = entry->TableIndex;
 	msg.Action = action;
-
-	if (action == CLI_UPDATE) {
-		msg.Control_Flags = entry->Control_Flags;
-		msg.elapsed_time = entry->elapsed_time;
-	}
+	msg.Control_Flags = entry->Control_Flags;
+	msg.elapsed_time = entry->elapsed_time;
 
 	ret = driver_wext_set_oid(
 				drv_wext_data,
@@ -244,6 +241,26 @@ static int driver_wext_bndstrg_onoff(
 				(char *) &msg,
 				sizeof(struct bndstrg_msg));
 
+	return ret;
+}
+static int driver_wext_bndstrg_tablefull(
+				void *drv_data,
+				const char *ifname,
+				u8 tablefull)
+{
+	int ret;
+	struct driver_wext_data *drv_wext_data = \
+					(struct driver_wext_data *)drv_data;	
+	struct bndstrg_msg msg;
+	DBGPRINT(DEBUG_OFF, "%s\n", __FUNCTION__);
+	msg.Action = BNDSTRG_TABLE_FULL;
+	msg.OnOff = tablefull;
+	ret = driver_wext_set_oid(
+				drv_wext_data,
+				ifname,
+				OID_BNDSTRG_MSG,
+				(char *) &msg,
+				sizeof(struct bndstrg_msg));
 	return ret;
 }
 
@@ -351,6 +368,7 @@ const struct bndstrg_drv_ops bndstrg_drv_wext_ops = {
 	.drv_accessible_cli = driver_wext_accessible_cli,
 	.drv_inf_status_query = driver_wext_inf_status_query,
 	.drv_bndstrg_onoff = driver_wext_bndstrg_onoff,
+	.drv_bndstrg_tablefull = driver_wext_bndstrg_tablefull,
 	.drv_nvram_update = driver_wext_nvram_update,
 };
 

@@ -5,9 +5,9 @@ libc/sysdeps/linux/common/execve.os: libc/sysdeps/linux/common/execve.c \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
  include/bits/sysnum.h include/bits/syscalls.h include/sgidefs.h \
  include/errno.h include/bits/errno.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
  include/alloca.h include/bits/stackinfo.h include/bits/syscalls-common.h \
  include/unistd.h include/bits/posix_opt.h include/bits/environments.h \
  include/bits/wordsize.h include/bits/types.h include/bits/kernel_types.h \
@@ -17,12 +17,12 @@ libc/sysdeps/linux/common/execve.os: libc/sysdeps/linux/common/execve.c \
  include/sys/param.h include/limits.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
  include/bits/posix1_lim.h include/bits/local_lim.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
  include/bits/uClibc_local_lim.h include/bits/posix2_lim.h \
  include/bits/xopen_lim.h include/bits/stdio_lim.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
  include/sys/types.h include/time.h include/endian.h \
  include/bits/endian.h include/byteswap.h include/bits/byteswap.h \
  include/bits/byteswap-common.h include/sys/select.h \
@@ -55,11 +55,11 @@ include/errno.h:
 
 include/bits/errno.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
 
 include/alloca.h:
 
@@ -105,7 +105,7 @@ include/bits/posix1_lim.h:
 
 include/bits/local_lim.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
 
 include/bits/uClibc_local_lim.h:
 
@@ -115,11 +115,11 @@ include/bits/xopen_lim.h:
 
 include/bits/stdio_lim.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
 
 include/sys/types.h:
 
@@ -144,4 +144,4 @@ include/bits/sigset.h:
 include/bits/time.h:
 
 include/sys/sysmacros.h:
-cmd_libc_sysdeps_linux_common_execve.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/sysdeps/linux/common/execve.c -o libc/sysdeps/linux/common/execve.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/sysdeps/linux/common/execve.os -MD -MP -MF libc/sysdeps/linux/common/.execve.os.dep
+cmd_libc_sysdeps_linux_common_execve.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/sysdeps/linux/common/execve.c -o libc/sysdeps/linux/common/execve.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/sysdeps/linux/common/execve.os -MD -MP -MF libc/sysdeps/linux/common/.execve.os.dep

@@ -19,27 +19,27 @@ libc/inet/ether_addr.os: libc/inet/ether_addr.c include/libc-symbols.h \
  include/bits/select.h include/sys/sysmacros.h include/alloca.h \
  include/bits/stackinfo.h include/netinet/ether.h \
  include/netinet/if_ether.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/if_ether.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/types.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/types.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/int-ll64.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/bitsperlong.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/bitsperlong.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/posix_types.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/stddef.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/posix_types.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/if_ether.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/types.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/types.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/int-ll64.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/bitsperlong.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/bitsperlong.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/posix_types.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/stddef.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/posix_types.h \
  include/net/ethernet.h include/net/if_arp.h include/sys/socket.h \
  include/sys/uio.h include/bits/uio.h include/bits/socket.h \
  include/limits.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
  include/bits/posix1_lim.h include/bits/local_lim.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
  include/bits/uClibc_local_lim.h include/bits/posix2_lim.h \
  include/bits/xopen_lim.h include/bits/sockaddr.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h
 
 include/libc-symbols.h:
 
@@ -137,23 +137,23 @@ include/netinet/ether.h:
 
 include/netinet/if_ether.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/if_ether.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/if_ether.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/types.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/types.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/types.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/types.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/int-ll64.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/int-ll64.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/bitsperlong.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/bitsperlong.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/bitsperlong.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/bitsperlong.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/posix_types.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/posix_types.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/stddef.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/stddef.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/posix_types.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/posix_types.h:
 
 include/net/ethernet.h:
 
@@ -175,7 +175,7 @@ include/bits/posix1_lim.h:
 
 include/bits/local_lim.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
 
 include/bits/uClibc_local_lim.h:
 
@@ -185,11 +185,11 @@ include/bits/xopen_lim.h:
 
 include/bits/sockaddr.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
-cmd_libc_inet_ether_addr.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/inet/ether_addr.c -o libc/inet/ether_addr.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -DRESOLVER="\"resolv.c\"" -MT libc/inet/ether_addr.os -MD -MP -MF libc/inet/.ether_addr.os.dep
+/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
+cmd_libc_inet_ether_addr.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/inet/ether_addr.c -o libc/inet/ether_addr.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -DRESOLVER="\"resolv.c\"" -MT libc/inet/ether_addr.os -MD -MP -MF libc/inet/.ether_addr.os.dep

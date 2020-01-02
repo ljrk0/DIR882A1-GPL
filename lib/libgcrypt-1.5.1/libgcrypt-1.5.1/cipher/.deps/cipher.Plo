@@ -45,7 +45,7 @@ cipher.lo: cipher.c ../config.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/errno.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm-generic/errno-base.h \
  ../src/g10lib.h ../src/visibility.h ../src/gcrypt.h \
- /home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h \
+ /home/zhangtianchuan/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/socket.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/uio.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uio.h \
@@ -171,7 +171,7 @@ cipher.lo: cipher.c ../config.h \
 
 ../src/gcrypt.h:
 
-/home/zhangtianchuan/882_89018/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h:
+/home/zhangtianchuan/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h:
 
 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/socket.h:
 

@@ -16,6 +16,7 @@
 #include "os.h"
 #include "list.h"
 #include "eloop.h"
+#include "bndstrg.h"
 
 struct eloop_sock {
 	int sock;
@@ -412,13 +413,18 @@ int eloop_register_signal_reconfig(eloop_signal_handler handler,
 #endif /* CONFIG_NATIVE_WINDOWS */
 }
 
-
+extern struct bndstrg bndstrg;
 void eloop_run(void)
 {
 	fd_set *rfds, *wfds, *efds;
 	int res;
 	struct timeval _tv;
 	struct os_time tv, now;
+#if 1
+	/* fix using date command cause heart beat lost */
+	struct os_time bfr;
+	os_get_time(&bfr);
+#endif
 
 	rfds = os_malloc(sizeof(*rfds));
 	wfds = os_malloc(sizeof(*wfds));
@@ -430,6 +436,25 @@ void eloop_run(void)
 	       (!dl_list_empty(&eloop.timeout) || eloop.readers.count > 0 ||
 		eloop.writers.count > 0 || eloop.exceptions.count > 0)) {
 		struct eloop_timeout *timeout;
+#if 1
+		os_get_time(&now);
+		if (bfr.sec - now.sec > 10) {/* the difference must less than 20 */
+		        struct eloop_timeout *item;
+				printf("[Warnning] detected date time changed backward!\n");
+		        dl_list_for_each(item, &eloop.timeout, struct eloop_timeout, list) {
+		                 os_time_sub(&bfr, &now, &tv);
+		                 item->time.usec -= tv.usec;
+		                 if (item->time.usec < 0) {
+		                           item->time.sec--;
+		                           item->time.usec += 1000000;
+		                 }
+		                 item->time.sec -= tv.sec;
+		                 if (item->time.sec < 0)
+		                           item->time.sec = item->time.usec = 0;
+		        }
+		}
+		bfr = now;
+#endif
 		timeout = dl_list_first(&eloop.timeout, struct eloop_timeout,
 					list);
 		if (timeout) {
@@ -442,11 +467,19 @@ void eloop_run(void)
 			_tv.tv_usec = tv.usec;
 		}
 
+		bndstrg_periodic_exec(NULL, &bndstrg);/* added by huaming*/
+
 		eloop_sock_table_set_fds(&eloop.readers, rfds);
 		eloop_sock_table_set_fds(&eloop.writers, wfds);
 		eloop_sock_table_set_fds(&eloop.exceptions, efds);
+
+		_tv.tv_sec = 0;
+		_tv.tv_usec = 100000;
+		res = select(eloop.max_sock + 1, rfds, wfds, efds,&_tv);
+		/*
 		res = select(eloop.max_sock + 1, rfds, wfds, efds,
 			     timeout ? &_tv : NULL);
+		*/
 		if (res < 0 && errno != EINTR && errno != 0) {
 			perror("select");
 			goto out;

@@ -78,7 +78,6 @@ kernel/drivers/usb/host/ehci-hcd.ko
 kernel/drivers/usb/host/ehci-pci.ko
 kernel/drivers/usb/host/xhci-hcd.ko
 kernel/drivers/usb/mon/usbmon.ko
-kernel/drivers/usb/storage/usb-storage.ko
 kernel/net/802/p8022.ko
 kernel/net/802/psnap.ko
 kernel/net/802/stp.ko
@@ -115,8 +114,10 @@ kernel/net/ipv6/inet6_hashtables.ko
 kernel/net/ipv6/netfilter/ip6_tables.ko
 kernel/net/ipv6/netfilter/ip6table_filter.ko
 kernel/net/ipv6/netfilter/ip6table_mangle.ko
+kernel/net/ipv6/netfilter/ip6table_nat.ko
 kernel/net/ipv6/netfilter/nf_conntrack_ipv6.ko
 kernel/net/ipv6/netfilter/nf_defrag_ipv6.ko
+kernel/net/ipv6/netfilter/nf_nat_ipv6.ko
 kernel/net/ipv6/netfilter/ip6t_ipv6header.ko
 kernel/net/ipv6/netfilter/ip6t_rt.ko
 kernel/net/ipv6/netfilter/ip6t_REJECT.ko

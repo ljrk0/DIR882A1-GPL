@@ -82,8 +82,13 @@ dir_$(CONFIG_USER_IPTABLES_IPTABLES)	    += iptables-1.4.10
 dir_$(CONFIG_USER_IPTABLES_IP6TABLES)	    += iptables-1.4.10
 else
 ifeq ($(CONFIG_LINUXDIR), linux-3.10.14.x)
-dir_$(CONFIG_USER_IPTABLES_IPTABLES)	    += iptables-1.4.10
-dir_$(CONFIG_USER_IPTABLES_IP6TABLES)	    += iptables-1.4.10
+ifeq ($(CONFIG_MCAFEE_SUPPORT), y)
+dir_$(CONFIG_USER_IPTABLES_IPTABLES)        += iptables-1.4.20
+dir_$(CONFIG_USER_IPTABLES_IP6TABLES)       += iptables-1.4.20
+else
+dir_$(CONFIG_USER_IPTABLES_IPTABLES)        += iptables-1.4.20_ext
+dir_$(CONFIG_USER_IPTABLES_IP6TABLES)       += iptables-1.4.20_ext
+endif
 else
 ifeq ($(CONFIG_LINUXDIR), linux-3.10.20.x)
 dir_$(CONFIG_USER_IPTABLES_IPTABLES)	    += iptables-1.4.10
@@ -151,7 +156,7 @@ dir_$(CONFIG_USER_P910ND)                   += p910nd-0.91
 dir_$(CONFIG_USER_PROFTPD)                  += proftpd
 dir_$(CONFIG_USER_RADVD)                    += radvd
 dir_y+=apps
-dir_y+=wget-1.13
+#dir_y+=wget-1.13
 dir_$(CONFIG_RALINKAPP)		    	    += rt2880_app
 dir_$(CONFIG_USER_RALINKIAPPD)	    	    += ralinkiappd
 dir_$(CONFIG_USER_MTKIAPPD)	    	    += mtkiappd
@@ -173,8 +178,10 @@ dir_$(CONFIG_USER_WATCHDOG)           	    += watchdog-5.6
 dir_$(CONFIG_USER_WPA_SUPPLICANT)	    += wpa_supplicant-2.0
 dir_$(CONFIG_USER_WSC)			    += wsc_upnp
 ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A2")
+#dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg_7615d
 dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg_plus
 else ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A1")
+#dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg_7615d
 dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg_plus
 else
 dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg
@@ -201,11 +208,18 @@ dir_$(CONFIG_DLINKAPP_ONETOUCH)               += onetouch
 dir_$(CONFIG_USER_QUAGGA)			+= quagga
 dir_$(CONFIG_USER_IPSET)               += ipset-6.35
 
+#2017-21-01 linsd add for dlink super mesh
+dir_$(CONFIG_USER_SUPERMESH)               += mosquitto-1.3.1
+dir_$(CONFIG_USER_SUPERMESH)               += supermesh
+
 dir_y+=rc
 dir_y+=stad/src
 dir_y+=tw-prog.priv/lighttpd_mtk 
 dir_y+=tw-prog.priv/prog-cgi/src
 dir_y+=tw-prog.priv/www
+dir_y+=tw-prog.priv/cli/libcli
+dir_y+=tw-prog.priv/mkconfig
+dir_y+=tw-prog.priv/seama
 dir_y+=tw_hotplug
 #dir_y+=kstreamer
 #dir_$(CONFIG_IMG_CRYPT)+=tw-prog.priv/imgcrypt
@@ -239,13 +253,24 @@ endif
 
 #test
 #dir_y=cpe_app
-dir_$(CONFIG_MCAFEE_SUPPORT)+=curl-7.57.0
+dir_$(CONFIG_CURL) += curl-7.57.0
+dir_$(CONFIG_FOTA) += fota
+
+ifeq ($(CONFIG_TZ_LOCATION), y)
+	dir_y += fota
+	dir_y += tz_location
+endif
+dir_$(CONFIG_USER_INADYN) += confuse
+dir_$(CONFIG_USER_INADYN) += inadyn-new
 
 
 all: config
 #	$(MAKE) -j$(HOST_NCPU) $(sort $(dir_y) $(dir_v) $(dir_p)) || exit $$?
 ifeq ($(CONFIG_USER_OPENSSL), y)
 	touch openssl-1.0.2j/Makefile
+endif
+ifeq ($(CONFIG_USER_IPTABLES_IPTABLES), y)
+	touch iptables-1.4.20_ext/configure
 endif
 	$(MAKE) -j$(HOST_NCPU) $(dir_v) $(dir_p) $(dir_y) || exit $$?
 

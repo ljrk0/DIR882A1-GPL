@@ -1,0 +1,2 @@
+/* svn info: $Revision: 888 $ $Date: 2018-06-20 15:37:27 +0800 (Wed, 20 Jun 2018) $ */
+function SOAPTimeInfo(){this.TimeHourValue="",this.TimeMinuteValue="",this.TimeMidDateValue=!1}function SOAPSetFirmwareAutoUpdate(){this.TimeToUpdate=new SOAPTimeInfo,this.AutoQuery=!0,this.AutoDownload=!1,this.AutoUpdate=!1,this.BetaFirmware=!1}function SOAPGetFirmwareAutoUpdateResponse(){this.TimeToUpdate=new SOAPTimeInfo,this.AutoQuery=!0,this.AutoDownload=!1,this.AutoUpdate=!1,this.BetaFirmware=!1}function SOAPSetEventNotification(){this.Enabled=!1,this.AutoFirmwareUpgrade=!1}

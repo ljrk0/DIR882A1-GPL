@@ -911,8 +911,9 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 		if ((_length) < (SKB_BUF_MINIMUN_SIZE - SKB_BUF_HEADTAIL_RSV)) {	\
 			_Pkt = build_skb(data_ptr, SKB_BUF_MINIMUN_SIZE);		\
 		} else {								\
-			_Pkt = build_skb(data_ptr, (_length + SKB_BUF_HEADTAIL_RSV));\
-		};
+			_Pkt = build_skb(data_ptr, (SKB_DATA_ALIGN(_length) + SKB_BUF_HEADTAIL_RSV));\
+			MTWF_LOG(DBG_CAT_RX, DBG_SUBCAT_ALL, DBG_LVL_WARN,("build skb, Exception_packet_length: %d\n",_length));};
+		
 
 #define DEV_SKB_PTR_ADJUST(_Pkt, _length, _buf_ptr)		\
 		if (_Pkt != NULL) {						\

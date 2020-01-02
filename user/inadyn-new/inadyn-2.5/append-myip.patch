@@ -1,0 +1,290 @@
+diff -uprN inadyn-2.5-old/include/ddns.h inadyn-2.5-new/include/ddns.h
+--- inadyn-2.5-old/include/ddns.h	2017-07-24 03:02:50.000000000 +0800
++++ inadyn-2.5-new/include/ddns.h	2018-10-17 09:46:10.402620000 +0800
+@@ -103,6 +103,7 @@ typedef struct {
+ 	char           name[SERVER_NAME_LEN];
+ 	int            update_required;
+ 	time_t         last_update;
++	int            append_myip;
+ } ddns_alias_t;
+ 
+ typedef struct di {
+@@ -188,6 +189,7 @@ extern char *script_cmd;
+ extern char *script_exec;
+ extern char *pidfile_name;
+ extern char *generic_responses[];
++extern char *my_ip;
+ extern uid_t uid;
+ extern gid_t gid;
+ 
+diff -uprN inadyn-2.5-old/plugins/common.c inadyn-2.5-new/plugins/common.c
+--- inadyn-2.5-old/plugins/common.c	2017-07-22 07:07:01.000000000 +0800
++++ inadyn-2.5-new/plugins/common.c	2018-10-17 17:21:17.469007100 +0800
+@@ -39,6 +39,34 @@
+ 	"Authorization: Basic %s\r\n"					\
+ 	"User-Agent: %s\r\n\r\n"
+ 
++#define DYNDNS_UPDATE_IP_HTTP_REQUEST_DLINK					\
++	"GET %s?"							\
++	"hostname=%s&"							\
++	"myip=%s"							\
++	"%s "      							\
++	"HTTP/1.0\r\n"							\
++	"Authorization: Basic %s\r\n"					\
++	"User-Agent: %s\r\n\r\n"                     \
++	"Host: %s\r\n"
++
++#define DYNDNS_UPDATE_IP_HTTP_REQUEST_NOIP					\
++	"GET %s?"							\
++	"hostname=%s&"							\
++	"%s "      							\
++	"HTTP/1.0\r\n"							\
++	"Host: %s\r\n"							\
++	"Authorization: Basic %s\r\n"					\
++	"User-Agent: %s\r\n\r\n"
++
++#define DYNDNS_UPDATE_IP_HTTP_REQUEST_DLINK_NOIP					\
++	"GET %s?"							\
++	"hostname=%s&"							\
++	"%s "      							\
++	"HTTP/1.0\r\n"							\
++	"Authorization: Basic %s\r\n"					\
++	"User-Agent: %s\r\n\r\n"                         \
++	"Host: %s\r\n"
++
+ /*
+  * DynDNS request composer -- common to many other DDNS providers as well
+  */
+@@ -48,16 +76,60 @@ int common_request(ddns_t *ctx, ddns_inf
+ 
+ 	if (info->wildcard)
+ 		strlcpy(wildcard, "&wildcard=ON", sizeof(wildcard));
+-
+-	return snprintf(ctx->request_buf, ctx->request_buflen,
+-			DYNDNS_UPDATE_IP_HTTP_REQUEST,
+-			info->server_url,
+-			alias->name,
+-			alias->address,
+-			wildcard,
+-			info->server_name.name,
+-			info->creds.encoded_password,
+-			info->user_agent);
++	
++	if(alias->append_myip)
++	{
++		if(NULL != strstr(alias->name, "dlinkddns"))
++		{
++			return snprintf(ctx->request_buf, ctx->request_buflen,
++				DYNDNS_UPDATE_IP_HTTP_REQUEST_DLINK,
++				info->server_url,
++				alias->name,
++				alias->address,
++				wildcard,
++				info->creds.encoded_password,
++				info->user_agent,
++				info->server_name.name);
++
++		}
++		else
++		{
++			return snprintf(ctx->request_buf, ctx->request_buflen,
++				DYNDNS_UPDATE_IP_HTTP_REQUEST,
++				info->server_url,
++				alias->name,
++				alias->address,
++				wildcard,
++				info->server_name.name,
++				info->creds.encoded_password,
++				info->user_agent);
++		}
++	}
++	else
++	{
++		if(NULL != strstr(alias->name, "dlinkddns"))
++		{
++			return snprintf(ctx->request_buf, ctx->request_buflen,
++				DYNDNS_UPDATE_IP_HTTP_REQUEST_DLINK_NOIP,
++				info->server_url,
++				alias->name,
++				wildcard,
++				info->creds.encoded_password,
++				info->user_agent,
++				info->server_name.name);
++		}
++		else
++		{
++			return snprintf(ctx->request_buf, ctx->request_buflen,
++				DYNDNS_UPDATE_IP_HTTP_REQUEST_NOIP,
++				info->server_url,
++				alias->name,
++				wildcard,
++				info->server_name.name,
++				info->creds.encoded_password,
++				info->user_agent);
++		}
++	}
+ }
+ 
+ /*
+diff -uprN inadyn-2.5-old/plugins/dyndns.c inadyn-2.5-new/plugins/dyndns.c
+--- inadyn-2.5-old/plugins/dyndns.c	2018-09-28 03:46:24.000000000 +0800
++++ inadyn-2.5-new/plugins/dyndns.c	2018-10-17 09:11:21.768592100 +0800
+@@ -231,6 +231,20 @@ static ddns_system_t dynu = {
+ 	.server_url   = "/nic/update"
+ };
+ 
++static ddns_system_t dlinnkddns = {
++	.name         = "default@dlinkddns.com",
++
++	.request      = (req_fn_t)request,
++	.response     = (rsp_fn_t)response,
++
++	.checkip_name = DYNDNS_MY_IP_SERVER,
++	.checkip_url  = DYNDNS_MY_CHECKIP_URL,
++	.checkip_ssl  = DYNDNS_MY_IP_SSL,
++
++	.server_name  = "members.dyndns.org",
++	.server_url   = "/nic/update"
++};
++
+ static int request(ddns_t *ctx, ddns_info_t *info, ddns_alias_t *alias)
+ {
+ 	return common_request(ctx, info, alias);
+@@ -256,6 +270,7 @@ PLUGIN_INIT(plugin_init)
+ 	plugin_register(&loopia);
+ 	plugin_register(&googledomains);
+ 	plugin_register(&dynu);
++	plugin_register(&dlinnkddns);
+ }
+ 
+ PLUGIN_EXIT(plugin_exit)
+@@ -273,6 +288,7 @@ PLUGIN_EXIT(plugin_exit)
+ 	plugin_unregister(&loopia);
+ 	plugin_unregister(&googledomains);
+ 	plugin_unregister(&dynu);
++	plugin_unregister(&dlinnkddns);
+ }
+ 
+ /**
+diff -uprN inadyn-2.5-old/src/cache.c inadyn-2.5-new/src/cache.c
+--- inadyn-2.5-old/src/cache.c	2018-09-28 12:28:19.000000000 +0800
++++ inadyn-2.5-new/src/cache.c	2018-10-18 15:38:53.275656600 +0800
+@@ -131,14 +131,14 @@ int read_cache_file(ddns_t *ctx)
+ {
+ 	size_t j;
+ 	ddns_info_t *info;
+-
++#if 0
+ 	/*
+ 	 * Clear DNS cache before querying for the IP below, this to
+ 	 * prevent any artefacts from, e.g., nscd, which is a known
+ 	 * problem with DDNS clients.
+ 	 */
+ 	res_init();
+-
++#endif
+ 	if (!ctx)
+ 		return RC_INVALID_POINTER;
+ 
+diff -uprN inadyn-2.5-old/src/ddns.c inadyn-2.5-new/src/ddns.c
+--- inadyn-2.5-old/src/ddns.c	2018-08-30 14:56:39.000000000 +0800
++++ inadyn-2.5-new/src/ddns.c	2018-10-17 09:14:49.458086900 +0800
+@@ -593,6 +593,7 @@ static int send_update(ddns_t *ctx, ddns
+ 
+ 		/* Update failed, force update again in ctx->cmd_check_period seconds */
+ 		ctx->force_addr_update = 1;
++		system("echo 0 > /tmp/ddnstate");
+ 	} else {
+ 		logit(LOG_INFO, "Successful alias table update for %s => new IP# %s",
+ 		      alias->name, alias->address);
+@@ -600,6 +601,7 @@ static int send_update(ddns_t *ctx, ddns
+ 		ctx->force_addr_update = 0;
+ 		if (changed)
+ 			(*changed)++;
++		system("echo 2 > /tmp/ddnstate");
+ 	}
+ 
+ exit:
+@@ -653,6 +655,12 @@ static int update_alias_table(ddns_t *ct
+ 			if (!alias->update_required)
+ 				continue;
+ 
++			if(NULL != my_ip)
++			{
++				strlcpy(alias->address, my_ip, sizeof(alias->address));
++				alias->append_myip = 1;
++			}
++
+ 			TRY(send_update(ctx, info, alias, &anychange));
+ 
+ 			/* Only reset if send_update() succeeds. */
+diff -uprN inadyn-2.5-old/src/main.c inadyn-2.5-new/src/main.c
+--- inadyn-2.5-old/src/main.c	2018-08-18 19:19:53.000000000 +0800
++++ inadyn-2.5-new/src/main.c	2018-10-17 17:35:36.766735500 +0800
+@@ -51,6 +51,7 @@ char  *cache_dir = NULL;
+ char  *script_cmd = NULL;
+ char  *script_exec = NULL;
+ char  *pidfile_name = NULL;
++char  *my_ip = NULL;
+ uid_t  uid = 0;
+ gid_t  gid = 0;
+ cfg_t *cfg;
+@@ -263,6 +264,7 @@ static int usage(int code)
+ 		"                                Default uses ident NAME: %s\n"
+ 		" -s, --syslog                   Log to syslog, default unless --foreground\n"
+ 		" -t, --startup-delay=SEC        Initial startup delay, default none\n"
++		" -a, --my-ip=ipv4/ipv6          update my-ip to ddns server, if is used\n"
+ 		" -v, --version                  Show program version and exit\n\n"
+ 		"Bug report address: %s\n",
+ 		prognm, cache_dir, config,
+@@ -311,13 +313,14 @@ int main(int argc, char *argv[])
+ 		{ "drop-privs",        1, 0, 'p' },
+ 		{ "syslog",            0, 0, 's' },
+ 		{ "startup-delay",     1, 0, 't' },
++		{ "my-ip",             1, 0, 'a' },
+ 		{ "version",           0, 0, 'v' },
+ 		{ NULL,                0, 0, 0   }
+ 	};
+ 	ddns_t *ctx = NULL;
+ 
+ 	prognm = ident = progname(argv[0]);
+-	while ((c = getopt_long(argc, argv, "1c:Ce:f:h?i:I:l:np:P:st:v", opt, NULL)) != EOF) {
++	while ((c = getopt_long(argc, argv, "1c:Ce:f:h?i:I:l:np:P:st:a:v", opt, NULL)) != EOF) {
+ 		switch (c) {
+ 		case '1':	/* --once */
+ 			once = 1;
+@@ -384,6 +387,10 @@ int main(int argc, char *argv[])
+ 			startup_delay = atoi(optarg);
+ 			break;
+ 
++		case 'a':
++			my_ip = strdup(optarg);
++			break;
++
+ 		case 'v':
+ 			puts(VERSION);
+ 			return 0;
+@@ -493,6 +500,7 @@ leave:
+ 	free(config);
+ 	free(pidfile_name);
+ 	free(cache_dir);
++	free(my_ip);
+ 
+ 	if (rc)
+ 		logit(LOG_ERR, "Error code %d: %s", rc, error_str(rc));
+diff -uprN inadyn-2.5-old/src/tcp.c inadyn-2.5-new/src/tcp.c
+--- inadyn-2.5-old/src/tcp.c	2017-12-27 20:46:43.000000000 +0800
++++ inadyn-2.5-new/src/tcp.c	2018-10-18 15:43:35.454131800 +0800
+@@ -124,10 +124,10 @@ int tcp_init(tcp_sock_t *tcp, char *msg)
+ 		/* remote address */
+ 		if (!tcp->remote_host)
+ 			break;
+-
++#if 0
+ 		/* Clear DNS cache before calling getaddrinfo(). */
+ 		res_init();
+-
++#endif
+ 		/* Obtain address(es) matching host/port */
+ 		memset(&hints, 0, sizeof(struct addrinfo));
+ 		hints.ai_family = AF_UNSPEC;		/* Allow IPv4 or IPv6 */

@@ -49,6 +49,9 @@
 #ifdef BAND_STEERING
 #include "band_steering_def.h"
 #endif /* BAND_STEERING */
+#ifdef BAND_STEERING_PLUS
+#include "band_steering_def_plus.h"
+#endif /* BAND_STEERING_PLUS */
 //#ifdef VOW_SUPPORT
 /* VOW support */
 #include "ap_vow.h"
@@ -274,7 +277,9 @@
 #ifdef BAND_STEERING
 #include "band_steering.h"
 #endif /* BAND_STEERING */
-
+#ifdef BAND_STEERING_PLUS
+#include "band_steering_plus.h"
+#endif /* BAND_STEERING */
 #ifdef TXBF_SUPPORT
 #ifdef MT_MAC
 #include "txbf/mt_txbf.h"

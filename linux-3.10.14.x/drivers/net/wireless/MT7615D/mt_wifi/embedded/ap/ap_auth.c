@@ -595,6 +595,17 @@ SendAuth:
 		}
 	}
 #endif /* BAND_STEERING */
+#ifdef BAND_STEERING_PLUS
+	if (pAd->ApCfg.BandSteering) {
+		BOOLEAN bBndStrgCheck = TRUE;
+		bBndStrgCheck = BndStrg_CheckConnectionReq(pAd, wdev, auth_info.addr2, Elem, NULL);
+		if (bBndStrgCheck == FALSE) {
+			//APPeerAuthSimpleRspGenAndSend(pAd, pRcvHdr, auth_info.auth_alg, auth_info.auth_seq + 1, MLME_UNSPECIFY_FAIL);
+			MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("AUTH - check failed.\n"));
+			return;
+		}
+	}
+#endif /* BAND_STEERING_PLUS */
 
 #ifdef DOT11R_FT_SUPPORT
 	pFtCfg = &wdev->FtCfg;

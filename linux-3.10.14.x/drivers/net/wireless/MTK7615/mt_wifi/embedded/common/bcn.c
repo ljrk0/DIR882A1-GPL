@@ -2269,6 +2269,35 @@ VOID BcnCheck(RTMP_ADAPTER *pAd, UCHAR bandidx)
 		*totalbcncnt += bcn_cnt;	// Save total bcn count for MibInfo query
 			
 		if (bcn_cnt == 0) {
+			//patch no beacon
+			MAC_IO_READ32(pAd, ARB_SCR, &mac_val);
+			IF_DEV_CONFIG_OPMODE_ON_AP(pAd)
+			{
+				if( BCNQ_OP_MODE_AP != (mac_val & MT_ARB_SCR_OPMODE_MASK)) 
+				{
+					MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF, 
+						("%s: bcn recover for op mode %d!!\n",
+						__FUNCTION__, mac_val));
+					mac_val |= BCNQ_OP_MODE_AP;
+					MAC_IO_WRITE32(pAd, ARB_SCR, mac_val);
+				}
+			}
+
+			//patch for NAV
+			MAC_IO_READ32(pAd, 0x21240, &mac_val);
+			if((mac_val & 0xffff) == 0xa00)
+			{
+				mac_val |= 0x802;
+				MAC_IO_WRITE32(pAd, 0x21240, mac_val);
+			}
+
+			MAC_IO_READ32(pAd, 0x21340, &mac_val);
+			if((mac_val & 0xffff) == 0xa00)
+			{
+				mac_val |= 0x802;
+				MAC_IO_WRITE32(pAd, 0x21340, mac_val);
+			}
+
 			(*nobcncnt)++;
 			if (*nobcncnt > 8) {
 				if (*nobcncnt % 12 == 0) //12*2.5=30s

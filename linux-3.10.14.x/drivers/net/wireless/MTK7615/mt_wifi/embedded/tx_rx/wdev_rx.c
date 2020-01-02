@@ -92,52 +92,70 @@ VOID Update_Rssi_Sample(
 /* this function ONLY if not allow pn replay attack and drop packet */
 static BOOLEAN check_rx_pkt_pn_allowed(RTMP_ADAPTER *pAd, RX_BLK *rx_blk) 
 {
-	MAC_TABLE_ENTRY *pEntry = NULL;
-	BOOLEAN isAllow = TRUE;
-	FRAME_CONTROL *pFmeCtrl = (FRAME_CONTROL *)rx_blk->FC;
+    MAC_TABLE_ENTRY *pEntry = NULL;
+    BOOLEAN isAllow = TRUE;
+    FRAME_CONTROL *pFmeCtrl = (FRAME_CONTROL *)rx_blk->FC;
 
-	if (pFmeCtrl->Wep == 0)
-		return TRUE;
-	
-	if (!VALID_UCAST_ENTRY_WCID(pAd, rx_blk->wcid))
-		return TRUE;
-	
-	pEntry = &pAd->MacTab.Content[rx_blk->wcid];
+    if (pFmeCtrl->Wep == 0)
+        return TRUE;
 
-	if (!pEntry || !pEntry->wdev) 
-		return TRUE;
+    if (!VALID_UCAST_ENTRY_WCID(pAd, rx_blk->wcid))
+        return TRUE;
 
-		
-	if (rx_blk->pRxInfo->Mcast || rx_blk->pRxInfo->Bcast) {
-		UINT32 GroupCipher = pEntry->SecConfig.GroupCipher;
-		
-		if (IS_CIPHER_CCMP128(GroupCipher) || IS_CIPHER_CCMP256(GroupCipher) ||
-			IS_CIPHER_GCMP128(GroupCipher) || IS_CIPHER_GCMP256(GroupCipher) ||
-			IS_CIPHER_TKIP(GroupCipher)) {	
-			
-			if (rx_blk->CCMP_PN < pEntry->CCMP_BC_PN) {
-				MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("BC, %s (%d) Reject: come-in the %llu and now is %llu\n", 
-					__FUNCTION__, pEntry->wcid, rx_blk->CCMP_PN, pEntry->CCMP_BC_PN));
-				isAllow = FALSE;
-			} else {
-				MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("BC, %s (%d) OK: come-in the %llu and now is %llu\n", 
-					__FUNCTION__, pEntry->wcid, rx_blk->CCMP_PN, pEntry->CCMP_BC_PN));
-				pEntry->CCMP_BC_PN = rx_blk->CCMP_PN;
-			}
-		}	
-	} 
-#ifdef PN_UC_REPLAY_DETECTION_SUPPORT	
-	else {		
-		UCHAR TID = rx_blk->TID;
-		if (pAd->)
-		if (rx_blk->CCMP_PN < pEntry->CCMP_UC_PN[TID]) {
-			MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_ERROR, ("UC, %s (%d) Reject: come-in the %llu and now is %llu\n", 
-				__FUNCTION__, pEntry->wcid, rx_blk->CCMP_PN, pEntry->CCMP_UC_PN[TID]));
-			isAllow = FALSE;
-		} else {
-			pEntry->CCMP_UC_PN[TID] = rx_blk->CCMP_PN;
-		}
-	}
+    pEntry = &pAd->MacTab.Content[rx_blk->wcid];
+
+    if (!pEntry || !pEntry->wdev) 
+        return TRUE;
+ 
+    if (rx_blk->key_idx > 3) {
+        return TRUE;
+    }
+
+    if (rx_blk->pRxInfo->Mcast || rx_blk->pRxInfo->Bcast) {
+        UINT32 GroupCipher = pEntry->SecConfig.GroupCipher;
+        UCHAR key_idx = rx_blk->key_idx;
+
+        if (IS_CIPHER_CCMP128(GroupCipher) || IS_CIPHER_CCMP256(GroupCipher) ||
+                IS_CIPHER_GCMP128(GroupCipher) || IS_CIPHER_GCMP256(GroupCipher) ||
+                IS_CIPHER_TKIP(GroupCipher)) {
+
+            if (pEntry->Init_CCMP_BC_PN_Passed[key_idx] == FALSE) {
+                if (rx_blk->CCMP_PN >= pEntry->CCMP_BC_PN[key_idx]) {
+                    MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("BC, %s (%d)(%d) OK: 1st come-in the %llu and now is %llu\n", 
+                                __FUNCTION__, pEntry->wcid, key_idx, rx_blk->CCMP_PN, pEntry->CCMP_BC_PN[key_idx]));
+                    pEntry->CCMP_BC_PN[key_idx] = rx_blk->CCMP_PN;
+                    pEntry->Init_CCMP_BC_PN_Passed[key_idx] = TRUE;
+                }
+                else {
+                    MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("BC, %s (%d)(%d) Reject: 1st come-in the %llu and now is %llu\n", 
+                                __FUNCTION__, pEntry->wcid, key_idx, rx_blk->CCMP_PN, pEntry->CCMP_BC_PN[key_idx]));                        
+                    isAllow = FALSE;
+                }
+            } else {
+                if (rx_blk->CCMP_PN <= pEntry->CCMP_BC_PN[key_idx]) {
+                    MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("BC, %s (%d)(%d) Reject: come-in the %llu and now is %llu\n", 
+                                __FUNCTION__, pEntry->wcid, key_idx, rx_blk->CCMP_PN, pEntry->CCMP_BC_PN[key_idx]));
+                    isAllow = FALSE;
+                } else {
+                    MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("BC, %s (%d)(%d) OK: come-in the %llu and now is %llu\n", 
+                                __FUNCTION__, pEntry->wcid, key_idx, rx_blk->CCMP_PN, pEntry->CCMP_BC_PN[key_idx]));
+                    pEntry->CCMP_BC_PN[key_idx] = rx_blk->CCMP_PN;
+                }
+            }
+        }
+    }
+#ifdef PN_UC_REPLAY_DETECTION_SUPPORT   
+    else {      
+        UCHAR TID = rx_blk->TID;
+        if (rx_blk->CCMP_PN < pEntry->CCMP_UC_PN[TID]) {
+            MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_ERROR, 
+                ("UC, %s (%d) Reject: come-in the %llu and now is %llu\n", 
+                        __FUNCTION__, pEntry->wcid, rx_blk->CCMP_PN, pEntry->CCMP_UC_PN[TID]));
+            isAllow = FALSE;
+        } else {
+            pEntry->CCMP_UC_PN[TID] = rx_blk->CCMP_PN;
+        }
+    }
 #endif /* PN_UC_REPLAY_DETECTION_SUPPORT */
 
 	return isAllow;

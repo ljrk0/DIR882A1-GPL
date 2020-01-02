@@ -30,10 +30,11 @@
 #ifdef APCLI_SUPPORT
 
 #include "rt_config.h"
+#ifdef DLINK_SUPERMESH_SUPPROT
 #include "dlink_mesh.h"
 int dlink_mesh_apcli_assoc(PAPCLI_STRUCT pApCliEntry, char rssi);
 int dlink_mesh_apcli_discon(RTMP_ADAPTER *pAd, APCLI_STRUCT *pApCliEntry, uint16_t reason); 
-
+#endif
 static VOID ApCliAssocTimeout(
 	IN PVOID SystemSpecific1,
 	IN PVOID FunctionContext,
@@ -1174,6 +1175,7 @@ static VOID ApCliPeerAssocRspAction(
 				MlmeEnqueue(pAd, APCLI_CTRL_STATE_MACHINE, APCLI_CTRL_ASSOC_RSP,
 							sizeof(APCLI_CTRL_MSG_STRUCT), &ApCliCtrlMsg, ifIndex);
                 RTMP_MLME_HANDLER(pAd);
+#ifdef DLINK_SUPERMESH_SUPPROT
 				/* dlink mesh: start */
 				if (pApCliEntry->wdev.dlink_mesh_en)
 					{
@@ -1182,7 +1184,11 @@ static VOID ApCliPeerAssocRspAction(
 						ConvertToRssi(pAd, &Elem->rssi_info, RSSI_IDX_0),
 						ConvertToRssi(pAd, &Elem->rssi_info, RSSI_IDX_1),
 						ConvertToRssi(pAd, &Elem->rssi_info, RSSI_IDX_2));
-					pr_err("[DLINK_VENDOR_CHECK] ap-client associated, rssi=%d.\n", rssi);	//remove this after verified					dlink_mesh_apcli_assoc(pApCliEntry, rssi);+				}+				/* dlink mesh: end */
+					pr_err("[DLINK_VENDOR_CHECK] ap-client associated, rssi=%d.\n", rssi);	//remove this after verified					
+					dlink_mesh_apcli_assoc(pApCliEntry, rssi);
+					}
+				/* dlink mesh: end */
+#endif
 			}
 			else
 			{
@@ -1208,7 +1214,7 @@ static VOID ApCliPeerAssocRspAction(
 
 	return;
 }
-}
+
 /*
     ==========================================================================
     Description:
@@ -1269,6 +1275,7 @@ static VOID ApCliPeerDisassocAction(
 		if (MAC_ADDR_EQUAL(pAd->ApCfg.ApCliTab[ifIndex].MlmeAux.Bssid, Addr2))
 		{
 			*pCurrState = APCLI_ASSOC_IDLE;
+#ifdef DLINK_SUPERMESH_SUPPROT
 			/* dlink mesh: start */
 			if (pAd->ApCfg.ApCliTab[ifIndex].wdev.dlink_mesh_en)
 				{
@@ -1276,7 +1283,7 @@ static VOID ApCliPeerDisassocAction(
 				dlink_mesh_apcli_discon(pAd, &pAd->ApCfg.ApCliTab[ifIndex], Reason);
 				}
 			/* dlink mesh: end */
-
+#endif
 #ifdef MAC_REPEATER_SUPPORT
 			ifIndex = (USHORT)(Elem->Priv);
 #endif /* MAC_REPEATER_SUPPORT */

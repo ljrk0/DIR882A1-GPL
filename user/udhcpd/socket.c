@@ -154,7 +154,7 @@ int raw_socket(int ifindex)
 		DEBUG(LOG_ERR, "socket call failed: %s", strerror(errno));
 		return -1;
 	}
-
+#if 0
 	/*
  * TBS_TAG: by tuhanyu at 2013-03-01
  * Desc: set dhcp flag for socket
@@ -162,12 +162,13 @@ int raw_socket(int ifindex)
        if(setsockopt(fd, SOL_SOCKET, SO_DHCP, (char *) &n, sizeof(n)) < 0)
        {
 		close(fd);
+		DEBUG(LOG_ERR, "setsockopt call failed: %s", strerror(errno));		
 		return -1;
        }
 /*
  * TBS_TAG: END
  */
-	
+#endif
 	sock.sll_family = AF_PACKET;
 	sock.sll_protocol = htons(ETH_P_IP);
 	sock.sll_ifindex = ifindex;

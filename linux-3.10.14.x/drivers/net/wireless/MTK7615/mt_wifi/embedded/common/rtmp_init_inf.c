@@ -482,6 +482,23 @@ int mt_wifi_init(VOID *pAdSrc, RTMP_STRING *pDefaultMac, RTMP_STRING *pHostName)
     /* Enable 4T ACK Mechanism */
     pAd->fgWIFIInitDone = TRUE;
 #endif /* NR_PD_DETECTION */
+	//patch for NAV
+	{
+		UINT32 mac_val;
+		MAC_IO_READ32(pAd, 0x21240, &mac_val);
+		if((mac_val & 0xffff) == 0xa00)
+		{
+			mac_val |= 0x802;
+			MAC_IO_WRITE32(pAd, 0x21240, mac_val);
+		}
+		
+		MAC_IO_READ32(pAd, 0x21340, &mac_val);
+		if((mac_val & 0xffff) == 0xa00)
+		{
+			mac_val |= 0x802;
+			MAC_IO_WRITE32(pAd, 0x21340, mac_val);
+		}
+	}
 
 	return TRUE;
 err3:
