@@ -14,14 +14,14 @@ libc/misc/syslog/syslog.os: libc/misc/syslog/syslog.c \
  include/limits.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
  include/bits/posix1_lim.h include/bits/local_lim.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
  include/bits/uClibc_local_lim.h include/bits/posix2_lim.h \
  include/bits/xopen_lim.h include/bits/stdio_lim.h \
  include/bits/sockaddr.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h \
  include/sys/file.h include/fcntl.h include/bits/fcntl.h \
  include/sgidefs.h include/sys/stat.h include/bits/stat.h \
  include/sys/signal.h include/signal.h include/bits/signum.h \
@@ -37,9 +37,9 @@ libc/misc/syslog/syslog.os: libc/misc/syslog/syslog.c \
  include/bits/posix_opt.h include/bits/environments.h \
  include/bits/confname.h include/bits/getopt.h include/errno.h \
  include/bits/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
  include/paths.h include/stdio.h include/bits/uClibc_stdio.h \
  include/wchar.h include/bits/uClibc_mutex.h include/pthread.h \
  include/sched.h include/bits/initspin.h include/bits/uClibc_pthread.h \
@@ -111,7 +111,7 @@ include/bits/posix1_lim.h:
 
 include/bits/local_lim.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
 
 include/bits/uClibc_local_lim.h:
 
@@ -123,13 +123,13 @@ include/bits/stdio_lim.h:
 
 include/bits/sockaddr.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
 
 include/sys/file.h:
 
@@ -207,11 +207,11 @@ include/errno.h:
 
 include/bits/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
 
 include/paths.h:
 
@@ -234,4 +234,4 @@ include/bits/uClibc_pthread.h:
 include/ctype.h:
 
 include/bits/uClibc_touplow.h:
-cmd_libc_misc_syslog_syslog.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/misc/syslog/syslog.c -o libc/misc/syslog/syslog.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/misc/syslog/syslog.os -MD -MP -MF libc/misc/syslog/.syslog.os.dep
+cmd_libc_misc_syslog_syslog.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/misc/syslog/syslog.c -o libc/misc/syslog/syslog.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/misc/syslog/syslog.os -MD -MP -MF libc/misc/syslog/.syslog.os.dep

@@ -25,8 +25,15 @@
 #define _shutils_h_
 
 #define ACTION_LOCK		"/var/lock/action"
+#define MDNS_LOCK_FILE "/var/run/mdns.lock"
+#define RC_DELAY_FILE "/tmp/delay_rc_action"
+#define APCLI_SITE_FILE_2G	"/tmp/apcli_site_info_2g"
+#define APCLI_SITE_FILE_5G	"/tmp/apcli_site_info_5g"
+#define DETECT_TIMEOUT 60
+#define SUPPORT_ONETOUCH_FLAG	"/tmp/support_onetouch"
 
 #define DEFAULT_SYSLOG_FILE_PATH  "/var/log/messages"
+#define ALL_NVRAM 3
 
 enum {
 	ACT_IDLE,   //0
@@ -53,6 +60,21 @@ enum {
 #define FALSE 0
 #endif
 
+#define WIRELESS_ROUTER 	"WirelessRouter"
+#define WIRELESS_AP 		"WirelessAp"
+#define WIRELESS_REPEATER 	"WirelessRepeaterExtender"
+#define WIRELESS_EXTENDER 	"WirelessExtender"
+
+#define MAX_RC_SERVICES_LEN	64
+#define RC_SERVER_SOCKET_ADDR "127.0.0.1"
+#define RC_SOCKET_PORT		6789
+
+
+typedef struct {
+	char rc_services_name[32];
+	int wait_time;
+}RC_SERVICES_NOTIFY;
+
 //private config
 #define PRIVATE_RANDROOTCA_PATH "/var/private/.randRootCA"
 #define PRIVATE_SERVER_KEY_PRIVATE_PATH "/private/server.key.private"
@@ -64,12 +86,19 @@ enum {
 #define FACTORY_MODE "factory_mode"
 #define FACTORY_MAC  "factory_mac"
 #define FACTORY_MODE_FLAG "/private/factory_mode"
+#define TEST_RESTORE_FLAG "/tmp/test_restore"
+
 enum{
 	FACTORY_CONFIG,
 	DEFAULT_CONFIG,
 	USER_CONFIG
 };
+#define SIZE_MIX_MEM_DOWNLOAD_UPGRADE_FW (29*1024)  //29M
+#define SIZE_MIX_MEM_UPGRADE_FW (15*1024)			//15M
+#define UPGRADE_FW_FAIL_NEED_REBOOT "/tmp/upgrade_fail_reboot"
+#define DOWNLOAD_FW_FAIL_NEED_UP "/tmp/download_fw_fail"
 
+#define INTERFACE_ETH_IF		"eth3"
 #if defined(PRODUCT_DIR853_A1)||defined(PRODUCT_DIR853_A2) ||defined(PRODUCT_DIR1360)
 #define INTERFACE_2G			"rax0"
 #define INTERFACE_5G			"ra0"
@@ -102,6 +131,148 @@ enum{
 #define INTERNET_IPV6_FILE "/tmp/Ipv6InternetStatus"
 #define INTERNET_IPV4_FILE "/tmp/InternetStatus"
 
+
+#ifdef CONFIG_USER_SUPERMESH
+#define INTERFACE_2G_NVRAM_ENABLE			"Radio24Vap0En"
+#define INTERFACE_5G_NVRAM_ENABLE			"Radio58Vap0En"
+#else
+#define INTERFACE_2G_NVRAM_ENABLE			"Radio24On"
+#define INTERFACE_5G_NVRAM_ENABLE			"Radio58On"
+#endif
+#define RADIO_2G_NVRAM_ENABLE				"Radio24On"
+#define RADIO_5G_NVRAM_ENABLE				"Radio58On"
+#define INTERFACE_2G_GUEST_NVRAM_ENABLE		"Radio24Vap1En"
+#define INTERFACE_5G_GUEST_NVRAM_ENABLE		"Radio58Vap1En"
+
+#define SCHEDULE_STOP_WLAN_2G				"/tmp/schedule_stop_2g"
+#define SCHEDULE_STOP_WLAN_5G				"/tmp/schedule_stop_5g"
+#define SCHEDULE_STOP_WLAN_5GH				"/tmp/schedule_stop_5gh"
+#define SCHEDULE_STOP_GUEST_2G				"/tmp/schedule_stop_guest_2g"
+#define SCHEDULE_STOP_GUEST_5G				"/tmp/schedule_stop_guest_5g"
+#define SCHEDULE_STOP_GUEST_5GH				"/tmp/schedule_stop_guest_5gh"
+
+#if defined(WIFI_DBDC_SUPPORT)
+#define	WPS_LED_SOLID			"01-00-00-00-00-0-0-0"
+#define	WPS_LED_BLINK			"01-00-00-00-00-0-0-4"
+#define	WPS_LED_OFF				"01-00-00-00-00-0-0-1"
+#else
+#define	WPS_LED_SOLID			"00-00-00-00-00-0-0-0"
+#define	WPS_LED_BLINK			"00-00-00-00-00-0-0-4"
+#define	WPS_LED_OFF				"00-00-00-00-00-0-0-1"
+#endif
+
+#define USB_CN1_FLAG_PATH "/var/cn1_usbevent"  //usb3.0
+#define USB_CN12_FLAG_PATH "/var/cn12_usbevent"	//usb2.0
+
+//GPIO defined for led and button
+#if defined(PRODUCT_DIR853_A2) || defined(PRODUCT_DIR853_A1)
+#define LED_POWER_OK 			"14" 
+#define LED_POWER_NG 			"13"
+#define LED_INTERNET_OK 		"16"
+#define LED_INTERNET_NG 		"15"
+#define LED_USB3 				"10"
+#define LED_WLAN_24G 			"4" 
+#define LED_WLAN_5G 			"3"
+//button
+#define BUTTON_WPS 				18
+#define BUTTON_WIFI_ONOFF 		7
+#define BUTTON_RESET 			8
+#else
+#define LED_POWER_OK 			"16" 
+#define LED_POWER_NG 			"8"
+#define LED_INTERNET_OK 		"3"
+#define LED_INTERNET_NG 		"4"
+#define LED_USB3 				"14"
+#define LED_USB2 				"13"
+#define LED_WLAN_24G 			"11" 
+#define LED_WLAN_5G 			"9" 
+//button
+#define BUTTON_WIFI_ONOFF 			7
+#define BUTTON_RESET 			15
+#define BUTTON_WPS 				18
+#endif
+#define LED_ON_CMD				"gpio l %s 4000 0 1 0 4000"
+#define LED_OFF_CMD				"gpio l %s 0 4000 0 1 4000"
+#define LED_BLINK_CMD			"gpio l %s 5 5 4000 1 4000"
+#define LED_BLINK_FAST_CMD		"gpio l %s 1 1 1 1 4000"
+
+#define LED_WLAN_ACTION_OFF 		0 
+#define LED_WLAN_ACTION_ON 			1 
+#define LED_WLAN_ACTION_BLINK 		2
+
+//wlan led action
+#if defined(WIFI_WPS_LED_GPIO_GONTROL)
+#define LED_WLAN_2G_ON_CMD				"gpio l "LED_WLAN_24G" 4000 0 1 0 4000"
+#define LED_WLAN_2G_OFF_CMD				"gpio l "LED_WLAN_24G" 0 4000 0 1 4000"
+#define LED_WLAN_5G_ON_CMD				"gpio l "LED_WLAN_5G" 4000 0 1 0 4000"
+#define LED_WLAN_5G_OFF_CMD				"gpio l "LED_WLAN_5G" 0 4000 0 1 4000"
+#define LED_WLAN_2G_BLINK_CMD			"gpio l "LED_WLAN_24G" 5 5 4000 1 4000"
+#define LED_WLAN_5G_BLINK_CMD			"gpio l "LED_WLAN_5G" 5 5 4000 1 4000"
+#else
+#define LED_WLAN_2G_ON_CMD				"iwpriv "INTERFACE_2G" set led_setting="WPS_LED_SOLID""
+#define LED_WLAN_2G_OFF_CMD				"iwpriv "INTERFACE_2G" set led_setting="WPS_LED_OFF""
+#define LED_WLAN_2G_BLINK_CMD			"iwpriv "INTERFACE_2G" set led_setting="WPS_LED_BLINK""
+#define LED_WLAN_5G_ON_CMD				"iwpriv "INTERFACE_5G" set led_setting="WPS_LED_SOLID""
+#define LED_WLAN_5G_OFF_CMD				"iwpriv "INTERFACE_5G" set led_setting="WPS_LED_OFF""
+#define LED_WLAN_5G_BLINK_CMD			"iwpriv "INTERFACE_5G" set led_setting="WPS_LED_BLINK""
+#endif
+
+/******************************************************************************
+*                               GLOBAL VAR                                   *
+******************************************************************************/
+//copy from wireless driver rtmp_def.h
+/* Country Region definition */
+#define REGION_MINIMUM_BG_BAND            0
+#define REGION_0_BG_BAND                  0	/* 1-11 */
+#define REGION_1_BG_BAND                  1	/* 1-13 */
+#define REGION_2_BG_BAND                  2	/* 10-11 */
+#define REGION_3_BG_BAND                  3	/* 10-13 */
+#define REGION_4_BG_BAND                  4	/* 14 */
+#define REGION_5_BG_BAND                  5	/* 1-14 */
+#define REGION_6_BG_BAND                  6	/* 3-9 */
+#define REGION_7_BG_BAND                  7	/* 5-13 */
+#define REGION_31_BG_BAND                 31	/* 1-14 (12-14 PASSIVE_SCAN) */ 
+#define REGION_32_BG_BAND                 32	/* 1-13 (12-13 PASSIVE_SCAN)*/
+#define REGION_33_BG_BAND                 33	/* 1-14 */
+#define REGION_MAXIMUM_BG_BAND            7
+	
+#define REGION_MINIMUM_A_BAND             0
+#define REGION_0_A_BAND                   0	/* 36,40,44,48, 52,56,60,64, 149,153,157,161,165 */
+#define REGION_1_A_BAND                   1	/* 36,40,44,48, 52,56,60,64, 100,104,108,112,116,120,124,128,132,136,140 */
+#define REGION_2_A_BAND                   2	/* 36,40,44,48, 52,56,60,64 */
+#define REGION_3_A_BAND                   3	/* 52,56,60,64, 149,153,157,161 */
+#define REGION_4_A_BAND                   4	/* 149,153,157,161,165 */
+#define REGION_5_A_BAND                   5	/* 149,153,157,161 */
+#define REGION_6_A_BAND                   6	/* 36,40,44,48 */
+#define REGION_7_A_BAND                   7	/* 36,40,44,48, 52,56,60,64, 100,104,108,112,116,120,124,128,132,136,140, 149,153,157,161,165 */
+#define REGION_8_A_BAND                   8	/* 52,56,60,64 */
+#define REGION_9_A_BAND                   9	/* 36,40,44,48, 52,56,60,64, 100,104,108,112,116, 132,136,140, 149,153,157,161,165 */
+#define REGION_10_A_BAND                  10	/* 36,40,44,48, 149,153,157,161,165 */
+#define REGION_11_A_BAND                  11	/* 36,40,44,48, 52,56,60,64, 100,104,108,112,116,120, 149,153,157,161 */
+#define REGION_12_A_BAND                  12	/* 36,40,44,48, 52,56,60,64, 100,104,108,112,116,120,124,128,132,136,140,144 */
+#define REGION_13_A_BAND                  13	/* 36,40,44,48, 52,56,60,64, 100,104,108,112,116,120,124,128,132,136,140,144, 149,153,157,161,165 */
+#define REGION_14_A_BAND                  14	/* 36,40,44,48, 52,56,60,64, 100,104,108,112,116, 132,136,140,144, 149,153,157,161,165 */
+#define REGION_15_A_BAND                  15	/* 149,153,157,161,165,169,173 */
+#define REGION_16_A_BAND                  16	/* 52,56,60,64, 149,153,157,161,165 */
+#define REGION_17_A_BAND                  17	/* 36,40,44,48, 149,153,157,161 */
+#define REGION_18_A_BAND                  18	/* 36,40,44,48, 52,56,60,64, 100,104,108,112,116, 132,136,140 */
+#define REGION_19_A_BAND                  19	/* 52,56,60, 100,104,108,112,116,120,124,128,132,136,140, 149,153,157,161 */
+#define REGION_20_A_BAND                  20	/* 36,40,44,48, 52,56,60,64, 100,104,108,112,116,120,124, 149,153,157,161 */
+#define REGION_21_A_BAND                  21	/* 36,40,44,48, 52,56,60,64, 100,104,108,112,116,120,124,128,132,136,140, 149,153,157,161 */
+#define REGION_22_A_BAND                  22	/* 100,104,108,112,116,120,124,128,132,136,140 */
+#define REGION_23_A_BAND                  23	/* 52,56,60, 100,104,108,112,116,120,124,128, 149,153,157,161,165 */
+#define REGION_24_A_BAND                  24	/* 36,40,44,48, 52,56,60,64, 136,140,144, 149,153,157,161,165 */
+#define REGION_25_A_BAND                  25	/* 36,40,44,48, 52,56,60,64, 100,104,108,112,116, 132,136,140, 149,153,157,161,165 */
+#define REGION_26_A_BAND                  26	/* 36,40,44,48, 52,56,60, 100,104,108,112,116, 132,136, 149,153,157,161,165 */
+#define REGION_27_A_BAND                  27	/* 36,40,44,48, 52,56,60,64, 100,104,108,112,116,120,124,128,132,136,140 */
+#define REGION_28_A_BAND                  28	/* 36,40,44,48, 52,56,60,64 */
+#define REGION_29_A_BAND                  29	/* 36,40,44,48, 52,56,60,64, 100,104,108,112,116,120,124, 149,153,157,161 */
+#define REGION_30_A_BAND                  30	/* 36,40,44,48, 52,56,60,64, 100,104,108,112,116,120,124,128,132,136,140, 149,153,157,161,165 */
+#define REGION_31_A_BAND                  31	/* 36,40,44,48, 52,56,60,64, 100,104,108,112, 132,136,140 */
+#define REGION_32_A_BAND                  32	/* 36,40,44,48, 149,153,157,161, 165, 169, 173 */
+#define REGION_33_A_BAND                  33	/* 100,104,108,112, 132,136,140 */
+#define REGION_34_A_BAND                  34	/* 36,40,44,48, 52,56,60,64, 100,104,108,112, 132,136,140, 149,153,157,161, 165, 169, 173 */
+#define REGION_MAXIMUM_A_BAND             37
 
 //#ifndef BOOL
 //#define BOOL unsigned int
@@ -351,6 +522,15 @@ struct strbuf {
 	char *origbuf;		/* unmodified pointer to orignal buffer */
 	unsigned int origsize;	/* unmodified orignal buffer size in bytes */
 };
+typedef struct {
+	unsigned char customCountRegion[3];
+	unsigned int CountRegion;
+	unsigned char CountCode[3];
+	unsigned int CountRegionDfs;
+}COUNTRY_REGION_CODE;	
+
+extern COUNTRY_REGION_CODE CountryRegionCode2g[];
+extern COUNTRY_REGION_CODE CountryRegionCode5g[];
 
 extern void str_binit(struct strbuf *b, char *buf, uint size);
 extern int str_bprintf(struct strbuf *b, const char *fmt, ...);
@@ -366,6 +546,17 @@ extern int TW_StrReplace(char strRes[],char from[], char to[]);
 extern int TW_GetFactoryMode();
 extern int TW_LoadFactoryConfig();
 extern int TW_LoadDefaultConfig();
+extern void loadDefault(int chip_id);
+extern void loadCountryRegion2g();
+extern void loadCountryRegion5g();
+extern void loadCountryRegion5g2();
+extern void loadDefaultSSID(int idx);
+extern void loadDefaultEncrypt(int idx);
+extern void loadDefaultWpsPin(int idx);
+extern void loadDefaultConsolePwd();
+extern int PTI_GetMacAddr(char *pszMac);
+extern int PTI_nvram_get(const char *name);
+
 //extern int tw_wan_prefix(char *ifname, char *prefix);
 extern char *racat(char *s, int i);
 extern void set_nth_value_flash(int nvram, int index, char *flash_key, char *value);

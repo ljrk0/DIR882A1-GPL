@@ -28,6 +28,7 @@ extern fstring local_machine;
 extern char *global_clobber_region_function;
 extern unsigned int global_clobber_region_line;
 extern fstring remote_arch;
+char ClientOs[128]={0};
 
 /* Max allowable allococation - 256mb - 0x10000000 */
 #define MAX_ALLOC_SIZE (1024*1024*256)

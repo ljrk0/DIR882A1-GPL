@@ -1,0 +1,2 @@
+/* svn info: $Revision: 847 $ $Date: 2018-06-06 18:37:11 +0800 (Wed, 06 Jun 2018) $ */
+function SOAPGetWiFiSONSettingsResponse(){this.WiFiSONStatus=!1,this.WiFiSONList=new SOAPWiFiSONListResponse,this.WiFiSONEnabled=!1}function SOAPWiFiSONListResponse(){var i=new SOAPWiFiSONResponse;this.WiFiSON=$.makeArray(i)}function SOAPWiFiSONResponse(){this.MacAddress="",this.WiFiSONRole="",this.HOP="",this.UplinkMacAddress="",this.UplinkType="",this.ErrorCode="",this.VarInfo=""}

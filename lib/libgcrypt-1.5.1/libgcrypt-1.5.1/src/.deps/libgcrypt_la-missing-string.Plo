@@ -42,7 +42,7 @@ libgcrypt_la-missing-string.lo: missing-string.c ../config.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/ctype.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_touplow.h \
  g10lib.h visibility.h gcrypt.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/socket.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/uio.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uio.h \
@@ -156,7 +156,7 @@ visibility.h:
 
 gcrypt.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h:
 
 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/socket.h:
 

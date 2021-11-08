@@ -1,0 +1,268 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+
+<link rel="stylesheet" type="text/css" href="css/style_mobile.css" media="all" />
+<link href="css/jquery.selectbox.css" type="text/css" rel="stylesheet" />
+<link href="/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/js/bootstrap/css/buttonv2.css" rel="stylesheet">
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPMyDLink.js"></script>
+
+<script type="text/javascript">
+//xframeoption
+if(top!=self){top.location=self.location;}
+
+//mobile session
+if (sessionStorage.getItem('PrivateKey') === null){
+	window.location.replace('../info/MobileLogin.html');
+}
+
+	var HNAP = new HNAP_XML();
+	var html_height;
+
+	//event
+	$(window).on("orientationchange",function(){
+  		adjustLayout();
+	});
+	
+	$(document).ready(function(){
+		html_height = $("html").height();
+
+		adjustLayout();
+
+		GetStatus();
+		self.setInterval("GetStatus()", 5000);
+		startTimeout();
+	});
+
+	function adjustLayout()
+	{
+		var window_height = $(window).height();
+		var padding = 20;
+
+		if(window_height < html_height + padding)
+		{
+			window_height = html_height + padding;
+		}
+
+		$("html").css("height", window_height);
+		$("body").css("height", window_height);
+
+
+		$("#copyright").css("top", window_height - padding);
+	}
+
+	function GetStatus()
+	{
+		/* Internet Status */
+		var xml_GetWanStatus = HNAP.GetXML("GetWanStatus");
+		var getNetworkStatus = xml_GetWanStatus.Get("GetWanStatusResponse/Status");
+		
+		if(getNetworkStatus=="CONNECTED")
+		{
+			$("#mm_internet").attr("src", "image/mobile_internet_connected.png");
+		}
+		else if(getNetworkStatus=="DISCONNECTED")
+		{
+			$("#mm_internet").attr("src", "image/mobile_internet.png");
+		}
+			
+		/* Mydlink Status */
+		//#ifdef featureMyDLink
+		if(currentDevice.featureMyDLink)
+		{
+			var soapAction = new SOAPAction();
+			var getMyDLinkSettingsResponse = new SOAPGetMyDLinkSettingsResponse();
+			soapAction.sendSOAPAction("GetMyDLinkSettings", null, getMyDLinkSettingsResponse)
+			.done(function(obj){
+				if(obj.AccountStatus =="true")
+				{
+					$("#mm_mydlink").attr("src", "image/mobile_mydlink_reg.png");
+				}
+				else
+				{
+					$("#mm_mydlink").attr("src", "image/mobile_mydlink_noreg.png");
+				}
+			});
+			$("#tr_mydlink").show();
+		}
+		//#endif
+		
+		/* Wi-Fi Status */
+		var xml_Get24GWLanRadioSettings = HNAP.GetXML("GetWLanRadioSettings", new Array("RadioID", "RADIO_2.4GHz"));
+		var getWifi24GStatus = xml_Get24GWLanRadioSettings.Get("GetWLanRadioSettingsResponse/Enabled");
+		var xml_Get5GWLanRadioSettings = HNAP.GetXML("GetWLanRadioSettings", new Array("RadioID", "RADIO_5GHz"));
+		var getWifi5GStatus = xml_Get5GWLanRadioSettings.Get("GetWLanRadioSettingsResponse/Enabled");
+		
+		if(getWifi24GStatus!="true" && getWifi5GStatus!="true")
+		{
+			$("#mm_wifi").attr("src", "image/mobile_wifi_disconnected.png");
+		}
+		else
+		{
+			var xml_Get24GWLanRadioSecurity = HNAP.GetXML("GetWLanRadioSecurity", new Array("RadioID", "RADIO_2.4GHz"));	
+			var getWifi24GSecurity = xml_Get24GWLanRadioSecurity.Get("GetWLanRadioSecurityResponse/Enabled");
+			var xml_Get5GWLanRadioSecurity = HNAP.GetXML("GetWLanRadioSecurity", new Array("RadioID", "RADIO_5GHz"));	
+			var getWifi5GSecurity = xml_Get5GWLanRadioSecurity.Get("GetWLanRadioSecurityResponse/Enabled");
+			
+			if(getWifi24GSecurity!="true" && getWifi5GSecurity!="true")
+			{
+				$("#mm_wifi").attr("src", "image/mobile_wifi_conwarn.png");
+			}
+			else
+			{
+				$("#mm_wifi").attr("src", "image/wireless_icon.png");
+			}
+		}
+		
+		/* Guest Zone Status */
+		var xml_Get24GWLanRadioSettings = HNAP.GetXML("GetWLanRadioSettings", new Array("RadioID", "RADIO_2.4GHz_Guest"));
+		var getGZ24GStatus = xml_Get24GWLanRadioSettings.Get("GetWLanRadioSettingsResponse/Enabled");
+		var xml_Get5GWLanRadioSettings = HNAP.GetXML("GetWLanRadioSettings", new Array("RadioID", "RADIO_5GHz_Guest"));
+		var getGZ5GStatus = xml_Get5GWLanRadioSettings.Get("GetWLanRadioSettingsResponse/Enabled");
+	
+		if(getGZ24GStatus!="true" && getGZ5GStatus!="true")
+		{
+			$("#mm_gz").attr("src", "image/mobile_guestzone.png");
+		}
+		else
+		{
+			$("#mm_gz").attr("src", "image/mobile_guestzone_enabled.png");
+		}
+	}
+</script>
+</head>
+
+<body>
+	<table class="mobile_content" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
+		<tr>
+			<td>
+				<table cellspacing="0" cellpadding="0" height="70" align="center" border="0">
+					<tr>
+						<td align="center">
+							<img src="image/logo_2.png" width="102px" height="20px">
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr height="60px">
+			<td class="text-center">
+			<a href="./MobileStatus.html" role="button" class="btn btn-default" style="width:85%;height:45px;line-height:34px">
+				<table width="100%" border="0" style="position:relative">
+					<tr>					
+						<td align="center" style="cursor:pointer">
+							<img id="mm_status" src="image/status.png" width="45" height="34" style="position:absolute;left:0%">
+							<span class="textnormal"><b><script>I18N("h", "Network Status");</script></b></span>
+						</td>
+					</tr>
+				</table>
+			</a>
+			</td>
+		</tr> 
+		<tr height="60px">
+			<td class="text-center">
+			<a href="./MobileInternet.html" role="button" class="btn btn-default" style="width:85%;height:45px;line-height:34px">
+				<table width="100%" border="0" style="position:relative">
+					<tr>					
+						<td align="center" style="cursor:pointer">
+							<img id="mm_internet" src="image/mobile_internet.png" width="45" height="34" style="position:absolute;left:0%">
+							<span class="textnormal"><b><script>I18N("h", "Internet");</script></b></span>
+						</td>
+					</tr>
+				</table>
+			</a>
+			</td>
+		</tr> 
+		<tr height="60px" id="tr_mydlink" style="display:none;">
+			<td class="text-center">
+			<a href="./MobileMydlink.html" role="button" class="btn btn-default" style="width:85%;height:45px;line-height:34px">
+				<table width="100%" border="0" style="position:relative">
+					<tr>				
+						<td align="center" style="cursor:pointer;">
+							<img id="mm_mydlink" src="image/mobile_mydlink_noreg.png" width="45" height="34" style="position:absolute;left:0%">
+							<span class="textnormal"><b><script>I18N("h", "mydlink");</script></b></span>
+						</td>
+					</tr>
+				</table>
+			</a>
+			</td>
+		</tr> 
+		<tr height="60px">
+			<td class="text-center">
+			<a href="./MobileWiFi.html" role="button" class="btn btn-default" style="width:85%;height:45px;line-height:38px">
+				<table width="100%" border="0" style="position:relative">
+					<tr>				
+						<td align="center" style="cursor:pointer;">
+							<img id="mm_wifi" src="image/wireless_icon.png" width="34" height="34" style="position:absolute;left:5px">
+							<span class="textnormal"><b><script>I18N("h", "Wi-Fi");</script></b></span>
+						</td>
+					</tr>
+				</table>
+			</a>
+			</td>
+		</tr> 
+		<tr height="60px">
+			<td class="text-center">
+			<a href="./MobileGuestZone.html" role="button" class="btn btn-default" style="width:85%;height:45px;line-height:34px">
+				<table width="100%" border="0" style="position:relative">
+					<tr>					
+						<td align="center" style="cursor:pointer;">
+							<img id="mm_gz" src="image/mobile_guestzone.png" width="34" height="34" style="position:absolute;left:5px">
+							<span class="textnormal"><b><script>I18N("h", "Guest Zone");</script></b></span>
+						</td>
+					</tr>
+				</table>
+			</a>
+			</td>
+		</tr> 
+		<tr height="60px">
+			<td class="text-center">
+			<a href="./MobileUpdateFirmware.html" role="button" class="btn btn-default" style="width:85%;height:45px;line-height:34px">
+				<table width="100%" border="0" style="position:relative">
+					<tr>					
+						<td align="center" style="cursor:pointer;">
+							<img id="mm_updatefw" src="image/mobile_update_fw.png" width="45" height="34" style="position:absolute;left:0px">
+							<span class="textnormal"><b><script>I18N("h", "Firmware");</script></b></span>
+						</td>
+					</tr>
+				</table>
+
+			</a>
+			</td>
+		</tr> 
+		<tr height="50px">
+			<td align="center">
+				<b>
+					<span class="textnormal"><script>I18N("h", "View");</script>:</span>&nbsp;
+					<a href="javascript:location='./Home.html'" style="text-decoration: underline"><span class="textnormal"><script>I18N("h", "Desktop");</script></span></a>
+				</b>&nbsp;
+				<b><span class="textnormal">|&nbsp;</span><span class="textnormal"><script>I18N("h", "Mobile");</script></span></b>
+			</td>
+		</tr>
+		<!--<tr class="emptyline"></tr>
+		<tr height="35px" align="center" valign="bottom">
+			<td><span class="textcr"><span id="copyright"><script>I18N("h", "COPYRIGHT");</script></span></span></td>				
+		</tr>
+		<tr class="emptyline"></tr>-->
+	</table>
+	<div id="copyright" class="copyright">
+		<script>I18N("h", "COPYRIGHT");</script>
+	</div>
+</body>
+</html> 

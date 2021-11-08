@@ -41,7 +41,7 @@ sha512.lo: sha512.c ../config.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/select.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/sysmacros.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/alloca.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/socket.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/uio.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uio.h \
@@ -153,7 +153,7 @@ sha512.lo: sha512.c ../config.h \
 
 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/alloca.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/lib/libgpg-error/libgpg-error-1.10/src/gpg-error.h:
 
 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/sys/socket.h:
 

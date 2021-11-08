@@ -4,9 +4,9 @@ libc/misc/sysvipc/semop.os: libc/misc/sysvipc/semop.c \
  include/bits/uClibc_config.h include/sys/cdefs.h include/libc-internal.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
  include/bits/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
  include/sys/sem.h include/sys/ipc.h include/bits/ipc.h \
  include/bits/types.h include/bits/wordsize.h include/bits/kernel_types.h \
  include/bits/typesizes.h include/bits/pthreadtypes.h \
@@ -40,11 +40,11 @@ include/libc-internal.h:
 
 include/bits/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
 
 include/sys/sem.h:
 
@@ -113,4 +113,4 @@ include/bits/syscalls.h:
 include/sgidefs.h:
 
 include/bits/syscalls-common.h:
-cmd_libc_misc_sysvipc_semop.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/misc/sysvipc/semop.c -o libc/misc/sysvipc/semop.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/misc/sysvipc/semop.os -MD -MP -MF libc/misc/sysvipc/.semop.os.dep
+cmd_libc_misc_sysvipc_semop.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/misc/sysvipc/semop.c -o libc/misc/sysvipc/semop.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/misc/sysvipc/semop.os -MD -MP -MF libc/misc/sysvipc/.semop.os.dep

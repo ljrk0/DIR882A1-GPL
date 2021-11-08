@@ -1,417 +1,417 @@
 hash.lo: hash.c zebra.h ../config.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/unistd.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix_opt.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/environments.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/types.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/unistd.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/features.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/posix_opt.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/environments.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/types.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/typesizes.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/pthreadtypes.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sched.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/confname.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/getopt.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdio.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_stdio.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/wchar.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wchar.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_mutex.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/pthread.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sched.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/time.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/time.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_clk_tck.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/signal.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigset.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/initspin.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigthread.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_pthread.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/typesizes.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/pthreadtypes.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sched.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/confname.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/getopt.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/stdio.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_stdio.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/wchar.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/wchar.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_mutex.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/pthread.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sched.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/time.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/time.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_clk_tck.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/signal.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigset.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/initspin.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigthread.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_pthread.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdarg.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/stdio_lim.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdlib.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/waitflags.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/waitstatus.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/endian.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/endian.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/byteswap.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap-common.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/types.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/select.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/select.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/sysmacros.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/alloca.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/ctype.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_touplow.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm-generic/errno-base.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/fcntl.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/fcntl.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sgidefs.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uio.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/stat.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/stat.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/signum.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/siginfo.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigaction.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigcontext.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigstack.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/ucontext.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/string.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/pwd.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/grp.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/param.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/limits.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/limits.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/stdio_lim.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/stdlib.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/waitflags.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/waitstatus.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/endian.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/endian.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/byteswap.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap-common.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/types.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/select.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/select.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/sysmacros.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/alloca.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/ctype.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_touplow.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/errno.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/errno.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/errno.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm/errno.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm-generic/errno-base.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/fcntl.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/fcntl.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sgidefs.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uio.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/stat.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/stat.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/signum.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/siginfo.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigaction.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigcontext.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigstack.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/ucontext.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/string.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/pwd.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/grp.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/param.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/limits.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/limits.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix1_lim.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/local_lim.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/limits.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_local_lim.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix2_lim.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/xopen_lim.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/param.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/param.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm-generic/param.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/types.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/types.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm-generic/int-ll64.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/bitsperlong.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm-generic/bitsperlong.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/posix_types.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/stddef.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/posix_types.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/sgidefs.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm-generic/posix_types.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/sysctl.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/sysctl.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/kernel.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/ioctl.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/ioctls.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/ioctls.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/ioctl.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm-generic/ioctl.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/ioctl-types.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/ttydefaults.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/syslog.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/syslog.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/time.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/uio.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/utsname.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/utsname.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/resource.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/resource.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/inttypes.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdint.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/posix1_lim.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/local_lim.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/limits.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_local_lim.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/posix2_lim.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/xopen_lim.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/param.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm/param.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm-generic/param.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/types.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm/types.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm-generic/int-ll64.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm/bitsperlong.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm-generic/bitsperlong.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/posix_types.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/stddef.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm/posix_types.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm/sgidefs.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm-generic/posix_types.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/sysctl.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/sysctl.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/kernel.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/ioctl.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/ioctls.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm/ioctls.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm/ioctl.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm-generic/ioctl.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/ioctl-types.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/ttydefaults.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/syslog.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/syslog.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/time.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/uio.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/utsname.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/utsname.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/resource.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/resource.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/inttypes.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/stdint.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdbool.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/version.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/socket.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/socket.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sockaddr.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/socket.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/sockios.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/in.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/in.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/in_systm.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/ip.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/tcp.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/net/if.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/net/route.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/netlink.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/sysinfo.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/socket.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/rtnetlink.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/if_link.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/if_addr.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/neighbour.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/filter.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netdb.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/rpc/netdb.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/netdb.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/arpa/inet.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/icmp6.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/version.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/socket.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/socket.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sockaddr.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm/socket.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/asm/sockios.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/netinet/in.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/in.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/netinet/in_systm.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/netinet/ip.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/netinet/tcp.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/net/if.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/net/route.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/netlink.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/sysinfo.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/socket.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/rtnetlink.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/if_link.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/if_addr.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/neighbour.h \
+ /home/baifan/882_dlink/trunk/source/lib/include/linux/filter.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/netdb.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/rpc/netdb.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/netdb.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/arpa/inet.h \
+ /home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/netinet/icmp6.h \
  zassert.h str.h route_types.h hash.h memory.h ../lib/memtypes.h
 
 zebra.h:
 
 ../config.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/unistd.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/unistd.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/features.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix_opt.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/posix_opt.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/environments.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/environments.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/types.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/types.h:
 
 /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/typesizes.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/typesizes.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/pthreadtypes.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/pthreadtypes.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sched.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sched.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/confname.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/confname.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/getopt.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/getopt.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdio.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/stdio.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_stdio.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_stdio.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/wchar.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/wchar.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wchar.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/wchar.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_mutex.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_mutex.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/pthread.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/pthread.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sched.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sched.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/time.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/time.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/time.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/time.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_clk_tck.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_clk_tck.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/signal.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/signal.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigset.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigset.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/initspin.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/initspin.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigthread.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigthread.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_pthread.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_pthread.h:
 
 /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdarg.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/stdio_lim.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/stdio_lim.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdlib.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/stdlib.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/waitflags.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/waitflags.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/waitstatus.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/waitstatus.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/endian.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/endian.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/endian.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/endian.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/byteswap.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/byteswap.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap-common.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/byteswap-common.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/types.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/types.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/select.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/select.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/select.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/select.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/sysmacros.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/sysmacros.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/alloca.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/alloca.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/ctype.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/ctype.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_touplow.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_touplow.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/errno.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/errno.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/errno.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/errno.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm-generic/errno-base.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm-generic/errno-base.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/fcntl.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/fcntl.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/fcntl.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/fcntl.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sgidefs.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sgidefs.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uio.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uio.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/stat.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/stat.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/stat.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/stat.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/signum.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/signum.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/siginfo.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/siginfo.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigaction.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigaction.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigcontext.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigcontext.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sigstack.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sigstack.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/ucontext.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/ucontext.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/string.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/string.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/pwd.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/pwd.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/grp.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/grp.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/param.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/param.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/limits.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/limits.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/limits.h:
+/home/baifan/882_dlink/trunk/source/lib/include/limits.h:
 
 /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix1_lim.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/posix1_lim.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/local_lim.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/local_lim.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/limits.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/limits.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_local_lim.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_local_lim.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/posix2_lim.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/posix2_lim.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/xopen_lim.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/xopen_lim.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/param.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/param.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/param.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm/param.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm-generic/param.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm-generic/param.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/types.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/types.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/types.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm/types.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm-generic/int-ll64.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm-generic/int-ll64.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/bitsperlong.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm/bitsperlong.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm-generic/bitsperlong.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm-generic/bitsperlong.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/posix_types.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/posix_types.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/stddef.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/stddef.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/posix_types.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm/posix_types.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/sgidefs.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm/sgidefs.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm-generic/posix_types.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm-generic/posix_types.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/sysctl.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/sysctl.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/sysctl.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/sysctl.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/kernel.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/kernel.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/ioctl.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/ioctl.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/ioctls.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/ioctls.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/ioctls.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm/ioctls.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/ioctl.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm/ioctl.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm-generic/ioctl.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm-generic/ioctl.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/ioctl-types.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/ioctl-types.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/ttydefaults.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/ttydefaults.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/syslog.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/syslog.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/syslog.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/syslog.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/time.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/time.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/uio.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/uio.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/utsname.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/utsname.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/utsname.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/utsname.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/resource.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/resource.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/resource.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/resource.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/inttypes.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/inttypes.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdint.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/stdint.h:
 
 /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdbool.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/version.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/version.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/socket.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/sys/socket.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/socket.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/socket.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/sockaddr.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/sockaddr.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/socket.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm/socket.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/asm/sockios.h:
+/home/baifan/882_dlink/trunk/source/lib/include/asm/sockios.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/in.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/netinet/in.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/in.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/in.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/in_systm.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/netinet/in_systm.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/ip.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/netinet/ip.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/tcp.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/netinet/tcp.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/net/if.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/net/if.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/net/route.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/net/route.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/netlink.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/netlink.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/sysinfo.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/sysinfo.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/socket.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/socket.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/rtnetlink.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/rtnetlink.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/if_link.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/if_link.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/if_addr.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/if_addr.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/neighbour.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/neighbour.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/lib/include/linux/filter.h:
+/home/baifan/882_dlink/trunk/source/lib/include/linux/filter.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netdb.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/netdb.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/rpc/netdb.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/rpc/netdb.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/netdb.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/bits/netdb.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/arpa/inet.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/arpa/inet.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/netinet/icmp6.h:
+/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include/netinet/icmp6.h:
 
 zassert.h:
 

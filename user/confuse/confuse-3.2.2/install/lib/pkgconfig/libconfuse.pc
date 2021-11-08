@@ -1,4 +1,4 @@
-prefix=/home/zhangtianchuan/trunk/GPL_Code/source/user/confuse/confuse-3.2.2/install
+prefix=/home/baifan/dlink_882/trunk/GPL_Code/source/user/confuse/confuse-3.2.2/install
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include

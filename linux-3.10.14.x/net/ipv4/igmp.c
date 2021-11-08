@@ -104,8 +104,8 @@
 #include <linux/proc_fs.h>
 #include <linux/seq_file.h>
 #endif
-
-#define IP_MAX_MEMBERSHIPS	20
+// Add note: in order to fix Dlink CDrouter router_mcast test issue(Dlink test num is 200)
+#define IP_MAX_MEMBERSHIPS	200
 #define IP_MAX_MSF		10
 
 #ifdef CONFIG_IP_MULTICAST

@@ -98,23 +98,11 @@ obj-$(CONFIG_RLT_STA_SUPPORT)      += rlt_wifi_sta/
 endif
 
 ifneq ($(CONFIG_MT_AP_SUPPORT),)
-ifneq ($(CONFIG_MT_DRIVER_4411),)
-ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A2")
-obj-$(CONFIG_MT_AP_SUPPORT)       += MT7615D/mt_wifi_ap/
-else ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A1")
-obj-$(CONFIG_MT_AP_SUPPORT)       += MT7615D/mt_wifi_ap/
-else ifeq ("$(CONFIG_PRODUCT)", "DIR_1360")
-obj-$(CONFIG_MT_AP_SUPPORT)       += MT7615D/mt_wifi_ap/
-else
-obj-$(CONFIG_MT_AP_SUPPORT)       += MTK7615/mt_wifi_ap/
-endif
-else ifneq ($(CONFIG_MT_DRIVER_4421),)
-obj-$(CONFIG_MT_AP_SUPPORT)       += MT7615_LinuxAP_V4.4.2.1_20170829/mt_wifi_ap/
-endif
+obj-$(CONFIG_MT_AP_SUPPORT)       += MT7622_7615_SoftAP_v5.0.3.2_17722b_20190311_MWDS/mt_wifi_ap/
 endif
 
 ifneq ($(CONFIG_MT_STA_SUPPORT),)
-obj-$(CONFIG_MT_STA_SUPPORT)      += mt_wifi_sta/
+obj-$(CONFIG_MT_STA_SUPPORT)      += MT7622_7615_SoftAP_v5.0.3.2_17722b_20190311_MWDS/mt_wifi_sta/
 endif
 #ifneq ($(CONFIG_WIFI_PKT_FWD),)
 #obj-y                         += wifi_forward/wifi_hook/

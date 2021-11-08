@@ -1,0 +1,542 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3c.org/1999/xhtml">
+
+<head>
+    <title>D-LINK</title>
+    <!-- for browser tab logo -->
+    <link rel="icon" href="/image/dlink-favicon.ico">
+    <link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.selectbox.css" />
+    <link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+    <script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/initialValidate.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/VLAN.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAction.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPTR069.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="css/style_pop.css" media="all" />
+    <script type="text/javascript" charset="utf-8" src="/js/popView.js"></script>
+
+    <script>
+    //xframeoption
+    if (top != self) {
+        top.location = self.location;
+    }
+
+    //session
+    if (sessionStorage.getItem('PrivateKey') === null) {
+        window.location.replace('../info/Login.html');
+    }
+
+    var _ReciprocalNumber = 25;
+
+    $(function() {
+        //initial
+        Load_HTML();
+        Initial();
+        setMenu("menu_Management");
+        GetXML();
+        startTimeout();
+
+        //save button disabled
+        $("input, select").on('change', function() {
+            save_button_changed();
+        });
+        $('input').on('keypress', function() {
+            save_button_changed();
+        });
+    
+        //when checkbox change    
+        $('#tr069_status, #tr069_adv_connect, #tr069_adv_periodicInform').on('change', function() {
+            tr069_changeFn();
+        });
+        $('#stun_status').on('change', function() {
+            stun_changeFn();
+        });
+    });
+
+    function Load_HTML() {
+        $("#header").load("header.html");
+    }
+
+    function Initial() {
+        initialMenu();
+        initialDetectRouterConnection();
+    }
+
+    function GetXML() {
+        var soapAction = new SOAPAction();
+        var getTR069SettingsResponse = new SOAPGetTR069SettingsResponse();
+        var result_getTR069Settings = soapAction.sendSOAPAction("GetTR069Settings", null, getTR069SettingsResponse);
+        var getSTUNSettingsResponse = new SOAPGetSTUNSettingsResponse();
+        var result_getSTUNSettings = soapAction.sendSOAPAction("GetSTUNSettings", null, getSTUNSettingsResponse);
+
+        var tr069_changeFn_result = null;
+        var stun_changeFn_result = null;
+
+        $.when(result_getTR069Settings, result_getSTUNSettings).done(function(obj) {
+            $('#tr069_status').prop('checked',COMM_ToBOOL(getTR069SettingsResponse.TR069));
+            $('#tr069_acsUrl').val(getTR069SettingsResponse.ACSURL);
+            $('#tr069_username').val(getTR069SettingsResponse.ACSUsername);
+            $('#tr069_password').val(getTR069SettingsResponse.ACSPassword);
+            $('#tr069_adv_connect').prop('checked',COMM_ToBOOL(getTR069SettingsResponse.ConnectionRequest));
+            $("#tr069_adv_url").val(getTR069SettingsResponse.ConnectionRequestURL);
+            $('#tr069_adv_username').val(getTR069SettingsResponse.ConnectionRequestUsername);
+            $('#tr069_adv_password').val(getTR069SettingsResponse.ConnectionRequestPassword);
+            $('#tr069_adv_periodicInform').prop('checked',COMM_ToBOOL(getTR069SettingsResponse.PeriodInform));
+            $('#tr069_adv_periodicInformInterval').val(getTR069SettingsResponse.PeriodInformInterval);
+
+            $('#stun_status').prop('checked',COMM_ToBOOL(getSTUNSettingsResponse.STUN));
+            $('#stun_serveraddress').val(getSTUNSettingsResponse.STUNServerAddress);
+            $('#stun_serverport').val(getSTUNSettingsResponse.STUNServerPort);
+            $('#stun_username').val(getSTUNSettingsResponse.STUNUsername);
+            $('#stun_password').val(getSTUNSettingsResponse.STUNPassword);
+            $('#stun_maximunkeepalive').val(getSTUNSettingsResponse.STUNMaxKeepAlive);
+            $('#stun_minmunkeepalive').val(getSTUNSettingsResponse.STUNMinKeepAlive);
+
+            tr069_changeFn_result = tr069_changeFn(); 
+            stun_changeFn_result = stun_changeFn(); 
+
+            $.when(tr069_changeFn_result, stun_changeFn_result).always(function() {
+                $('#main').show();
+            });            
+        });
+    }
+
+    function tr069_changeFn() {
+        var dtd = $.Deferred();
+
+        if($('#tr069_status').prop('checked') == false) {
+            $('#tr069_acsUrl').attr('disabled', true);
+            $('#tr069_username').attr('disabled', true);
+            $('#tr069_password').attr('disabled', true);
+            $('#tr069_adv_connect').attr('disabled', true);
+            $('#tr069_adv_url').attr('disabled', true);
+            $('#tr069_adv_username').attr('disabled', true);
+            $('#tr069_adv_password').attr('disabled', true);
+            $('#tr069_adv_periodicInform').attr('disabled', true);
+            $('#tr069_adv_periodicInformInterval').attr('disabled', true);
+        } else {
+            if($('#tr069_adv_connect').prop('checked') == false) {
+                $('#tr069_acsUrl').attr('disabled', false);
+                $('#tr069_username').attr('disabled', false);
+                $('#tr069_password').attr('disabled', false);
+                $('#tr069_adv_connect').attr('disabled', false);
+                $('#tr069_adv_url').attr('disabled', true);
+                $('#tr069_adv_username').attr('disabled', true);
+                $('#tr069_adv_password').attr('disabled', true);
+                $('#tr069_adv_periodicInform').attr('disabled', true);
+                $('#tr069_adv_periodicInformInterval').attr('disabled', true);  
+            } else {
+                if($('#tr069_adv_periodicInform').prop('checked') == false) {
+                    $('#tr069_acsUrl').attr('disabled', false);
+                    $('#tr069_username').attr('disabled', false);
+                    $('#tr069_password').attr('disabled', false);
+                    $('#tr069_adv_connect').attr('disabled', false);
+                    $('#tr069_adv_url').attr('disabled', false);
+                    $('#tr069_adv_username').attr('disabled', false);
+                    $('#tr069_adv_password').attr('disabled', false);
+                    $('#tr069_adv_periodicInform').attr('disabled', false);
+                    $('#tr069_adv_periodicInformInterval').attr('disabled', true);  
+                } else {
+                    $('#tr069_acsUrl').attr('disabled', false);
+                    $('#tr069_username').attr('disabled', false);
+                    $('#tr069_password').attr('disabled', false);
+                    $('#tr069_adv_connect').attr('disabled', false);
+                    $('#tr069_adv_url').attr('disabled', false);
+                    $('#tr069_adv_username').attr('disabled', false);
+                    $('#tr069_adv_password').attr('disabled', false);
+                    $('#tr069_adv_periodicInform').attr('disabled', false);
+                    $('#tr069_adv_periodicInformInterval').attr('disabled', false);  
+                }
+            }
+        }
+
+        dtd.resolve();
+        return dtd.promise();
+    }
+
+    function stun_changeFn() {
+        var dtd = $.Deferred();
+
+        if($('#stun_status').prop('checked') == false) {
+            $('#stun_serveraddress, #stun_serverport, #stun_username, #stun_password, #stun_maximunkeepalive, #stun_minmunkeepalive').attr('disabled',true);
+        } else {
+            $('#stun_serveraddress, #stun_serverport, #stun_username, #stun_password, #stun_maximunkeepalive, #stun_minmunkeepalive').attr('disabled',false);
+        }
+
+        dtd.resolve();
+        return dtd.promise();
+    }
+
+    function save_button_changed() {
+        document.getElementById("Save_Disable_btn").style.display = "none";
+        document.getElementById("Save_btn").style.display = "block";
+        changeFlag = true;
+        changeTimeoutAction();
+    }
+
+    function SetXML() {
+        var soapAction = new SOAPAction();
+        var setTR069SettingsResponse = new SOAPSetTR069SettingsResponse();
+        var setSTUNSettingsResponse = new SOAPSetSTUNSettingsResponse();
+
+        var msg = I18N("j", "Please wait") + " ...";
+        PopView.show(msg);
+
+        //setTR069Settings
+        if($('#tr069_status').prop('checked') == true) {
+            setTR069SettingsResponse.TR069 = true;
+        } else {
+            setTR069SettingsResponse.TR069 = false;
+        }
+
+        setTR069SettingsResponse.ACSURL = $('#tr069_acsUrl').val();
+        setTR069SettingsResponse.ACSUsername = $('#tr069_username').val();
+        setTR069SettingsResponse.ACSPassword = $('#tr069_password').val();
+        
+        if($('#tr069_adv_connect').prop('checked') == true) {
+            setTR069SettingsResponse.ConnectionRequest = true;
+        } else {
+            setTR069SettingsResponse.ConnectionRequest = false;
+        }
+        
+        setTR069SettingsResponse.ConnectionRequestURL = $('#tr069_adv_url').val();
+        setTR069SettingsResponse.ConnectionRequestUsername = $('#tr069_adv_username').val();
+        setTR069SettingsResponse.ConnectionRequestPassword = $('#tr069_adv_password').val();
+        
+        if($('#tr069_adv_periodicInform').prop('checked') == true) {
+            setTR069SettingsResponse.PeriodInform = true;
+        } else {
+            setTR069SettingsResponse.PeriodInform = false;
+        }
+
+        setTR069SettingsResponse.PeriodInformInterval = $('#tr069_adv_periodicInformInterval').val();
+
+        //setSTUNSettings
+        if($('#stun_status').prop('checked') == true) {
+            setSTUNSettingsResponse.STUN = true;
+        } else {
+            setSTUNSettingsResponse.STUN = false;
+        }
+
+        setSTUNSettingsResponse.STUNServerAddress = $('#stun_serveraddress').val();
+        setSTUNSettingsResponse.STUNServerPort = $('#stun_serverport').val();
+        setSTUNSettingsResponse.STUNUsername = $('#stun_username').val();
+        setSTUNSettingsResponse.STUNPassword = $('#stun_password').val();
+        setSTUNSettingsResponse.STUNMaxKeepAlive = $('#stun_maximunkeepalive').val();
+        setSTUNSettingsResponse.STUNMinKeepAlive = $('#stun_minmunkeepalive').val();
+
+        //send soap
+        var result_setTR069Settings = soapAction.sendSOAPAction("SetTR069Settings", setTR069SettingsResponse, null).done(function() {
+            var result_setSTUNSettings = soapAction.sendSOAPAction("SetSTUNSettings", setSTUNSettingsResponse, null).done(function(obj) {
+                if(obj.SetSTUNSettingsResult == "OK" || obj.SetSTUNSettingsResult == "RESTART") {
+                    Start_reciprocal_Number_RestoreConfiguration(false);
+                } else if(obj.SetSTUNSettingsResult == "REBOOT") {
+                    Start_reciprocal_Number_RestoreConfiguration(true);
+                } else {
+                    location.reload();
+                }
+            }).fail(function() {
+                location.reload();
+            });
+        }).fail(function() {
+            location.reload();
+        });
+    }
+
+    function Start_reciprocal_Number_RestoreConfiguration(reboot) {
+        var msg = I18N("j", "Please wait") + " ...";
+        var msg2 = I18N("j", "The new settings have been saved.");
+        var timer = currentDevice.okcount;
+        var soapAction = new SOAPAction();
+
+        if(reboot == true) {
+            msg = I18N("j", "Your changes are being saved, and the device will need to reboot.");
+            timer = currentDevice.rebootcount;
+            soapAction.sendSOAPAction("Reboot", null, null);
+        }
+
+        PopView.showWithCountdown(msg, timer).always(function() {
+            PopView.showConfirm(msg2).done(function() {
+                location.reload();
+            });
+        });
+    }      
+    </script>
+</head>
+
+<body>
+    <form name="internet_form" id="internet_form" method="POST" action="">
+        <div id="wrapper">
+            <!-- *********** Logo *********** -->
+            <div id="header"></div>
+            <!-- *********** Menu *********** -->
+            <div id="menu"></div>
+            <div id="menu_edge"></div>
+            <!-- *********** Content *********** -->
+            <div id="content">
+                <!-- *********** info *********** -->
+                <div id="info">
+                    <div id="FunctionName">
+                        <script>I18N("h", "TR069");</script>
+                    </div>
+                    <div id="wallimage"><img src="image/page_System.png" alt="" width="195" height="119" /></div>
+                    <div id="directions">
+                    <script>I18N("h", "WAN Management Protocol(TR069) allows a Auto-Configuration Server(ACS) to perform auto-configuration, provision, collection, and diagnowtics to this device.<br>Select the desired values and click \"Apply\" to configure the TR069 client options.");</script>
+                    </div>
+                </div><!--info end-->
+
+                <!-- *********** funcBar *********** -->
+                <div id="funcBar">
+                    <div id="pagePath">
+                        <script>I18N("h", "Management");</script> &gt;&gt; <script>I18N("h", "TR069");</script>
+                    </div>
+                    <ul id="rightFunc">
+                        <li style="display:block">
+                            <div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click();changeTimeoutAction();" style="cursor:pointer; display:none">
+                                <script>
+                                I18N("h", "Save");
+                                </script>
+                            </div>
+                        </li>
+                        <li style="display:block">
+                            <div id="Save_Disable_btn">
+                                <script>
+                                I18N("h", "Save");
+                                </script>
+                            </div>
+                        </li>
+                        <input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+<!--                         <li style="display:block">
+                            <a href="javascript:CheckHTMLStatus('Internet');" style="text-decoration:none;" onclick="return confirmExit()">
+                                <div id="page_btn" class="linkstyle_1">
+                                    <script>
+                                    I18N("h", "IPv4");
+                                    </script>
+                                </div>
+                            </a>
+                        </li> -->
+                    </ul>
+                </div><!--funcBar end-->
+
+                <!-- *********** main *********** -->
+                <br />
+                <div id="main" style="display:none;">
+                    <table class="block" style="margin-bottom:0;">
+                        <tr>
+                            <td colspan="2">
+                                <div class="title"><script>I18N("h", "TR069 Settings");</script></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><script>I18N("h", "Status");</script>:</th>
+                            <td>
+                                <input type="checkbox" class="chkbox" id="tr069_status" /><label for="tr069_status"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><script>I18N("h", "ACS URL");</script>:</th>
+                            <td>
+                                <input class="styled-text" type="text" name="tr069_acsUrl" size="27" id="tr069_acsUrl" maxlength="256">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><script>I18N("h", "Username");</script>:</th>
+                            <td>
+                                <input class="styled-text" type="text" name="tr069_username" size="27" id="tr069_username" maxlength="256">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><script>I18N("h", "Password");</script>:</th>
+                            <td>
+                                <input class="styled-text" type="text" name="tr069_password" size="27" id="tr069_password" maxlength="256">
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- *********** advanced *********** -->
+                    <div class="advButton">
+                        <span onclick="showAdv('advancedBlock');">
+                            <script>I18N("h", "Advanced Settings");</script>...
+                        </span>
+                    </div>
+                    <div id="advancedBlock" style="display:none;">
+                        <hr>
+                        <table  class="block" border="0">
+                            <tr>
+                                <th><script>I18N("h", "Connection Request Authentication");</script>:</th>
+                                <td>
+                                    <input type="checkbox" class="chkbox" id="tr069_adv_connect" /><label for="tr069_adv_connect"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><script>I18N("h", "URL");</script>:</th>
+                                <td>
+                                    <input class="styled-text" type="text" name="tr069_adv_url" size="27" id="tr069_adv_url" maxlength="256">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><script>I18N("h", "Username");</script>:</th>
+                                <td>
+                                    <input class="styled-text" type="text" name="tr069_adv_username" size="27" id="tr069_adv_username" maxlength="256">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><script>I18N("h", "Password");</script>:</th>
+                                <td>
+                                    <input class="styled-text" type="text" name="tr069_adv_password" size="27" id="tr069_adv_password" maxlength="256">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><script>I18N("h", "Periodic Inform");</script>:</th>
+                                <td>
+                                    <input type="checkbox" class="chkbox" id="tr069_adv_periodicInform" /><label for="tr069_adv_periodicInform"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><script>I18N("h", "Periodic Inform Interval");</script>:</th>
+                                <td>
+                                    <input class="styled-text" type="text" name="tr069_adv_periodicInformInterval" size="27" id="tr069_adv_periodicInformInterval"> Seconds
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <hr>
+
+                    <table class="block" style="margin-bottom:0;">
+                        <tr>
+                            <td colspan="2">
+                                <div class="title"><script>I18N("h", "STUN Settings");</script></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><script>I18N("h", "Status");</script>:</th>
+                            <td>
+                                <input type="checkbox" class="chkbox" id="stun_status" /><label for="stun_status"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><script>I18N("h", "Server Address");</script>:</th>
+                            <td>
+                                <input class="styled-text" type="text" name="stun_serveraddress" size="27" id="stun_serveraddress" maxlength="256">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><script>I18N("h", "Server Port");</script>:</th>
+                            <td>
+                                <input class="styled-text" type="text" name="stun_serverport" size="27" id="stun_serverport" maxlength="5">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><script>I18N("h", "Username");</script>:</th>
+                            <td>
+                                <input class="styled-text" type="text" name="stun_username" size="27" id="stun_username" maxlength="256">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><script>I18N("h", "Password");</script>:</th>
+                            <td>
+                                <input class="styled-text" type="text" name="stun_password" size="27" id="stun_password" maxlength="256">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><script>I18N("h", "Maximun Keep Alive Period");</script>:</th>
+                            <td>
+                                <input class="styled-text" type="text" name="stun_maximunkeepalive" size="27" id="stun_maximunkeepalive" maxlength="5">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><script>I18N("h", "Minmun Keep Alive Period");</script>:</th>
+                            <td>
+                                <input class="styled-text" type="text" name="stun_minmunkeepalive" size="27" id="stun_minmunkeepalive" maxlength="5">
+                            </td>
+                        </tr>                        
+                    </table>
+
+                </div><!--main end-->
+
+                <!-- popup alert view -->
+                <div id="popalert" class="black_overlay" style="display:none">
+                    <div class="popup_window_border" style="position:relative;top:15%;">
+                        <div class="popup_window">
+                            <div id="popalert_circle">
+                                <img src="image/loading.gif" width="62px" height="62px">
+                            </div>
+                            <div id="popalert_countdown">
+                            </div>
+                            <div id="popalert_desc">
+                            </div>
+                            <div id="popalert_buttons" class="btn-group" role="group" aria-label="...">
+                                <button type="button" id="popalert_ok" class="btn btn-default">
+                                    <script>I18N("h", "OK");</script>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- *********** DetectRouterConnection *********** -->
+                <div id="DetectRouterConnection" style="display:none"></div>
+
+                <!-- *********** footer *********** -->
+                <div id="footer">
+                    <div id="copyright">
+                        <script>I18N("h", "COPYRIGHT");</script>
+                    </div>
+                </div><!--footer end-->
+            </div><!--content end-->                         
+        </div><!--wrapper end-->
+    </form>
+    <script>
+    $(function(){
+        $.validator.addMethod("checkserverport_range", function( value, element ) {
+            var returnVal = true;
+            if(value != "") {
+                if(parseInt(value) < 0 || parseInt(value) > 65535) {
+                    returnVal = false;
+                }
+            }
+
+            return returnVal;
+        }, I18N("j", "Please enter a value between 0 and 65535"));
+
+        $.validator.addMethod("checkeepalive_range", function( value, element ) {
+            var returnVal = true;
+            if(value != "") {
+                if(parseInt(value) < 1 || parseInt(value) > 99999) {
+                    returnVal = false;
+                }
+            }
+
+            return returnVal;
+        }, I18N("j", "Please enter a value between 1 and 99999"));
+
+
+        $('#internet_form').validate({
+            rules: {
+                stun_serverport: {
+                    checkserverport_range: true
+                },
+                stun_maximunkeepalive: {
+                    checkeepalive_range: true
+                },
+                stun_minmunkeepalive: {
+                    checkeepalive_range: true
+                }
+            },
+            submitHandler: function(form) {
+                // CheckConnectionStatus();
+                SetXML();
+            }
+        });
+    });
+    </script>
+</body>
+</html> 

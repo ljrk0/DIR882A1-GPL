@@ -6,7 +6,8 @@
 # $Id: Makefile,v 1.6 2010-07-17 02:57:34 kenlo Exp $
 #
 
-LIBZLIB_SRC=lighttpd-1.4.24
+LIBZLIB_SRC=lighttpd-1.4.30
+#LIBZLIB_SRC=lighttpd-1.4.24
 #PKG_SOURCE=lighttpd-1.4.20.tar
 CP:=cp -fpR
 CONFIGURE_CMD = ./configure

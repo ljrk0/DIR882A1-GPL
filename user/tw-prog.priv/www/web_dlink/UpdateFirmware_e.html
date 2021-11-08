@@ -1,0 +1,648 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+
+<head>
+<title>D-LINK</title>
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/jquery.selectbox_e.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/style_pages_e.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="js/initialJQ_e.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/initialJSDefault.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialLibs.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/Public.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/menu_e.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/firmware.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.client.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/includeLang.js"></script>
+<script type="text/javascript">
+    //xframeoption
+    if(top!=self){top.location=self.location;}
+ 
+    //session
+    if (sessionStorage.getItem('PrivateKey') === null){
+        window.location.replace('../info/Login.html');
+    } 
+
+    var whichReq = "";
+    var show_dot = 0;
+    var reboot_id;
+    var timeout_id = -1;
+    var countTime = 0;
+    var totalTime = 0;
+    var spinnerObj;
+
+    // InitImage(basedImage);
+
+    $(document).ready(function() {
+        LoadHeader();
+        // InitMenu("Management", "Upgrade");
+        Initial();
+        setMenu("menu_Management");
+        getFirmwareInfo();
+        startTimeout();
+
+        $('input[type=file]').on('change', function(evt) {
+            var file = prepareUpload(evt);
+            ShowUpgradeBtn(file);
+        });
+    });
+
+    function Initial() {
+        initialMenu();
+        // initialDetectRouterConnection();
+    }
+
+    function LoadHeader() {
+        $("#header").load("header.html");
+    }
+
+    function ShowPopupMsg(whichMsg) {
+        $(".myAlertPop_table_b").hide();
+        GetById("WarningMsgSection").style.display = "none";
+        GetById("CreatePopAlertMessage").style.display = "none";
+
+        if (whichMsg.length > 0) {
+            if ((whichMsg == "Upgrade") || (whichMsg == "Upload")) {
+                if (whichMsg == "Upgrade") {
+                    GetById("WarningMsgBtn").style.display = "";
+                    GetById("WarningMsg").innerHTML = I18N("j", "Do you want to upgrade Firmware?");
+                } else {
+                    GetById("WarningMsgBtn").style.display = "none";
+                    GetById("WarningMsg").innerHTML = I18N("j", "Please wait") + "...";
+                }
+
+                whichReq = whichMsg;
+                GetById("WarningMsgSection").style.display = "";
+            } else if (whichMsg == "Fail") {
+                $("#Confirm_btn").off('click').on('click', function() {
+                    resetFileSelect();
+                    ShowPopupMsg('');
+                });
+                $("#CompleteSection").show();
+            } else //Complete
+            {
+                $("#Confirm_btn").off('click').on('click', function() {
+                    RedirectHtmlPage();
+                });
+                GetById(whichMsg + "Section").style.display = "";
+            }
+
+            GetById("CreatePopAlertMessage").style.display = "";
+        } else {
+            whichReq = "";
+        }
+    }
+
+    function ShowUpgradeBtn(file) {
+        $("#file_info_conf").html(file.name);
+
+        $("#confirmUpgradeBtn").off('click').on("click", function() {
+            stopTimeout();
+            upgradeFirmware(file);
+        });
+        $("#UpgradeBtnSection").show();
+    }
+
+    function resetFileSelect() {
+        $("#file_info_conf").html("");
+        $("#uploadfile").val("");
+
+        $("#confirmUpgradeBtn").off("click");
+        $("#UpgradeBtnSection").hide();
+    }
+
+    function StartRebootCountDown() {
+        if (countTime == totalTime) {
+            if (spinnerObj) {
+                // stop the Spinner Object
+                spinnerObj.stop();
+            }
+
+            clearInterval(reboot_id);
+            GetById("CompleteMessage").innerHTML = I18N("j", "Firmware Upgrade success!");
+            ShowPopupMsg('Complete');
+        }
+
+        GetById("count_down").innerHTML = Math.ceil((++countTime / totalTime) * 100);
+    }
+
+    function getFirmwareInfo() {
+        GetFirmwareSettings().done(function(obj) {
+            $("#current_fw_version").html(obj.FirmwareVersion);
+            $("#current_fw_date").html(obj.FirmwareDate);
+        });
+    }
+
+    function checkNewFirmware() {
+        $("#CheckFWResult").show();
+        $("#CheckBtn").addClass("active").prop("disabled", true);
+        ShowCheckFWMsg();
+        var check_id = setInterval('ShowCheckFWMsg()', 500);
+
+        GetFirmwareStatus().done(function(obj) {
+            clearInterval(check_id);
+
+            var fwVer = obj.CurrentFWVersion;
+            var newVer = obj.LatestFWVersion;
+
+            if (fwVer < newVer) {
+                $("#CheckFWResult").hide();
+                $("#LatestFWSection").show();
+                $("#latest_fw_version").html(newVer);
+                $("#latest_fw_date").html(obj.LatestFWVersionDate);
+                $("#CheckBtn").hide();
+                $("#UpgradeBtn").show();
+            } else {
+                $("#CheckFWResult").html(I18N("j", "This firmware is the latest version."));
+            }
+            $("#CheckBtn").removeClass("active").prop("disabled", false);
+        }).fail(function() {
+            clearInterval(check_id);
+
+            $("#CheckFWResult").html(I18N("j", "This firmware is the latest version."));
+            $("#CheckBtn").removeClass("active").prop("disabled", false);
+        });
+
+    }
+
+    function ShowCheckFWMsg() {
+        var msg = I18N("j", "Scanning...");
+
+        for (var i = 0; i < show_dot; i++) {
+            msg += ".";
+        }
+
+        if (show_dot >= 5) {
+            show_dot = 0;
+        } else {
+            show_dot++;
+        }
+
+        $("#CheckFWResult").html(msg);
+    }
+
+    function upgradeFirmware(file) {
+        GetById("WarningMsg").innerHTML = I18N("j", "Please wait") + "..." ;
+        GetById("WarningMsgBtn").style.display = "none";
+
+        uploadFile("FirmwareUpload", "FWFile", file).done(function() {
+            do_upgrade();
+        }).fail(function() {
+            setTimeout(function(){
+                $("#CompleteMessage").html(I18N("j", "Firmware Upgrade failed!"));
+                ShowPopupMsg('Fail');
+            },1000);
+        });
+    }
+
+    function do_upgrade() {
+        ShowPopupMsg('Upload');
+        GetFirmwareValidation().done(function(countdown) {
+            totalTime = countdown;
+            countTime = 0;
+
+            spinnerObj = CreateSpinnerObj("SpinnerSection", opts);
+            ShowPopupMsg("Process");
+            reboot_id = setInterval('StartRebootCountDown()', 1000);
+        }).fail(function() {
+            $("#CompleteMessage").html(I18N("j", "Firmware Upgrade failed!"));
+            ShowPopupMsg('Fail');
+        });
+    }
+
+    function AutoUpgradeFirmware() {
+        stopTimeout();
+        spinnerObj = CreateSpinnerObj("DLSpinnerSection", opts);
+        ShowPopupMsg("Download");
+
+        StartFirmwareDownload().progress(function(val) {
+            $("#dl_count_down").html(val);
+        }).done(function() {
+            if (spinnerObj) {
+                // stop the Spinner Object
+                spinnerObj.stop();
+            }
+            do_upgrade();
+        }).fail(function() {
+            if (spinnerObj) {
+                // stop the Spinner Object
+                spinnerObj.stop();
+            }
+            ShowPopupMsg("Fail");
+        });
+    }
+
+    function StopDownloadFW() {
+        if (spinnerObj) {
+            // stop the Spinner Object
+            spinnerObj.stop();
+        }
+
+        // reset the timeout timer
+        timeout_id = InitTimeOut(timeout_id);
+        ShowPopupMsg('');
+    }
+
+    function RedirectHtmlPage() {
+        location.assign('/');
+    }
+
+    function checkBrowserVer() {
+        var browser = $.client.browser;
+        var version = $.client.version;
+
+        if (browser == "Explorer" && $.client.version < 10) {
+            alert(I18N("j", "The system doesn't support your browser."));
+        } else {
+            $('#uploadfile').trigger('click');
+        }
+    }
+    </script>
+    <style>
+    .block th {
+        min-width: 350px;
+        width: auto !important;
+        width: 420px;
+        font-weight: normal;
+        text-align: right;
+    }
+    
+    .btn_func {
+        min-width: 180px;
+        background: #4496a8;
+        color: #f5f5f5;
+        border-radius: 0;
+        padding: 10px 15px;
+    }
+    
+    .btn_func:focus,
+    .btn_func:hover {
+        background: #36899a;
+    }
+    
+    .info_left {
+        display: inline-block;
+        position: relative;
+        margin-top: 10px;
+        left: 148px;
+        /*min-height: 150px;*/
+        color: #555;
+    }
+    
+    .info_left > ul > li {
+        border: 0px solid;
+        text-align: right;
+        padding-top: 4px;
+        padding-bottom: 3px;
+    }
+    
+    .info_left > ul > li .tt {
+        width: 220px;
+        text-align: right;
+        display: inline-block;
+        font-size: 14px;
+    }
+    
+    .info_left > ul > li .dd {
+        width: 200px;
+        padding-left: 5px;
+        text-align: left;
+        display: inline-block;
+        font-size: 14px;
+    }
+    
+    .info_right {
+        float: right;
+        position: relative;
+        top: 10px;
+        color: #555;
+    }
+    
+    .info_right > div > ul {
+        border: 1px solid;
+        border-color: #4598aa;
+        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+        border-top-right-radius: 4px;
+        border-top-left-radius: 4px;
+    }
+    
+    .info_right > div > ul > li {
+        border: 0px;
+    }
+    
+    .info_center {
+        margin-top: 20px;
+    }
+    
+    table.manualFW {
+        position: relative;
+        top: 10px;
+        left: 167px;
+        color: #555;
+    }
+    
+    table.manualFW > tbody > tr {
+        height: 42px;
+    }
+    
+    table.manualFW > tbody > tr > td {
+        padding-left: 10px;
+        width: 212px;
+        text-align: right;
+    }
+    
+    #gplLink {
+        margin-top: 15px;
+        color: #7d7d7d;
+        font-size: 10pt;
+    }
+    #gplLink a{
+        color: #0000ee;
+        text-decoration: underline;
+    }
+
+    /*extender*/
+    #pagePath {
+        position: relative;
+        line-height: 50px;
+        font-size: 18px;
+        color: #aaaaaa;
+    }    
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="header"></div>
+        <div id="menu"></div>
+        <!-- Content -->
+        <div id="content">
+            <!-- info -->
+            <div id="info">
+                <div id="FunctionName">
+                    <script>I18N("h", "Upgrade");</script>
+                </div>
+                <div id="wallimage"><img width="195" height="119" src="image/page_updateFW.png"></div>
+                <div id="directions">
+                    <script>I18N("h", "Your router can automatically detect firmware updates, but requires your authorization to install them. It is also possible to check for new firmware manually, upgrade firmware from a local file.");</script>
+                    <div id="gplLink">
+                        <script>I18N("h", "GPL licenses");</script>
+                    </div>
+                </div>
+            </div>
+            <!-- id="info" -->
+            <!-- funcBar -->
+            <div id="funcBar">
+                <div id="pagePath">
+                    <script>I18N("h", "Management");</script> &gt;&gt; <script>I18N("h", "Upgrade");</script>
+                </div>
+                <ul id="rightFunc">
+                    <li style="display: block;"></li>
+                </ul>
+            </div>
+            <!-- id="funcBar" -->
+            <!-- main -->
+            <div id="main">
+                <div class="title">
+                    <script>I18N("h", "Firmware");</script>
+                </div>
+                <div class="info_left">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <span class="tt"><script>
+                                I18N("h", "Current Firmware Version");
+                                </script>: </span><span class="dd" id="current_fw_version"></span></li>
+                        <li class="list-group-item">
+                            <span class="tt"><script>
+                                I18N("h", "Current Firmware Date");
+                                </script>: </span><span class="dd" id="current_fw_date"></span></li>
+                    </ul>
+                </div>
+                <!-- class="info_left" -->
+                <div class="info_center">
+                    <!-- button -->
+                    <div style="">
+                        <ul id="LatestFWSection" class="list-group" style="display:none">
+                            <li class="list-group-item">
+                                <span class="tt">
+                                <script>I18N("h", "New Firmware Version");</script>: 
+                                </span>
+                                <span id="latest_fw_version"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="tt">
+                                <script>I18N("h", "New Firmware Date");</script>: 
+                                </span>
+                                <span id="latest_fw_date"></span></li>
+                        </ul>
+                        <span id="CheckFWResult" style="display:none;color:#4598aa;padding-left:395px;"></span>
+                    </div>
+                    <div style="text-align:center;padding-left:65px;">
+                        <button id="CheckBtn" type="button" class="btn btn-info btn_func" onclick="checkNewFirmware();">
+                            <script>I18N("h", "Check for New Firmware");</script>
+                        </button>
+                        <button id="UpgradeBtn" type="button" class="btn btn-info btn_func" style="display:none" onclick="AutoUpgradeFirmware();">
+                            <script>I18N("h", "Upgrade Firmware");</script>
+                        </button>
+                    </div>
+                </div>
+                <!-- class="info_right" -->
+                <hr />
+                <div class="title">
+                    <script>
+                    I18N("h", "Upgrade Manually");
+                    </script>
+                </div>
+                <table class="manualFW">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <script>
+                                I18N("h", "Upgrade Firmware");
+                                </script>:</td>
+                            <td style="text-align:left;">
+                                <button type="button" class="btn btn-info btn_func" style="width:180px" onclick="checkBrowserVer();">
+                                    <script>
+                                    I18N("h", "Select File");
+                                    </script>
+                                </button>
+                                <input type="file" id="uploadfile" style="display:none" onclick="changeTimeoutAction();" />
+                            </td>
+                            <td id="file_info_conf" style="color:#4598AA;padding-left:10px">
+                            </td>
+                        </tr>
+                        <tr id="UpgradeBtnSection" style="display:none;">
+                            <td></td>
+                            <td style="text-align:left;padding-top:10px;">
+                                <button type="button" id="UploadBtn" class="btn btn-info btn_func" style="width:180px" onclick="ShowPopupMsg('Upgrade');">
+                                    <script>
+                                    I18N("h", "Upload");
+                                    </script>
+                                </button>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- id="main" -->
+        </div>
+        <!-- id="content" -->
+        <!-- Popup Window -->
+        <div id="CreatePopAlertMessage" style="display:none">
+            <div id="AlertPopRect">
+                <div id="AlertPopBody">
+                    <table id="ProcessSection" class="myAlertPop_table_b" border="0" cellspacing="0" style="display:none">
+                        <tbody>
+                            <tr>
+                                <td align="center">
+                                    <div style="position:relative;top:-25px;"><strong><script>I18N("h", "Upgrading");</script>...&nbsp;<span id="count_down">0</span>%</strong></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="position:relative;top:-20px;left:85px"><span id="SpinnerSection"></span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table style="position:relative;top:70px">
+                                        <tr>
+                                            <td id="dialog_msg_black">
+                                                <label style="color:red">
+                                                    <script>
+                                                    I18N("h", "Do not power off the device until the Firmware Upgrade is complete!");
+                                                    </script>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="CompleteSection" class="myAlertPop_table_b" border="0" cellspacing="0" style="display:none">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <center>
+                                        <div id="Information_pop_image" style="background-size:24px 24px;"></div>
+                                    </center>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="dialog_msg_black">
+                                        <label id="CompleteMessage"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <center>
+                                        <div id="Confirm_btn" style="cursor:pointer">
+                                            <script>
+                                            I18N("h", "OK");
+                                            </script>
+                                        </div>
+                                    </center>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="DownloadSection" class="myAlertPop_table_b" border="0" cellspacing="0" style="display:none">"
+                        <tbody>
+                            <tr>
+                                <td align="right">
+                                    <div style="position:relative;top:-35px;right:5px">
+                                        <a href="javascript:StopDownloadFW()"><img src="image/closeDialog.png" width="20" height="21" border="0"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <div style="position:relative;top:-35px;"><strong><script>I18N("h", "Downloading");</script>...&nbsp;<span id="dl_count_down">0</span>%</strong></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="position:relative;top:-20px;left:85px"><span id="DLSpinnerSection"></span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table style="position:relative;top:60px">
+                                        <tr>
+                                            <td id="dialog_msg_black">
+                                                <label>
+                                                    <script>
+                                                    I18N("h", "Please do not close the browser while the firmware is being downloaded!");
+                                                    </script>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="WarningMsgSection" class="popMessage" style="display:none;">
+                        <div class="popMessage_icon" style="background-size:24px 24px;"></div>
+                        <table class="popMessage_infor">
+                            <tr>
+                                <td>
+                                    <div id="WarningMsg"></div>
+                                </td>
+                            </tr>
+                        </table>
+                        <table id="WarningMsgBtn" class="popMessage_button_table">
+                            <tr>
+                                <td>
+                                    <div style="position:absolute; width:130px; height:34px;top:-20px;" id="confirmUpgradeBtn" class="popMessage_button">
+                                        <script>
+                                        I18N("h", "OK");
+                                        </script>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="position:absolute; width:130px; height:34px;top:-20px;" class="popMessage_button" onclick="ShowPopupMsg('');">
+                                        <script>
+                                        I18N("h", "Cancel");
+                                        </script>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- id="WarningMsgSection" -->
+                </div>
+                <!-- id="AlertPopBody" -->
+            </div>
+            <!-- id="AlertPopRect" -->
+        </div>
+        <!-- id="CreatePopAlertMessage" -->
+    </div>
+    <!--  id="wrapper" -->
+
+    <!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+    <div id="DetectRouterConnection" style="display:none"></div>
+
+    <div id="footer">
+        <div id="copyright">
+            <script>I18N("h", "COPYRIGHT");</script>
+        </div>
+    </div>
+</body>
+
+</html>

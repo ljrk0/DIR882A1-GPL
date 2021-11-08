@@ -114,12 +114,16 @@ fastcgi.map-extensions = ( ".htm" => ".fcgi", ".html" => ".fcgi" )
 $SERVER["socket"] == "0.0.0.0:443" {
        ssl.engine = "enable"
        ssl.pemfile = "/var/private/lighttpd.pem"
+	ssl.openssl.ssl-conf-cmd = ("Protocol" => "-ALL, TLSv1.2")
+	ssl.cipher-list = "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384"
        server.document-root = "/etc_ro/lighttpd/www/web"
 }
 
 $SERVER["socket"] == "[::]:443" {
        ssl.engine = "enable"
        ssl.pemfile = "/var/private/lighttpd.pem"
+	ssl.openssl.ssl-conf-cmd = ("Protocol" => "-ALL, TLSv1.2")
+	ssl.cipher-list = "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384"
        server.document-root = "/etc_ro/lighttpd/www/web"
 }
 
@@ -135,6 +139,6 @@ alias.url += ( "/cgi-bin" => "/etc_ro/lighttpd/www/web/cgi-bin",
 
 
 
-$SERVER["socket"] == ":49152" {
-server.document-root = "/etc/linuxigd0"
-}
+#$SERVER["socket"] == ":49152" {
+#server.document-root = "/etc/linuxigd0"
+#}

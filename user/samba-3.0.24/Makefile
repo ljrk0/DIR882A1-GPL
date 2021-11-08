@@ -55,6 +55,8 @@ romfs:
 #	ln -snf libbigballofmud.so $(ROOTDIR)/romfs/lib/libbigballofmud.so.0
 #	$(ROMFSINST) source/bin/nmbd /sbin/nmbd
 	$(ROMFSINST) source/bin/smbd /sbin/smbd
+#	$(ROMFSINST) source/bin/testparm /sbin/testparm
+#	$(ROMFSINST) source/bin/smbcontrol /sbin/smbcontrol
 	$(ROMFSINST) source/bin/smbpasswd /sbin/smbpasswd
 #	$(ROMFSINST) -e CONFIG_USER_SAMBA_ALL /bin/samba.sh
 #	$(ROMFSINST) -e CONFIG_USER_SAMBA_ALL /bin/samba_add_dir.sh

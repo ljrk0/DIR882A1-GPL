@@ -1,0 +1,82 @@
+@CHARSET "UTF-8";
+
+input[type=checkbox].chkbox {
+	display:none;
+}
+
+input[type=checkbox].chkbox + label
+{
+	background-image: url(../image/checkbox.png);
+	background-repeat: no-repeat;
+	background-position: right center;
+	background-color: #aaa;
+	background-size: 184px 42px;
+	height: 40px;
+	width: 100px;
+	display:inline-block;
+	text-align: center;
+	font-size: 11pt;
+	line-height:40px;
+	color:#fff;
+	cursor:pointer;
+	font-weight: normal;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none; 
+}
+
+input[type=checkbox].chkbox:checked + label {
+	background-position: left center;
+	background-color: #4398ad;
+}
+
+input[type=checkbox].chkbox + label.active {
+	background-color: #999;
+}
+input[type=checkbox].chkbox:checked + label.active {
+	background-color: #36899a;
+}
+
+input[type=checkbox].chkbox + label > .chkbox_enabled,
+input[type=checkbox].chkbox:checked + label > .chkbox_disabled
+{
+	display:none;
+}
+
+input[type=checkbox].chkbox + label > .chkbox_disabled,
+input[type=checkbox].chkbox:checked + label > .chkbox_enabled
+{
+	display:inline-block;
+}
+
+input[type=checkbox].chkbox:disabled + label {
+	background-color: #aaa;
+	color:#ccc;
+}
+
+
+/* Standard syntax */
+@keyframes checkboxclose {
+    from {
+/*    	background-position: left center;
+    	 background-color: #4398ad;*/
+    }
+    to {
+/*    	background-position: right center;
+	    background-color: #aaa;*/
+    }
+}
+
+
+/* Standard syntax */
+@keyframes checkboxopen {
+    from {
+/*		background-position: right center;
+		background-color: #aaa;*/
+    }
+    to {
+/*		background-position: left center;
+		background-color: #4398ad;*/
+    }
+}

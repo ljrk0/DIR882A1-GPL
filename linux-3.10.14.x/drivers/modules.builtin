@@ -34,7 +34,7 @@ kernel/drivers/net/ppp/pptp.ko
 kernel/drivers/net/raeth/raeth.ko
 kernel/drivers/net/rt_rdm/rt_rdm.ko
 kernel/drivers/net/slip/slhc.ko
-kernel/drivers/net/wireless/MTK7615/mt_wifi_ap/mt_wifi.ko
+kernel/drivers/net/wireless/MT7622_7615_SoftAP_v5.0.3.2_17722b_20190311_MWDS/mt_wifi_ap/mt_wifi.ko
 kernel/drivers/scsi/scsi_mod.ko
 kernel/drivers/scsi/sd_mod.ko
 kernel/drivers/tty/serial/serial_core.ko

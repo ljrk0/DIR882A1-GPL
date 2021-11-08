@@ -1,0 +1,379 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+<head>
+<title>D-LINK</title>
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+
+<!-- css -->
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/jquery.selectbox.css"  />
+<link rel="stylesheet" type="text/css" href="css/style_OperationMode.css"  />
+
+<!-- initialJQ-->
+<script type="text/javascript" charset="utf-8" src="/js/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.selectbox-0.2_new.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.stringify.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.cookie.js"></script>
+
+<!-- initialJS -->
+<script type="text/javascript" charset="utf-8" src="/js/comm.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/hmac_md5.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/libajax.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/hnap.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/i18n.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/menu.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/pagetool.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/checkTimeout.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/includeLang.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/AES.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/configuration/DeviceConfig.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAction.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="/js/initialValidate.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPOperationMode.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPDeviceSettings.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPWanSettings.js"></script>
+
+<!-- popView -->
+<link rel="stylesheet" type="text/css" href="css/style_pop.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="/js/popView.js"></script>
+
+<script>
+//xframeoption
+if(top!=self) {top.location=self.location;}
+
+//session
+if(sessionStorage.getItem('PrivateKey') === null) {
+	window.location.replace('../info/Login.html');
+}
+
+$(function() {
+	//start
+	pageFn.Initial();
+	pageFn.GetXML();
+	pageFn.BtnChange();
+
+	//validate
+	$('#operationMode_form').validate({
+		rules: {
+		},
+		messages: {
+		},
+		submitHandler: function(form) {
+			pageFn.CheckConnectionStatus();
+		}
+	});
+});
+
+var pageFn = {
+	count: 80,
+	getmac: '',
+	setOperationMode: '',
+	GetID: function() {
+		this.ID_operationmode_Type = $('#operationmode_Type');
+		this.ID_operationmode_img_router = $('#operationmode_img_router');
+		this.ID_operationmode_img_extender = $('#operationmode_img_extender');
+		this.ID_Save_btn = $('#Save_btn');
+		this.ID_Save_Disable_btn = $('#Save_Disable_btn');
+		this.ID_sumbit_CheckData = $('#sumbit_CheckData');
+	},
+	Initial: function() {
+		//loadheader
+		$("#header").load("header.html");
+
+		//initial
+		initialMenu();
+		initialDetectRouterConnection();
+
+		//setMenu
+		setMenu("menu_Settings");
+
+		//starTimeout
+		startTimeout();
+
+		//get OperationMode page dom
+		this.GetID();
+	},
+	GetXML: function() {
+		var me = this;
+		var soapAction = new SOAPAction();
+		var GetDeviceSettingsResponse = new SOAPGetDeviceSettingsResponse();
+		var GetWanSettingsResponse = new SOAPGetWanSettingsResponse();
+
+		var result_GetDeviceSettings = soapAction.sendSOAPAction("GetDeviceSettings", null, GetDeviceSettingsResponse);
+		var result_GetWanSettings = soapAction.sendSOAPAction("GetWanSettings", null, GetWanSettingsResponse);
+
+		$.when(result_GetDeviceSettings, result_GetWanSettings).done(function() {
+			//result_GetDeviceSettings-----------------------------
+			var opresult = GetDeviceSettingsResponse.Type;
+			var opresultValue;
+
+			if(opresult.toUpperCase().indexOf('EXTENDER') >= 0) {
+				opresultValue = "2";
+				me.ID_operationmode_img_extender.show();
+			} else {
+				opresultValue = "1";
+				me.ID_operationmode_img_router.show();
+			}
+
+			me.ID_operationmode_Type.selectbox('detach');
+			me.ID_operationmode_Type.val(opresultValue);
+			me.ID_operationmode_Type.selectbox('attach');
+			
+			//result_GetWanSettings-----------------------------
+			var getmac = GetWanSettingsResponse.MacAddress.split(':');
+			me.getmac = getmac[4] + getmac[5];
+
+			//main show-----------------------------
+			$('#main').show();
+		});
+	},
+	BtnChange: function() {
+		var me = this;
+		$('select').on('change', function() {
+			me.SaveBtnChange();
+		});
+		$('input').on('keydown', function() {
+			me.SaveBtnChange();
+		});
+
+		me.ID_Save_btn.on('click', function() {
+			me.ID_sumbit_CheckData.trigger('click');
+		});
+
+		me.ID_operationmode_Type.on('change', function() {
+			if($(this).val() == "1") {
+				me.ID_operationmode_img_router.show();
+				me.ID_operationmode_img_extender.hide();
+			} else {
+				me.ID_operationmode_img_router.hide();
+				me.ID_operationmode_img_extender.show();
+			};
+		});
+	},
+	SaveBtnChange: function() {
+		this.ID_Save_Disable_btn.hide();
+		this.ID_Save_btn.show();
+		changeFlag = true;
+		changeTimeoutAction();	
+	},
+	ValidChange: function() {
+
+	},
+	CheckConnectionStatus: function() {
+		var me = this;
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 5000,
+			type : "GET",
+			success : function(data) { me.SetXML(); },
+			error : function() {
+				$('#DetectRouterConnection').css({'display': 'inline'});
+			}
+		});
+	},
+	SetXML: function() {
+		//timeout
+		changeTimeoutAction();
+
+		//msg
+		var msg = I18N("j", "Please wait") + " ...";
+		var msg2 = I18N("j", "Your changes are being saved, and the device will need to reboot.");
+		var msg3 = I18N("j", "The new settings have been saved.");
+		var me = this;
+		var count = me.count;
+
+		PopView.show(msg);
+
+		//soap
+		var soapAction = new SOAPAction();
+		var SetOperationModeResponse = new SOAPSetOperationModeResponse();
+
+		SetOperationModeResponse.RadioID = "RADIO_2.4GHz";
+		if(me.ID_operationmode_Type.val() == "1") {
+			me.setOperationMode = "WirelessRouter";
+			SetOperationModeResponse.CurrentOPMode = "WirelessRouter";
+		} else {
+			me.setOperationMode = "WirelessExtender";
+			SetOperationModeResponse.CurrentOPMode = "WirelessExtender";
+		}
+
+		//set hnap + popup
+		var result_SetOperationMode = soapAction.sendSOAPAction("SetOperationMode", SetOperationModeResponse, null);
+		result_SetOperationMode.then(function(obj) {
+			if(obj.SetOperationModeResult == "OK" || obj.SetOperationModeResult == "RESTART") {
+				me.Start_reciprocal_Number_RestoreConfiguration(false);
+			} else if(obj.SetOperationModeResult == "REBOOT") {
+				me.Start_reciprocal_Number_RestoreConfiguration(true);
+			} else {
+				location.reload();
+			}
+		});
+	},
+	Start_reciprocal_Number_RestoreConfiguration: function(reboot) {
+		var me = this;
+
+		var msg = I18N("j", "Please wait") + " ...";
+		var msg2 = I18N("j", "The new settings have been saved.");
+		var timer = currentDevice.okcount;
+		var soapAction = new SOAPAction();
+
+		if(reboot == true) {
+			msg = I18N("j", "Your changes are being saved, and the device will need to reboot.");
+			timer = currentDevice.rebootcount;
+			soapAction.sendSOAPAction("Reboot", null, null);
+		}
+
+		PopView.showWithCountdown(msg, timer).always(function() {
+			PopView.showConfirm(msg2).done(function() {
+				if(reboot == true) {
+					self.location.href = "http://dlinkrouter" + me.getmac + ".local./info/Login.html";
+				} else {
+					if(me.setOperationMode == "WirelessRouter") {
+						self.location.href = "Wizard_Manual.html";
+					} else {
+						localStorage.setItem('RunningWizard', 'true');
+						self.location.href = "Home_e.html";
+					}
+				}
+			});
+		});
+	}
+}
+</script>
+</head>
+
+<body>
+	<!--***** operationMode_form ****************************************-->
+	<form name="operationMode_form" id="operationMode_form" method="POST" action="">
+		<!--***** wrapper ****************************************-->
+		<div id="wrapper">
+			<!--***** header ****************************************-->
+			<div id="header"></div>
+
+			<!--***** menu ****************************************-->
+			<div id="menu"></div>
+
+			<!--***** menu_edge ****************************************-->
+			<div id="menu_edge"></div>
+			
+			<!--***** content ****************************************-->
+			<div id="content">
+				<!--***** info ****************************************-->
+				<div id="info">
+					<div id="FunctionName"><script>I18N("h", "Operation Mode");</script></div>
+					<div id="wallimage"><img id="image_Network" src="image/page_OperationMode.png" alt="" width="195" height="119"/></div>
+				    <div id="directions">
+						<script>I18N("h", "The device acts as an Router to connect your device together.");</script>
+					</div>
+				</div>
+				<!--***** funcBar ****************************************-->
+			    <div id="funcBar">
+					<div id="pagePath">&nbsp;<script>I18N("h", "Settings");</script> &gt;&gt; <script>I18N("h", "Operation Mode");</script></div>
+					<ul id="rightFunc">
+						<li style="display:block"><div id="Save_btn" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li>
+						<li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+						<input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+					</ul>
+				</div>
+		     	<!--***** main ****************************************-->
+		     	<div id="main" style="display:none">
+	     			<!--*****  table ****************************************-->
+					<table class="block" style="margin: 10px 0 0 0" >
+						<tbody>
+							<tr>
+								<td colspan="2"><div class ="title"><script>I18N("h", "Operation Mode Settings");</script></div></td>
+							</tr>
+		    				<tr>
+		    					<th><script>I18N("h", "Your device operation mode is");</script>:</th>
+		    					<td>
+		    						<div class="styled-select">
+		    							<select name="operationmode_Type" id="operationmode_Type">
+		    								<option value="1">Router Mode</option>
+		    								<option value="2">Extender Mode</option>
+		    							</select>
+		    						</div>
+		    					</td>
+		    				</tr>
+		    				<tr>
+		    					<td id="operationmode_img" colspan="2">
+		    						<!-- operationmode_img_router -->
+		    						<div id="operationmode_img_router">
+			    						<div class="router1">
+			    							<p><script>I18N("h","Internet");</script></p>
+			    						</div>
+			    						<div class="router2"></div>
+			    						<div class="router3">
+			    							<p><script>I18N("h","Your Device");</script></p>
+			    						</div>
+			    						<div class="router4"></div>
+			    						<div class="router5">
+			    							<p><script>I18N("h","Wi-Fi Client");</script></p>
+			    						</div>
+		    						</div><!-- id="operationmode_img_router" -->
+		    						<!-- operationmode_img_extender -->
+		    						<div id="operationmode_img_extender">
+			    						<div class="extender1">
+			    							<p><script>I18N("h","Internet");</script></p>
+			    						</div>
+			    						<div class="extender2"></div>
+			    						<div class="extender3">
+			    							<p><script>I18N("h","Existing Router");</script></p>
+			    						</div>
+			    						<div class="extender4"></div>
+			    						<div class="extender5">
+			    							<p><script>I18N("h","Your Device");</script></p>
+			    						</div>
+			    						<div class="extender6"></div>
+			    						<div class="extender7">
+			    							<p><script>I18N("h","Wi-Fi Client");</script></p>
+			    						</div>
+		    						</div><!-- id="operationmode_img_extender" -->
+		    					</td>
+		    				</tr>
+						</tbody>
+					</table>
+				</div><!-- id="main" -->
+
+				<!--***** footer ****************************************-->
+				<div id="footer">
+					<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>
+				</div><!-- id="footer" -->
+			</div><!-- id="content" -->
+		</div><!-- id="wrapper" -->
+	</form>
+
+	<!--***** DetectRouterConnection ****************************************-->
+	<div id="DetectRouterConnection" style="display:none"></div>
+
+	<!-- popalert -->
+	<div id="popalert" class="black_overlay" style="display:none">
+		<div class="popup_window_border" style="position:relative;top:15%;">
+			<div class="popup_window">
+				<div id="popalert_circle">
+					<img src="image/loading.gif" width="62px" height="62px">
+				</div>
+				<div id="popalert_countdown">
+				</div>
+				<div id="popalert_desc">
+				</div>
+				<div id="popalert_buttons" class="btn-group" role="group" aria-label="...">
+					<button type="button" id="popalert_cancel" class="btn btn-default">
+						<script>I18N("h", "Cancel");</script>
+					</button>
+					<button type="button" id="popalert_ok" class="btn btn-default">
+						<script>I18N("h", "OK");</script>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html> 

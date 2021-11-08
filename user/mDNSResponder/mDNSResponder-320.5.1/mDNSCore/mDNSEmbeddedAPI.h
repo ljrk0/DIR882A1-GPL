@@ -404,7 +404,7 @@ typedef struct { mDNSu8 c[256]; } UTF8str255;		// Null-terminated C string
 // like A, AAAA, reverse-mapping PTR, and SRV, we use a two-minute TTL by default, because we don't want
 // them to hang around for too long in the cache if the host in question crashes or otherwise goes away.
 
-#define kStandardTTL (3600UL * 100 / 80)
+#define kStandardTTL (3600UL / 30)
 #define kHostNameTTL 120UL
 
 // Some applications want to register their SRV records with a lower ttl so that in case the server

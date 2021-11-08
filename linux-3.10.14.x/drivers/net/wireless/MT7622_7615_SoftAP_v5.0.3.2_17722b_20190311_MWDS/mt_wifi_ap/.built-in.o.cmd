@@ -1,0 +1,1 @@
+cmd_drivers/net/wireless/MT7622_7615_SoftAP_v5.0.3.2_17722b_20190311_MWDS/mt_wifi_ap/built-in.o :=  /opt/buildroot-gcc463/usr/bin/mipsel-linux-ld  -m elf32ltsmip   -r -o drivers/net/wireless/MT7622_7615_SoftAP_v5.0.3.2_17722b_20190311_MWDS/mt_wifi_ap/built-in.o drivers/net/wireless/MT7622_7615_SoftAP_v5.0.3.2_17722b_20190311_MWDS/mt_wifi_ap/mt_wifi.o 

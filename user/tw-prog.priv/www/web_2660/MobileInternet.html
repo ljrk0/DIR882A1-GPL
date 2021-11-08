@@ -1,0 +1,502 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+
+<link href="/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/js/bootstrap/css/buttonv2.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/style_mobile.css" media="all" />
+<link href="css/jquery.selectbox.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialValidate.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAction.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPWanSettings.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPNetworkSettings.js"></script>
+<script type="text/javascript">
+//xframeoption
+if(top!=self){top.location=self.location;}
+
+//mobile session
+if (sessionStorage.getItem('PrivateKey') === null){
+	window.location.replace('../info/MobileLogin.html');
+}
+	
+	var savetime = 25;
+	var getWanSettings = new SOAPGetWanSettingsResponse();
+	var getNetworkSettings = new SOAPGetNetworkSettingsResponse();
+	
+	//event
+	var viewportmeta = document.querySelector('meta[name="viewport"]');
+	$(window).on("orientationchange",function(){
+  		adjustLayout();
+	});		
+	$(window).on("focusout", function(){
+		viewportmeta.content = 'width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0';
+		viewportmeta.content = 'width=device-width';
+	});
+	
+	function getInternetSettings()
+	{
+		var soapAction = new SOAPAction();
+		var result = soapAction.sendSOAPAction("GetWanSettings", null, getWanSettings).done(function(obj)
+		{
+			showInternetSettings();
+		});
+	}
+	
+	function getNetwork()
+	{
+		var soapAction = new SOAPAction();
+		soapAction.sendSOAPAction("GetNetworkSettings", null, getNetworkSettings);
+	}
+	
+	function showInternetSettings()
+	{
+		$("#mobileDNS_1").val(getWanSettings.ConfigDNS.Primary);
+		$("#mobileDNS_2").val(getWanSettings.ConfigDNS.Secondary);
+			
+		switch(getWanSettings.Type)
+		{
+			case "DHCP":
+				selectType("DHCP");
+				break;
+			case "DHCPPPPoE":
+				$("#mobileUser").val(XMLDecode(getWanSettings.Username));
+				$("#mobilePW").val(getWanSettings.Password);
+				selectType("PPPoE");
+				break;
+			case "Static":
+				$("#mobileIP").val(getWanSettings.IPAddress);
+				$("#mobileSubnet").val(getWanSettings.SubnetMask);
+				$("#mobileGateway").val(getWanSettings.Gateway);
+				selectType("Static");
+				break;
+			default :
+				selectType("DHCP");
+		}
+	}
+	
+	function selectType(select)
+	{
+		changeTimeoutAction();
+		
+		//change button color and content
+		$(".internetType > button").removeClass("btn-info").addClass("btn-default");
+		switch(select)
+		{
+			case "DHCP":
+				$("#internet_dhcp").removeClass("btn-default").addClass("btn-info");
+				$(".selectPPPoE").hide();
+				$(".selectStatic").hide();
+				break;
+			case "PPPoE":
+				$("#internet_pppoe").removeClass("btn-default").addClass("btn-info");
+				$(".selectPPPoE").show();
+				$(".selectStatic").hide();	
+				break;
+			case "Static":
+				$("#internet_static").removeClass("btn-default").addClass("btn-info");
+				$(".selectPPPoE").hide();
+				$(".selectStatic").show();
+				break;
+		}
+		
+		$(".errorMsg > label").remove();
+		adjustLayout();
+	}
+	
+	function saveInternetSettings()
+	{
+
+		var soapAction = new SOAPAction();
+		var setWanSettings = new SOAPSetWanSettings();
+
+		setWanSettings.ConfigDNS.Primary = $("#mobileDNS_1").val();
+		setWanSettings.ConfigDNS.Secondary = $("#mobileDNS_2").val();
+		setWanSettings.MTU = getWanSettings.MTU;
+		setWanSettings.HostName = getWanSettings.HostName;
+		setWanSettings.ServiceName = getWanSettings.ServiceName;
+		setWanSettings.MacAddress = getWanSettings.MacAddress;
+		setWanSettings.DsLite_Configuration = getWanSettings.DsLite_Configuration;
+		setWanSettings.MaDsLite_AFTR_IPv6AddressxIdleTime = getWanSettings.DsLite_AFTR_IPv6Address;
+		setWanSettings.DsLite_B4IPv4Address = getWanSettings.DsLite_B4IPv4Address;
+		
+		var saveType = $("#internetSelect .btn-info").attr("id");
+		
+		switch(saveType)
+		{
+			case "internet_dhcp":
+				setWanSettings.Type = "DHCP";
+				break;
+			case "internet_pppoe":
+				setWanSettings.Type = "DHCPPPPoE";
+				setWanSettings.Username = XMLEncode($("#mobileUser").val());
+				setWanSettings.Password = $("#mobilePW").val();
+				setWanSettings.AutoReconnect = true;
+				break;
+			case "internet_static":
+				setWanSettings.Type = "Static";
+				setWanSettings.IPAddress = $("#mobileIP").val();
+				setWanSettings.SubnetMask = $("#mobileSubnet").val();
+				setWanSettings.Gateway = $("#mobileGateway").val();
+				break;
+		}
+	
+		soapAction.sendSOAPAction("SetWanSettings", setWanSettings, null);
+		changeTimeoutAction();
+		document.getElementById("mobile_popalert").style.display = "block";
+		document.getElementById("mbwan_save_num").innerHTML = savetime;
+		var timer = setInterval("ReciprocalSaveTime()", 1000);
+		setTimeout("clearInterval("+timer+");window.location.reload()", savetime*1000);
+
+	}
+
+	function ReciprocalSaveTime()
+	{
+		if(savetime > 0)
+			savetime--;
+		document.getElementById("mbwan_save_num").innerHTML = savetime;
+	}
+	
+	function returnToHome()
+	{
+		location.href="/MobileHome.html";
+	}
+	
+	function adjustLayout()
+	{
+		var window_height = $(window).height();
+		var body_height = $("body").height();
+		var padding = 50;
+
+		if(window_height < body_height + padding)
+		{
+			$("#copyright").css("top", body_height + padding);	
+			$(".black_overlay").css("height", body_height + padding+20);		
+		}
+		else
+		{
+			$("#copyright").css("top", window_height - 20);
+			$(".black_overlay").css("height", window_height);
+		}
+	}
+</script>
+<style>
+	.block {
+		background-color: #fff;
+	}
+	.block > tbody > tr > th {
+		white-space:nowrap;
+		font-weight: normal;
+		text-align: left;
+		vertical-align: middle;
+	}
+	.block > tbody > tr > td {
+		text-align: right;
+		vertical-align: middle;
+	}
+	input {
+		width: 100%;
+		border: 0;
+		text-align: right;
+	}
+	table td input:focus{
+	  	outline: 0;
+	}
+
+</style>
+</head>
+<body>
+	<div style="position:absolute;top:13px">
+		<button type="button" class="btn_home" onclick="returnToHome()"><script>I18N("h", "Home");</script></button>
+	</div>
+	<div id="logo_padding" style="height:17px"></div>
+	<div class="form-group" style="text-align:center;">
+		<img src="/image/logo_2.png" width="102px" height="20px">
+	</div>
+	<hr/>
+	<form role="form" name="mobile_wan_form" id="mobile_wan_form" method="POST" action="" autocomplete ="off">
+		<div style="padding-left: 10px;padding-right: 10px;text-align:left;">
+			<div style="padding-left: 10px;padding-right: 10px;text-align:left;">
+				<div style="text-align:left;height:50px">					
+					<img id="mobile_internet_img" src="image/mobile_internet_connected.png" width="60" height="45" style="margin-right:10px">
+					<b><span class="textnormal"><script>I18N("h", "Internet");</script>:</span></b>
+				</div>
+				<div id="internetSelect" class="btn-group btn-group-justified" role="group">
+					<div class="internetType btn-group" role="group">
+						<button type="button" id="internet_dhcp" class="btn btn-default" onclick="selectType('DHCP')">DHCP</button>
+					</div>
+					<div class="internetType btn-group" role="group">
+						<button type="button" id="internet_pppoe" class="btn btn-default" onclick="selectType('PPPoE')">PPPoE</button>
+					</div>
+					<div class="internetType btn-group" role="group">
+						<button type="button" id="internet_static" class="btn btn-default" onclick="selectType('Static')"><script>I18N("h", "Static IP");</script></button>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default" style="margin: 10px">
+				<table  class="table block" border="0">
+					<tbody>
+						<tr class = "selectStatic" id = "selectStaticIP" onclick="$('#selectStaticIP > td > input').focus();">
+							<th><script>I18N("h", "IP Address");</script>:</th>
+							<td><input class="styled-text" type="text" name="mobileIP" id="mobileIP" placeholder="Required"></td>
+						</tr>
+						<tr class = "selectStatic" id = "selectStaticSubnet" onclick="$('#selectStaticSubnet > td > input').focus();">
+							<th><script>I18N("h", "Subnet Mask");</script>:</th>
+							<td><input class="styled-text" type="text" name="mobileSubnet" id="mobileSubnet" placeholder="Required"></td>
+						</tr>
+						<tr class = "selectStatic" id = "selectStaticGateway" onclick="$('#selectStaticGateway > td > input').focus();">
+							<th><script>I18N("h", "Default Gateway");</script>:</th>
+							<td><input class="styled-text" type="text" name="mobileGateway" id="mobileGateway" placeholder="Required"></td>
+						</tr>
+						<tr class = "selectPPPoE" id = "selectPPPoEUser" onclick="$('#selectPPPoEUser > td > input').focus();">
+							<th><script>I18N("h", "Username");</script>:</th>
+							<td><input class="styled-text" type="text" name="mobileUser" id="mobileUser" placeholder="Required"></td>
+						</tr>
+						<tr class = "selectPPPoE" id = "selectPPPoEPW" onclick="$('#selectPPPoEPW > td > input').focus();">
+							<th><script>I18N("h", "Password");</script>:</th>
+							<td><input class="styled-text" type="text" name="mobilePW" id="mobilePW"></td>
+						</tr>
+						<tr id = "selectDNS_1" onclick="$('#selectDNS_1 > td > input').focus();">
+							<th>DNS 1:</th>
+							<td><input class="styled-text" type="text" name="mobileDNS_1" id="mobileDNS_1"></td>
+						</tr>
+						<tr id = "selectDNS_2" onclick="$('#selectDNS_2 > td > input').focus();">
+							<th>DNS 2:</th>
+							<td><input class="styled-text" type="text" name="mobileDNS_2" id="mobileDNS_2"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div style="text-align:center;">
+			<button id="save_btn" type="submit" class="btn btn-lg btn-default" style="width:50%;" onclick="changeTimeoutAction();"><script>I18N("h", "Save");</script></button>
+		</div>
+	</form>
+	<div id="mobile_popalert" class="black_overlay" style="display:none">
+		<div class="popup_window_border" style="position:relative;top:15%;">
+			<div class="popup_window">
+				<div style="position:relative;top:25%;margin:auto">
+					<img src="image/loading.gif" width="62px" height="62px">
+				</div>
+				<div id="mbwan_save_num" class="textsmall" style="position:relative;top:25%;margin:auto">
+
+				</div>
+				<div class="textsmall" style="position:relative;top:30%;width:100%">
+					<span><script>I18N("h", "Your changes are being saved, please wait...");</script></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="copyright" class="copyright">
+		<script>I18N("h", "COPYRIGHT");</script>
+	</div>
+
+
+<script type="text/javascript">
+	$(document).ready( function() {
+		startTimeout();
+
+		getInternetSettings();
+		getNetwork();
+
+		adjustLayout();
+
+		$("input").keydown(function () {	changeTimeoutAction();	});
+		
+		$.validator.setDefaults( { submitHandler: function(form) { form.submit(); } } );
+
+		$.validator.addMethod("checkIP", function( value, element ) {
+			var returnVal = true;		
+			
+			if(!COMM_ValidV4Format(value) || !COMM_ValidV4Addr(value))
+			{
+				returnVal = false;
+			}
+			return returnVal;
+		}, jQuery.validator.messages.address_Check);
+		
+		$.validator.addMethod("checkIPconflict", function( value, element ) {
+			var returnVal = true;		
+
+			var mobileSubnet = document.getElementById("mobileSubnet").value;
+			var mask = COMM_IPv4MASK2INT(mobileSubnet);
+			
+			if(mobileSubnet != "" && (COMM_IPv4NETWORK(value, mask) == COMM_IPv4NETWORK(getNetworkSettings.IPAddress, mask)))
+			{
+				returnVal = false;
+			}
+			return returnVal;
+		}, jQuery.validator.messages.checkIPv6WanLanConflict);
+		
+		$.validator.addMethod("checkSubnet", function( value, element ) {
+			var returnVal = true;		
+
+			var mask = COMM_IPv4MASK2INT(value);
+			if(mask <= 0 || mask > 32)
+			{
+				returnVal = false;
+			}
+			return returnVal;
+		}, jQuery.validator.messages.netmask_Check);
+		
+		$.validator.addMethod("checkSubnetClass", function( value, element ) {
+			var returnVal = true;		
+
+			var mask = COMM_IPv4MASK2INT(value);
+			if(mask < 8)
+			{
+				returnVal = false;
+			}
+			return returnVal;
+		}, jQuery.validator.messages.netmask_checkClass);
+		
+		$.validator.addMethod("checkGateway", function( value, element ) {
+			var returnVal = true;	
+			
+			var mobileIP = document.getElementById("mobileIP").value;
+			var mobileSubnet = document.getElementById("mobileSubnet").value;
+			var mask = COMM_IPv4MASK2INT(mobileSubnet);
+			
+			if(!COMM_ValidV4Format(value) || !COMM_ValidV4Addr(value))
+			{
+				returnVal = false;
+			}
+			
+			if(mobileSubnet != "" && mobileIP != "")
+			{
+				if(!COMM_ValidV4HOST(value, mask))
+				{
+					returnVal = false;
+				}						
+				if(value == mobileIP)
+				{
+					returnVal = false;
+				}
+			}
+			return returnVal;
+		}, jQuery.validator.messages.address_Check);
+		
+		$.validator.addMethod("checkGatewayNetwork", function( value, element ) {
+			var returnVal = true;
+			
+			var mobileIP = document.getElementById("mobileIP").value;
+			var mobileSubnet = document.getElementById("mobileSubnet").value;
+			var mask = COMM_IPv4MASK2INT(mobileSubnet);
+			
+			if(mobileSubnet != "" && mobileIP != "")
+			{						
+				if(COMM_IPv4NETWORK(value, mask) != COMM_IPv4NETWORK(mobileIP, mask))
+				{
+					returnVal = false;
+				}
+			}
+			return returnVal;
+		}, jQuery.validator.messages.gateway_checkNetwork);
+		
+		$.validator.addMethod("checkDNS", function( value, element ) {
+			var returnVal = true;	
+			
+			if(value != "" && value != "0.0.0.0")
+			{
+				if(!COMM_ValidV4Addr(value))
+				{
+					returnVal = false;
+				}
+			}
+			return returnVal;
+		}, jQuery.validator.messages.address_Check);
+
+		$.validator.addMethod("checkDNSconflict", function( value, element ) {
+			var returnVal = true;		
+			
+			var checkType = $(".btn-info").attr("id");
+			if (checkType =="internet_static")
+			{
+				var mobileIP = document.getElementById("mobileIP").value;
+				if(mobileIP != "" && value == mobileIP)
+				{
+					returnVal = false;
+				}
+			}
+			return returnVal;
+		}, jQuery.validator.messages.dns_Conflict);
+		
+		$.validator.addMethod("checkName", function( value, element ) {
+			var returnVal = true;	
+			
+			if(value == "" || value == null)
+			{
+				returnVal = false;
+			}
+			return returnVal;
+		}, jQuery.validator.messages.check_UserName);
+		
+		
+		$('#mobile_wan_form').validate({
+
+			rules: {	
+				mobileIP: {
+					required: true,
+					checkIP: true,
+					checkIPconflict: true
+				},
+				mobileSubnet: {
+					required: true,
+					checkSubnet: true,
+					checkSubnetClass: true
+				},
+				mobileGateway: {
+					required: true,
+					checkGateway: true,
+					checkGatewayNetwork: true
+				},
+				mobileUser: {
+					checkName: true
+				},
+				mobilePW: {
+				},
+				mobileDNS_1: {
+					checkDNS: true,
+					checkDNSconflict: true
+				},
+				mobileDNS_2: {
+					checkDNS: true,
+					checkDNSconflict: true
+				}
+			},
+
+			submitHandler: function(form) {
+				saveInternetSettings();
+			},
+			/*errorPlacement:function(error, element){
+				error.find("br").remove();
+				var errorTr = $("<td class='errorMsg' colspan='2'>").append(error);
+				errorTr.css({"color":"#f00", "font-size":"14px", "font-weight":"normal", "border":"0px", "text-align": "right"});
+				element.parent().parent().after(errorTr);
+				element.parent().css({"border":"0px"});
+				adjustLayout();
+			},*/
+			skipBr: function(element){
+				return true;
+			}
+		});
+		
+	});
+</script>
+</body>
+</html> 

@@ -15,6 +15,28 @@ API_LDFLAGS += -lz
 API_LDFLAGS += -L$(ROOTDIR)/user/openssl-1.0.2j/ -lcrypto -lssl
 API_LDFLAGS += -L$(ROOTDIR)/user/curl-7.57.0/curl-curl-7_57_0/lib/.libs/ -lcurl
 
+.PHONY: all
+all: $(EXEC)
+	
+
+libfota_common.so: $(COMMON_OBJS)
+	$(LD) -shared -o $@ $^ $(LDFLAGS)
+
+libfota_api.so: $(API_OBJS)
+	$(LD) -shared -o $@ $^ $(API_LDFLAGS)
+
+%.d: %.c
+	$(CC) -MM $(CFLAGS) $< > $@.$$$$ 2>/dev/null; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
+
+sinclude $(COMMON_OBJS:.o=.d)
+sinclude $(API_OBJS:.o=.d)
+
+.PHONY: clean
+clean:
+	-rm -f $(EXEC) $(COMMON_OBJS) $(API_OBJS) *.o *.d
+
 .PHONY: romfs
 romfs:
 	$(ROMFSINST) libfota_common.so /lib/libfota_common.so

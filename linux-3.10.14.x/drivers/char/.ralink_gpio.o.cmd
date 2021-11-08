@@ -1,4 +1,4 @@
-cmd_drivers/char/ralink_gpio.o := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -Wp,-MD,drivers/char/.ralink_gpio.o.d  -nostdinc -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -I/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include -Iarch/mips/include/generated  -Iinclude -I/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi -Iarch/mips/include/generated/uapi -I/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi -Iinclude/generated/uapi -include /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/kconfig.h -D__KERNEL__ -DVMLINUX_LOAD_ADDRESS=0xffffffff00000000+0x81001000 -DDATAOFFSET=0 -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -O2 -mno-check-zero-division -mabi=32 -G 0 -mno-abicalls -fno-pic -pipe -msoft-float -ffreestanding -march=mips32r2 -Wa,-mips32r2 -Wa,--trap -I/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-ralink -I/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fomit-frame-pointer -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO    -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(ralink_gpio)"  -D"KBUILD_MODNAME=KBUILD_STR(ralink_gpio)" -c -o drivers/char/ralink_gpio.o drivers/char/ralink_gpio.c
+cmd_drivers/char/ralink_gpio.o := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -Wp,-MD,drivers/char/.ralink_gpio.o.d  -nostdinc -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -I/home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include -Iarch/mips/include/generated  -Iinclude -I/home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi -Iarch/mips/include/generated/uapi -I/home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi -Iinclude/generated/uapi -include /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/kconfig.h -D__KERNEL__ -DVMLINUX_LOAD_ADDRESS=0xffffffff00000000+0x81001000 -DDATAOFFSET=0 -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Werror-implicit-function-declaration -Wno-format-security -fno-delete-null-pointer-checks -O2 -mno-check-zero-division -mabi=32 -G 0 -mno-abicalls -fno-pic -pipe -msoft-float -ffreestanding -march=mips32r2 -Wa,-mips32r2 -Wa,--trap -I/home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-ralink -I/home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic -Wframe-larger-than=1024 -fno-stack-protector -Wno-unused-but-set-variable -fomit-frame-pointer -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fconserve-stack -DCC_HAVE_ASM_GOTO    -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(ralink_gpio)"  -D"KBUILD_MODNAME=KBUILD_STR(ralink_gpio)" -c -o drivers/char/ralink_gpio.o drivers/char/ralink_gpio.c
 
 source_drivers/char/ralink_gpio.o := drivers/char/ralink_gpio.c
 
@@ -35,20 +35,20 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/phys/addr/t/64bit.h) \
     $(wildcard include/config/64bit.h) \
   include/uapi/linux/types.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/types.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/types.h \
     $(wildcard include/config/64bit/phys/addr.h) \
   include/asm-generic/int-ll64.h \
   include/uapi/asm-generic/int-ll64.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/bitsperlong.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/bitsperlong.h \
   include/asm-generic/bitsperlong.h \
   include/uapi/asm-generic/bitsperlong.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/types.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/posix_types.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/types.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/posix_types.h \
   include/linux/stddef.h \
   include/uapi/linux/stddef.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/posix_types.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/sgidefs.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/posix_types.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/posix_types.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/sgidefs.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/posix_types.h \
   include/generated/uapi/linux/version.h \
   include/linux/module.h \
     $(wildcard include/config/sysfs.h) \
@@ -68,9 +68,9 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/debug/list.h) \
   include/linux/poison.h \
     $(wildcard include/config/illegal/pointer/value.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/const.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/const.h \
   include/linux/stat.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/stat.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/stat.h \
   include/uapi/linux/stat.h \
   include/linux/time.h \
     $(wildcard include/config/arch/uses/gettimeoffset.h) \
@@ -87,55 +87,55 @@ deps_drivers/char/ralink_gpio.o := \
   include/linux/export.h \
     $(wildcard include/config/have/underscore/symbol/prefix.h) \
     $(wildcard include/config/modversions.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/linkage.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/linkage.h \
   include/linux/bitops.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/bitops.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/bitops.h \
     $(wildcard include/config/cpu/mipsr2.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/barrier.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/barrier.h \
     $(wildcard include/config/cpu/has/sync.h) \
     $(wildcard include/config/cpu/cavium/octeon.h) \
     $(wildcard include/config/sgi/ip28.h) \
     $(wildcard include/config/cpu/has/wb.h) \
     $(wildcard include/config/weak/ordering.h) \
     $(wildcard include/config/weak/reordering/beyond/llsc.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/addrspace.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/addrspace.h \
     $(wildcard include/config/cpu/r8000.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/spaces.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/spaces.h \
     $(wildcard include/config/32bit.h) \
     $(wildcard include/config/kvm/guest.h) \
     $(wildcard include/config/dma/noncoherent.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/byteorder.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/byteorder.h \
   include/linux/byteorder/little_endian.h \
   include/uapi/linux/byteorder/little_endian.h \
   include/linux/swab.h \
   include/uapi/linux/swab.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/swab.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/swab.h \
   include/linux/byteorder/generic.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu-features.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu-features.h \
     $(wildcard include/config/sys/supports/micromips.h) \
     $(wildcard include/config/cpu/mipsr2/irq/vi.h) \
     $(wildcard include/config/cpu/mipsr2/irq/ei.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu-info.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cpu-info.h \
     $(wildcard include/config/mips/mt/smp.h) \
     $(wildcard include/config/mips/mt/smtc.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cache.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cache.h \
     $(wildcard include/config/mips/l1/cache/shift.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/kmalloc.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/kmalloc.h \
     $(wildcard include/config/dma/coherent.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/cpu-feature-overrides.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/war.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/cpu-feature-overrides.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/war.h \
     $(wildcard include/config/cpu/r4000/workarounds.h) \
     $(wildcard include/config/cpu/r4400/workarounds.h) \
     $(wildcard include/config/cpu/daddi/workarounds.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-ralink/war.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-ralink/war.h \
   include/asm-generic/bitops/non-atomic.h \
   include/asm-generic/bitops/fls64.h \
   include/asm-generic/bitops/ffz.h \
   include/asm-generic/bitops/find.h \
     $(wildcard include/config/generic/find/first/bit.h) \
   include/asm-generic/bitops/sched.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/arch_hweight.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/arch_hweight.h \
   include/asm-generic/bitops/arch_hweight.h \
   include/asm-generic/bitops/const_hweight.h \
   include/asm-generic/bitops/le.h \
@@ -153,16 +153,16 @@ deps_drivers/char/ralink_gpio.o := \
   include/linux/string.h \
     $(wildcard include/config/binary/printf.h) \
   include/uapi/linux/string.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/string.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/string.h \
     $(wildcard include/config/cpu/r3000.h) \
   include/linux/errno.h \
   include/uapi/linux/errno.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/errno.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/errno.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/errno-base.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/errno.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/errno.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/errno-base.h \
   include/uapi/linux/kernel.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/sysinfo.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/div64.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/sysinfo.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/div64.h \
   include/asm-generic/div64.h \
   include/linux/seqlock.h \
   include/linux/spinlock.h \
@@ -180,20 +180,20 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/compat.h) \
     $(wildcard include/config/debug/stack/usage.h) \
   include/linux/bug.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/bug.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/bug.h \
     $(wildcard include/config/bug.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/break.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/break.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/break.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/break.h \
   include/asm-generic/bug.h \
     $(wildcard include/config/generic/bug/relative/pointers.h) \
     $(wildcard include/config/debug/bugverbose.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/thread_info.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/thread_info.h \
     $(wildcard include/config/page/size/4kb.h) \
     $(wildcard include/config/page/size/8kb.h) \
     $(wildcard include/config/page/size/16kb.h) \
     $(wildcard include/config/page/size/32kb.h) \
     $(wildcard include/config/page/size/64kb.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/processor.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/processor.h \
     $(wildcard include/config/cavium/octeon/cvmseg/size.h) \
     $(wildcard include/config/mips/mt/fpaff.h) \
     $(wildcard include/config/cpu/has/prefetch.h) \
@@ -206,12 +206,12 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/nr/cpus.h) \
     $(wildcard include/config/base/small.h) \
   include/linux/bitmap.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/cachectl.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mipsregs.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/cachectl.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mipsregs.h \
     $(wildcard include/config/cpu/vr41xx.h) \
     $(wildcard include/config/mips/huge/tlb/support.h) \
     $(wildcard include/config/cpu/micromips.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/hazards.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/hazards.h \
     $(wildcard include/config/cpu/mipsr1.h) \
     $(wildcard include/config/mips/alchemy.h) \
     $(wildcard include/config/cpu/bmips.h) \
@@ -220,22 +220,22 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/cpu/r5500.h) \
     $(wildcard include/config/cpu/xlr.h) \
     $(wildcard include/config/cpu/sb1.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/prefetch.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/prefetch.h \
   include/linux/irqflags.h \
     $(wildcard include/config/trace/irqflags.h) \
     $(wildcard include/config/irqsoff/tracer.h) \
     $(wildcard include/config/trace/irqflags/support.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/irqflags.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/irqflags.h \
     $(wildcard include/config/irq/cpu.h) \
   include/linux/bottom_half.h \
   include/linux/spinlock_types.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/spinlock_types.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/spinlock_types.h \
   include/linux/lockdep.h \
     $(wildcard include/config/lockdep.h) \
     $(wildcard include/config/lock/stat.h) \
     $(wildcard include/config/prove/rcu.h) \
   include/linux/rwlock_types.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/spinlock.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/spinlock.h \
   include/linux/rwlock.h \
   include/linux/spinlock_api_smp.h \
     $(wildcard include/config/inline/spin/lock.h) \
@@ -270,8 +270,8 @@ deps_drivers/char/ralink_gpio.o := \
   include/linux/atomic.h \
     $(wildcard include/config/arch/has/atomic/or.h) \
     $(wildcard include/config/generic/atomic64.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/atomic.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cmpxchg.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/atomic.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/cmpxchg.h \
   include/asm-generic/cmpxchg-local.h \
   include/asm-generic/atomic-long.h \
   include/asm-generic/atomic64.h \
@@ -326,10 +326,10 @@ deps_drivers/char/ralink_gpio.o := \
   include/linux/page-flags-layout.h \
     $(wildcard include/config/sparsemem/vmemmap.h) \
   include/generated/bounds.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/page.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/page.h \
     $(wildcard include/config/cpu/mips32.h) \
   include/linux/pfn.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/io.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/io.h \
     $(wildcard include/config/pci.h) \
   include/asm-generic/iomap.h \
     $(wildcard include/config/has/ioport.h) \
@@ -337,10 +337,10 @@ deps_drivers/char/ralink_gpio.o := \
   include/asm-generic/pci_iomap.h \
     $(wildcard include/config/no/generic/pci/ioport/map.h) \
     $(wildcard include/config/generic/pci/iomap.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/pgtable-bits.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/pgtable-bits.h \
     $(wildcard include/config/cpu/tx39xx.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/ioremap.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/mangle-port.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/ioremap.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/mangle-port.h \
     $(wildcard include/config/swap/io/space.h) \
   include/asm-generic/memory_model.h \
   include/asm-generic/getorder.h \
@@ -384,12 +384,12 @@ deps_drivers/char/ralink_gpio.o := \
   include/linux/jiffies.h \
   include/linux/timex.h \
   include/uapi/linux/timex.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/param.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/param.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/param.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/param.h \
   include/asm-generic/param.h \
     $(wildcard include/config/hz.h) \
   include/uapi/asm-generic/param.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/timex.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/timex.h \
   include/linux/topology.h \
     $(wildcard include/config/sched/smt.h) \
     $(wildcard include/config/sched/mc.h) \
@@ -397,9 +397,9 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/use/percpu/numa/node/id.h) \
   include/linux/smp.h \
     $(wildcard include/config/use/generic/smp/helpers.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/smp.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/smp.h \
     $(wildcard include/config/kexec.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/smp-ops.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/smp-ops.h \
     $(wildcard include/config/smp/up.h) \
     $(wildcard include/config/mips/cmp.h) \
   arch/mips/include/generated/asm/percpu.h \
@@ -410,8 +410,8 @@ deps_drivers/char/ralink_gpio.o := \
   include/linux/percpu.h \
     $(wildcard include/config/need/per/cpu/embed/first/chunk.h) \
     $(wildcard include/config/need/per/cpu/page/first/chunk.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/topology.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/topology.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/topology.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/topology.h \
   include/asm-generic/topology.h \
   include/linux/mmdebug.h \
     $(wildcard include/config/debug/vm.h) \
@@ -421,12 +421,12 @@ deps_drivers/char/ralink_gpio.o := \
   include/linux/rbtree.h \
   include/uapi/linux/sysctl.h \
   include/linux/elf.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/elf.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/elf.h \
     $(wildcard include/config/mips32/n32.h) \
     $(wildcard include/config/mips32/o32.h) \
     $(wildcard include/config/mips32/compat.h) \
   include/uapi/linux/elf.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/elf-em.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/elf-em.h \
   include/linux/kobject.h \
     $(wildcard include/config/support/openwrt.h) \
   include/linux/sysfs.h \
@@ -440,7 +440,7 @@ deps_drivers/char/ralink_gpio.o := \
   include/linux/static_key.h \
   include/linux/jump_label.h \
     $(wildcard include/config/jump/label.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/module.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/module.h \
     $(wildcard include/config/cpu/mips32/r1.h) \
     $(wildcard include/config/cpu/mips32/r2.h) \
     $(wildcard include/config/cpu/mips64/r1.h) \
@@ -455,7 +455,7 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/cpu/rm7000.h) \
     $(wildcard include/config/cpu/loongson1.h) \
     $(wildcard include/config/cpu/xlp.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/uaccess.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/uaccess.h \
     $(wildcard include/config/eva.h) \
   include/linux/config.h \
     $(wildcard include/config/h.h) \
@@ -483,6 +483,7 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/generic/smp/idle/thread.h) \
     $(wildcard include/config/default/security/dac.h) \
     $(wildcard include/config/ip6/nf/mangle.h) \
+    $(wildcard include/config/wpa3/support.h) \
     $(wildcard include/config/ipv6.h) \
     $(wildcard include/config/bql.h) \
     $(wildcard include/config/default/tcp/cong.h) \
@@ -513,6 +514,7 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/ethernet.h) \
     $(wildcard include/config/background/scan/support.h) \
     $(wildcard include/config/sched/omit/frame/pointer.h) \
+    $(wildcard include/config/rlm/cal/cache/support.h) \
     $(wildcard include/config/dql.h) \
     $(wildcard include/config/ip/nf/arptables.h) \
     $(wildcard include/config/bcma/possible.h) \
@@ -522,6 +524,7 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/rt/3052/esw.h) \
     $(wildcard include/config/nf/conntrack/proc/compat.h) \
     $(wildcard include/config/timerfd.h) \
+    $(wildcard include/config/pre/cal/trx/set1/support.h) \
     $(wildcard include/config/mtd/cfi/i2.h) \
     $(wildcard include/config/bounce.h) \
     $(wildcard include/config/shmem.h) \
@@ -557,6 +560,7 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/init/env/arg/limit.h) \
     $(wildcard include/config/ip/nf/arp/mangle.h) \
     $(wildcard include/config/nf/conntrack/pptp.h) \
+    $(wildcard include/config/cal/bin/file/support.h) \
     $(wildcard include/config/rt2880/dram/128m.h) \
     $(wildcard include/config/textsearch/kmp.h) \
     $(wildcard include/config/smart/carrier/sense/support.h) \
@@ -611,6 +615,8 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/wds/support.h) \
     $(wildcard include/config/have/dynamic/ftrace.h) \
     $(wildcard include/config/magic/sysrq.h) \
+    $(wildcard include/config/wifi/eap/feature.h) \
+    $(wildcard include/config/owe/support.h) \
     $(wildcard include/config/ipv6/sit/6rd.h) \
     $(wildcard include/config/cevt/r4k.h) \
     $(wildcard include/config/netfilter/xt/match/mark.h) \
@@ -678,6 +684,7 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/unix.h) \
     $(wildcard include/config/first/if/eeprom/flash.h) \
     $(wildcard include/config/crypto/hash2.h) \
+    $(wildcard include/config/fast/nat/support.h) \
     $(wildcard include/config/default/hostname.h) \
     $(wildcard include/config/xps.h) \
     $(wildcard include/config/nf/conntrack/ipv6.h) \
@@ -709,7 +716,6 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/fs/mbcache.h) \
     $(wildcard include/config/initramfs/root/uid.h) \
     $(wildcard include/config/wsc/v2/support.h) \
-    $(wildcard include/config/raeth/qdma.h) \
     $(wildcard include/config/have/function/tracer.h) \
     $(wildcard include/config/nf/nat/tftp.h) \
     $(wildcard include/config/netfilter/xt/match/multiport.h) \
@@ -719,6 +725,7 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/raeth/gmac2.h) \
     $(wildcard include/config/netfilter/xt/target/log.h) \
     $(wildcard include/config/jffs2/zlib.h) \
+    $(wildcard include/config/spectrum/support.h) \
     $(wildcard include/config/binfmt/script.h) \
     $(wildcard include/config/tick/cpu/accounting.h) \
     $(wildcard include/config/vm/event/counters.h) \
@@ -819,6 +826,7 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/panic/on/oops/value.h) \
     $(wildcard include/config/scsi/mod.h) \
     $(wildcard include/config/wifi/basic/func.h) \
+    $(wildcard include/config/pre/cal/trx/set2/support.h) \
     $(wildcard include/config/crypto/crc32c.h) \
     $(wildcard include/config/serial/core.h) \
     $(wildcard include/config/fuse/fs.h) \
@@ -874,6 +882,7 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/generic/hweight.h) \
     $(wildcard include/config/initramfs/source.h) \
     $(wildcard include/config/sys/supports/highmem.h) \
+    $(wildcard include/config/pcie/aspm/dym/ctrl/support.h) \
     $(wildcard include/config/nf/nat/ipsec.h) \
     $(wildcard include/config/serial/8250/nr/uarts.h) \
     $(wildcard include/config/dot11w/pmf/support.h) \
@@ -883,6 +892,7 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/ra/hw/nat/unb/mnp.h) \
     $(wildcard include/config/usb/default/persist.h) \
     $(wildcard include/config/have/function/trace/mcount/test.h) \
+    $(wildcard include/config/link/test/support.h) \
     $(wildcard include/config/netfilter/xt/match/limit.h) \
     $(wildcard include/config/mtd/physmap/len.h) \
     $(wildcard include/config/raeth/checksum/offload.h) \
@@ -1029,13 +1039,13 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/virt/cpu/accounting/native.h) \
     $(wildcard include/config/virt/cpu/accounting/gen.h) \
     $(wildcard include/config/irq/time/accounting.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/hardirq.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/hardirq.h \
   include/asm-generic/hardirq.h \
   include/linux/irq_cpustat.h \
   include/linux/irq.h \
     $(wildcard include/config/generic/pending/irq.h) \
     $(wildcard include/config/hardirqs/sw/resend.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/irq.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/irq.h \
     $(wildcard include/config/i8259.h) \
     $(wildcard include/config/mips/mt/smtc/irqaff.h) \
     $(wildcard include/config/mips/mt/smtc/im/backstop.h) \
@@ -1043,18 +1053,18 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/irq/domain.h) \
     $(wildcard include/config/of/irq.h) \
   include/linux/radix-tree.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mipsmtregs.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/irq.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mipsmtregs.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mach-generic/irq.h \
     $(wildcard include/config/irq/cpu/rm7k.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/ptrace.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/ptrace.h \
     $(wildcard include/config/cpu/has/smartmips.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/isadep.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/ptrace.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/irq_regs.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/isadep.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/ptrace.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/irq_regs.h \
   include/linux/irqdesc.h \
     $(wildcard include/config/irq/preflow/fasteoi.h) \
     $(wildcard include/config/sparse/irq.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/hw_irq.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/hw_irq.h \
   include/linux/hrtimer.h \
     $(wildcard include/config/high/res/timers.h) \
   include/linux/timerqueue.h \
@@ -1080,7 +1090,7 @@ deps_drivers/char/ralink_gpio.o := \
   include/linux/capability.h \
   include/uapi/linux/capability.h \
   include/linux/semaphore.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/fiemap.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/fiemap.h \
   include/linux/shrinker.h \
   include/linux/migrate_mode.h \
   include/linux/percpu-rwsem.h \
@@ -1088,15 +1098,15 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/blk/cgroup.h) \
     $(wildcard include/config/blk/dev/integrity.h) \
   include/uapi/linux/fs.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/limits.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/ioctl.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/ioctl.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/limits.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/ioctl.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/ioctl.h \
   include/asm-generic/ioctl.h \
   include/uapi/asm-generic/ioctl.h \
   include/linux/quota.h \
     $(wildcard include/config/quota/netlink/interface.h) \
   include/linux/percpu_counter.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/dqblk_xfs.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/dqblk_xfs.h \
   include/linux/dqblk_v1.h \
   include/linux/dqblk_v2.h \
   include/linux/dqblk_qtree.h \
@@ -1105,8 +1115,8 @@ deps_drivers/char/ralink_gpio.o := \
   include/linux/nfs_fs_i.h \
   include/linux/fcntl.h \
   include/uapi/linux/fcntl.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/fcntl.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/fcntl.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/fcntl.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/fcntl.h \
   include/linux/err.h \
   include/linux/sched.h \
     $(wildcard include/config/sched/debug.h) \
@@ -1156,14 +1166,14 @@ deps_drivers/char/ralink_gpio.o := \
   include/linux/auxvec.h \
   include/uapi/linux/auxvec.h \
   arch/mips/include/generated/uapi/asm/auxvec.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/auxvec.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/auxvec.h \
   include/linux/page-debug-flags.h \
     $(wildcard include/config/page/poisoning.h) \
     $(wildcard include/config/page/guard.h) \
     $(wildcard include/config/page/debug/something/else.h) \
   include/linux/uprobes.h \
     $(wildcard include/config/arch/supports/uprobes.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mmu.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/mmu.h \
   arch/mips/include/generated/asm/cputime.h \
   include/asm-generic/cputime.h \
   include/asm-generic/cputime_jiffies.h \
@@ -1172,35 +1182,35 @@ deps_drivers/char/ralink_gpio.o := \
   include/linux/ipc.h \
   include/uapi/linux/ipc.h \
   arch/mips/include/generated/uapi/asm/ipcbuf.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/ipcbuf.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/sembuf.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/ipcbuf.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/sembuf.h \
   include/linux/signal.h \
     $(wildcard include/config/old/sigaction.h) \
   include/uapi/linux/signal.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/signal.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/signal.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/signal-defs.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/sigcontext.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/sigcontext.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/siginfo.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/siginfo.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/signal.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/signal.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/asm-generic/signal-defs.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/sigcontext.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/sigcontext.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/siginfo.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/siginfo.h \
   include/asm-generic/siginfo.h \
   include/uapi/asm-generic/siginfo.h \
   include/linux/proportions.h \
   include/linux/seccomp.h \
     $(wildcard include/config/seccomp/filter.h) \
   include/uapi/linux/seccomp.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/seccomp.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/unistd.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/unistd.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/unistd.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/seccomp.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/unistd.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/unistd.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/unistd.h \
   include/linux/rtmutex.h \
     $(wildcard include/config/debug/rt/mutexes.h) \
   include/linux/plist.h \
     $(wildcard include/config/debug/pi/list.h) \
   include/linux/resource.h \
   include/uapi/linux/resource.h \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/resource.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/uapi/asm/resource.h \
   include/asm-generic/resource.h \
   include/uapi/asm-generic/resource.h \
   include/linux/task_io_accounting.h \
@@ -1221,7 +1231,7 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/defaults/mediatek/dir/853/a1.h) \
     $(wildcard include/config/defaults/mediatek/dir/853/a2.h) \
     $(wildcard include/config/defaults/mediatek/dir/1360.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/rt2880/rt_mmap.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/rt2880/rt_mmap.h \
     $(wildcard include/config/ralink/rt2880/shuttle.h) \
     $(wildcard include/config/ralink/rt2880/mp.h) \
   drivers/char/../../../autoconf.h \
@@ -1256,7 +1266,7 @@ deps_drivers/char/ralink_gpio.o := \
     $(wildcard include/config/defaults/uclibc.h) \
     $(wildcard include/config/defaults/uclibc/plus/plus.h) \
     $(wildcard include/config/defaults/vendor/update.h) \
-  /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/rt2880/surfboardint.h \
+  /home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/arch/mips/include/asm/rt2880/surfboardint.h \
 
 drivers/char/ralink_gpio.o: $(deps_drivers/char/ralink_gpio.o)
 

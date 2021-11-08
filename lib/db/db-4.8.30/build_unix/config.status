@@ -448,7 +448,7 @@ Copyright (C) 2009 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/zhangtianchuan/trunk/GPL_Code/source/lib/db/db-4.8.30/build_unix'
+ac_pwd='/home/baifan/dlink_882/trunk/GPL_Code/source/lib/db/db-4.8.30/build_unix'
 srcdir='../dist'
 INSTALL='/usr/bin/install -c'
 test -n "$AWK" || AWK=awk

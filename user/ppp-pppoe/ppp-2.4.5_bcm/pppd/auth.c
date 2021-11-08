@@ -1106,6 +1106,8 @@ np_up(unit, proto)
 	    detach();
     }
     ++num_np_up;
+	
+	system("nvram_set 2860 wan_wan0_pppoe_auth success");
 }
 
 /*

@@ -588,14 +588,24 @@ discovery(PPPoEConnection *conn)
 		}
 		pclose(fp);
 	}
-	
-	//PPP_LogTrace("wan_wan1_enable:%x, last_session_id:%x,mac:%s:\n",wan_wan1_enable, last_session_id,mac_string);
-	if(wan_wan1_enable == 0 && (last_session_id > 0) && (strcmp(mac_string,"00:00:00:00:00:00")))
+
+	PPP_LogTrace("wan_wan1_enable:%x, last_session_id:%x,mac:%s:\n",wan_wan1_enable, last_session_id,mac_string);
+	if((last_session_id > 0) && (strcmp(mac_string,"00:00:00:00:00:00")))
 	{
-		conn->session = htons(last_session_id);
-		memcpy(conn->peerEth, last_peer_mac, ETH_ALEN);
-		sendPADT(conn, NULL);
-		//PPP_LogTrace("----------->send PADT already\n");
+		fp = NULL;	
+		fp = fopen("/tmp/wan_down","r");
+		if(wan_wan1_enable == 0 || fp!= NULL)
+		{
+			conn->session = htons(last_session_id);
+			memcpy(conn->peerEth, last_peer_mac, ETH_ALEN);
+			sendPADT(conn, NULL);
+			system("nvram_set 2860 wan_wan0_pppoe_server_info \"\"");
+			if(fp!= NULL)
+			{
+				fclose(fp);
+				system("rm /tmp/wan_down");
+			}
+		}
 	}
 
     do {

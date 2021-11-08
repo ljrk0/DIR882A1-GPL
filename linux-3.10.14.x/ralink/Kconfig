@@ -379,7 +379,7 @@ endchoice
 #source "drivers/net/wireless/MT7610_ap/Kconfig"
 #source "drivers/net/wireless/rlt_wifi/Kconfig"
 #source "drivers/net/wireless/mt_wifi/embedded/Kconfig"
-source "drivers/net/wireless/MTK7615/mt_wifi/embedded/Kconfig"
+source "drivers/net/wireless/MT7622_7615_SoftAP_v5.0.3.2_17722b_20190311_MWDS/mt_wifi/embedded/Kconfig"
 endif # WIFI_DRIVER
 
 #config WIFI_PKT_FWD
@@ -432,5 +432,8 @@ config ADJUST_CONFIG_PARTITION
 config KERNEL_ARP_SPOOFING_PROTECT
 	bool "kernel arp spoofing protect"
         default n
+config DHCP_MON
+	bool "Enable dhcp packet mon"
+	default n
 endmenu
 

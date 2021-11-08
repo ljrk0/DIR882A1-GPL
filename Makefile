@@ -367,20 +367,21 @@ modules_install:
 		find $(ROMFSDIR)/lib/modules -type f -name "*o" | xargs -r $(STRIP) -R .comment -R .note -g --strip-unneeded; \
 	fi
 	
-CONFIG_PRODUCT_DIR882 = DIR_882_VLAN
-CONFIG_PRODUCT_DIR882_LINUXDIR = linux-3.10.14.x
+#CONFIG_PRODUCT_AC2600 = MT7621_AC2600
+CONFIG_PRODUCT_AC2600 = DIR_882_VLAN
+CONFIG_PRODUCT_AC2600_LINUXDIR = linux-3.10.14.x
 
-DIR-882:
+DIR_882_VLAN:
 	#$(warning $(LINUXDIR))
 	#$(warning $(CONFIG_PRODUCT))
-	cp vendors/Mediatek/$(CONFIG_PRODUCT_DIR882)/config/product.config                          .config
-	cp vendors/Mediatek/$(CONFIG_PRODUCT_DIR882)/config/8M_128M_config.busybox-3.10.14.x        user/busybox/.config
-	cp vendors/Mediatek/$(CONFIG_PRODUCT_DIR882)/config/8M_128M_config.linux-3.10.14.x          $(CONFIG_PRODUCT_DIR882_LINUXDIR)/.config
-	cp vendors/Mediatek/$(CONFIG_PRODUCT_DIR882)/config/8M_128M_config.uclibc-3.10.14.x         lib/.config
-	cp vendors/Mediatek/$(CONFIG_PRODUCT_DIR882)/config/8M_128M_config.uclibc0933-3.10.14.x     uClibc-0.9.33.2/.config
-	cp vendors/Mediatek/$(CONFIG_PRODUCT_DIR882)/config/8M_128M_config.vendor-3.10.14.x         config/.config
-	cp vendors/Mediatek/$(CONFIG_PRODUCT_DIR882)/config/autoconf_config.h                       config/autoconf.h
-	cp vendors/Mediatek/$(CONFIG_PRODUCT_DIR882)/config/autoconf_main.h                         autoconf.h
+	cp vendors/Mediatek/$(CONFIG_PRODUCT_AC2600)/config/product.config                          .config
+	cp vendors/Mediatek/$(CONFIG_PRODUCT_AC2600)/config/8M_128M_config.busybox-3.10.14.x        user/busybox/.config
+	cp vendors/Mediatek/$(CONFIG_PRODUCT_AC2600)/config/8M_128M_config.linux-3.10.14.x          $(CONFIG_PRODUCT_AC2600_LINUXDIR)/.config
+	cp vendors/Mediatek/$(CONFIG_PRODUCT_AC2600)/config/8M_128M_config.uclibc-3.10.14.x         lib/.config
+	cp vendors/Mediatek/$(CONFIG_PRODUCT_AC2600)/config/8M_128M_config.uclibc0933-3.10.14.x     uClibc-0.9.33.2/.config
+	cp vendors/Mediatek/$(CONFIG_PRODUCT_AC2600)/config/8M_128M_config.vendor-3.10.14.x         config/.config
+	cp vendors/Mediatek/$(CONFIG_PRODUCT_AC2600)/config/autoconf_config.h                       config/autoconf.h
+	cp vendors/Mediatek/$(CONFIG_PRODUCT_AC2600)/config/autoconf_main.h                         autoconf.h
 	make menuconfig
 
 	
@@ -430,10 +431,10 @@ romfs.post:
 
 .PHONY: image
 image:
+	@rm -rf $(ROOTDIR)/linux-3.10.14.x/kernel/config_data.gz
 	[ -d $(IMAGEDIR) ] || mkdir $(IMAGEDIR)
 	$(MAKEARCH) -C vendors image
 	cp $(IMAGEDIR)/$(USER)_uImage DIR882_uImage.img
-	rm -rf linux-3.10.14.x/kernel/config_data.gz
 #	make -f $(TFTPDIR)/Makefile.16M
 
 .PHONY: release

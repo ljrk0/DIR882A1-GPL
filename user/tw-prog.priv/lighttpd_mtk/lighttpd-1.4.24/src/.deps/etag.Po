@@ -1,5 +1,5 @@
 etag.o: etag.c buffer.h ../config.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/autoconf.h \
+ /home/luorunzhi/work/MTK7621A_SDK_5_0_2_0/trunk/source/linux-3.10.14.x/include/linux/autoconf.h \
  settings.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/stdlib.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/features.h \
@@ -44,7 +44,7 @@ buffer.h:
 
 ../config.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/autoconf.h:
+/home/luorunzhi/work/MTK7621A_SDK_5_0_2_0/trunk/source/linux-3.10.14.x/include/linux/autoconf.h:
 
 settings.h:
 

@@ -112,7 +112,8 @@ UINT8 GetNssFromHTCapRxMCSBitmask(UINT32 RxMCSBitmask);
 		MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_OFF, _Fmt); \
 }
 #else
-#define BND_STRG_PRINTQAMSG(_Level, _Fmt)
+#define BND_STRG_PRINTQAMSG(_table, _Addr, _Fmt) \
+{}
 #endif /* BND_STRG_QA */
 
 #endif /* BAND_STEERING */

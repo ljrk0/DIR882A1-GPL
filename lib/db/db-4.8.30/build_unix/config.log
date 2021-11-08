@@ -27,15 +27,14 @@ uname -v = #1 SMP Tue Jul 12 17:53:37 UTC 2016
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
 
-PATH: /home/zhangtianchuan/trunk/klocwork/bin
 PATH: /usr/local/bin
 PATH: /bin
 PATH: /usr/bin
 PATH: /usr/local/sbin
 PATH: /usr/sbin
 PATH: /sbin
-PATH: /home/zhangtianchuan/bin
-PATH: /home/zhangtianchuan/trunk/GPL_Code/source/tools
+PATH: /home/baifan/bin
+PATH: /home/baifan/dlink_882/trunk/GPL_Code/source/tools
 
 
 ## ----------- ##
@@ -4177,7 +4176,7 @@ configure:18703: $? = 0
 configure:18710: result: yes
 configure:18718: checking for getopt optreset variable
 configure:18735: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  >&5
-/tmp/ccKJyOC5.o: In function `main':
+/tmp/ccrMKlE9.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `optreset'
 collect2: ld returned 1 exit status
 configure:18735: $? = 1
@@ -4856,7 +4855,7 @@ configure:20689: $? = 0
 configure:20689: result: yes
 configure:20717: checking for _fstati64
 configure:20717: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  -lpthread >&5
-/tmp/ccXiHnSQ.o: In function `main':
+/tmp/ccuLfqMC.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `_fstati64'
 conftest.c:(.text.startup+0x18): undefined reference to `_fstati64'
 collect2: ld returned 1 exit status
@@ -4977,7 +4976,7 @@ configure: failed program was:
 configure:20717: result: no
 configure:20717: checking for backtrace
 configure:20717: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  -lpthread >&5
-/tmp/cc7P5WVX.o: In function `main':
+/tmp/ccqVtGtH.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `backtrace'
 conftest.c:(.text.startup+0x18): undefined reference to `backtrace'
 collect2: ld returned 1 exit status
@@ -5098,7 +5097,7 @@ configure: failed program was:
 configure:20717: result: no
 configure:20717: checking for backtrace_symbols
 configure:20717: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  -lpthread >&5
-/tmp/cc1kwF8Y.o: In function `main':
+/tmp/ccmZxamN.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `backtrace_symbols'
 conftest.c:(.text.startup+0x18): undefined reference to `backtrace_symbols'
 collect2: ld returned 1 exit status
@@ -5219,7 +5218,7 @@ configure: failed program was:
 configure:20717: result: no
 configure:20717: checking for directio
 configure:20717: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  -lpthread >&5
-/tmp/ccgkMcWW.o: In function `main':
+/tmp/ccWfFeNO.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `directio'
 conftest.c:(.text.startup+0x18): undefined reference to `directio'
 collect2: ld returned 1 exit status
@@ -5393,7 +5392,7 @@ configure:20717: $? = 0
 configure:20717: result: yes
 configure:20717: checking for pstat_getdynamic
 configure:20717: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  -lpthread >&5
-/tmp/ccaHVRxM.o: In function `main':
+/tmp/ccQftR8x.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `pstat_getdynamic'
 conftest.c:(.text.startup+0x18): undefined reference to `pstat_getdynamic'
 collect2: ld returned 1 exit status
@@ -5531,7 +5530,7 @@ configure:20717: $? = 0
 configure:20717: result: yes
 configure:20717: checking for pthread_yield
 configure:20717: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  -lpthread >&5
-/tmp/ccWYwNvW.o: In function `main':
+/tmp/ccfm9thG.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `pthread_yield'
 conftest.c:(.text.startup+0x18): undefined reference to `pthread_yield'
 collect2: ld returned 1 exit status
@@ -5708,7 +5707,7 @@ configure:20717: $? = 0
 configure:20717: result: yes
 configure:20717: checking for yield
 configure:20717: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest -Os   -D_GNU_SOURCE -D_REENTRANT  conftest.c  -lpthread >&5
-/tmp/ccsGfrgu.o: In function `main':
+/tmp/cct95COk.o: In function `main':
 conftest.c:(.text.startup+0x8): undefined reference to `yield'
 conftest.c:(.text.startup+0x18): undefined reference to `yield'
 collect2: ld returned 1 exit status

@@ -38,6 +38,8 @@
 
 /* Path to usermode spanning tree program */
 #define BR_STP_PROG	"/sbin/bridge-stp"
+#define CONFIG_LOOP_PACKET_ENVENT
+//#define CONFIG_BR_FILTER_DHCP 0
 
 typedef struct bridge_id bridge_id;
 typedef struct mac_addr mac_addr;
@@ -263,6 +265,14 @@ struct net_bridge
 	unsigned long			multicast_query_interval;
 	unsigned long			multicast_query_response_interval;
 	unsigned long			multicast_startup_query_interval;
+#if defined (CONFIG_RALINK_RT3052) || defined (CONFIG_RALINK_RT3352) || \
+	defined (CONFIG_RALINK_RT5350) || defined (CONFIG_RALINK_RT6855) || \
+	defined(CONFIG_RALINK_RT6855A) || defined (CONFIG_RALINK_MT7620) || \
+	defined(CONFIG_RALINK_MT7621) || defined (CONFIG_RALINK_MT7628)  || \
+	defined (CONFIG_ARCH_MT7623)
+	//send signal to user application to notify link status changed
+	struct work_struct		kill_sig_wq;
+#endif
 
 	spinlock_t			multicast_lock;
 	struct net_bridge_mdb_htable __rcu *mdb;
@@ -403,6 +413,9 @@ extern int br_fdb_dump(struct sk_buff *skb,
 		       struct netlink_callback *cb,
 		       struct net_device *dev,
 		       int idx);
+#ifdef CONFIG_LOOP_PACKET_ENVENT
+extern void kill_sig_workfdbq(void);
+#endif
 
 /* br_forward.c */
 extern void br_deliver(const struct net_bridge_port *to,

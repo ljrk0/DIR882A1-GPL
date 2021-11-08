@@ -1,0 +1,553 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+
+<head>
+<title>D-LINK</title>
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="/css/jquery.selectbox.css" />
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialValidate.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAction.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPQuickVPN.js"></script>
+
+<link rel="stylesheet" type="text/css" href="css/style_pop.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="/js/popView.js"></script>
+
+<script>
+//xframeoption
+if(top!=self){top.location=self.location;}
+
+//session
+if (sessionStorage.getItem('PrivateKey') === null){
+	window.location.replace('../info/Login.html');
+}
+
+$(document).ready(function(){	
+	presetCheckBox("status_vpn", true);
+
+	if(currentDevice.featureQuickVPNProfile == true){
+		$('#Export_vpn_btn').closest('tr').show();
+	}else{
+		$('#Export_vpn_btn').closest('tr').hide();
+	}
+
+	//jquery
+	$("div.checkbox_on" || "div.checkbox_off").click(function(e) {
+	 var checkboxId =  e.target.id +'_ck';	 
+		if(e.target.getAttribute("class") == "checkbox_on") {
+			var disable = I18N("j","Disabled");
+			e.target.setAttribute("class", "checkbox_off");
+			e.target.setAttribute("className", "checkbox_off");
+			document.getElementById(e.target.id).innerHTML='<input type="checkbox" name=' + e.target.id + ' id=' + checkboxId + ' checked>'+disable;
+			document.getElementById(checkboxId).checked=false;
+			
+			if (checkboxId == "status_vpn_ck")
+			{
+				//console.log("test");
+				document.getElementById("userName").disabled = true;
+				document.getElementById("password").disabled = true;
+				document.getElementById("psk").disabled = true;
+				document.getElementById("Save_Disable_btn").style.display = "block";
+				if (currentDevice.featureQuickVPNProfile == true) {
+					document.getElementById("Export_vpn_btn").style.display = "block";
+				}
+
+				$("#AuthProtocol").selectbox("disable");
+				$("#MPPE").selectbox("disable");
+			}
+			
+			changeFlag = true;
+			save_button_changed();
+		}
+		else {
+			var enable = I18N("j","Enabled");
+			e.target.setAttribute("class", "checkbox_on");
+			e.target.setAttribute("className", "checkbox_on");
+			document.getElementById(e.target.id).innerHTML='<input type="checkbox" name=' + e.target.id + ' id=' + checkboxId + ' checked="">'+enable;
+			document.getElementById(checkboxId).checked=true;
+			
+			if (checkboxId == "status_vpn_ck")
+			{
+				document.getElementById("userName").disabled = false;
+				document.getElementById("password").disabled = false;
+				document.getElementById("psk").disabled = false;
+				if (currentDevice.featureQuickVPNProfile == true) {
+					document.getElementById("Export_vpn_btn").style.display = "block";
+				}
+
+				document.getElementById("Save_Disable_btn").style.display = "none";
+
+				$("#AuthProtocol").selectbox("enable");
+				$("#MPPE").selectbox("enable");
+			}
+			
+			changeFlag = true;
+			save_button_changed();
+		}
+	});
+});
+</script>
+
+<script type="text/javascript">
+	function Load_HTML()	{	$("#header").load("header.html");	}
+	function Initial() {
+		initialMenu();
+		initialDetectRouterConnection();
+	}
+	
+	function GetXML() {
+		var getQuickVPNResponse = new SOAPGetQuickVPNSettings();
+		var soapAction = new SOAPAction();
+		var result_QuickVPNResponse = soapAction.sendSOAPAction("GetQuickVPNSettings", null, getQuickVPNResponse);
+		
+		result_QuickVPNResponse.done(function(obj)
+		{
+			if (obj.Enabled == "true")
+			{
+				presetCheckBox("status_vpn", true);				
+			} else {
+				presetCheckBox("status_vpn", false);
+				document.getElementById("userName").disabled = true;
+				document.getElementById("password").disabled = true;
+				document.getElementById("psk").disabled = true;
+				$("#AuthProtocol").selectbox("disable");	
+				$("#MPPE").selectbox("disable");	
+			}
+
+			// username
+			var ssid = obj.Username;
+			if (ssid == "") 
+				ssid = "vpn";
+			document.getElementById("userName").value = ssid;
+
+			// password
+			var password = AES_Decrypt128(obj.Password);
+			if (password == "") 
+				password = "vpn";
+			document.getElementById("password").value = password;
+
+			// PSK
+			var psk = obj.PSK;
+			if (psk == "") {
+				var c = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+				var b = "0123456789";
+				var str = '';
+				for (var i = 0; i < 5; i+=1)
+				{
+					var rand_char = Math.floor(Math.random() * c.length);
+					str += c.substring(rand_char, rand_char + 1);
+				}
+
+				for (var j = 0; j < 5; j+=1)
+				{
+					var rand_char = Math.floor(Math.random() * b.length);
+					str += b.substring(rand_char, rand_char + 1);
+				}
+				psk = str;
+			}
+			document.getElementById("psk").value = psk;
+
+			//Advanced
+			var check_Auth = obj.AuthProtocol;
+			var check_Mppe = obj.MPPE;
+			
+			$("#AuthProtocol").val(check_Auth);
+			$("#MPPE").val(check_Mppe);
+
+			$("#AuthProtocol").selectbox();
+		    $("#MPPE").selectbox();
+
+		    document.getElementById("main").style.display = "inline";
+			if (currentDevice.featureQuickVPNProfile == true) {
+		    	document.getElementById("Export_vpn_btn").style.display = "block";
+			}
+			
+		    if (document.getElementById("status_vpn_ck").checked != "1")	
+			{	
+				$("#AuthProtocol").selectbox("disable");	
+				$("#MPPE").selectbox("disable");	
+			}
+		}).fail(function(obj) {
+			var ssid = "vpn";
+			document.getElementById("userName").value = ssid;
+
+			// password
+			var password = "vpn";
+			document.getElementById("password").value = password;
+
+			// PSK
+			var	psk = COMM_RandomStr(10);
+			document.getElementById("psk").value = psk;
+			
+			$("#AuthProtocol").selectbox();
+		    $("#MPPE").selectbox();
+
+		    document.getElementById("main").style.display = "inline";
+			if (currentDevice.featureQuickVPNProfile == true) {
+		    	document.getElementById("Export_vpn_btn").style.display = "block";
+			}
+			
+		    if (document.getElementById("status_vpn_ck").checked != "1")	
+			{	
+				$("#AuthProtocol").selectbox("disable");	
+				$("#MPPE").selectbox("disable");	
+			}
+		});
+	}
+
+	function CheckConnectionStatus()
+	{
+		//clearcode
+		$('#psk').val(clearcode($('#psk').val()));
+
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 5000,
+			type : "GET",
+			success : function(data) { SetXML(); },
+			error : function() { document.getElementById("DetectRouterConnection").style.display = "inline"; }
+		});
+	}
+	function SetXML() {
+
+		var msg = I18N("j", "Please wait") + " ...";
+		PopView.show(msg);
+
+		var soapAction = new SOAPAction();
+		var quickVPNSettings = new SOAPSetQuickVPNSettings();
+		// enable
+		if (document.getElementById("status_vpn_ck").checked == "1") {
+			quickVPNSettings.Enabled = "true";
+		} else {
+			quickVPNSettings.Enabled = "false";
+		}
+		
+		// username
+		quickVPNSettings.Username = XMLEncode(document.getElementById("userName").value);
+
+		// password
+		quickVPNSettings.Password = XMLEncode(document.getElementById("password").value);
+		
+		// PSK
+		quickVPNSettings.PSK = document.getElementById("psk").value;
+			
+		// Advanced
+		quickVPNSettings.AuthProtocol = document.getElementById("AuthProtocol").value;
+		quickVPNSettings.MPPE = document.getElementById("MPPE").value;
+
+		var setQuickVPNResult = soapAction.sendSOAPAction("SetQuickVPNSettings", quickVPNSettings, null);
+   
+		setQuickVPNResult.done(function(obj){
+			if(obj.SetQuickVPNSettingsResult == "OK" || obj.SetQuickVPNSettingsResult == "RESTART") {
+				Start_reciprocal_Number_RestoreConfiguration(false);
+			} else if(obj.SetQuickVPNSettingsResult == "REBOOT") {
+				Start_reciprocal_Number_RestoreConfiguration(true);
+			} else {
+				location.reload();
+			}		
+		}).fail(function(obj) {
+			window.location.reload();
+		});
+	}
+
+	function Start_reciprocal_Number_RestoreConfiguration(reboot) {
+		var msg = I18N("j", "Please wait") + " ...";
+		var msg2 = I18N("j", "The new settings have been saved.");
+		var timer = currentDevice.okcount;
+		var soapAction = new SOAPAction();
+
+		if(reboot == true) {
+			msg = I18N("j", "Your changes are being saved, and the device will need to reboot.");
+			timer = currentDevice.rebootcount;
+			soapAction.sendSOAPAction("Reboot", null, null);
+		}
+
+		PopView.showWithCountdown(msg, timer).always(function() {
+			PopView.showConfirm(msg2).done(function() {
+				location.reload();
+			});
+		});
+	}
+
+	function ExporttoLocal() {
+		changeTimeoutAction();
+		
+		document.forms['dlquickvpnsettings'].action = "/HNAP1/dlquickvpnsettings.cgi";
+		document.forms['dlquickvpnsettings'].submit();	
+    }
+
+    function SetuptoLocal() {
+		changeTimeoutAction();
+
+		var getQuickVPNLinkResponse = new SOAPGetQuickVPNProfileLink();
+		var soapAction = new SOAPAction();
+		var result_QuickVPNLinkResponse = soapAction.sendSOAPAction("GetQuickVPNProfileLink", null, getQuickVPNLinkResponse);
+
+		result_QuickVPNLinkResponse.done(function(obj)
+		{
+			var url = obj.ProfileLink;
+			window.open(url);
+		});
+    }
+	
+</script>
+<script language="JavaScript">
+	// 2013/09/23 Timmy Modify
+	$(function() {
+		$("select").change(function () {	save_button_changed();	});
+		$("input").keydown(function () {	save_button_changed();	});
+
+		if (currentDevice.featureUsbPort) {
+			document.getElementById("userTab").style.display = "block";
+		} else {
+			document.getElementById("userTab").style.display = "none";
+		}
+	});
+	function save_button_changed() {
+		document.getElementById("Save_Disable_btn").style.display = "none";
+		document.getElementById("Save_btn").style.display = "block";
+		changeFlag = true;
+		changeTimeoutAction();
+	}
+</script>
+</head>
+<body>
+	<form name="vpn_form" id="vpn_form" method="POST" action="" novalidate="novalidate"> 
+	<div id="wrapper">
+		<!-- ------------------ Logo ----------------------- -->
+		<div id="header"></div>
+		<!-- ------------------ Menu ----------------------- -->
+		<div id="menu"></div>
+		<div id="menu_edge"></div>
+		<!-- ------------------ Content -------------------- -->
+		<div id="content">
+			<!-- ------------------ info -------------------- -->
+			<div id="info">
+				<div id="FunctionName"><script>I18N("h", "Quick VPN");</script></div>
+				<div id="wallimage"><img src="image/page_vpn.png" alt="" width="195" height="119"/></div>
+				<div id="directions">
+					<script>I18N("h", "Quickly and easily create a profile for secure remote access to a Local Area Network (LAN). This profile can be used to configure other devices to connect to your LAN via a secure VPN tunnel.");</script>
+				</div>
+			</div>
+			<!-- ------------------ funcBar -------------------- -->
+			<div id="funcBar">		
+				<div id="pagePath"><script>I18N("h", "Features");</script> &gt;&gt; <script>I18N("h", "Quick VPN");</script></div>
+				<ul id="rightFunc">
+					<li style="display:block"><div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click();changeTimeoutAction();" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li>
+					<li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+					<input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+					<li style="display:none;" id="userTab"><a href="javascript:CheckHTMLStatus('UserAndDevice');" 
+					style="text-decoration:none;" onclick="return confirmExit()">
+					<div id="page_btn" class="linkstyle_1"><script>I18N("h", "User");</script></div></a></li>
+				</ul>
+			</div>
+			<!-- ------------------ main -------------------- -->
+			<br />
+		    <div id="main" style="display:none">
+				<!-- ------------------ table -------------------- -->
+				<table class="block">
+					<tbody>
+						<tr>
+							<td><div class="title"><script>I18N("h", "General");</script></div></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "L2TP over IPSec");</script>:</th>
+							<td><div id="status_vpn" class="checkbox_off" ><input type="checkbox" name="status_vpn" id="status_vpn_ck" checked></div></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Username");</script>:</th>
+							<td><input class="styled-text" type="text" name="userName" size="30" maxlength="20" id="userName"></td>									
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Password");</script>:</th>
+							<td><input class="styled-text" type="text" name="password" size="30" maxlength="20" id="password"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "PSK");</script>:</th>
+							<td><input class="styled-text" type="text" name="psk" size="30" maxlength="64" id="psk"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "VPN Profile For iOS Device and Mac OS X");</script>:</th>
+			 				<td>
+								<div class="file-box"><button type="button" class="styled_button_s" id="Export_vpn_btn" onclick="ExporttoLocal()"><script>I18N("h", "Export");</script></button></div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div> <!-- id="main" -->
+		</div> <!-- id="content" -->
+		<div id="advButton" class="advButton">
+			<span onclick="showAdv('advancedBlock');">
+				<script>I18N("h", "Advanced Settings");</script>...
+			</span>
+		</div>
+		<div id="advancedBlock" style="display:none">
+		<hr>
+		<table class="block">
+			<tbody>
+				<tr>
+					<td><div class="title"><script>I18N("h", "Advanced");</script></div></td>
+				</tr>
+				<tr>
+					<th><script>I18N("h", "Authentication Protocol");</script>:</th>
+					<td>
+					<div class="styled-select">
+						<select name="AuthProtocol" id="AuthProtocol">
+							<option value="MSCHAPv2">MSCHAPv2</option>
+							<option value="PAP">PAP</option>
+							<option value="CHAP">CHAP</option>
+						</select>
+					</div>
+					</td>
+				</tr>
+				<tr>
+					<th><script>I18N("h", "MPPE");</script>:</th>
+					<td>
+					<div class="styled-select">
+						<select name="MPPE" id="MPPE">
+							<option value="None">None</option>
+							<option value="RC4-40">RC4-40</option>
+							<option value="RC4-128">RC4-128</option>
+						</select>
+					</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</div> <!-- id="advancedBlock" -->
+
+		<!-- popup alert view -->
+		<div id="popalert" class="black_overlay" style="display:none">
+			<div class="popup_window_border" style="position:relative;top:15%;">
+				<div class="popup_window">
+					<div id="popalert_circle">
+						<img src="image/loading.gif" width="62px" height="62px">
+					</div>
+					<div id="popalert_countdown">
+					</div>
+					<div id="popalert_desc">
+					</div>
+					<div id="popalert_buttons" class="btn-group" role="group" aria-label="...">
+						<button type="button" id="popalert_ok" class="btn btn-default">
+							<script>I18N("h", "OK");</script>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+		<div id="DetectRouterConnection" style="display:none"></div>
+	<div id="footer">
+		<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>
+	</div>
+	</div> <!-- id="wrapper" -->
+	</form>
+
+	<form id="dlquickvpnsettings" action="" method="post" style="display:none;"></form>
+
+<script type="text/javascript" charset="utf-8">
+	$(document).ready( function() {
+		
+		$.validator.addMethod("checkSetValues", function( value, element ) {
+			var elem_id = element.id;
+			
+			// check username
+			if(elem_id=="userName")
+			{	
+				if (value == "" || value == null)
+					return false;
+				else
+				{
+					if (value.length > 20)
+						return false;
+				}
+			}
+			
+			// check password 
+			if(elem_id=="password")
+			{	
+				if (value == "" || value == null)
+					return false;
+				else
+				{
+					if (value.length > 20)
+						return false;
+				}
+			}
+			
+			//check PSK 
+			if(elem_id=="psk")
+			{
+				var ValidPskRegex = /^[A-Za-z0-9_.]+$/;
+
+				if (ValidPskRegex.test(value)) {
+					if (value == "" || value == null)
+						return false;
+					else
+					{
+						if (value.length > 64 || value.length < 6)
+							return false;
+					}
+				} else 
+					return false;
+			}
+			
+			return true;
+		}, "");
+		
+		$('#vpn_form').validate({
+				rules: {
+					userName: {
+						required: true,
+						checkSetValues: true
+					},
+					password: {
+						required: true,
+						checkSetValues: true
+					},
+					psk: {
+						required: true,
+						checkSetValues: true
+					},
+				},
+		        messages: {
+					userName: {
+						required: jQuery.validator.messages.check_UserName,
+						checkSetValues: I18N("j", "Username must be less than 20 characters length.")
+					},
+					password: {
+						required: jQuery.validator.messages.check_Password,
+						checkSetValues: I18N("j", "Password must be less than 20 characters length.")
+					},
+					psk: {
+						required: I18N("j", "Please enter a PSK."),
+						checkSetValues: I18N("j", "PSK must be between 6-64 characters length.")
+					},
+		        },
+				submitHandler: function(form) {
+					CheckConnectionStatus();
+				}
+		});
+	});
+</script>
+
+<script type="text/javascript">
+	Load_HTML();
+	Initial();
+	setMenu("menu_Advanced");
+	GetXML();
+	startTimeout();
+</script>
+</body>
+</html> 

@@ -100,6 +100,9 @@ static int br_dev_open(struct net_device *dev)
 	netif_start_queue(dev);
 	br_stp_enable_bridge(br);
 	br_multicast_open(br);
+#ifdef CONFIG_LOOP_PACKET_ENVENT
+	INIT_WORK(&br->kill_sig_wq, kill_sig_workfdbq);
+#endif
 
 	return 0;
 }

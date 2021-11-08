@@ -82,6 +82,43 @@ parsePacket(PPPoEPacket *packet, ParseFunc *func, void *extra)
     return 0;
 }
 
+int check_wan()
+{
+	FILE *szfp = NULL;
+	char szbuf[64] = {0};
+	char *szProto = NULL;
+	int manual = 0;
+	int ret = 0;
+	int ucount=0;
+
+	szfp = fopen("/proc/mt7621/port_status","r");
+	if(!szfp)
+	{
+		return 0;
+	}
+	while(NULL!=fgets(szbuf,sizeof(szbuf),szfp))
+	{
+		if(strstr(szbuf,"Port4:"))
+		{
+			if(strstr(szbuf,"LinkUp"))
+			{
+				fclose(szfp);
+				return 1;
+			}
+			else
+			{
+				fclose(szfp);
+				return 0;
+			}
+			break;
+		}
+	}	
+
+   return 0;	
+}
+
+
+
 /***********************************************************************
 *%FUNCTION: sendPADT
 *%ARGUMENTS:
@@ -160,11 +197,16 @@ sendPADT(PPPoEConnection *conn, char const *msg)
     }
 
     packet.length = htons(plen);
-    sendPacket(conn, conn->discoverySocket, &packet, (int) (plen + HDR_SIZE));
+    int ret = -1;
+	ret = sendPacket(conn, conn->discoverySocket, &packet, (int) (plen + HDR_SIZE));
     info("Sent PADT");
 
-	//clear pppoe info after send PADT
-	system("nvram_set 2860 wan_wan0_pppoe_server_info \"\"");
+
+	if (check_wan() <= 0)
+	{
+		system("echo nvram_set 2860 wan_down >> /tmp/wan_down");
+	}
+	
 }
 
 #define EH(x)	(x)[0], (x)[1], (x)[2], (x)[3], (x)[4], (x)[5]

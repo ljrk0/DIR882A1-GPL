@@ -43,7 +43,7 @@ static int request_check_hostname(server *srv, connection *con, buffer *host) {
 		char *c = host->ptr + 1;
 		int colon_cnt = 0;
 
-		/* check portnumber */
+		/* check the address inside [...] */
 		for (; *c && *c != ']'; c++) {
 			if (*c == ':') {
 				if (++colon_cnt > 7) {
@@ -66,6 +66,10 @@ static int request_check_hostname(server *srv, connection *con, buffer *host) {
 					return -1;
 				}
 			}
+		}
+		else if ('\0' != *(c+1)) {
+			/* only a port is allowed to follow [...] */
+			return -1;
 		}
 		return 0;
 	}
@@ -209,9 +213,10 @@ static int request_check_hostname(server *srv, connection *con, buffer *host) {
 #endif
 
 static int http_request_split_value(array *vals, buffer *b) {
-	char *s;
 	size_t i;
 	int state = 0;
+	const char *current;
+	const char *token_start = NULL, *token_end = NULL;
 	/*
 	 * parse
 	 *
@@ -222,49 +227,47 @@ static int http_request_split_value(array *vals, buffer *b) {
 
 	if (b->used == 0) return 0;
 
-	s = b->ptr;
-
-	for (i =0; i < b->used - 1; ) {
-		char *start = NULL, *end = NULL;
+	current = b->ptr;
+	for (i =  0; i < b->used; ++i, ++current) {
 		data_string *ds;
 
 		switch (state) {
-		case 0: /* ws */
-
-			/* skip ws */
-			for (; (*s == ' ' || *s == '\t') && i < b->used - 1; i++, s++);
-
-
-			state = 1;
-			break;
-		case 1: /* value */
-			start = s;
-
-			for (; *s != ',' && i < b->used - 1; i++, s++);
-			end = s - 1;
-
-			for (; (*end == ' ' || *end == '\t') && end > start; end--);
-
-			if (NULL == (ds = (data_string *)array_get_unused_element(vals, TYPE_STRING))) {
-				ds = data_string_init();
-			}
-
-			buffer_copy_string_len(ds->value, start, end-start+1);
-			array_insert_unique(vals, (data_unset *)ds);
-
-			if (*s == ',') {
-				state = 0;
-				i++;
-				s++;
-			} else {
-				/* end of string */
-
-				state = 2;
-			}
-			break;
-		default:
-			i++;
-			break;
+			case 0: /* find start of a token */
+				switch (*current) {
+					case ' ':
+					case '\t': /* skip white space */
+					case ',': /* skip empty token */
+						break;
+					case '\0': /* end of string */
+						return 0;
+					default:
+						/* found real data, switch to state 1 to find the end of the token */
+						token_start = token_end = current;
+						state = 1;
+						break;
+				}
+				break;
+			case 1: /* find end of token and last non white space character */
+				switch (*current) {
+					case ' ':
+					case '\t':
+					/* space - don't update token_end */
+						break;
+					case ',':
+					case '\0': /* end of string also marks the end of a token */
+						if (NULL == (ds = (data_string *)array_get_unused_element(vals, TYPE_STRING))) {
+							ds = data_string_init();
+						}
+						buffer_copy_string_len(ds->value, token_start, token_end-token_start+1);
+						array_insert_unique(vals, (data_unset *)ds);
+						state = 0;
+					break;
+					default:
+						/* no white space, update token_end to include current character */
+						token_end = current;
+						break;
+				}
+				break;
 		}
 	}
 	return 0;

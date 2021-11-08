@@ -50,8 +50,8 @@ lighttpd-angel.o: lighttpd-angel.c \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/string.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/errno.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/errno.h \
+ /home/luorunzhi/work/MTK7621A_SDK_5_0_2_0/trunk/source/linux-3.10.14.x/include/linux/errno.h \
+ /home/luorunzhi/work/MTK7621A_SDK_5_0_2_0/trunk/source/linux-3.10.14.x/include/uapi/linux/errno.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/errno.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm-generic/errno-base.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/unistd.h \
@@ -161,9 +161,9 @@ lighttpd-angel.o: lighttpd-angel.c \
 
 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/errno.h:
+/home/luorunzhi/work/MTK7621A_SDK_5_0_2_0/trunk/source/linux-3.10.14.x/include/linux/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/errno.h:
+/home/luorunzhi/work/MTK7621A_SDK_5_0_2_0/trunk/source/linux-3.10.14.x/include/uapi/linux/errno.h:
 
 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/errno.h:
 

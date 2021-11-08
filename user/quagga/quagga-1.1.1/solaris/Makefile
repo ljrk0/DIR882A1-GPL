@@ -127,19 +127,19 @@ am__can_run_installinfo = \
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 am__DIST_COMMON = $(srcdir)/Makefile.in
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1/missing aclocal-1.15
+ACLOCAL = ${SHELL} /home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
 AR = /opt/buildroot-gcc463/usr/bin/mipsel-linux-ar
-AUTOCONF = ${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1/missing autoconf
-AUTOHEADER = ${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1/missing autoheader
-AUTOMAKE = ${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1/missing automake-1.15
+AUTOCONF = ${SHELL} /home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1/missing autoconf
+AUTOHEADER = ${SHELL} /home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1/missing autoheader
+AUTOMAKE = ${SHELL} /home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1/missing automake-1.15
 AWK = gawk
 BGPD = 
 CC = /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc 
 CCDEPMODE = depmode=gcc3
-CFLAGS = -O2 -fomit-frame-pointer -pipe  -Dlinux -D__linux__ -Dunix -DEMBED -I/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include -I/home/zhangtianchuan/trunk/GPL_Code/source/lib/include -DCONFIG_UCLIBC_0_9_33_2  -I/home/zhangtianchuan/trunk/GPL_Code/source 
-CONFDATE = 20190703
+CFLAGS = -O2 -fomit-frame-pointer -pipe  -Dlinux -D__linux__ -Dunix -DEMBED -I/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/app_headers/include -I/home/baifan/882_dlink/trunk/source/lib/include -DCONFIG_UCLIBC_0_9_33_2  -I/home/baifan/882_dlink/trunk/source 
+CONFDATE = 20200710
 CONFIG_ARGS = --host=mipsel-buildroot-linux-gnu --disable-vtysh --disable-doc --disable-bgpd --disable-ripngd --disable-ospfd --disable-ospf6d --disable-watchquagga --disable-isisd --disable-pimd --disable-bgp-announce --disable-ospfapi --disable-ospfclient --disable-rtadv
 CPP = /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc  -E
 CPPFLAGS = 
@@ -176,7 +176,7 @@ ISIS_TOPOLOGY_LIB =
 KERNEL_METHOD = 
 LATEXMK = /bin/false
 LD = /opt/buildroot-gcc463/usr/bin/mipsel-linux-ld
-LDFLAGS = -L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib
+LDFLAGS = -L/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/lib -L/home/baifan/882_dlink/trunk/source/lib/lib -L/home/baifan/882_dlink/trunk/source/uClibc-0.9.33.2/lib -L/home/baifan/882_dlink/trunk/source/lib/lib
 LIBCAP = 
 LIBM = -lm
 LIBOBJS =  ${LIBOBJDIR}memcmp$U.o ${LIBOBJDIR}mktime$U.o ${LIBOBJDIR}lstat$U.o ${LIBOBJDIR}stat$U.o
@@ -189,7 +189,7 @@ LIPO =
 LN_S = ln -s
 LTLIBOBJS =  ${LIBOBJDIR}memcmp$U.lo ${LIBOBJDIR}mktime$U.lo ${LIBOBJDIR}lstat$U.lo ${LIBOBJDIR}stat$U.lo
 LT_SYS_LIBRARY_PATH = 
-MAKEINFO = ${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1/missing makeinfo
+MAKEINFO = ${SHELL} /home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1/missing makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /bin/mkdir -p
 NETSNMP_CONFIG = 
@@ -238,10 +238,10 @@ WEAK_ALIAS = attribute
 WEAK_ALIAS_CROSSFILE = yes
 WERROR = 
 ZEBRA = zebra
-abs_builddir = /home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1/solaris
-abs_srcdir = /home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1/solaris
-abs_top_builddir = /home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1
-abs_top_srcdir = /home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1
+abs_builddir = /home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1/solaris
+abs_srcdir = /home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1/solaris
+abs_top_builddir = /home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1
+abs_top_srcdir = /home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1
 ac_ct_AR = 
 ac_ct_CC = 
 ac_ct_DUMPBIN = link -dump
@@ -274,7 +274,7 @@ host_vendor = buildroot
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1/install-sh
+install_sh = ${SHELL} /home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -306,7 +306,7 @@ top_srcdir = ..
 # derived variables.
 pkg_names = daemons dev doc libs smf
 pkg_quagga_daemons = zebra bgpd ospfd ospf6d ripd ripngd
-pkg_name_rev = 1.1.1-20190703-linux-gnu-mipsel
+pkg_name_rev = 1.1.1-20200710-linux-gnu-mipsel
 pkg_depends = $(pkg_names:%=depend.%)
 pkg_packages = $(pkg_names:%=quagga-%-$(pkg_name_rev).pkg)
 pkg_pkginfos = $(pkg_names:%=pkginfo.%.full)
@@ -338,7 +338,7 @@ edit = $(SED) \
  	-e 's,[@]PACKAGE_TARNAME[@],quagga,g' \
  	-e 's,[@]PACKAGE_VERSION[@],1.1.1,g' \
  	-e 's,[@]PACKAGE_BUGREPORT[@],https://bugzilla.quagga.net,g' \
-  	-e 's,[@]CONFDATE[@],20190703,g' \
+  	-e 's,[@]CONFDATE[@],20200710,g' \
  	-e 's,[@]target_cpu[@],$(target_cpu),g' \
  	-e 's,[@]target_host[@],$(target_host),g' \
  	-e 's,[@]target_os[@],$(target_os),g'
@@ -348,18 +348,18 @@ edit = $(SED) \
 pkg_make_vars = exec_prefix=${prefix} prefix=/usr/local \
 	builddir=. srcdir=. \
 	top_builddir=.. top_srcdir=.. \
-	abs_builddir=/home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1/solaris abs_srcdir=/home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1/solaris \
-	abs_top_builddir=/home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1 abs_top_srcdir=/home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1
+	abs_builddir=/home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1/solaris abs_srcdir=/home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1/solaris \
+	abs_top_builddir=/home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1 abs_top_srcdir=/home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1
 
 
 # pkgmk: write the package to spool in build dir, to avoid root dependencies
-pkg_make = pkgmk -o -d /home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1/solaris \
+pkg_make = pkgmk -o -d /home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1/solaris \
 	-f $< DESTDIR="$(DESTDIR)/" $(pkg_make_vars)
 
 
 # pkgtrans: write a pkg file stream, shame we cant pipe directly to it from
 # pkgmk..
-pkg_trans = pkgtrans -s /home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1/solaris "/home/zhangtianchuan/trunk/GPL_Code/source/user/quagga/quagga-1.1.1/solaris/$@"
+pkg_trans = pkgtrans -s /home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1/solaris "/home/baifan/882_dlink/trunk/source/user/quagga/quagga-1.1.1/solaris/$@"
 
 # pkginfo.package and prototype.package are all built sources
 #BUILT_SOURCES = pkginfo.daemons pkginfo.dev pkginfo.doc pkginfo.libs \

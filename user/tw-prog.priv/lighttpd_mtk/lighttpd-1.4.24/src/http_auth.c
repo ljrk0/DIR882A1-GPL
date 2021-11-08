@@ -850,7 +850,7 @@ int http_auth_basic_check(server *srv, connection *con, mod_auth_plugin_data *p,
 
 	/* r2 == user:password */
 	if (NULL == (pw = strchr(username->ptr, ':'))) {
-		log_error_write(srv, __FILE__, __LINE__, "sb", ": is missing in", username);
+		log_error_write(srv, __FILE__, __LINE__, "sb", ": is missing in decoded base64-string");
 
 		buffer_free(username);
 		return 0;

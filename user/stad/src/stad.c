@@ -303,6 +303,55 @@ int stad_get_dhcplist_by_mac(char *mac, ST_CLIENT_INFO *pst_client_info)
 	return 0;
 }
 
+int stad_get_dhcpinfo_by_mac(char *mac, ST_CLIENT_INFO *pst_client_info)
+{
+	FILE *fp = NULL;
+	char buf[256] = { 0 };
+	char szLeaseTime[32] = { 0 };
+	char szMac[32] = { 0 };
+	char szIP[32] = { 0 };
+	char szHostName[64] = { 0 };
+	char szMac1[32] = { 0 };
+	int i = 0;
+	
+	fp = fopen(DHCP_MON_LIST_PATH, "r");
+	if(NULL == fp)
+	{
+		DEBUGP("open %s fail\n", DHCP_MON_LIST_PATH);
+		return -1;
+	}
+
+	while(NULL != fgets(buf, sizeof(buf), fp))
+	{
+		if(TW_get_rule_safe(0, buf, ',', szMac, sizeof(szMac)) == -1)
+		{
+			continue;		
+		}
+		
+		if(!strncasecmp(mac, szMac, 17))
+		{
+			if(TW_get_rule_safe(1, buf, ',', szIP, sizeof(szIP)) == -1)
+			{
+				continue;		
+			}
+
+			if(TW_get_rule_safe(2, buf, ',', szHostName, sizeof(szHostName)) == -1)
+			{
+				continue;		
+			}
+			szHostName[strlen(szHostName)-1] = '\0';
+
+			strncpy(pst_client_info->IPv4Address, szIP, sizeof(pst_client_info->IPv4Address));
+			strncpy(pst_client_info->DeviceName, szHostName, sizeof(pst_client_info->DeviceName));
+			break;
+		}
+	}
+
+	fclose(fp);
+	
+	return 0;
+}
+
 int stad_check_client_online(char *pszIP, char *pszMac, char *pszInterface)
 {
 	char szCmd[128] = { 0 };
@@ -935,8 +984,9 @@ void stad_check_stad_timer(int signo)
 	int i = 0, j = 0;
 	int iFlock = 0;
 	FILE *fp = NULL;
-	char buf[64] = { 0 };
+	char buf[256] = { 0 };
 	char szMacList[200][18] = { 0 };
+	char szMac[18] = { 0 };
 
 	add_wireless_stainfo();
 	iFlock = file_lock(MACLIST_FILE_LOCK);
@@ -964,6 +1014,26 @@ void stad_check_stad_timer(int signo)
 	
 	file_unlock(iFlock);
 	
+	fp = fopen(DHCP_MON_LIST_PATH, "r+");
+
+	if(NULL != fp)
+	{
+		while(NULL != fgets(buf, sizeof(buf), fp))
+		{
+			if(i == 200)
+				break;
+			
+			memset(szMac, 0, sizeof(szMac));
+			if(TW_get_rule_safe(0, buf, ',', szMac, sizeof(szMac)) == -1)
+			{
+				continue;
+			}
+			sprintf(szMacList[i], "%s", szMac);
+			i++;
+		}
+		
+		fclose(fp);
+	}
 	
 	for(j = 0; j < i; j++)
 	{		
@@ -982,6 +1052,12 @@ void stad_check_stad_timer(int signo)
 		stad_get_ipaddr_by_mac(szMacList[j], &st_client_info);
 		if(strlen(st_client_info.IPv4Address) > 6)
 			stad_get_homename_by_ip(st_client_info.IPv4Address, &st_client_info);
+
+		if(NULL == strstr(st_client_info.Type, "LAN"))
+		{
+			stad_get_dhcpinfo_by_mac(szMacList[j], &st_client_info);
+		}
+		
 		if(strlen(st_client_info.IPv4Address) > 6)
 		{
 			stad_add_clients(st_client_info);

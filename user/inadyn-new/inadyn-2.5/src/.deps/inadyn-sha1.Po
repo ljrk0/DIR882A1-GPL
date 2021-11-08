@@ -1,18 +1,18 @@
 inadyn-sha1.o: sha1.c ../include/sha1.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/string.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/string.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h
 
 ../include/sha1.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/string.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/string.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h:
 
 /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h:

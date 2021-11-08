@@ -1,0 +1,2 @@
+/* svn info: $Revision: 847 $ $Date: 2018-06-06 18:37:11 +0800 (Wed, 06 Jun 2018) $ */
+define(["wizPath/wizardModel","wizPath/wizardView"],function(i,e){var n;return{init:function(i){return e=i,n=$.Deferred(),e,$("#wizard_title").html("Covr Extender Replacement"),$("#topology").hide(),$("#Wizard9").show(),$("#wizButton_back").hide(),$("#wizButton_next").html(I18N("j","Finish")).show().off("click").on("click",function(){n.resolve("done")}),$("#closeWizBtn").off("vclick").on("vclick",function(){n.resolve("done")}),n.promise();var e}}});

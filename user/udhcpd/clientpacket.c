@@ -73,16 +73,21 @@ unsigned long random_xid(void)
 /* initialize a packet with the proper defaults */
 static void init_packet(struct dhcpMessage *packet, char type)
 {
-	struct vendor  {
+#if 0
+	struct vendor
+	{
 		char vendor, length;
 		char str[sizeof("udhcp "VERSION)];
-	} vendor_id = { DHCP_VENDOR,  sizeof("udhcp "VERSION) - 1, "udhcp "VERSION};
-	
+	}
+	vendor_id = { DHCP_VENDOR,  sizeof("udhcp "VERSION) - 1, "udhcp "VERSION};
+#endif
+
 	init_header(packet, type);
 	memcpy(packet->chaddr, client_config.arp, 6);
 	add_option_string(packet->options, client_config.clientid);
 	if (client_config.hostname) add_option_string(packet->options, client_config.hostname);
-	add_option_string(packet->options, (unsigned char *) &vendor_id);
+	//+++ mark by siyou. Dlink said vendor option cause problem in German big ISP. 
+	//add_option_string(packet->options, (unsigned char *) &vendor_id);
 }
 
 
@@ -101,6 +106,7 @@ static void add_requests(struct dhcpMessage *packet)
 	packet->options[end + OPT_LEN] = len;
 	packet->options[end + OPT_DATA + len] = DHCP_END;
 
+    packet->flags=packet->flags | htons(BROADCAST_FLAG);
 }
 
 

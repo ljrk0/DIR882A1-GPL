@@ -1,0 +1,42 @@
+@CHARSET "UTF-8";
+
+.largebtn {
+ 	background-color: #269abc;
+ 	color:#FFFFFF;
+    min-width: 180px;
+    border-radius: 0;
+    padding: 10px 15px;
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    font-size: 14px;
+    line-height: 1.42857143;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+.largebtn:hover {
+	color: #fff;
+    background: #36899a;
+    border-color: #269abc;
+}
+
+.largebtn[disabled] {
+    background-color: #9d9da1;
+    border-color: #9d9da1;
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: .65;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+            box-shadow: none;    
+}

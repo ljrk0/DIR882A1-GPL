@@ -92,6 +92,7 @@ endif
 	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/SingleSKU_24G_CCC.dat
 	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/SingleSKU_24G_IN.dat
 	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/SingleSKU_24G_RCM.dat
+	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/SingleSKU_24G_ID.dat
 	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/SingleSKU_5G_CE.dat
 	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/SingleSKU_5G_FCC.dat
 	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/SingleSKU_5G_NCC.dat
@@ -100,6 +101,7 @@ endif
 	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/SingleSKU_5G_CCC.dat
 	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/SingleSKU_5G_IN.dat
 	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/SingleSKU_5G_RCM.dat
+	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/SingleSKU_5G_ID.dat
 	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/SKU_24G_CE_BF.dat
 	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/SKU_24G_FCC_BF.dat
 	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/SKU_24G_IC_BF.dat
@@ -117,6 +119,7 @@ endif
 	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/RT2860_dbdc_def.dat
 	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/RT2860_def_hs.dat
 	$(ROMFSINST) /etc_ro/Wireless/RT2860AP/RT2860_def_hs_dbdc.dat
+	$(ROMFSINST) /etc_ro/Wireless/l1profile.dat
 	$(ROMFSINST) /etc_ro/rept_test.sh
 	$(ROMFSINST) /etc_ro/rept_dbdc_test.sh
 	$(ROMFSINST) /etc_ro/apcli_connect_trial.sh

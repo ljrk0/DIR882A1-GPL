@@ -35,7 +35,7 @@
 #define SIZE_OF_VHT_CAP_IE 		12
 
 #define BND_STRG_DBG
-#define BND_STRG_QA
+//#define BND_STRG_QA
 
 struct _BNDSTRG_OPS;
 

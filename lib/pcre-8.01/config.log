@@ -27,15 +27,14 @@ uname -v = #1 SMP Tue Jul 12 17:53:37 UTC 2016
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
 
-PATH: /home/zhangtianchuan/trunk/klocwork/bin
 PATH: /usr/local/bin
 PATH: /bin
 PATH: /usr/bin
 PATH: /usr/local/sbin
 PATH: /usr/sbin
 PATH: /sbin
-PATH: /home/zhangtianchuan/bin
-PATH: /home/zhangtianchuan/trunk/GPL_Code/source/tools
+PATH: /home/baifan/bin
+PATH: /home/baifan/dlink_882/trunk/GPL_Code/source/tools
 
 
 ## ----------- ##
@@ -1889,16 +1888,16 @@ lt_cv_sys_max_cmd_len=1966080
 ## Output variables. ##
 ## ----------------- ##
 
-ACLOCAL='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/lib/pcre-8.01/missing --run aclocal-1.10'
+ACLOCAL='${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/lib/pcre-8.01/missing --run aclocal-1.10'
 AMDEPBACKSLASH='\'
 AMDEP_FALSE='#'
 AMDEP_TRUE=''
-AMTAR='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/lib/pcre-8.01/missing --run tar'
+AMTAR='${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/lib/pcre-8.01/missing --run tar'
 AR='ar'
 AS='as'
-AUTOCONF='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/lib/pcre-8.01/missing --run autoconf'
-AUTOHEADER='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/lib/pcre-8.01/missing --run autoheader'
-AUTOMAKE='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/lib/pcre-8.01/missing --run automake-1.10'
+AUTOCONF='${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/lib/pcre-8.01/missing --run autoconf'
+AUTOHEADER='${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/lib/pcre-8.01/missing --run autoheader'
+AUTOMAKE='${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/lib/pcre-8.01/missing --run automake-1.10'
 AWK='gawk'
 CC='/opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc'
 CCDEPMODE='depmode=gcc3'
@@ -1941,7 +1940,7 @@ LIBZ=''
 LIPO=''
 LN_S='ln -s'
 LTLIBOBJS=''
-MAKEINFO='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/lib/pcre-8.01/missing --run makeinfo'
+MAKEINFO='${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/lib/pcre-8.01/missing --run makeinfo'
 MKDIR_P='/bin/mkdir -p'
 NM='link -dump -symbols'
 NMEDIT=''
@@ -2004,7 +2003,7 @@ host_vendor='unknown'
 htmldir='${docdir}/html'
 includedir='${prefix}/include'
 infodir='${datarootdir}/info'
-install_sh='$(SHELL) /home/zhangtianchuan/trunk/GPL_Code/source/lib/pcre-8.01/install-sh'
+install_sh='$(SHELL) /home/baifan/dlink_882/trunk/GPL_Code/source/lib/pcre-8.01/install-sh'
 libdir='${exec_prefix}/lib'
 libexecdir='${exec_prefix}/libexec'
 localedir='${datarootdir}/locale'

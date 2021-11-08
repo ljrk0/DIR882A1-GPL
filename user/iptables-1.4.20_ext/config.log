@@ -27,15 +27,14 @@ uname -v = #1 SMP Tue Jul 12 17:53:37 UTC 2016
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
 
-PATH: /home/zhangtianchuan/trunk/klocwork/bin
 PATH: /usr/local/bin
 PATH: /bin
 PATH: /usr/bin
 PATH: /usr/local/sbin
 PATH: /usr/sbin
 PATH: /sbin
-PATH: /home/zhangtianchuan/bin
-PATH: /home/zhangtianchuan/trunk/GPL_Code/source/tools
+PATH: /home/baifan/bin
+PATH: /home/baifan/dlink_882/trunk/GPL_Code/source/tools
 
 
 ## ----------- ##
@@ -88,17 +87,17 @@ mipsel-linux-gcc: fatal error: no input files
 compilation terminated.
 configure:3250: $? = 1
 configure:3270: checking whether the C compiler works
-configure:3292: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc   -L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib conftest.c  >&5
+configure:3292: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc   -L/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/lib/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/lib/lib conftest.c  >&5
 configure:3296: $? = 0
 configure:3345: result: yes
 configure:3348: checking for C compiler default output file name
 configure:3350: result: a.out
 configure:3356: checking for suffix of executables
-configure:3363: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest   -L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib conftest.c  >&5
+configure:3363: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest   -L/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/lib/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/lib/lib conftest.c  >&5
 configure:3367: $? = 0
 configure:3389: result: 
 configure:3411: checking whether we are cross compiling
-configure:3419: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest   -L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib conftest.c  >&5
+configure:3419: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest   -L/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/lib/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/lib/lib conftest.c  >&5
 configure:3423: $? = 0
 configure:3430: ./conftest
 ./configure: line 3432: ./conftest: cannot execute binary file
@@ -225,7 +224,7 @@ configure:6214: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c   conftest.c >
 configure:6217: $? = 0
 configure:6221: nm conftest.o \| sed -n -e 's/^.*[ ]\([ABCDGIRSTW][ABCDGIRSTW]*\)[ ][ ]*\([_A-Za-z][_A-Za-z0-9]*\)$/\1 \2 \2/p' | sed '/ __gnu_lto/d' \> conftest.nm
 configure:6224: $? = 0
-configure:6290: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest   -L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib conftest.c conftstm.o >&5
+configure:6290: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest   -L/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/lib/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/lib/lib conftest.c conftstm.o >&5
 configure:6293: $? = 0
 configure:6331: result: ok
 configure:6368: checking for sysroot
@@ -343,7 +342,7 @@ configure:8680: result: yes
 configure:8713: checking whether the /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc linker (/opt/buildroot-gcc463/usr/bin/mipsel-linux-ld) supports shared libraries
 configure:9870: result: yes
 configure:10110: checking dynamic linker characteristics
-configure:10610: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest   -L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib -Wl,-rpath -Wl,/foo conftest.c  >&5
+configure:10610: /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -o conftest   -L/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/lib/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/lib/lib -Wl,-rpath -Wl,/foo conftest.c  >&5
 configure:10610: $? = 0
 configure:10844: result: GNU/Linux ld.so
 configure:10951: checking how to hardcode library paths into programs
@@ -888,7 +887,7 @@ ac_cv_env_CPPFLAGS_value=
 ac_cv_env_CPP_set=
 ac_cv_env_CPP_value=
 ac_cv_env_LDFLAGS_set=set
-ac_cv_env_LDFLAGS_value='-L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib'
+ac_cv_env_LDFLAGS_value='-L/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/lib/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/lib/lib'
 ac_cv_env_LIBS_set=
 ac_cv_env_LIBS_value=
 ac_cv_env_PKG_CONFIG_set=
@@ -977,15 +976,15 @@ lt_cv_to_tool_file_cmd=func_convert_file_noop
 ## Output variables. ##
 ## ----------------- ##
 
-ACLOCAL='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/iptables-1.4.20_ext/build-aux/missing --run aclocal-1.11'
+ACLOCAL='${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/user/iptables-1.4.20_ext/build-aux/missing --run aclocal-1.11'
 AMDEPBACKSLASH='\'
 AMDEP_FALSE='#'
 AMDEP_TRUE=''
-AMTAR='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/iptables-1.4.20_ext/build-aux/missing --run tar'
+AMTAR='${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/user/iptables-1.4.20_ext/build-aux/missing --run tar'
 AR='ar'
-AUTOCONF='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/iptables-1.4.20_ext/build-aux/missing --run autoconf'
-AUTOHEADER='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/iptables-1.4.20_ext/build-aux/missing --run autoheader'
-AUTOMAKE='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/iptables-1.4.20_ext/build-aux/missing --run automake-1.11'
+AUTOCONF='${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/user/iptables-1.4.20_ext/build-aux/missing --run autoconf'
+AUTOHEADER='${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/user/iptables-1.4.20_ext/build-aux/missing --run autoheader'
+AUTOMAKE='${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/user/iptables-1.4.20_ext/build-aux/missing --run automake-1.11'
 AWK='gawk'
 CC='/opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc'
 CCDEPMODE='depmode=gcc3'
@@ -1030,14 +1029,14 @@ INSTALL_PROGRAM='${INSTALL}'
 INSTALL_SCRIPT='${INSTALL}'
 INSTALL_STRIP_PROGRAM='$(install_sh) -c -s'
 LD='/opt/buildroot-gcc463/usr/bin/mipsel-linux-ld'
-LDFLAGS='-L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib'
+LDFLAGS='-L/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/lib/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/lib/lib'
 LIBOBJS=''
 LIBS=''
 LIBTOOL='$(SHELL) $(top_builddir)/libtool'
 LIPO=''
 LN_S='ln -s'
 LTLIBOBJS=''
-MAKEINFO='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/iptables-1.4.20_ext/build-aux/missing --run makeinfo'
+MAKEINFO='${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/user/iptables-1.4.20_ext/build-aux/missing --run makeinfo'
 MANIFEST_TOOL=':'
 MKDIR_P='/bin/mkdir -p'
 NM='nm'
@@ -1094,7 +1093,7 @@ host_vendor='unknown'
 htmldir='${docdir}'
 includedir='${prefix}/include'
 infodir='${datarootdir}/info'
-install_sh='${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/iptables-1.4.20_ext/build-aux/install-sh'
+install_sh='${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/user/iptables-1.4.20_ext/build-aux/install-sh'
 kbuilddir=''
 kinclude_CPPFLAGS=''
 ksourcedir=''
@@ -1159,127 +1158,3 @@ xtlibdir='${exec_prefix}/lib/xtables'
 #define SIZEOF_STRUCT_IP6_HDR 40
 
 configure: exit 0
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by iptables config.status 1.4.20, which was
-generated by GNU Autoconf 2.65.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status Makefile
-
-on wireless
-
-config.status:1139: creating Makefile
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by iptables config.status 1.4.20, which was
-generated by GNU Autoconf 2.65.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status config.h
-
-on wireless
-
-config.status:1139: creating config.h
-config.status:1311: config.h is unchanged
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by iptables config.status 1.4.20, which was
-generated by GNU Autoconf 2.65.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status libiptc/Makefile depfiles
-
-on wireless
-
-config.status:1139: creating libiptc/Makefile
-config.status:1359: executing depfiles commands
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by iptables config.status 1.4.20, which was
-generated by GNU Autoconf 2.65.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status libxtables/Makefile depfiles
-
-on wireless
-
-config.status:1139: creating libxtables/Makefile
-config.status:1359: executing depfiles commands
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by iptables config.status 1.4.20, which was
-generated by GNU Autoconf 2.65.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status include/Makefile
-
-on wireless
-
-config.status:1139: creating include/Makefile
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by iptables config.status 1.4.20, which was
-generated by GNU Autoconf 2.65.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status utils/Makefile depfiles
-
-on wireless
-
-config.status:1139: creating utils/Makefile
-config.status:1359: executing depfiles commands
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by iptables config.status 1.4.20, which was
-generated by GNU Autoconf 2.65.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status iptables/Makefile depfiles
-
-on wireless
-
-config.status:1139: creating iptables/Makefile
-config.status:1359: executing depfiles commands

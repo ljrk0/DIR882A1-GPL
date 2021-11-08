@@ -64,6 +64,96 @@ static int brnf_pass_vlan_indev __read_mostly = 0;
 #define brnf_pass_vlan_indev 0
 #endif
 
+#ifdef CONFIG_BR_FILTER_DHCP
+unsigned char uiBrFilterDhcpEnable[8] = {0};
+unsigned char uiwanif[32] = {0};
+unsigned char uilanif[64] = {0};
+
+#define BR_FILTER_DHCP_READ_FORMAT "br_filter_dhcp:\n\
+enable = %s\n\
+wanif = %s\n\
+lanif = %s\n"
+
+static struct proc_dir_entry *br_filter_dhcp_entry = NULL;
+static int br_filter_dhcp_write(struct file *file, const char __user *buf,
+                                    size_t size, loff_t *_pos)
+{	
+	char *kbuf, *wanif, *lanif;
+    int ret;
+	
+
+    /* start by dragging the command into memory */
+    if (size <= 1 || size >= PAGE_SIZE)
+		return -EINVAL;
+
+    kbuf = kmalloc(size + 1, GFP_KERNEL);
+    if (!kbuf)
+		return -ENOMEM;
+
+
+	if (copy_from_user(kbuf, buf, size) != 0)
+		goto done;
+	kbuf[size] = 0;
+
+
+	wanif = strchr(kbuf, ' ');
+	if (!wanif)
+		goto inval;
+	do {    
+		*wanif++ = 0;
+	} while(*wanif == ' ');
+	if (!*wanif)
+		goto inval;
+
+	lanif = strchr(wanif, ' ');
+	if (!lanif)
+	    goto inval;
+	do {
+	    *lanif++ = 0;
+	} while(*lanif == ' ');
+	if (!*lanif)
+	    goto inval;
+
+	snprintf(uiBrFilterDhcpEnable, sizeof(uiBrFilterDhcpEnable), kbuf);
+	snprintf(uiwanif, sizeof(uiwanif), wanif);
+	snprintf(uilanif, sizeof(uilanif), lanif);
+
+	printk("enable=%s wanif=%s lanif=%s\n", kbuf, wanif, lanif);
+
+	ret = size;
+
+done:
+	kfree(kbuf);
+	//printk("write bytes = %d", ret);
+	return ret;
+
+inval:
+	ret = -EINVAL;
+	printk("br_filter_dhcp_write invalid parameter\n");
+	goto done;
+
+
+}
+static int br_filter_dhcp_show(struct seq_file *seq, void *offset)
+{		
+	seq_printf(seq, BR_FILTER_DHCP_READ_FORMAT,uiBrFilterDhcpEnable, uiwanif, uilanif);
+	return 0;
+}
+
+static int br_filter_dhcp_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, br_filter_dhcp_show, PDE_DATA(inode));
+}
+
+static const struct file_operations br_filter_dhcp_fops = {
+	.open = br_filter_dhcp_open,
+	.write = br_filter_dhcp_write,
+	.read = seq_read,
+	.release = single_release,
+	};
+
+#endif
+
 #define IS_IP(skb) \
 	(!vlan_tx_tag_present(skb) && skb->protocol == htons(ETH_P_IP))
 
@@ -1074,6 +1164,13 @@ int __init br_netfilter_init(void)
 		return -ENOMEM;
 	}
 #endif
+#ifdef CONFIG_BR_FILTER_DHCP
+	/*Register transfer proc interface*/
+	br_filter_dhcp_entry = proc_create_data("br_filter_dhcp", 0644, NULL, &br_filter_dhcp_fops, NULL);
+	if (!br_filter_dhcp_entry)
+		return -ENOENT;
+#endif
+
 	printk(KERN_NOTICE "Bridge firewalling registered\n");
 	return 0;
 }

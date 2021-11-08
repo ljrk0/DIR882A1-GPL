@@ -8,6 +8,7 @@
 #include <fota_debug.h>
 #include <fota_common.h>
 #include <fota_api.h>
+#include "shutils.h"
 
 #define FIRMWARE_QUERY_URI "/device/v1/me/latest_fw"
 #define FIRMWARE_QUERY_URI_2 "/mobile/v1/misc/latest_fw"

@@ -2,8 +2,9 @@ deps_config := \
 	net/nat/hw_nat/Kconfig \
 	drivers/usb/dwc_otg/Kconfig \
 	drivers/net/wireless/wifi_forward/wifi_fwd/Kconfig \
-	drivers/net/wireless/MTK7615/mt_wifi_ap/Kconfig \
-	drivers/net/wireless/MTK7615/mt_wifi/embedded/Kconfig \
+	drivers/net/wireless/MT7622_7615_SoftAP_v5.0.3.2_17722b_20190311_MWDS/mt_wifi_sta/Kconfig \
+	drivers/net/wireless/MT7622_7615_SoftAP_v5.0.3.2_17722b_20190311_MWDS/mt_wifi_ap/Kconfig \
+	drivers/net/wireless/MT7622_7615_SoftAP_v5.0.3.2_17722b_20190311_MWDS/mt_wifi/embedded/Kconfig \
 	drivers/net/raeth/Kconfig \
 	drivers/net/rt_rdm/Kconfig \
 	ralink/Kconfig \

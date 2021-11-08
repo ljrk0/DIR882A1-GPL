@@ -1,0 +1,2 @@
+/* svn info: $Revision: 847 $ $Date: 2018-06-06 18:37:11 +0800 (Wed, 06 Jun 2018) $ */
+jQuery.extend({stringify:function(r){var t=typeof r;if("object"!=t||null===r)return"string"==t&&(r='"'+r+'"'),String(r);var n,i,e=[],u=r&&r.constructor==Array;for(n in r)"string"==(t=typeof(i=r[n]))?i='"'+i+'"':"object"==t&&null!==i&&(i=jQuery.stringify(i)),e.push((u?"":'"'+n+'":')+String(i));return(u?"[":"{")+String(e)+(u?"]":"}")}});

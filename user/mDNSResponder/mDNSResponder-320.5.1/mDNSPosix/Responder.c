@@ -62,6 +62,7 @@ static const char *gProgramName = ProgramName;
 
 static volatile mDNSBool gReceivedSigUsr1;
 static volatile mDNSBool gReceivedSigHup;
+static volatile mDNSBool gReceivedSigUSR2;
 static volatile mDNSBool gStopNow;
 
 // We support 4 signals.
@@ -78,6 +79,15 @@ static volatile mDNSBool gStopNow;
 // select, the signal will be dropped.  The user will have to send the signal 
 // again.  Unfortunately, Posix does not have a "sigselect" to atomically 
 // modify the signal mask and start a select.
+static void HandleSigUsr2(int sigraised)
+    // If we get a SIGUSR2 we toggle the state of the 
+    // verbose mode.
+{
+	fprintf(stderr, "recieve signal:%d\n",sigraised);
+    if(sigraised == SIGUSR2);
+		fprintf(stderr, "recieve SIGUSR2 signal,now should send 'goodbye' package\n");
+    gReceivedSigUSR2 = mDNStrue;
+}
 
 static void HandleSigUsr1(int sigraised)
     // If we get a SIGUSR1 we toggle the state of the 
@@ -713,6 +723,7 @@ int main(int argc, char **argv)
     signal(SIGINT,  HandleSigInt);      // SIGINT is what you get for a Ctrl-C
     signal(SIGQUIT, HandleSigQuit);     // SIGQUIT is what you get for a Ctrl-\ (indeed)
     signal(SIGUSR1, HandleSigUsr1);     // SIGUSR1 has to be sent by kill -USR1 <pid>
+    signal(SIGUSR2, HandleSigUsr2);     // SIGKILL has to be sent by kill -USR2 <pid>
 
 	while (!gStopNow)
 		{
@@ -764,6 +775,15 @@ int main(int argc, char **argv)
 					if (status != mStatus_NoError) break;
 					status = RegisterOurServices();
 					if (status != mStatus_NoError) break;
+					}
+				if (gReceivedSigUSR2)
+					{
+					/*send goodbye package for D-Link Wi-Fi APP*/
+					if (gMDNSPlatformPosixVerboseLevel > 0)
+						fprintf(stderr, "\nSIG USR2 process\n");
+					gReceivedSigUSR2 = mDNSfalse;
+					DeregisterOurServices();
+					
 					}
 				}
 			}

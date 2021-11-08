@@ -1,0 +1,453 @@
+/*	Image Buildrev: 20131104	*/
+body {
+	margin: 0;
+	padding: 0;
+	font-size: 12pt;
+	font-family: Arial, Helvetica, serif;
+	line-height:1.4;
+	color: #333333;
+	background: linear-gradient(to bottom, #ffffff 50px, #f1f1f1 99px, #bdbdbd 100px, #bdbdbd 101px, rgba(255,255,255,0) 104px);
+	background-repeat: repeat-x;
+}
+#wrapper {
+	position: relative;
+	width: 900px; 
+	margin: 0 auto;
+	min-height:600px;
+	height: auto !important;
+	height: 600px;	
+}
+
+#logo {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	margin: 0;
+	width: 105px;
+}
+#header {
+	position: relative;
+	z-index:100; /*let menu on top layer*/
+	height:105px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none; 
+}
+#version {
+	z-index:100;
+	position: absolute;
+	left: 690px;
+	top: 0px;
+	margin: 0;
+	width: 300px;
+	color: #777777;
+}
+#content {
+	left: 0px; 
+	top: 0px; 
+	width: 900px; 
+	position: relative;
+}
+#infor_title{
+	position: relative;
+	font-size: 225%;
+	font-family: Arial, Helvetica, Sans-Serif;
+	color: #454547;
+	top: -10px;
+    left: 0px;
+}
+
+#footer {
+  	position: relative;
+  	top: 0px;
+  	left: 0px;
+}
+
+#footer_login {
+	position: relative;
+	text-align: center;
+	padding: 20px 0;
+	margin: 30px 0px 0px 0px;
+	background:#fff url(../image/footer.png) center top no-repeat;
+	color: #7d7d7d;
+	font-size: 9pt;
+}
+#eula {
+	position: absolute;
+	font-size: 9pt;
+	top: 20px;
+	right: 20%;
+}
+
+/*/////////////////////Login///////////////////////*/
+
+#logIn {
+	position: relative;
+	top: 40px;
+	left: 280px;
+	width: 337px;
+   	height: 218px;
+	background: url(../image/logInTable.png) left top no-repeat;
+	text-align: center;
+}
+#logInTable {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	width: 330px;
+	line-height:40px;
+}
+#logInTable th {
+	width: 150px;
+	text-align: center;
+}
+#Lheader {
+	position: relative;
+	width: 900px;
+	height: 95px;
+}
+
+/*/////////////////*/
+.block {
+	position: relative;
+	top: 00px;
+	left: 00px;
+  	width: 400px;
+   	height: 136px;
+}
+/*/////////////////*/
+#bold {
+ 	color: #4598a8;
+ 	/*font-weight: bold;*/
+ 	font: 14pt Arial;
+}
+
+/*////////////////////////POPUI/////////////////////////*/
+#wording {
+	position: relative;
+	text-align: left;
+}
+
+#detection {
+	position: relative;
+	height: 600px;
+}
+#progressbar {
+	position: relative;
+	width: 420px;
+	height: 30px;
+	/*margin: 0 auto;*/
+	margin: 70px;
+}
+
+#connectionType_Table th{
+	position: relative;
+	text-align: left;
+}
+#connectionType_Table td{
+	position: relative;
+	text-align: left;
+}
+
+#Loading_pop_image {
+	position: relative;
+	margin: 0px auto;
+	top: 0px;
+	height: 80px;
+	width:260px;
+	background: url(../image/loading.gif) left top no-repeat;
+	background-position: center;
+	background-size: 60px 60px;
+}
+
+/*/////////////////////Login///////////////////////*/
+
+#logIn {
+	position: relative;
+	top: 40px;
+	left: 280px;
+	width: 337px;
+   	height: 218px;
+	background: url(../image/logInTable.png) left top no-repeat;
+	text-align: center;
+}
+#logIn_captcha {
+	position: relative;
+	top: 40px;
+	margin: 0 auto;
+	width: 611px;
+   	height: 293px;
+	background: url(../image/Login_bg2.gif) left top no-repeat;
+	text-align: center;
+}
+#logInTable {
+	position: relative;
+	top: 30px;
+	left: 0px;
+	width: 330px;
+	text-align:center;
+	line-height:40px;
+}
+#logInTable th {
+	width: 150px;
+	font-size: 11pt;
+}
+#logInTable_captcha_left {
+	position: relative;
+	top: 60px;
+	left: 0px;
+	width: 300px;
+	text-align:center;
+	line-height:40px;
+	table-layout:fixed;
+}
+#logInTable_captcha_left th {
+	text-align:center;
+	width: 150px;
+	font-size: 11pt;
+	word-break: break-all; /*auto wrap*/
+
+	/*overflow: hidden;  //"..."
+	text-overflow: ellipsis;*/
+}
+#logInTable_captcha_right {
+	position: absolute;
+	top: 40px;
+	left: 330px;
+	width: 250px;
+	line-height:25px;
+	table-layout:fixed;
+	text-align:left;
+	font-size: 11pt;
+}
+#logIn_btn {
+	position: relative;
+	top: 55px;
+}
+#logIn_btn_c {
+	position: relative;
+	top: 135px;
+}
+
+#device_ver {
+	color:red;
+}
+#refresh_button {
+	cursor: pointer;
+}
+
+.styled-text {
+	border: 1px solid #4598aa;
+	height: 30px;
+	margin: 0 0 0 0px;
+	padding: 0 0 0 10px;
+	font-size: 14px;
+	line-height:28px;
+}
+
+.survey-styled-text {
+	-webkit-appearance: none;
+	border: 1px solid #4598aa;
+	height: 28px;
+	padding: 0 10px 0 3px;
+	font: 11pt Arial;
+	line-height: 28px;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+	-moz-box-shadow: inset 0 0 0 #000000;
+	-webkit-box-shadow: inset 0 0 0 #000000;
+	box-shadow: inset 0 0 0 #000000;
+}
+
+/*////////////////////////POPUI/////////////////////////*/ 
+#v4_v6_btn {
+	list-style: none;
+	position: absolute;
+	top: -10px;
+	right: 0px;
+	margin: 0;
+	padding: 0;
+	height: 20px;
+}
+#v4_v6_btn li {
+	float: right;
+	margin: 0;
+	padding: 0;
+	line-height: 20px;
+}
+
+#DetectRouterConnection {
+	position: fixed;
+	z-index: 999;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height:100%;
+	background:url(../image/black_bg.png);
+	text-align: center;
+}
+#CreatePopAlertMessage {
+	position: fixed;
+	z-index: 500;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height:100%;
+	background:url(../image/black_bg.png);
+	text-align: center;
+}
+#CreatePopAlertMessage2 {
+	position: fixed;
+	z-index: 500;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height:100%;
+	background:url(../image/black_bg.png);
+	text-align: center;
+}
+#AlertPopRect {
+	position: relative;
+	top: 100px;
+	width: 368px;
+	Height: 368px;
+	margin: 0 auto;
+}
+#AlertPopBody {
+	position: relative;
+	top: 0px;
+  	width: 368px;
+  	Height: 368px;
+  	background: url(../image/loading_big.png) left top repeat-y;
+}
+#count_down {
+	font-size: 12pt;
+	font-weight: bold;
+}
+#Confirm_btn {
+	position: relative;
+  	min-width: 80px;
+  	max-width: 130px;
+   	height: 34px;
+	font-size: 18px;
+	color: #000;
+	text-align:center;
+	line-height:34px;
+	background-color: #fff;
+	border: #9d9d9d 1px solid;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+#Information_pop_image {
+	width: 250px;
+	min-height: 70px;
+	max-height: 100px;
+	background: url(../image/Infor2.png) left top no-repeat;
+	background-position: center center;
+	background-size:24px 24px;
+}
+#reciprocal_Number {
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+#dialog_msg_black {
+	font-size: 11pt;
+	font-weight: bold;
+	line-height: 25px;
+	color: #454545;
+	text-align: center;
+	min-Height: 110px;
+	max-Height: 120px;
+	width: 260px;
+	word-wrap: break-word; 
+	word-break: normal; 
+	padding: 0 0 20px 0;
+}
+#dialog_msg_black2 {
+	font-size: 11pt;
+	font-weight: bold;
+	line-height: 25px;
+	color: #454545;
+	text-align: left;
+	min-Height: 110px;
+	max-Height: 120px;
+	width: 260px;
+	word-wrap: break-word; 
+	word-break: normal; 
+	padding: 0 0 20px 0;
+}
+.myAlertPop_table_b {
+	position: absolute;
+	top: 70px;
+	left: 55px;
+	max-height: 360px;
+	max-width: 260px;
+	color: #56583f;
+	font-size: 14px;
+	margin: 0px;
+	padding: 0px;
+	word-break: break-all;
+}
+/*/////////////////////////////////*/
+.goto th{
+	font-weight: normal;
+	padding: 0 5px 0 0;
+	color: #4598aa;
+	font-size: 12pt;
+}
+
+#goto_Network {
+    position: absolute;	
+    top: 258px;
+	right:520px;	
+}
+#goto_wifi_24 {
+    position: absolute;	
+    top: 258px;
+	right:130px;
+}
+
+.linkstyle_title {
+	color: #4598aa;
+ 	font-weight: bold;
+  	font-size: 12pt;
+  	margin: 0 0 0 35px;
+}
+
+#LAN_ipv4_icon {
+    position: absolute;	
+    top:20px;
+	left: 20px;
+}
+#LAN_ipv6_icon {
+    position: absolute;	
+    top:130px;
+	left: 20px;
+}
+#wifi_24_icon {
+    position: absolute;	
+    top:20px;
+	left:500px;	
+}
+
+.goto_icon {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	height: 23px;
+	width: 23px;
+	/*background: url(../image/gotosettings.png) left top no-repeat;*/
+}
+
+input:focus,textarea:focus,select:focus{
+  border:1px solid #498fc0;
+  box-shadow:0 0 10px #498fc0;
+  outline: none;
+}
+.sbHolder{
+	border-radius: 0;
+}

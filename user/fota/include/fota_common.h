@@ -64,5 +64,9 @@ int execute_pause(int iSeconds);
 int check_network_status(const char * pDomain, int iFamily);
 int wait_network_accessible(const char * pDomain, int iFamily);
 
+int fota_init_lock(void);
+int fota_lock(void);
+int fota_unlock(void);
+
 #endif
 

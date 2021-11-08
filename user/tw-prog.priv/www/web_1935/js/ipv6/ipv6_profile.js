@@ -1,0 +1,2 @@
+/* svn info: $Revision: 847 $ $Date: 2018-06-06 18:37:11 +0800 (Wed, 06 Jun 2018) $ */
+var IPv6_Autodetection_profile={autoDNS:!0,dhcpPD:!0,lanBlock:""},IPv6_Static_profile={autoDNS:!1,dhcpPD:!1,lanBlock:""},IPv6_Autoconfig_profile={autoDNS:!0,dhcpPD:!0,lanBlock:""},IPv6_PPPoE_profile={autoDNS:!0,dhcpPD:!0,lanBlock:""},IPv6_6in4_profile={autoDNS:!0,dhcpPD:!0,lanBlock:""},IPv6_6to4_profile={autoDNS:!1,dhcpPD:!1,lanBlock:"6to4"},IPv6_6rd_profile={autoDNS:!1,dhcpPD:!1,lanBlock:"6rd"},IPv6_linklocal_profile={autoDNS:!1,dhcpPD:!1,lanBlock:"linklocal"};

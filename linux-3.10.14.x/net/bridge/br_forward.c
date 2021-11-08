@@ -24,6 +24,10 @@
 #include <linux/if_arp.h>
 #include <net/arp.h>
 
+#define WAN_IF_NAME		"eth3"
+#define DHCP_CLIENT_PORT		68
+#define DHCP_SERVER_PORT		67
+
 static int deliver_clone(const struct net_bridge_port *prev,
 			 struct sk_buff *skb,
 			 void (*__packet_hook)(const struct net_bridge_port *p,
@@ -60,10 +64,11 @@ int br_dev_queue_push_xmit(struct sk_buff *skb)
 
 int br_forward_finish(struct sk_buff *skb)
 {
-#ifdef CONFIG_KERNEL_ARP_SPOOFING_PROTECT
-extern int g_arp_spoofing_enable;
 	struct net_device *dev;
 	struct in_device *in_dev;
+	struct udphdr *udp;
+#ifdef CONFIG_KERNEL_ARP_SPOOFING_PROTECT
+extern int g_arp_spoofing_enable;
 	struct arphdr *arp;
 
 	if(g_arp_spoofing_enable)
@@ -88,6 +93,30 @@ extern int g_arp_spoofing_enable;
 		}
 	}
 #endif
+
+	dev = skb->dev;
+	in_dev = __in_dev_get_rcu(dev);
+
+	if(NULL != in_dev)
+	{
+		if(strlen(dev->name) > 0)
+		{
+			if(strcmp(WAN_IF_NAME,dev->name) == 0 && htons(ETH_P_IP) == skb->protocol)
+			{
+				udp = udp_hdr(skb);
+				
+				/***来自WAN口的DHCP请求不回复，防止上行设备从WAN口拿地址***/
+				//printk("host src port:%d,dest port:%d\n",ntohs(udp->source),ntohs(udp->dest));
+				if(ntohs(udp->source) == DHCP_SERVER_PORT && ntohs(udp->dest) == DHCP_CLIENT_PORT)
+				{
+					kfree_skb(skb);
+					return NF_DROP;
+					
+				}
+			}
+		}
+	}
+
 	return NF_HOOK(NFPROTO_BRIDGE, NF_BR_POST_ROUTING, skb, NULL, skb->dev,
 		       br_dev_queue_push_xmit);
 

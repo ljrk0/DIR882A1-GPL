@@ -763,7 +763,7 @@ void BndStrg_UpdateEntry(PRTMP_ADAPTER pAd,
 {
 	struct wifi_dev *wdev;
 	BNDSTRG_MSG msg;
-	PBND_STRG_CLI_TABLE table = P_BND_STRG_TABLE;
+	//PBND_STRG_CLI_TABLE table = P_BND_STRG_TABLE;
     if((pAd->ApCfg.BandSteering != TRUE)) {
 		MTWF_LOG(DBG_CAT_ALL, DBG_SUBCAT_ALL, DBG_LVL_ERROR, ("%s(): BandSteering %d\n", __FUNCTION__,pAd->ApCfg.BandSteering));
         return;

@@ -17,7 +17,7 @@ old_library='libconfuse.a'
 inherited_linker_flags=''
 
 # Libraries that this one depends upon.
-dependency_libs=' -L/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/zhangtianchuan/trunk/GPL_Code/source/lib/lib'
+dependency_libs=' -L/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/lib -L/home/baifan/dlink_882/trunk/GPL_Code/source/lib/lib'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/home/zhangtianchuan/trunk/GPL_Code/source/user/confuse/confuse-3.2.2/install/lib'
+libdir='/home/baifan/dlink_882/trunk/GPL_Code/source/user/confuse/confuse-3.2.2/install/lib'

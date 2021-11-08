@@ -1,0 +1,687 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+
+<head>
+<title>D-LINK</title>
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link href="css/jquery.selectbox.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialCSS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialValidate.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAction.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPUSB.js"></script>
+
+<script>
+//xframeoption
+if(top!=self){top.location=self.location;}
+
+//session
+if (sessionStorage.getItem('PrivateKey') === null){
+	window.location.replace('../info/Login.html');
+}
+
+$(document).ready(function(){
+
+	Load_HTML();
+	Initial();
+	setMenu("menu_Settings");
+	startTimeout();
+	GetXML();
+	
+	//#ifdef featureUPNPAV
+	if(currentDevice.featureUPNPAV == false)
+	{
+		$("#div_upnpav").hide();
+	}
+	//#endif
+	// ifdef featureFTPServer then show it
+	if(currentDevice.featureFTPServer == false)
+	{
+		$("#div_FTPServer").hide();
+	}
+});
+</script>
+
+<script type="text/javascript">
+
+	var _ReciprocalNumber = 25;
+	function Load_HTML()	{	$("#header").load("header.html");	}
+	function Initial()
+	{
+		initialMenu();
+		initialDetectRouterConnection();
+	}
+	
+	function GetXML(){	
+		
+		if(currentDevice.featureUPNPAV)
+		{
+			getDLNAstatus();
+		}
+		getUSBstatus();
+		getSMBstatus();
+		if(currentDevice.featureFTPServer)
+		{
+			getFTPstatus();
+		}
+		if(currentDevice.supportUSB30Settings)
+		{
+			getUSB30status();
+		}
+
+		document.getElementById("main").style.display = "inline";
+	}
+	
+	function getFTPstatus(){
+		var getFTPResponse = new SOAPGetFTPSettings();
+		var soapAction = new SOAPAction();
+		var result_FTPResponse = soapAction.sendSOAPAction("GetFTPSettings", null, getFTPResponse);
+		
+		result_FTPResponse.done(function(obj)
+		{
+			$("#div_FTPServer").show();
+			if (obj.Enabled == "true")
+			{
+				$("#status_FTP").prop("checked", true);
+			}
+			else
+			{
+				$("#status_FTP").prop("checked", false);
+			}
+			
+			if (obj.RemoteFTP == "true")
+			{
+				$("#status_FTPRemote").prop("checked", true);
+			}
+			else
+			{
+				$("#status_FTPRemote").prop("checked", false);
+			}
+			document.getElementById("FTP_Port").value = obj.FTPPort;
+			document.getElementById("FTP_Idle").value = obj.IdleTime;
+		});
+	}
+	
+	function getDLNAstatus(){
+		var getDLNAResponse = new SOAPGetDLNAResponse();
+		var soapAction = new SOAPAction();
+		var result_DLNAResponse = soapAction.sendSOAPAction("GetDLNA", null, getDLNAResponse);
+				
+		result_DLNAResponse.done(function(obj)
+		{
+			if (obj.Enabled == "true")
+			{
+				$("#status_dlna").prop("checked", true);
+			}
+			else
+			{
+				$("#status_dlna").prop("checked", false);
+				document.getElementById("dlnaMediaServer").disabled = true;
+			}
+			document.getElementById("dlnaMediaServer").value = obj.DeviceName;
+		});	
+	}
+			
+	function getSMBstatus(){
+		var getSMBResponse = new SOAPGetSMBStatusResponse();
+		var soapAction = new SOAPAction();
+		var result_SMBResponse = soapAction.sendSOAPAction("GetSMBStatus", null, getSMBResponse);
+		
+		result_SMBResponse.done(function(obj)
+		{
+			if (obj.Enabled == "true")
+			{	
+				$("#status_SAMBA").prop("checked", true);
+			}
+			else
+			{
+				$("#status_SAMBA").prop("checked", false);
+			}
+		});
+	}
+	
+	function getUSBstatus(){
+		var getUSBResponse = new SOAPGetUSBStorageSettingsResponse();
+		var soapAction = new SOAPAction();
+		var result_USBResponse = soapAction.sendSOAPAction("GetUSBStorageSettings", null, getUSBResponse);
+		
+		result_USBResponse.done(function(obj)
+		{
+			if (obj.Enabled == "true")
+			{
+				$("#status_shareport").prop("checked", true);;
+				document.getElementById("show_DirectLinks_a").style.display = "table-row";
+				document.getElementById("show_DirectLinks_b").style.display = "table-row";
+			}
+			else
+			{
+				$("#status_shareport").prop("checked", false);
+				document.getElementById("show_DirectLinks_a").style.display = "none";
+				document.getElementById("show_DirectLinks_b").style.display = "none";
+			}
+			
+			if(obj.RemoteHttpPort != "")
+			{
+				document.getElementById("localAccessHTTP").onclick = function()	{	this.href = "http://shareport.local/";	};
+				document.getElementById("localAccessHTTP").target = "_blank";
+				document.getElementById("localAccessHTTP").innerHTML = "http://shareport.local/";
+			}
+			
+			if(obj.RemoteHttpsPort != "")
+			{
+				document.getElementById("localAccessHTTPS").onclick = function()	{	this.href = "https://shareport.local:4433/";	};
+				document.getElementById("localAccessHTTPS").target = "_blank";
+				document.getElementById("localAccessHTTPS").innerHTML = "https://shareport.local/";
+			}
+		});
+	}
+
+	function getUSB30status(){
+		//USB 3.0, for alpha hardware issue
+		//#ifdef supportUSB30Settings
+			var soapAction = new SOAPAction();
+			var usb30Settings = new SOAPGetUSB30SettingsResponse();
+
+			soapAction.sendSOAPAction("GetUSB30Settings", null, usb30Settings).done(function(obj){
+				$("#usb30_bug").show();
+				var enabled = false;
+				if(obj.Enabled == "true")
+				{
+					enabled = true;
+				}
+			$("#status_shareport").prop("checked", enabled);
+				usb30driver_status_onChange(enabled);
+			});
+	}
+
+	function CheckConnectionStatus()
+	{
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 5000,
+			type : "GET",
+			success : function(data) { SetXML(); },
+			error : function() { document.getElementById("DetectRouterConnection").style.display = "inline"; }
+		});
+	}
+	
+	function SetXML()
+	{
+		document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		document.getElementById("waitSettingFinish").style.display = "inline";
+		
+		if(currentDevice.featureUPNPAV)
+		{
+			save_dlnaSettings();
+		}
+		save_SMBSettings();
+		save_USBSettings();
+		if(currentDevice.featureFTPServer)
+		{
+			save_FTPSettings();
+		}
+		if(currentDevice.supportUSB30Settings)
+		{
+			save_usb30Settings();
+		}
+		
+		Start_reciprocal_Number_RestoreConfiguration();
+	}
+	
+	function Start_reciprocal_Number_RestoreConfiguration()
+	{
+		if (_ReciprocalNumber >= 0)
+		{
+			document.getElementById("reciprocal_Number").innerHTML = _ReciprocalNumber + " " + I18N("j", "Sec");
+			_ReciprocalNumber --;
+			setTimeout("Start_reciprocal_Number_RestoreConfiguration()", 1000);
+		}
+		else	{	waitSettingFinished();	}
+	}
+	function waitSettingFinished()	{	window.location.reload();	}
+	
+	//#ifdef featureUPNPAV
+	function showMediaServerDesc()
+	{
+		if(currentDevice.featureDLNA)
+		{
+			I18N("h", "SharePort allows you to share photos, music, movies and files simply by connecting a USB drive to your router. Access your files locally and remotely using the free mydlink SharePort app for your iOS or Android devices, or access them on a computer through the SharePort Web Access. The built-in Digital Living Network Alliance (DLNA) media server allows you to stream multimedia content to any DLNA compliant devices such as smart TVs and games consoles.");
+		}
+		else
+		{
+			I18N("h", "The built-in UPnP media server streams music, videos, and photos stored on an attached USB drive to PCs, smartphones, tablets, smart TVs, or other media devices on your network. Web File Access allows you to access files on an attached USB drive through a web browser.");
+		}
+	}
+	
+	function showMediaServer()
+	{
+		if(currentDevice.featureDLNA)
+		{
+			I18N("h", "DLNA Media Server");
+		}
+		else
+		{
+			I18N("h", "UPnP Media Server");
+		};
+	}
+	//#endif
+	
+	function save_dlnaSettings()
+	{
+		var soapAction = new SOAPAction();
+		var dlnaSettings = new SOAPSetDLNA();
+		dlnaSettings.Enabled = $("#status_dlna").prop("checked");
+		dlnaSettings.DeviceName = XMLEncode(document.getElementById("dlnaMediaServer").value);	
+		soapAction.sendSOAPAction("SetDLNA", dlnaSettings, null);
+	}
+	
+	function save_SMBSettings()
+	{
+		var soapAction = new SOAPAction();
+		var SMBSettings = new SOAPSetSMBStatus();
+		SMBSettings.Enabled = $("#status_SAMBA").prop("checked");
+		soapAction.sendSOAPAction("SetSMBStatus", SMBSettings, null);
+	}
+
+	function save_USBSettings()
+	{
+		var soapAction = new SOAPAction();
+		var USBSettings = new SOAPSetUSBStorageSettings();
+
+		if($("#status_shareport").prop("checked") == true)
+		{
+			USBSettings.Enabled = "true";
+			USBSettings.RemoteHttp = "true";
+			USBSettings.RemoteHttps = "true";
+			USBSettings.RemoteHttpPort = "8181";
+			USBSettings.RemoteHttpsPort = "4433";
+		}
+		else
+		{
+			USBSettings.Enabled = "false";
+			USBSettings.RemoteHttp = "false";
+			USBSettings.RemoteHttps = "false";
+			USBSettings.RemoteHttpPort = "";
+			USBSettings.RemoteHttpsPort = "";
+		}
+		soapAction.sendSOAPAction("SetUSBStorageSettings", USBSettings, null);
+	}
+
+	function save_FTPSettings()
+	{
+		var soapAction = new SOAPAction();
+		var FTPSettings = new SOAPSetFTPSettings();
+		FTPSettings.Enabled = $("#status_FTP").prop("checked");
+		FTPSettings.RemoteFTP = $("#status_FTPRemote").prop("checked");
+		FTPSettings.FTPPort = document.getElementById("FTP_Port").value;
+		FTPSettings.IdleTime = document.getElementById("FTP_Idle").value;
+		soapAction.sendSOAPAction("SetFTPSettings", FTPSettings, null);
+	}
+	
+	//#ifdef supportUSB30Settings
+	function save_usb30Settings()
+	{
+		var soapAction = new SOAPAction();
+		var usb30Settings = new SOAPGetUSB30SettingsResponse();
+		usb30Settings.Enabled = $("#status_USB30").prop('checked');
+		soapAction.sendSOAPAction("SetUSB30Settings", usb30Settings, null);
+	}
+
+	function usb30driver_status_onChange(enabled)
+	{
+		if(enabled)
+		{
+			$("#show_usb30_warn").show();
+		}
+		else
+		{
+			$("#show_usb30_warn").hide();
+		}
+	}
+	//#endif
+	
+	function showAdv(band)
+	{
+		var block = $("#"+band+"_adv");
+		if(block.css("display") == "none")
+		{
+			block.show();
+		}
+		else 
+		{
+			block.hide();
+		}
+		changeTimeoutAction();
+	}
+	
+	function ChangeBandStatus(band)
+	{
+		var status = $("#status_"+band).prop("checked");
+		
+		switch(band)
+		{
+			case 'dlna':
+				$("#dlnaMediaServer").attr("disabled", !status);
+				break;
+			
+			case 'shareport':
+				if(status){
+					document.getElementById("show_DirectLinks_a").style.display = "table-row";
+					document.getElementById("show_DirectLinks_b").style.display = "table-row";
+				}
+				else{
+					document.getElementById("show_DirectLinks_a").style.display = "none";
+					document.getElementById("show_DirectLinks_b").style.display = "none";
+				}
+				break;
+			
+			case 'FTP':
+					$("#status_FTPRemote").attr("disabled", !status);
+					$("#FTP_Port").attr("disabled", !status);
+					$("#FTP_Idle").attr("disabled", !status);
+				break;
+			
+			case 'USB30':
+				usb30driver_status_onChange(status);
+				break;
+		}
+	}
+	
+</script>
+<script language="JavaScript">
+	// 2013/09/23 Timmy Modify
+	$(function() {
+		$("input, select").change(function () { 
+			save_button_changed();
+		});
+		$("input").keypress(function () { 
+			save_button_changed();
+		});
+	
+	});
+	function save_button_changed()
+	{
+		document.getElementById("Save_Disable_btn").style.display = "none";
+		document.getElementById("Save_btn").style.display = "block";
+		changeFlag = true;
+		changeTimeoutAction();
+	}
+</script>
+
+</head>
+
+<body>
+	<form name="shareport_form" id="shareport_form" method="POST" action="">
+	<div id="wrapper">
+		<!-- ------------------ Logo ----------------------- -->
+		<div id="header"></div>
+		<!-- ------------------ Menu ------------------------->
+		<div id="menu"></div>
+		<div id="menu_edge"></div>
+		<!-- ------------------ Content -------------------- -->
+		<div id="content">
+			<!-- ------------------ info -------------------- -->	
+	  		<div id="info">
+				<div id="FunctionName"><script>I18N("h", "SharePort");</script></div>
+				<div id="wallimage"><img src="image/page_shareport.png" alt="" width="195" height="119"/></div>
+		        <div id="directions">
+			      	<script>showMediaServerDesc();</script>
+				</div>
+        	</div>
+	     	<!-- ------------------ funcBar -------------------- -->
+		     <div id="funcBar">
+				<div id="pagePath">&nbsp;<script>I18N("h", "Settings");</script> >> <script>I18N("h", "SharePort");</script></div>
+				<ul id="rightFunc">
+					<li style="display:block"><div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click();changeTimeoutAction();" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li> 
+					<li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+					<input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+					<li style="display:none"><a href="javascript:CheckHTMLStatus('SharePort_CreateUser');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "Create User");</script></div></a></li>
+				</ul>
+			</div>
+	     	<!-- ------------------ main -------------------- -->
+			<div id="main" style="display:none">
+				<!-- ------------------ table -------------------- -->
+				<!--#ifdef featureUPNPAV-->
+				<div id="div_upnpav">
+				<table class="block" style="margin: 10px 0 0 0 ;display:none">
+					<tbody>
+						<tr>
+							<td><div class ="title"><script>showMediaServer();</script></div></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Status");</script>:</th>
+							<td>
+								<input type="checkbox" class="chkbox" id="status_dlna" onchange="ChangeBandStatus('dlna')"/><label for="status_dlna"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+							</td>
+						</tr>
+						<tr>
+							<th><script>showMediaServer();</script>:</th>
+							<td><div><input class="styled-text required" type="text" name="dlnaMediaServer" size="27" maxlength="63" id="dlnaMediaServer"></div></td>
+						</tr>
+					</tbody>
+				</table>
+				<hr></div>
+				<!--#endif-->
+				<table class="block" style="margin: 10px 0 0 0;">
+					<tbody>
+						<tr>
+							<td><div class ="title"><script>I18N("h", "Windows File Sharing (SAMBA)");</script></div></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Status");</script>:</th>
+							<td>
+								<input type="checkbox" class="chkbox" id="status_SAMBA" onchange="ChangeBandStatus('SAMBA')"/><label for="status_SAMBA"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<!--<hr>-->
+				<table class="block" style="margin: 10px 0 0 0;display:none">
+					<tbody>
+						<tr>
+							<td><div class ="title"><script>I18N("h", "Web File Access");</script></div></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Status");</script>:</th>
+							<td>
+								<input type="checkbox" class="chkbox" id="status_shareport" onchange="ChangeBandStatus('shareport')"/><label for="status_shareport"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+							</td>
+						</tr>
+						<tr id="show_DirectLinks_a" style="display:none">
+							<th><script>I18N("h", "Direct Links");</script>:</th>
+							<td class="linkstyle_1"><a href="#" id="localAccessHTTP"><script>I18N("h", "Not Available");</script></a></td>
+						</tr>
+						<tr id="show_DirectLinks_b" style="display:none;">
+							<td></td>
+							<td class="linkstyle_1"><a href="#" id="localAccessHTTPS"><script>I18N("h", "Not Available");</script></a></td>
+						</tr>
+					</tbody>
+				</table>
+				<div id="div_FTPServer">
+				<hr>
+				<table class="block" style="margin: 10px 0 0 0;">
+					<tbody>
+						<tr>
+							<td><div class ="title"><script>I18N("h", "FTP Server");</script></div></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Status");</script>:</th>
+							<td>
+								<input type="checkbox" class="chkbox" id="status_FTP" onchange="ChangeBandStatus('FTP')"/><label for="status_FTP"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="advButton" onclick="showAdv('FTP');"><script>I18N("h", "Advanced Settings");</script>...</div>
+				<hr>
+				<div id="FTP_adv" style="display:none">
+				    <table  class="block" border="0">
+					   <tbody>
+						    <tr>
+							<th><script>I18N("h", "Enable Remote Sharing");</script>:</th>
+							<td>
+								<input type="checkbox" class="chkbox" id="status_FTPRemote" onchange="ChangeBandStatus('Remote')"/><label for="status_FTPRemote"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+							</td>
+							</tr>
+						    <tr  style="height: 40px;">
+							<th><script>I18N("h", "FTP Server Port");</script>:</th>
+							<td><div><input class="styled-text" style="width: 88px;" type="text" name="FTP_Port" size="27" maxlength="5" id="FTP_Port"></div></td>
+							</tr>
+							<tr>
+							<th><script>I18N("h", "Idle Time");</script>:</th>
+							<td><div><input class="styled-text" style="width: 88px;" type="text" name="FTP_Idle" size="27" maxlength="1" id="FTP_Idle"><label style="padding-left: 5px;padding-top: 5px;"><script>I18N("h", "minutes");</script></label></div></td>
+							</tr>
+					   </tbody>
+					</table> 
+				</div>
+				</div>
+				<div id="usb30_bug" style="display:none">
+				<hr>
+				<table class="block" style="margin: 10px 0 0 0">
+					<tbody>
+						<tr>
+							<td><div class ="title"><script>I18N("h", "USB 3.0 Driver");</script></div></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Status");</script>:</th>
+							<td>
+								<input type="checkbox" class="chkbox" id="status_USB30" onchange="ChangeBandStatus('USB30')"/><label for="status_USB30"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+							</td>
+						</tr>
+						<tr id="show_usb30_warn" style="display:none">
+							<td colspan="2" style="color:red;text-align:center"><script>I18N("h", "Please note that enabling USB3.0 may adversely affect your 2.4G wireless range.");</script></td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+			<!-- ------------------ message -------------------- -->
+			<div id="CreatePopAlertMessage" style="display:none">
+				<div id="AlertPopRect">
+				<div id="AlertPopBody">
+						<table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0" style="display:none">
+					   <tbody>
+							 <tr>
+							 	<td>
+										<center><div id="Loading_pop_image"></div></center>
+								</td>
+							 </tr>
+							 <tr>
+									<td><label id="reciprocal_Number"></label></td>
+							 </tr>
+							 <tr>
+									<td id="dialog_msg_black"><label id="result_Message"><script>I18N("h", "Your changes are being saved.");</script></label></td>
+							 </tr>
+					   </tbody>
+					</table>
+				</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+		<div id="DetectRouterConnection" style="display:none"></div>
+		<div id="footer">
+			<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>
+		</div>
+	</div>
+	</form>
+<script type="text/javascript" charset="utf-8">
+	$(document).ready( function() {
+		// Check Number Value
+		$.validator.addMethod("checkNumberValue", function( value, element ) {
+			var ValidIpAddressRegex = /(^[0-9]+$)/;
+			var id = $(element).attr("id");
+			var returnVal = true;
+			//var used_port = ["8080", "8181", "3690"];
+			
+			if (ValidIpAddressRegex.test(value))
+			{
+				if (value <= 0)
+				{
+					returnVal = false;
+				}	
+				switch(id)
+				{
+					case 'FTP_Port':
+						if (value < 1024 || value > 65535)
+						{
+							returnVal = false;
+						}
+						if (value == 21)	returnVal = true;
+						/*else if (used_port.indexOf(value) != -1)
+						{
+							returnVal = false;
+						}*/
+						break;
+					case 'FTP_Idle':
+						if (value < 1 || value > 5)
+						{
+							returnVal = false;
+						}
+						break;
+				}
+			}
+			else
+			{
+				returnVal = false;
+			}
+			return returnVal;
+		}, jQuery.validator.messages.number);
+		
+		$('#shareport_form').validate({
+			rules: {
+				FTP_Port: {
+					required: true,
+					checkNumberValue: true
+				},
+				FTP_Idle: {
+					required: true,
+					checkNumberValue: true
+				},
+				dlnaMediaServer: {
+					required: true
+				},
+			},
+			messages: {
+				FTP_Port: {
+					required: jQuery.validator.messages.number,
+					checkNumberValue: jQuery.validator.messages.check_FTPport
+				},
+				FTP_Idle: {
+					required: jQuery.validator.messages.number,
+					checkNumberValue: jQuery.validator.messages.check_FTPidle
+				},
+				dlnaMediaServer: {
+					required: jQuery.validator.messages.dlna_Name
+				},
+			},
+			submitHandler: function(form) {
+				CheckConnectionStatus();
+			},
+			errorPlacement:function(error, element){
+				var div = element.parent();
+				error.insertAfter(div).css({"color":"#f00", "font-size":"14px", "font-weight":"normal"});
+			},
+			skipBr: function(element){
+				var div = element.parent("div");
+
+				if(div.length == 0)
+				{
+					return false;
+				}
+				return true;
+			}
+		});
+	});
+</script>
+</body>
+</html>

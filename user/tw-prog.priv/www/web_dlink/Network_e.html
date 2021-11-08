@@ -1,0 +1,852 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>D-LINK</title>
+
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">	
+<link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/jquery.selectbox_e.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="css/style_pages_e.css" media="all" />
+<!--test-->
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+
+<link rel="stylesheet" type="text/css" href="css/style_pop.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="js/initialJQ_e.js"></script>	
+<script type="text/javascript" charset="utf-8" src="js/initialJSDefault.js"></script>
+
+<!--test-->
+<script type="text/javascript" charset="utf-8" src="/js/includeLang.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="js/initialLibs.js"></script>
+<!--test-->
+<script type="text/javascript" charset="utf-8" src="/js/Public.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.validate.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAPSettings.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/popView.js"></script>
+
+<!--for extender-->
+<script type="text/javascript" charset="utf-8" src="js/menu_e.js"></script>
+<script type="text/javascript">
+	//xframeoption
+	if(top!=self){top.location=self.location;}
+
+	//session
+	if (sessionStorage.getItem('PrivateKey') === null) {
+		window.location.replace('../info/Login.html');
+	}
+
+	var soapAction = new SOAPAction();
+	// InitImage(basedImage);
+
+	function setGlobalTrigger() {
+		$("select").change(function() {
+			EnableSaveBtn();
+		});
+		$("input").keydown(function () {
+			EnableSaveBtn();
+		});
+		
+		$("input").on( "tap", function() {
+			$(this).focus();
+		});
+	}
+
+	//trigger
+	function setTrigger() {
+		$("#IPv6Mode").on("change", function() {
+			var index = $(this).val();
+			$(".v6typeSession").hide();
+			switch(index){
+					case "IPv6_LinkLocalOnly":
+						$("#v6_link_local").show();
+						break;
+					case "IPv6_Static":
+						$("#v6_static_ip").show();
+						break;
+					case "IPv6_AutoConfiguration":
+						$("#v6_auto_config").show();
+						break;
+			}
+		});
+
+		$("#Mode").on("change", function() {
+			var index = $(this).val();
+			var isDisabled = true;
+			if (index == "1") {
+				isDisabled = false;
+			}		
+			$("#IPAddr, #SubnetMask, #Gateway, #PrimaryDNS, #SecondaryDNS").attr("disabled", isDisabled);
+		});
+	}
+
+	function ChangeDNSMode(whichMode) {
+		var ObtainDNS = GetByName("ObtainDNS");
+		
+		$("#ObtainDNS0, #ObtainDNS1").attr("class", "cus_radio_off");
+		$("#ObtainDNS"+whichMode).attr("class", "cus_radio_on");
+		ObtainDNS[whichMode].checked = true;			
+					
+		if (ObtainDNS[0].checked) {
+			$("#v6_dns_manually").hide();
+		} else {
+			$("#v6_dns_manually").show();
+		}
+	}
+
+	function ShowAdvancedSettings()	{
+		var dom = $("#advancedSettings");
+		
+		if(dom.css("display") == "none") {
+			dom.show();
+		} else {
+			dom.hide();
+		}
+		changeTimeoutAction();
+	}
+	
+	$(document).ready(function() {
+		LoadHeader();
+		InitSelectBox();
+		// InitMenu("Settings", "Network");
+		Initial();
+		setMenu("menu_Settings");
+
+		setTrigger();
+		GetNetworkSettings();
+		startTimeout();
+	});
+
+
+	function Initial() {
+		initialMenu();
+		// initialDetectRouterConnection();
+	}
+
+	function LoadHeader() {				
+		$("#header").load("header.html");			
+	}
+			
+	function InitSelectBox(isInit) {
+		$("#Mode").selectbox({width:"100%"});	
+		$("#IPv6Mode").selectbox({width:"100%"});
+	}
+	
+	function EnableSaveBtn() {
+		changeTimeoutAction();
+		$("#Save_Btn").attr("disabled", false);
+	}
+
+	function GetNetworkSettings() {
+		getAPLan();
+		getAPIPv6();
+		getAPIPv6Static();
+		
+		sleep(200).done(function() {
+			getAPIPv6AutoConfig();
+		});
+	}
+		
+	function getAPLan() {
+		var getAPLanSettings = new SOAPGetAPLanSettingsResponse();
+		soapAction.sendSOAPAction("GetAPLanSettings", null, getAPLanSettings)
+		.done(function(obj){
+			$("#DeviceName").val(obj.DeviceName);
+			$("#IPAddr").val(obj.IPAddr);
+			$("#SubnetMask").val(obj.SubnetMask);
+			$("#Gateway").val(obj.Gateway);
+			$("#PrimaryDNS").val(obj.PrimaryDNS);
+			$("#SecondaryDNS").val(obj.SecondaryDNS);
+
+			var modeDOM = $("#Mode");
+			modeDOM.selectbox('detach');
+			modeDOM.val(obj.Mode).trigger("change");		
+			modeDOM.selectbox({width:"100%"});
+		});
+	}
+			
+	function getAPIPv6() {
+		var ipv6status = new SOAPGetHostIPv6StatusResponse();
+		soapAction.sendSOAPAction("GetHostIPv6Status", null, ipv6status)
+		.done(function(obj) {
+			var ipv6Mode = $("#IPv6Mode");
+
+			ipv6Mode.selectbox('detach');
+			ipv6Mode.val(obj.IPv6_ConnectionType).trigger("change");
+			ipv6Mode.selectbox({width:"100%"});
+
+			$("#link_local").html(obj.IPv6_LinkLocalAddress.toUpperCase());
+		});
+	}
+			
+	function getAPIPv6Static() {
+		var ipv6settings = new SOAPGetHostIPv6StaticSettingsResponse();
+		soapAction.sendSOAPAction("GetHostIPv6StaticSettings", null, ipv6settings)
+		.done(function(obj) {
+			$("#StaticAddress").val(obj.StaticAddress);
+			$("#StaticPrefixLength").val(obj.StaticPrefixLength);
+			$("#StaticDefaultGateway").val(obj.StaticDefaultGateway);
+			$("#StaticDNS1").val(obj.StaticDNS1);
+			$("#StaticDNS2").val(obj.StaticDNS2);
+		});
+	}
+			
+	function getAPIPv6AutoConfig() {
+		var getHostIPv6AutoConfig = new SOAPGetHostIPv6AutoConfigurationSettingsResponse();
+		soapAction.sendSOAPAction("GetHostIPv6AutoConfigurationSettings", null, getHostIPv6AutoConfig)
+		.done(function(obj) {
+			switch(obj.ObtainDNS) {
+				case "true":
+					ChangeDNSMode(0);	
+					break;
+				case "false":	
+					ChangeDNSMode(1);
+					$("#AutoDNS1").val(obj.AutoDNS1);
+					$("#AutoDNS2").val(obj.AutoDNS2);						
+					break;
+			}
+			
+			setGlobalTrigger();
+
+		});
+	}
+			
+	function SetNetworkSettings() {
+		var msg = I18N("j", "Please wait") + " ...";
+		var msg2 = I18N("j", "Your changes are being saved, and the device will need to reboot.");
+		var msg3 = I18N("j", "The new settings have been saved.");
+
+		var setAPLanResult = setAPLan();
+		var setAPIPv6Result = setAPIPv6();
+		$("#Save_Btn").attr("disabled", true);
+		PopView.show(msg);
+		
+		soapAction.SendMultipleSOAPAction("SetMultipleActions").then(function(a,b){
+			if(b == "REBOOT") {
+				return PopView.showWithCountdown(msg2, 15, b);
+			} else {
+				return true;
+			}
+		}).always(function(rebootresult){
+			PopView.showConfirm(msg3).done(function(){
+				// location.reload();
+				var newurl = "http://" + $('#DeviceName').val() + ".local./";
+
+				sessionStorage.clear();
+				self.location.href = newurl;				
+			});
+		});
+	}
+	
+	function setAPLan() {
+		var setAPLanSettings = new SOAPSetAPLanSettings(); //LocalDomainName?
+		
+		setAPLanSettings.DeviceName = $("#DeviceName").val();
+		setAPLanSettings.Mode = $("#Mode").val();
+		switch(setAPLanSettings.Mode) {
+			case "0":		break;
+			case "1":
+				setAPLanSettings.IPAddr = $("#IPAddr").val();
+				setAPLanSettings.SubnetMask = $("#SubnetMask").val();
+				setAPLanSettings.Gateway = $("#Gateway").val();
+				setAPLanSettings.PrimaryDNS = $("#PrimaryDNS").val();
+				setAPLanSettings.SecondaryDNS = $("#SecondaryDNS").val();
+				break;
+		}
+		
+		soapAction.SetMultipleSOAP("SetAPLanSettings", setAPLanSettings, null);
+	}
+		
+	function setAPIPv6() {
+		var ipv6ModeSettings = new SOAPSetHostIPv6Settings();
+		
+		ipv6ModeSettings.IPv6Mode = $("#IPv6Mode").val();
+		switch(ipv6ModeSettings.IPv6Mode){
+				case "IPv6_LinkLocalOnly":
+					break;
+				case "IPv6_Static":
+					setAPIPv6Static();
+					break;
+				case "IPv6_AutoConfiguration":
+					setAPIPv6AutoConfig();
+					break;
+		}
+		
+		soapAction.SetMultipleSOAP("SetHostIPv6Settings", ipv6ModeSettings, null);
+	}
+		
+	function setAPIPv6Static() {
+		var ipv6settings = new SOAPSetHostIPv6StaticSettings();
+					
+		ipv6settings.StaticAddress = $("#StaticAddress").val();
+		ipv6settings.StaticPrefixLength = $("#StaticPrefixLength").val();
+		ipv6settings.StaticDefaultGateway = $("#StaticDefaultGateway").val();
+		ipv6settings.StaticDNS1 = $("#StaticDNS1").val();
+		ipv6settings.StaticDNS2 = $("#StaticDNS2").val();
+	
+		soapAction.SetMultipleSOAP("SetHostIPv6StaticSettings", ipv6settings, null);
+	}
+		
+	function setAPIPv6AutoConfig() {
+		var setHostIPv6AutoConfig = new SOAPSetHostIPv6AutoConfigurationSettings();
+			
+		if ($("#ObtainDNS0").attr('class') =="cus_radio_on") {
+			setHostIPv6AutoConfig.ObtainDNS = true;
+		}			
+		else if ($("#ObtainDNS1").attr('class') =="cus_radio_on") {
+			setHostIPv6AutoConfig.ObtainDNS = false;
+			setHostIPv6AutoConfig.AutoDNS1 = $("#AutoDNS1").val();
+			setHostIPv6AutoConfig.AutoDNS2 = $("#AutoDNS2").val();
+		}
+			
+		soapAction.SetMultipleSOAP("SetHostIPv6AutoConfigurationSettings", setHostIPv6AutoConfig, null);
+	}
+
+	$(function() {
+		$('#SubnetMask').on('change', function() {
+			$('#network_form').validate().element('#IPAddr');
+		});
+
+		$('#IPAddr').on('change', function() {
+			$('#network_form').validate().element('#SubnetMask');
+		});		
+	});
+</script>
+<style>	
+	.title3 {
+		color: rgb(86, 88, 63); 
+		font-size: 15px; 
+		font-weight: normal;
+		margin-bottom: 30px;
+	}
+
+	.v6typeSession {
+		margin-top: 30px;
+	}
+
+	/* bootstrap */
+	.col-sm-2 {
+		width: 40%;
+	}
+	.col-sm-offset-2 {
+		margin-left: 33.5%;
+	}
+	.form-horizontal .form-group {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+
+	/*extender*/
+	#pagePath {
+    	position: relative;
+    	line-height: 50px;
+    	font-size: 18px;
+    	color: #aaaaaa;
+    }
+
+	.sbHolder {
+		border-radius: 0;
+	}
+
+	.form-control {
+		border-radius: 0;
+	}
+</style>	
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header"></div>
+		<div id="menu"></div>
+		<!-- Content --> 
+		<div id="content">
+			<form name="network_form" id="network_form" method="POST" action="">
+			<!-- info --> 
+			<div id="info">
+				<div id="FunctionName"><script>I18N("h", "Network");</script></div>
+				<div id="wallimage"><img width="195" height="119" src="image/page_network2.png"></div>
+				<div id="directions">
+					<script>I18N("h", "Use this section to configure the network settings for your device. You can enter a name for your device in the management link field, and use the link to access web UI  in a web browser. Recommend to change the management link if there are more than one D-Link devices within the network.");</script>
+				</div>
+			</div>
+			<!-- funcBar -->
+			<div id="funcBar">
+				<div id="pagePath">
+					<script>I18N("h", "Settings");</script> &gt;&gt; <script>I18N("h", "Network");</script>
+				</div>
+				<ul id="rightFunc">
+					<li style="display: block;">
+						
+						<button type="submit" id="Save_Btn" class="btn btn_save" onclick="changeTimeoutAction()" disabled>
+							<script>I18N("h", "Save");</script>
+						</button>
+					</li>					
+				</ul>
+			</div>
+			<!-- main --> 
+			<div id="main" class="form-horizontal">
+				<div class="title"><script>I18N("h", "Network Settings");</script></div>
+
+				<div class="form-group">
+					<label for="DeviceName" class="col-sm-2 control-label"><script>I18N("h", "Management Link");</script> :</label>
+					<div class="col-sm-5">
+						<label>http://</label>
+						<input type="text" class="form-control" style="display:inline-block;width:150px" id="DeviceName" name="DeviceName" maxlength="15">
+						<label>.local/</label>
+					</div>
+				</div>
+				<div class="advButton">
+					<span onclick="ShowAdvancedSettings();">
+						<script>I18N("h", "Advanced");</script>...
+					</span>
+				</div>
+				<hr />
+				<div id="advancedSettings" style="display:none;">
+				<div id="v4_interface">
+					<div class="title2">
+						<script>I18N("h", "IPv4");</script>
+					</div>
+					<div class="title3">
+						<script>I18N("h", "Choose a IPv4 provisioning mechanism to be used by the device.");</script>
+					</div>
+
+					<div class="form-group">
+						<label for="Mode" class="col-sm-2 control-label"><script>I18N("h", "My Internet Connection is");</script> :</label>
+						<div class="col-sm-4">
+							<select id="Mode">
+								<option value="0"><script>I18N("h", "Dynamic IP (DHCP)");</script></option>
+								<option value="1"><script>I18N("h", "Static IP");</script></option>
+							</select> 
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="IPAddr" class="col-sm-2 control-label"><script>I18N("h", "IP Address");</script> :</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="IPAddr" name="IPAddr" maxlength="15" disabled>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="SubnetMask" class="col-sm-2 control-label"><script>I18N("h", "Subnet Mask");</script> :</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="SubnetMask" name="SubnetMask" maxlength="15" disabled>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="Gateway" class="col-sm-2 control-label"><script>I18N("h", "Gateway Address");</script> :</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="Gateway" name="Gateway" maxlength="15" disabled>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="PrimaryDNS" class="col-sm-2 control-label"><script>I18N("h", "Primary DNS");</script> :</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="PrimaryDNS" name="PrimaryDNS" maxlength="15" disabled>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="SecondaryDNS" class="col-sm-2 control-label"><script>I18N("h", "Secondary DNS");</script> :</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="SecondaryDNS" name="SecondaryDNS" maxlength="15" disabled>
+						</div>
+					</div>
+				</div>
+				<hr />
+				<div id="v6_interface">
+					<div class="title2">
+						<script>I18N("h", "IPv6");</script>
+					</div>
+					<div class="title3">
+						<script>I18N("h", "Choose a IPv6 provisioning mechanism to be used by the device.");</script>
+					</div>
+
+					<div class="form-group">
+						<label for="Mode" class="col-sm-2 control-label"><script>I18N("h", "My Internet Connection is");</script> :</label>
+						<div class="col-sm-5">
+							<select id="IPv6Mode">
+								<option value="IPv6_LinkLocalOnly"><script>I18N("h", "Local Connectivity Only");</script></option>
+								<option value="IPv6_Static"><script>I18N("h", "Static IPv6");</script></option>
+								<option value="IPv6_AutoConfiguration"><script>I18N("h", "Auto Configuration (SLAAC/DHCPv6)");</script></option>
+							</select> 
+						</div>
+					</div>
+
+					<div id="v6_link_local" class="v6typeSession" style="display:none">
+						<div class="title3">
+							<script>I18N("h", "The LAN IPv6 Link-Local Address is the IPv6 Address that you use to access the Web-based management interface.");</script>
+						</div>
+						<div class="form-group">
+							<label for="PrimaryDNS" class="col-sm-2 control-label"><script>I18N("h", "LAN IPv6 Link-Local Address");</script> :</label>
+							<div class="col-sm-4">
+								<p id="link_local" class="form-control-static"></p>
+							</div>
+						</div>
+					</div>
+					<div id="v6_static_ip" class="v6typeSession" style="display:none">
+						<div class="title3">
+							<script>I18N("h", "Enter the IPv6 address information that you would like to use to access the Web-based management interface.");</script>
+						</div>
+						<div class="form-group">
+							<label for="StaticAddress" class="col-sm-2 control-label"><script>I18N("h", "IPv6 Address");</script> :</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control" id="StaticAddress" name="StaticAddress" maxlength="63">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="StaticPrefixLength" class="col-sm-2 control-label"><script>I18N("h", "Subnet Prefix Length");</script> :</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control" id="StaticPrefixLength" name="StaticPrefixLength" style="width:50px" maxlength="3">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="StaticDefaultGateway" class="col-sm-2 control-label"><script>I18N("h", "Default Gateway");</script> :</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control" id="StaticDefaultGateway" name="StaticDefaultGateway" maxlength="63">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="StaticDNS1" class="col-sm-2 control-label"><script>I18N("h", "Primary DNS");</script> :</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control" id="StaticDNS1" name="StaticDNS1" maxlength="63">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="StaticDNS2" class="col-sm-2 control-label"><script>I18N("h", "Secondary DNS");</script> :</label>
+							<div class="col-sm-5">
+								<input type="text" class="form-control" id="StaticDNS2" name="StaticDNS2" maxlength="63">
+							</div>
+						</div>
+					</div>
+					<div id="v6_auto_config" class="v6typeSession" style="display:none">
+						<div class="title3">
+							<script>I18N("h", "Obtain a DNS server address automatically or enter a specific DNS server address.");</script>
+						</div>
+ 						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-7 cus_radio" onclick="ChangeDNSMode(0)">
+									<div class="cus_radio_on" id="ObtainDNS0"></div>
+									<input name="ObtainDNS" style="display: none;" type="radio" value="true">
+									<label><script>I18N("h", "Obtain a DNS server address automatically");</script></label>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-7 cus_radio"  onclick="ChangeDNSMode(1)">
+									<div class="cus_radio_off" id="ObtainDNS1"></div>
+									<input name="ObtainDNS" style="display: none;" type="radio" value="false">	
+									<label><script>I18N("h", "Use the following DNS address");</script></label>
+							</div>
+						</div>
+
+						<div id="v6_dns_manually" style="display:none">
+							<div class="form-group">
+								<label for="StaticDNS1" class="col-sm-2 control-label"><script>I18N("h", "Primary DNS");</script> :</label>
+								<div class="col-sm-5">
+									<input type="text" class="form-control" id="AutoDNS1" name="AutoDNS1" maxlength="63">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="StaticDNS2" class="col-sm-2 control-label"><script>I18N("h", "Secondary DNS");</script> :</label>
+								<div class="col-sm-5">
+									<input type="text" class="form-control" id="AutoDNS2" name="AutoDNS2" maxlength="63">
+								</div>
+							</div>
+						</div>						
+					</div>
+				</div>
+				</div>
+			</div>
+		</form>
+		</div>
+
+		<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+		<div id="DetectRouterConnection" style="display:none"></div>		
+
+		<div id="footer" border="0">
+			<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>			
+		</div>
+	</div>
+
+<!-- popup alert view -->
+<div id="popalert" class="black_overlay" style="display:none">
+	<div class="popup_window_border" style="position:relative;top:15%;">
+		<div class="popup_window">
+			<div id="popalert_circle">
+				<img src="image/loading.gif" width="62px" height="62px">
+			</div>
+			<div id="popalert_countdown">
+			</div>
+			<div id="popalert_desc">
+			</div>
+			<div id="popalert_buttons" class="btn-group" role="group" aria-label="...">
+				<button type="button" id="popalert_ok" class="btn btn-default">
+					<script>I18N("h", "OK");</script>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+<script type="text/javascript" charset="utf-8">
+	$(document).ready( function() {
+
+		$.validator.addMethod("checkIP", function( value, element ) {
+			var returnVal = true;
+			//var netmask = document.getElementById("SubnetMask").value;
+			//var mask = COMM_IPv4MASK2INT(netmask);
+			if(value!= ""){
+				if(!COMM_ValidV4Format(value) || !COMM_ValidV4Addr(value))
+					returnVal = false;
+			}
+			return returnVal;
+		}, I18N("j", "err_address_Check"));
+
+		$.validator.addMethod("checkIP2", function( value, element ) {
+			var returnVal = true;
+			var ValidHEXRegex = /^[0-9\.]{1,}$/;
+
+			if (!ValidHEXRegex.test(value)) {
+				returnVal = false;
+			}
+
+			return returnVal;
+		}, I18N("j", "err_address_Check"));
+		
+		$.validator.addMethod("checkSubnet", function( value, element ) {
+			var returnVal = true;
+			var mask = COMM_IPv4MASK2INT(value);
+			if(mask <= 0 || mask > 32){
+				returnVal = false;
+			}
+			if(mask < 8){
+				returnVal = false;
+			}
+			return returnVal;
+		}, I18N("j", "err_netmask_Check"));
+		
+		$.validator.addMethod("checkGatewayIfValidate", function( value, element ) {
+			var returnVal = true;
+			var staticip = document.getElementById("IPAddr").value;
+			var mask = COMM_IPv4MASK2INT(document.getElementById("SubnetMask").value);
+
+			if(value == "")
+				return true;
+
+			if(!COMM_ValidV4HOST(value, mask)){
+				returnVal = false;
+			}
+			return returnVal;
+		}, I18N("j", "err_gateway_AddressCheck"));
+		
+		$.validator.addMethod("checkGatewayIfEqualToIP", function( value, element ) {
+			var returnVal = true;
+			var staticip = document.getElementById("IPAddr").value;
+			var mask = COMM_IPv4MASK2INT(document.getElementById("SubnetMask").value);
+			if(value == document.getElementById("IPAddr").value){
+				returnVal = false;
+			}
+			return returnVal;
+		}, I18N("j", "err_gateway_AddressCheck"));
+		
+		$.validator.addMethod("checkGatewayIfConflict", function( value, element ) {
+			var returnVal = true;
+			var staticip = document.getElementById("IPAddr").value;
+			var mask = COMM_IPv4MASK2INT(document.getElementById("SubnetMask").value);
+
+			if(value == "")
+				return true;
+
+			if(COMM_IPv4NETWORK(value, mask) != COMM_IPv4NETWORK(staticip, mask)){
+				returnVal = false;
+			}
+			return returnVal;
+		}, I18N("j", "err_gateway_AddressCheck"));
+
+		$.validator.addMethod("checkName", function( value, element ) {
+			var ValidHEXRegex = /^[a-zA-Z0-9_-]+$/;
+			var returnVal = true;
+			if (ValidHEXRegex.test(value))
+			{
+				returnVal = true;
+			}
+			else
+			{
+				returnVal = false;
+			}
+			return returnVal;
+		}, I18N("j", "err_check_IllegalChar"));
+		
+		$.validator.addMethod("checkIPv6", function( value, element, params ) {
+			var returnVal = true;
+			if(value!= ""){
+				var returnVal = COMM_V6Format(value);
+			}
+			return returnVal;
+		}, I18N("j", "Please enter a valid IPv6 address."));
+		
+		$.validator.addMethod("checkIPv6Valid", function( value, element, params ) {
+			var returnVal = true;
+			var checkaddr = true;
+			returnVal = COMM_ValidV6Format(value, checkaddr);
+			return returnVal;
+		}, I18N("j", "Please enter a valid IPv6 address."));
+		
+		$.validator.addMethod("checkIPv6PrefixLength", function( value, element, params ) {
+			var returnVal = true;
+			if (isNaN(value)){	
+				return false; 
+			}
+			else
+			{
+				if (value <= 0 || value > 128)
+				{
+					return false;
+				}
+			}
+			return returnVal;
+		}, I18N("j", "Please enter a valid prefix length. (e.g. 64)"));
+
+		$.validator.addMethod("hostidandmaskforip", function( value, element ) {
+			var returnVal = true;
+			
+			var submask = document.getElementById("SubnetMask").value;
+			var mask = COMM_IPv4MASK2INT(submask);
+			var ipvalue = document.getElementById("IPAddr").value;
+			var hostid = COMM_IPv4HOST(ipvalue, mask);
+			
+			// console.log("hostid "+hostid)
+			// console.log(COMM_IPv4MAXHOST(mask))	
+
+			if(ipvalue != "" && submask != "") {
+				if(hostid>=COMM_IPv4MAXHOST(mask)){				
+					if(hostid == 0) {
+						returnVal = true;
+					} else {
+						returnVal = false;
+					}					
+				}else{
+					returnVal = true;
+				}				
+			} else {
+				returnVal = true;
+			}
+
+			return returnVal;
+
+		}, I18N("j", "err_address_Check"));
+
+		$.validator.addMethod("hostidandmaskformask", function( value, element ) {
+			var returnVal = true;
+			
+			var submask = document.getElementById("SubnetMask").value;
+			var mask = COMM_IPv4MASK2INT(submask);
+			var ipvalue = document.getElementById("IPAddr").value;
+			var hostid = COMM_IPv4HOST(ipvalue, mask);
+			
+			if(ipvalue != "" && submask != "") {
+				if(hostid == 0){
+					returnVal = false;
+				}else{
+					returnVal = true;
+				}
+			} else {
+				returnVal = true;
+			}
+			
+			return returnVal;
+
+		}, I18N("j", "err_netmask_Check"));
+
+
+		$('#network_form').validate({
+			rules: {
+				DeviceName: {
+					required: true,
+					checkName: true
+				},
+				IPAddr: {
+					required: true,
+					checkIP: true,
+					checkIP2: true,
+					hostidandmaskforip: true
+				},
+				SubnetMask: {
+					required: true,
+					checkSubnet: true,
+					hostidandmaskformask: true	
+				},
+				Gateway: {
+					checkGatewayIfValidate: true,
+					checkGatewayIfEqualToIP: true,
+					checkGatewayIfConflict: true
+				},
+				PrimaryDNS: {
+					checkIP: true
+				},
+				SecondaryDNS: {
+					checkIP: true
+				},
+				AutoDNS1: {
+					required: true,
+					checkIPv6: true
+				},
+				AutoDNS2: {
+					checkIPv6: true
+				},
+				StaticDNS1: {
+					checkIPv6: true
+				},
+				StaticDNS2: {
+					checkIPv6: true
+				},
+				StaticAddress: {
+					required: true,
+					checkIPv6: true,
+					checkIPv6Valid: true
+				},
+				StaticPrefixLength: {
+					required: true,
+					checkIPv6PrefixLength: true
+				},
+				StaticDefaultGateway: {
+					checkIPv6: true,
+					checkIPv6Valid: true
+				}
+			},
+			messages: {
+				DeviceName: {
+					required: I18N("j", "err_device_Name")
+				},
+				SubnetMask: {
+					required: I18N("j", "err_subnet_Mask")
+				},
+				Gateway: {
+					required: I18N("j", "err_gateway_Address")
+				},
+				StaticPrefixLength: {
+					required: I18N("j", "err_prefix_Length")
+				}
+			},
+			submitHandler: function(form) {
+				SetNetworkSettings();
+			},
+			skipBr: function(element) {
+				var div = element.parent("div");
+
+				if(div.length == 0)
+				{
+					return false;
+				}
+				return true;
+			}
+			
+		});
+		
+	});
+</script>
+</html>

@@ -179,12 +179,12 @@ dir_$(CONFIG_USER_WPA_SUPPLICANT)	    += wpa_supplicant-2.0
 dir_$(CONFIG_USER_WSC)			    += wsc_upnp
 ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A2")
 #dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg_7615d
-dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg_plus
+dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg_plus_3.1.13
 else ifeq ("$(CONFIG_PRODUCT)", "DIR_853_A1")
 #dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg_7615d
-dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg_plus
+dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg_plus_3.1.13
 else
-dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg
+dir_$(CONFIG_USER_BNDSTRG)			+= bndstrg_plus_3.1.13
 endif
 
 dir_$(CONFIG_USER_ETHTOOL)		    += ethtool
@@ -209,8 +209,6 @@ dir_$(CONFIG_USER_QUAGGA)			+= quagga
 dir_$(CONFIG_USER_IPSET)               += ipset-6.35
 
 #2017-21-01 linsd add for dlink super mesh
-dir_$(CONFIG_USER_SUPERMESH)               += mosquitto-1.3.1
-dir_$(CONFIG_USER_SUPERMESH)               += supermesh
 
 dir_y+=rc
 dir_y+=stad/src
@@ -223,7 +221,6 @@ dir_y+=tw-prog.priv/seama
 dir_y+=tw_hotplug
 #dir_y+=kstreamer
 #dir_$(CONFIG_IMG_CRYPT)+=tw-prog.priv/imgcrypt
-dir_$(CONFIG_MYDLINK_SUPPORT)+= mydlink
 dir_$(CONFIG_OOKLA_SUPPORT)+=ookla
 dir_$(CONFIG_KWILT_SUPPORT)+=kwilt
 dir_y+=odhcp6c
@@ -244,6 +241,7 @@ dir_$(CONFIG_DLINKAPP_ONETOUCH)         += onetouch
 #TEST
 dir_$(CONFIG_USER_HELLO_WORLD)		    += hello_world
 #--
+dir_$(CONFIG_DHCP_MON)    += dhcpmon
 
 # VoIP & TR069
 ifeq ($(shell [[ "$(CONFIG_MTK_VOIP)" == "y" || "$(CONFIG_MTK_TR069)" == "y" ]] && echo true), true)

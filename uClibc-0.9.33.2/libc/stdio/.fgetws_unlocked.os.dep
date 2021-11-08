@@ -4,9 +4,9 @@ libc/stdio/fgetws_unlocked.os: libc/stdio/fgetws_unlocked.c \
  include/bits/uClibc_config.h include/sys/cdefs.h include/libc-internal.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
  include/assert.h include/errno.h include/bits/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
  include/fcntl.h include/bits/fcntl.h include/sgidefs.h \
  include/sys/types.h include/bits/types.h include/bits/wordsize.h \
  include/bits/kernel_types.h include/bits/typesizes.h \
@@ -18,7 +18,7 @@ libc/stdio/fgetws_unlocked.os: libc/stdio/fgetws_unlocked.c \
  include/sys/stat.h include/bits/stat.h include/limits.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
  include/bits/posix1_lim.h include/bits/local_lim.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
  include/bits/uClibc_local_lim.h include/bits/posix2_lim.h \
  include/bits/xopen_lim.h include/bits/stdio_lim.h include/signal.h \
  include/bits/signum.h include/bits/siginfo.h include/bits/sigaction.h \
@@ -59,11 +59,11 @@ include/errno.h:
 
 include/bits/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
 
 include/fcntl.h:
 
@@ -121,7 +121,7 @@ include/bits/posix1_lim.h:
 
 include/bits/local_lim.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
 
 include/bits/uClibc_local_lim.h:
 
@@ -196,4 +196,4 @@ include/bits/getopt.h:
 include/ctype.h:
 
 include/bits/uClibc_touplow.h:
-cmd_libc_stdio_fgetws_unlocked.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/stdio/fgetws_unlocked.c -o libc/stdio/fgetws_unlocked.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/stdio/fgetws_unlocked.os -MD -MP -MF libc/stdio/.fgetws_unlocked.os.dep
+cmd_libc_stdio_fgetws_unlocked.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/stdio/fgetws_unlocked.c -o libc/stdio/fgetws_unlocked.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -MT libc/stdio/fgetws_unlocked.os -MD -MP -MF libc/stdio/.fgetws_unlocked.os.dep

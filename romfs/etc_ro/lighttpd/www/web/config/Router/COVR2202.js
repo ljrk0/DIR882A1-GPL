@@ -1,6 +1,6 @@
 //custom, these settings will override common settings 
  function DeviceInfo() {
-this.createdDec="This Deviceinfo was created for COVR2202, at Fri May 10 2019 17:23:11 GMT+0800 (CST)";
+this.createdDec="This Deviceinfo was created for COVR2202, at Mon Sep 09 2019 10:09:20 GMT+0800 (GMT+08:00)";
 this.featurePPPoEValid=true;
 this.featureUserDevice=false;
 this.featureNewTime=true;
@@ -18,7 +18,6 @@ this.featureWANSpeed2point5=false;
 this.featureWANSpeed5=false;
 this.featureWANSpeed10=false;
 this.featureIpv6HtmlLegacyWanStatus=false;
-this.featureCgiMethodGET=false;
 this.featureWPS=true;
 this.featureCloseWPSPIN=true;
 this.featureWizardHNAPChannelWidth=1;
@@ -45,7 +44,7 @@ this.featureBitMapSchedule=false;
 this.featureRunningWizardNoCloseBtn=true;
 this.featureCovrWIFI=true;
 this.featureCovrBundle=true;
-this.featureOperationMode_APnamedBridge=false;
+this.featureOperationMode_APnamedBridge=true;
 this.featureInternetVlan=true;
 this.featureLanPort=1;
 this.featureVlanAdvanced=false;
@@ -103,4 +102,13 @@ this.scheduleAndWiFi_ea=false;
 this.featureWizardWPS_ea=false;
 this.featureCloseWizExtendedWifi_ea=false;
 this.featureEXTSSIDCheckBox_ea=false;
+this.featureFivePortRange=false;
+this.featureUserPasswordValidation=true;
+this.featureWizardWanLinkDownButton=false;
+this.feature6in4Enable=false;
+this.feature6to4Enable=false;
+this.featureWizardWPA2WPA3=false;
+this.featureIPv4AsService=false;
+this.featureSecurityOption=true;
+this.featureCgiAuth=false;
 }

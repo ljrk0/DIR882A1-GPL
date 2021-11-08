@@ -1,4 +1,4 @@
-cmd_scripts/bin2c := gcc -Wp,-MD,scripts/.bin2c.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer   -I/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/tools/include  -o scripts/bin2c scripts/bin2c.c  
+cmd_scripts/bin2c := gcc -Wp,-MD,scripts/.bin2c.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer   -I/home/baifan/dlink_882/trunk/GPL_Code/source/linux-3.10.14.x/tools/include  -o scripts/bin2c scripts/bin2c.c  
 
 source_scripts/bin2c := scripts/bin2c.c
 

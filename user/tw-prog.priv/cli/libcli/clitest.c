@@ -294,6 +294,25 @@ int cmd_ated(struct cli_def *cli, UNUSED(char *command), char *argv[], int argc)
     return CLI_OK;
 }
 
+int cmd_ping(struct cli_def *cli, UNUSED(char *command), char *argv[], int argc)
+{
+	char cmd_buf[128]={0};
+    int n = 0,len = sizeof(cmd_buf);
+	
+    int i;
+
+	n += snprintf(cmd_buf + n, len - n, "%s ", command);
+		
+    for (i = 0; i < argc; i++)
+	{
+		n += snprintf(cmd_buf + n, len - n, "%s ", argv[i]);
+    }
+	
+	systemCmd(cli,cmd_buf);
+
+    return CLI_OK;
+}
+
 #define BIGBUF_SIZE (8192)
 int cmd_protest(struct cli_def *cli, UNUSED(char *command), char *argv[], int argc)
 {
@@ -493,6 +512,9 @@ int main()
 	cli_register_command(cli, NULL, "ated", cmd_ated, PRIVILEGE_UNPRIVILEGED,
         MODE_EXEC, "ated cmd");
 	
+	cli_register_command(cli, NULL, "ping", cmd_ping, PRIVILEGE_UNPRIVILEGED,
+        MODE_EXEC, "ping cmd");
+
     cli_register_command(cli, NULL, "sh", cmd_shell, PRIVILEGE_PRIVILEGED,
         MODE_EXEC, "sh cmd");
 	

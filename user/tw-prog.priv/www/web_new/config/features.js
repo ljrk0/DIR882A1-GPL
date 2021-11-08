@@ -1,7 +1,7 @@
-/* svn info: $Revision: 1440 $ $Date: 2019-05-09 15:03:40 +0800 (Thu, 09 May 2019) $ */
+/* svn info: $Revision: 1615 $ $Date: 2019-09-03 11:55:01 +0800 (Tue, 03 Sep 2019) $ */
 //common
 function CommonDeviceInfo() {
-	this.featuresvn=1449;
+	this.featuresvn=1627;
 	
 	//Router Mode
 	this.featureOperationMode = false;
@@ -71,7 +71,6 @@ function CommonDeviceInfo() {
 	this.featureSuperMeshSwitch = false;
 	this.featureSwitchNameOfWiFiSONEnabled = "Mesh";
 	this.featureIpv6HtmlLegacyWanStatus = true;
-	this.featureCgiMethodGET = false;
 	this.featureIdenticalVID = false;
 	this.checkWirelessStatus = true;
 	this.featureVLANwizard = false;
@@ -84,6 +83,15 @@ function CommonDeviceInfo() {
 	this.featureSCChannelWidthOptShowByCountry = false;
 	this.featureChannelWidthByCountry = false;
 	this.featureLegacyExtender = false;
+	this.featureFivePortRange = false;
+	this.featureUserPasswordValidation = false;
+	this.featureWizardWanLinkDownButton = false;
+	this.feature6in4Enable = false;
+	this.feature6to4Enable = false;
+	this.featureWizardWPA2WPA3 = false;
+	this.featureIPv4AsService = false;
+	this.featureCgiAuth = false;
+	this.featureSecurityOption = false;
 
 	// bridge mode
 	this.parentalControl_e = false;
@@ -122,4 +130,5 @@ function CommonDeviceInfo() {
 	this.featureSmartConnect_e = false;
 	this.wlanRadioWMMEnable = false;
 	this.featureCloseChannelWidth = false;
+	this.featureCgiMethodGET = false;
 }

@@ -9424,10 +9424,16 @@ mDNSlocal void mDNS_HostNameCallback(mDNS *const m, AuthRecord *const rr, mStatu
 		//compare all extra_names and deal with name conflict issue(like shareport) here
 		for(index = 0 ; index < m->extra_names_qty ; ++index)
 		{
-			LogMsg("Extraname%d: %s %s", index, gExtraNames[index],m->extra_names[index].c);
+			LogMsg("Extraname:%d: %s;%s,m->extra_names_qty=%d;", index, gExtraNames[index],m->extra_names[index].c,m->extra_names_qty);
 			//if(SameDomainLabel(m->hostlabel.c,rr->resrec.name->c))
 				//continue;
-			
+			LogMsg("m->extra_names[%d].c:%s;rr->resrec.name->c:%s;", index,m->extra_names[index].c,rr->resrec.name->c);
+			if(m->extra_names[index].c == NULL || rr->resrec.name->c == NULL)
+			{
+				LogMsg("response error");
+				continue;
+			}
+				
 			if(SameDomainLabel(m->extra_names[index].c,rr->resrec.name->c))
 			{
 				//this section is for multi-conflict,
@@ -9451,13 +9457,13 @@ mDNSlocal void mDNS_HostNameCallback(mDNS *const m, AuthRecord *const rr, mStatu
 				
 				//==re-add the extraname==
 				AppendLiteralLabelString(&m->extra_names[index],buffer);
-				LogMsg("AfterExtraname-a%d: %s", index, &m->extra_names[index].c);
+				LogMsg("AfterExtraname-a:%d: %s", index, &m->extra_names[index].c);
 				//==increase the padding number of extraname==
 				IncrementLabelSuffix(&m->extra_names[index], mDNSfalse);
-				LogMsg("AfterExtraname-b%d: %s", index, &m->extra_names[index].c);
+				LogMsg("AfterExtraname-b:%d: %s", index, &m->extra_names[index].c);
 				//==add .local==
 				AppendLiteralLabelString(&m->extra_names[index], "local");
-				LogMsg("AfterExtraname-c%d: %s", index, m->extra_names[index].c);
+				LogMsg("AfterExtraname-c:%d: %s", index, m->extra_names[index].c);
 				
 				mDNS_Lock(m);
 				//belows are the mDNS_SetFQDN(m);

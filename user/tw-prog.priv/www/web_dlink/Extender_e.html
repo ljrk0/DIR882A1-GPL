@@ -1,0 +1,1186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>D-LINK</title>
+
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">	
+<link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/jquery.selectbox_e.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="/css/jquery.checkbox.css" />
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/style_pages_e.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/style_pop.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="js/initialJQ_e.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/initialJSDefault.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="/js/initialLibs.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/Public.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.checkbox.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.validate.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPSchedule.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAPSettings.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/wireless.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/popView.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPWLanRadio_e.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/siteSurveyViewCtrl.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="/js/includeLang.js"></script>
+
+<!--for extender-->
+<script type="text/javascript" charset="utf-8" src="js/menu_e.js"></script>
+
+<script type="text/javascript">
+	//xframeoption
+	if(top!=self){top.location=self.location;}
+
+	//session
+	if (sessionStorage.getItem('PrivateKey') === null){
+		window.location.replace('../info/Login.html');
+	}
+
+	var count = 15;
+	var projectName = JSON.parse(sessionStorage.getItem('modelInfomation')).modelName;
+	//InitImage(basedImage);
+	var siteSelected = null;
+
+	//trigger
+	function ChangeBandStatus(band)
+	{
+		var status = $("#APenabled_"+band).prop("checked");
+
+		if(status){
+			DisableSettings(band, false);
+		}else{
+			DisableSettings(band, true);
+		}
+	
+		ChangeWPSbtnStatus();
+
+	}
+	function save_button_changed()
+	{
+		$("#Save_Btn").attr("disabled", false);
+		changeTimeoutAction();
+	}
+
+	function setGlobalTrigger()
+	{
+		$("input, select").change(function () { 
+			save_button_changed();
+		});
+		
+		$("input").keypress(function () {
+			save_button_changed();
+		});
+
+		$("input").on( "tap", function() {
+			$(this).focus();
+		});
+
+
+		$("#SurveyBtn, #refreshBtn").on("vclick", function(){
+			siteSurveyViewCtrl.start();
+		});
+
+		$("#APCssid_edit").off("click").on("click", function(){
+			$("#APCssid_div").show();
+			$("#APCssid").focus();
+
+			$("#APCssid_div_auto").hide();
+			siteSelected = null;
+
+			$("#APCkey").attr("disabled", false).trigger("keyup");
+		});
+
+		$("#APchannel_24").on("change", function(){
+			setChannelWidth("24");
+		});
+		$("#APchannel_5").on("change", function(){
+			setChannelWidth("5");
+		});
+	}
+
+$(document).ready(function(){
+	$("#CurrentOPMode").on("change", function(){
+		var value = $(this).val();
+
+		if(!currentDevice.featureOpwifimode_e) {
+				$("#APCssid_tr, #APCkey_tr").hide();
+				$("#APOnly_24, #APOnly_5").show();			
+		} else {
+			switch(value)
+			{
+				case "WirelessAp":
+					$("#APCssid_tr, #APCkey_tr").hide();
+					$("#APOnly_24, #APOnly_5").show();
+					break;
+				case "WirelessRepeaterExtender":
+					$("#APCssid_tr, #APCkey_tr").show();
+					$("#APOnly_24, #APOnly_5").hide();
+					break;
+			}
+			
+			ChangeSmartCovrStatus();
+		}
+	});
+
+});
+		
+$(document).ready(function(){
+	LoadHeader();
+	Initial();
+	setMenu("menu_Settings");	
+	// InitMenu("Settings", "Extender");
+	setValidate();
+	startTimeout();
+
+	if(!currentDevice.featureOpwifimode_e) {
+		var iface = new SOAPGetUplinkInterfaceResponse();
+		var soapAction = new SOAPAction();
+		soapAction.sendSOAPAction("GetUplinkInterface", null, iface).done(function(obj){
+			showOPmode(obj);
+		});
+	} else {
+		getOPmode().done(function(obj){
+			showOPmode(obj);
+		});		
+	}
+
+	GetWirelessXML().then(function(){
+		return getschedulesettings();
+	}).then(function(){
+		initChannelWidth();
+		show_ap_info();
+		if(!currentDevice.featureOpwifimode_e) {
+			return true;
+		} else {
+			return getAPCinfo(RadioIDList);
+		}
+	}).then(function(obj){
+		if(currentDevice.featureOpwifimode_e) {
+			show_apc_info(obj);
+		}
+
+		if(currentDevice.featureSmartConnect_e || currentDevice.featureCovrWIFI_e){
+			return getSmartCovrStatus();
+		}
+	}).then(function(obj2){
+		if(currentDevice.featureSmartConnect_e || currentDevice.featureCovrWIFI_e){
+			show_smartcovr(obj2);
+		}
+
+		return getWPSbtnStatus();
+	}).then(function(obj){
+		if(currentDevice.featureWPS_e){
+			$('#wps_pbc').prop("checked", COMM_ToBOOL(obj.WPSPBC));
+
+			if(currentDevice.featureWPSPIN_e) {
+				$('#wps_pin').prop("checked", COMM_ToBOOL(obj.WPSPIN));
+				$('#wps_pin').closest('.form-group').show();
+			}
+
+			ChangeWPSbtnStatus();
+			$('#wpsblock').show();
+		}
+
+		$('#main').show();
+		setGlobalTrigger();
+	});
+
+	$("#APenabled_Smart").checkbox();
+	$("#APenabled_24").checkbox();
+	$("#APcoexistence_24").checkbox();
+	$("#APenabled_5").checkbox();
+
+	if(currentDevice.featureCovrWIFI_e){
+		//covr wi-fi
+		$("#status_covr").checkbox();
+		$("#mu_mimo").checkbox();
+		$("#ap_roaming").checkbox();
+	}
+
+	$("#wps_pbc").checkbox();
+	$("#wps_pin").checkbox();
+
+	siteSurveyViewCtrl.init();
+});
+
+	function Initial() {
+		initialMenu();
+		// initialDetectRouterConnection();
+	}
+		
+	function LoadHeader() {				
+		$("#header").load("header.html");			
+	}
+
+	function showOPmode(obj) {
+		var id = $("#CurrentOPMode");
+
+		if(!currentDevice.featureOpwifimode_e) {
+			var uplinkInterface = obj.UplinkInterface;
+			var str = '<option value="'+uplinkInterface+'">';
+			str += uplinkInterface;
+			str += '</option>';
+			id.append(str);
+			id.val(uplinkInterface).trigger("change");
+
+			$("#CurrentOPMode").selectbox({width:"100%"});
+			$("#CurrentOPMode").selectbox("disable");
+
+		} else {
+			var opModeInfo = obj.OperationModeList[0].OperationModeInfo;
+			
+			for(var i in opModeInfo.AvailableOPMode)
+			{
+				var opMode = opModeInfo.AvailableOPMode[i];
+				var str = '<option value="'+opMode+'">';
+				switch(opMode)
+				{
+					case "WirelessAp":
+						str += I18N("j", "Ethernet");
+						break;
+					case "WirelessRepeaterExtender":
+						str += I18N("j", "Wi-Fi");
+						break;
+					default:
+						continue;
+						break;
+				}
+				str += '</option>';
+				id.append(str);
+			}
+
+			id.val(opModeInfo.CurrentOPMode).trigger("change");
+			$("#CurrentOPMode").selectbox({width:"100%"});
+		}
+
+		$("#RADIO_APC").show();
+	}
+
+	function initChannel(radioInfoObj, band)
+	{
+		var id = $("#APchannel_"+band);
+
+		for(var channel in radioInfoObj.Channels)
+		{
+			var num = radioInfoObj.Channels[channel];
+			id.append('<option value="'+num+'">'+num+'</option>');
+		}
+	}
+
+	function initChannelWidth()
+	{
+		for(var i in wifi_datalist){
+			var band = wifi_datalist[i].band;
+			var id = $("#APchannelWidth_"+band);
+			var value = id.val();
+
+			id.empty();
+			if(band == "5")
+			{
+				id.append('<option id="'+ band +'_204080" value="1">Auto 20/40/80 MHz</option>');
+			}
+			id.append('<option id="'+ band +'_2040" value="0">Auto 20/40 MHz</option>');
+			id.append('<option id="'+ band +'_20" value="20">20 MHz</option>');
+
+			id.val(value);
+		}	
+	}	
+
+	function checkOptionNotSupported(id)
+	{
+		if($(id+" option:selected").css("display") == "none")
+		{
+			return true;
+		}
+		return false;
+	}
+
+	function show_smartcovr(obj){
+		if(currentDevice.featureSmartConnect_e){
+			$("#APenabled_Smart").prop("checked", COMM_ToBOOL(obj.Enabled));
+			$('#RADIO_Smart').show();
+		}else if(currentDevice.featureCovrWIFI_e){
+			// $("#status_covr").prop("checked", COMM_ToBOOL(obj.WiFiSONEnabled));
+
+			//always true
+			$("#status_covr").prop("checked", true);
+			$('#mu_mimo').prop("checked", COMM_ToBOOL(obj.MUMIMOEnabled));
+			$('#RADIO_Covr').show();
+		}
+
+		ChangeSmartCovrStatus();
+	}
+	
+	function show_ap_info()
+	{
+		for(var i in wifi_datalist)
+		{
+			var wifiSetting = wifi_datalist[i];
+
+			show_wireless_info(wifiSetting.band, wifiSetting.setting, wifiSetting.security);
+		}
+	}
+
+	function show_wireless_info(band, settingObj, securityObj)
+	{
+		var enabled = COMM_ToBOOL(settingObj.Enabled);
+		$("#APenabled_"+band).prop("checked", enabled);
+		$("#APssid_"+band).val(settingObj.SSID);
+		
+		$("#APchannel_"+band).val(settingObj.Channel);
+		
+		/* init wlan radio security */
+		var enable = securityObj.Enabled;
+		var security = "";
+
+		if(enable.toLowerCase() == "true")
+		{
+			$("#APkey_"+band).val(securityObj.Key);
+		}
+		else
+		{
+			security = "None";
+		}
+
+		$("#APchannelWidth_"+band).val(settingObj.ChannelWidth);
+		setChannelWidth(band);
+
+		$("#APchannel_"+band).selectbox({width:"100%"});
+	
+		if(band=="24"){
+			var coeEnable = COMM_ToBOOL(settingObj.Coexistence);
+			$("#APcoexistence_"+band).prop("checked", coeEnable);
+		}
+		
+		DisableSettings(band, !enabled);
+		if(band=="24"){
+			$("#RADIO_"+band).show();
+		}
+
+		//schedule
+		$('#schedule_'+band).selectbox('detach');	
+		$('#schedule_'+band).val(settingObj.ScheduleName);
+		$('#schedule_'+band).selectbox({width:"100%"});
+	}
+
+	function DisableSettings(band, disable)
+	{
+		$("#APssid_"+band).attr("disabled", disable);
+		$("#APkey_"+band).attr("disabled", disable);
+		
+		var boxstatus;
+		if(disable)
+		{
+			boxstatus = "disable";
+		}
+		else 
+		{
+			boxstatus = "enable";
+		}
+		$("#APchannel_"+band).selectbox(boxstatus);
+		$("#APchannelWidth_"+band).selectbox(boxstatus);
+		$('#schedule_'+band).selectbox(boxstatus);
+
+		if(band=="24"){
+			$("#APcoexistence_"+band).attr("disabled", disable);
+		}
+	}
+
+	function showCoexistance(band)
+	{
+		var channelWidth = $("#APchannelWidth_"+band).val();
+
+		if(channelWidth == "20")
+		{
+			$("#APcoexistence_"+band+"_tr").hide();
+		}
+		else
+		{
+			$("#APcoexistence_"+band+"_tr").show();
+		}
+	}
+
+	function setChannelWidth(band)
+	{
+		var id = $("#APchannelWidth_"+band);
+		var channel = parseInt($("#APchannel_"+band).val());
+		var channelWidthCount = 0;
+
+		//check if only one channel width (then set to auto if has better)
+		$("#APchannelWidth_"+band).children().each(function(index){
+			if($(this).css("display") != "none")
+			{
+				channelWidthCount++;
+			}
+		});
+
+		id.selectbox('detach');	
+		$("#APchannelWidth_"+band+" option").show();
+		//remove item which is not supported
+			switch(band)
+			{
+				case "24":
+					//channel
+					if((channel == 12)||(channel == 13))	//20
+					{
+						$("#"+band+"_2040").hide();
+					}
+					break;
+				case "5":
+				case "52":
+					//channel, 20 only
+					if(((channel >= 52)&&(channel <= 142))||	//DFS channel
+						(channel == 165) )						//Law
+					{
+						$("#"+band+"_2040").hide();
+						$("#"+band+"_204080").hide();
+					}
+					else
+					{
+						//20/40, 20/40/80
+						$("#"+band+"_20").hide();
+					}
+					break;
+			}
+		//set to default
+		if(checkOptionNotSupported("#APchannelWidth_"+band)||(channelWidthCount < 2))
+		{
+			//set to best (first)
+			$("#APchannelWidth_"+band).children().each(function(index){
+				if($(this).css("display") != "none")
+				{
+					$("#APchannelWidth_"+band).val($(this).val());
+					return false;
+				}
+			});
+		}
+		//coexistance
+		if(band == "24")
+		{
+			showCoexistance(band);
+		}
+
+		id.selectbox({width:"100%"});
+	}
+
+
+	function ShowAdvancedSettings(id)
+	{
+		var dom = $("#"+id);
+		
+		if(dom.css("display") == "none")
+		{
+			dom.show();
+		}
+		else
+		{
+			dom.hide();
+		}
+		changeTimeoutAction();
+	}
+
+	function show_apc_info(getAPClientSettingsResponse)
+	{
+		$("#APCssid").val(getAPClientSettingsResponse.SSID);
+		$("#APCkey").val(getAPClientSettingsResponse.Key);
+
+	}
+
+	/*	
+	function ChangeSmartStatus()
+	{
+		$("#CurrentOPMode").trigger("change");
+	}
+	*/
+
+	function saveData(){
+		var msg = I18N("j", "Please wait") + " ...";
+		var msg2 = I18N("j", "Your changes are being saved, and the device will need to reboot.");
+		var msg3 = I18N("j", "The new settings have been saved.");
+
+		$("#Save_Btn").attr("disabled", true);
+		PopView.show(msg);
+
+		SetWirelessXML().then(function(a,b){
+			if(b == "REBOOT") {
+				return PopView.showWithCountdown(msg2, count, b);
+			} else {
+				return true;
+			}
+		}).always(function(rebootresult){
+			PopView.showConfirm(msg3).done(function(){
+				location.reload();
+			});
+		});
+	}
+
+
+	function ChangeSmartCovrStatus(){
+		if(currentDevice.featureSmartConnect_e){
+			var id = $("#APenabled_Smart");
+		}else if(currentDevice.featureCovrWIFI_e){
+			var id = $("#status_covr");
+		}
+
+		if(id.prop('checked') == true){
+			$("#APtitle_24").html(I18N("j", "Extended Wi-Fi"));
+
+			$('#APenabled_24').closest('.form-group').hide();
+			$('#APenabled_24').prop('checked',true);
+
+			$('#APenabled_5').closest('.form-group').hide();
+			$('#APenabled_5').prop('checked',true);
+
+			$('#RADIO_5').hide();
+
+			$('.advButton').hide();
+			$('#advancedSettings_24').find('hr').hide();
+			$('#advancedSettings_24').show();
+			$('#APchannel_24').closest('.form-group').hide();
+			$('#APchannelWidth_24').closest('.form-group').hide();
+			$('#APcoexistence_24_tr').hide();
+
+		}else{
+			$("#APtitle_24").html(I18N("j", "2.4GHz Extended Wi-Fi"));
+			$('#RADIO_5').show();
+
+			$('#APenabled_24').closest('.form-group').show();
+			$('#APenabled_5').closest('.form-group').show();
+		
+			if($('#CurrentOPMode').val() == 'WirelessAp') {
+				$('.advButton').show();
+
+				$('#advancedSettings_24').find('hr').show();
+				$('#advancedSettings_24').hide();
+				$('#APchannel_24').closest('.form-group').show();
+				$('#APchannelWidth_24').closest('.form-group').show();
+				showCoexistance('24');
+
+				$('#advancedSettings_5').find('hr').show();
+				$('#advancedSettings_5').hide();
+				$('#APchannel_5').closest('.form-group').show();
+				$('#APchannelWidth_5').closest('.form-group').show();				
+			} else {
+				$('.advButton').hide();
+
+				$('#advancedSettings_24').find('hr').hide();
+				$('#advancedSettings_24').show();
+				$('#APchannel_24').closest('.form-group').hide();
+				$('#APchannelWidth_24').closest('.form-group').hide();
+				$('#APcoexistence_24_tr').hide();
+
+				$('#advancedSettings_5').find('hr').hide();
+				$('#advancedSettings_5').show();
+				$('#APchannel_5').closest('.form-group').hide();
+				$('#APchannelWidth_5').closest('.form-group').hide();
+				$('#APcoexistence_5_tr').hide();				
+			}
+
+		}
+
+		ChangeBandStatus('24');
+		ChangeBandStatus('5');
+	}
+
+	function ChangeWPSbtnStatus(){
+		if(currentDevice.featureSmartConnect_e){
+			var id = $("#APenabled_Smart");
+		}else if(currentDevice.featureCovrWIFI_e){
+			var id = $("#status_covr");
+		}
+
+		if(id.prop('checked') == true){
+			$('#wps_pbc').prop('disabled', false);
+
+			if(currentDevice.featureWPSPIN_e) {
+				$('#wps_pin').prop('disabled', false);
+			}		
+
+		}else{
+			if($('#APenabled_24').prop('checked') == false && $('#APenabled_5').prop('checked') == false){
+				$('#wps_pbc').prop('disabled', true);
+
+				if(currentDevice.featureWPSPIN_e) {
+					$('#wps_pin').prop('disabled', true);
+				}				
+			}else{
+				$('#wps_pbc').prop('disabled', false);
+
+				if(currentDevice.featureWPSPIN_e) {
+					$('#wps_pin').prop('disabled', false);
+				}
+			}
+		}
+
+	}	
+	</script>
+<style>	
+	#refreshBtn {
+		position: absolute;
+		top: 12px;
+		right: 60px;
+		width: 30px;
+		height: 30px;
+		background: url(../image/wizard_refresh.png) left top no-repeat;
+		background-size: contain;
+		cursor:pointer;
+		z-index: 1003;
+		border:0px;
+	}
+
+	#closeBtn {
+		position: absolute;
+		top: 15px;
+		right: 20px;
+		width: 26px;
+		height: 26px;
+		background: url(../image/closeDialog.png) left top no-repeat;
+		background-size: contain;
+		cursor:pointer;
+		z-index: 1003;
+		border:0px;
+	}
+
+	#SiteSurveySection {
+		display: block;
+		position: relative;
+		width:500px;
+
+		margin: 0 auto;
+		padding: 40px 20px 10px 20px;
+
+		background-color: #fff;
+		-webkit-border-radius: 15px;
+		-moz-border-radius: 15px;
+		border-radius: 15px;	
+		-moz-box-shadow: 3px 3px 25px #000;
+		-webkit-box-shadow: 3px 3px 25px #000;
+		box-shadow: 3px 3px 25px #000;
+
+		z-index: 1002;
+	}
+	#SurveyListTable {
+		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	#surveyBtns {
+		display:block;
+		text-align: right;
+	}
+
+	.stationInfo {
+	  display: inline-block;
+	  padding: 3px 7px;
+	  vertical-align: middle;
+	  text-align: center;
+	  float: right;
+	}
+	.stationInfo > img {
+		margin-left:10px;
+	}
+
+	/* bootstrap */
+	.btn_short {
+		color: #fff;
+		background: #4496a8;
+		width: 110px;
+		border-radius: 0;
+	}
+	
+	.btn_short:focus,
+	.btn_short:hover{
+		color: #fff;
+		background: #36899a;
+	}
+
+
+	.btn_select {
+		width: 100%;
+	}
+
+	.btn-step,
+	.btn-step:hover:disabled{
+		width:100px;
+		background-color: #4598aa;
+		font-size: 12pt;
+		font-weight: bold;
+	}
+	.btn-step:hover,
+	.btn-step:active,.btn-step:focus,
+	.btn-step:active:hover,
+	.btn-step:active:focus{
+		background-color: #47b1c2;
+	}
+
+	button.list-group-item.list-selected {
+	  text-decoration: none;
+	  color: #ffffff;
+	  background-color: #5bc0ee;
+	}
+
+	.col-sm-2 {
+		width: 38%;
+	}
+	div.form-horizontal {
+		padding-bottom: 5px;
+	}
+
+	/*extender*/
+	#pagePath {
+    	position: relative;
+    	line-height: 50px;
+    	font-size: 18px;
+    	color: #aaaaaa;
+    }
+
+	.sbHolder {
+		border-radius: 0;
+	}
+
+	.form-control {
+		border-radius: 0;
+	}
+	#SurveyListTable .list-group-item {
+		width:100%;
+	}
+</style>	
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header"></div>
+		<div id="menu"></div>		
+		<!-- Content --> 
+		<div id="content">
+			<form role="form" name="extender_form" id="extender_form" method="POST" action="">
+			<!-- info --> 
+			<div id="info">
+				<div id="FunctionName"><script>I18N("h", "Extender" , "modelInfomationModelName");</script></div>
+				<div id="wallimage"><img width="195" height="119" src="image/pageIcon_Wi-Fi.png"></div>
+				<div id="directions"><script>I18N("h","Use this section to configure the wireless settings for your %s. Please ensure you press <b>Save</b> after any changes made in this section for it to take effect." , "modelInfomationModelName");</script></div>
+			</div>
+			<!-- funcBar -->
+			<div id="funcBar">
+				<div id="pagePath">
+					<script>I18N("h", "Settings");</script> &gt;&gt; <script>I18N("h", "Extender");</script>
+				</div>
+				<ul id="rightFunc">
+					<li style="display: block;">
+						<button type="submit" id="Save_Btn" class="btn btn_save" onclick="changeTimeoutAction()" disabled>
+							<script>I18N("h", "Save");</script>
+						</button>
+					</li>			
+				</ul>
+			</div>
+			<!-- main --> 
+			<div id="main" style="display:none;">
+				<div id="RADIO_APC" class="form-horizontal" style="display:none">
+					<div class="title"><script>I18N("h", "Existing Network");</script></div>
+
+					<div class="form-group">
+						<label for="CurrentOPMode" class="col-sm-2 control-label"><script>I18N("h", "Existing Network");</script> :</label>
+						<div class="col-sm-4">
+							<select id="CurrentOPMode"></select>
+						</div>
+					</div>
+					<div id="APCssid_tr" class="form-group">
+						<label for="APCssid" class="col-sm-2 control-label"><script>I18N("h", "Wi-Fi Name (SSID)");</script> :</label>					
+						<div id="APCssid_div" class="col-sm-4" style="display:inline-block;">
+							<input type="text" class="form-control" id="APCssid" name="APCssid"/>
+						</div>
+						<div id="APCssid_div_auto" class="col-sm-4" style="display:none;">
+							<div class="input-group">
+								<span id="APCssid_auto" class="form-control"></span>
+								<span class="input-group-btn">
+								<button class="btn btn-default" style="padding:0px;" type="button" id="APCssid_edit"><img src="image/edit_btn.png" class="" width="32" height="32" /></button>
+								</span>
+							</div><!-- /input-group -->
+
+						</div>						
+						<button type="button" id="SurveyBtn" class="btn btn_short">
+							<script>I18N("h", "Scan");</script>
+						</button>
+					</div>
+					<div id="APCkey_tr" class="form-group">
+						<label for="APCssid" class="col-sm-2 control-label"><script>I18N("h", "Password");</script> :</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="APCkey" name="APCkey" maxlength="63">
+						</div>
+					</div>
+				</div>
+				
+
+				<!--smart connect-->
+				<div id="RADIO_Smart" class="form-horizontal" style="display:none;">
+					<hr />
+					<div class="title"><script>I18N("h", "Smart Connect");</script></div>
+					<div class="form-group">
+						<label for="APenabled_Smart" class="col-sm-2 control-label"><script>I18N("h", "Status");</script> :</label>
+						<div class="col-sm-4">
+							<input type="checkbox" id="APenabled_Smart" onclick="ChangeSmartCovrStatus()"/>
+						</div>
+					</div>
+				</div>
+				
+
+				<!--covr wi-wifi-->
+				<div id="RADIO_Covr" class="form-horizontal" style="display:none;">
+					<hr />
+					<div class="title"><script>I18N("h", "Covr Wi-Fi System");</script></div>
+					<div class="form-group">
+						<label for="status_covr" class="col-sm-2 control-label"><script>I18N("h", "Status");</script> :</label>
+						<div class="col-sm-4">
+							<!-- <input type="checkbox" id="status_covr" onclick="ChangeSmartCovrStatus()"/> -->
+							<input type="checkbox" id="status_covr" disabled/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="mu_mimo" class="col-sm-2 control-label"><script>I18N("h", "MU-MIMO");</script> :</label>
+						<div class="col-sm-4">
+							<input type="checkbox" id="mu_mimo"/>
+						</div>
+					</div>
+					<!--
+					<div class="form-group">
+						<label for="ap_roaming" class="col-sm-2 control-label"><script>I18N("h", "AP Roaming");</script> :</label>
+						<div class="col-sm-4">
+							<input type="checkbox" id="ap_roaming"/>
+						</div>
+					</div>
+					-->									
+				</div>
+				<hr />
+
+				
+				<div id="RADIO_24" class="form-horizontal" style="display:none">
+					<div id="APtitle_24" class="title"><script>I18N("h", "2.4GHz Extended Wi-Fi");</script></div>
+					<div class="form-group">
+						<label for="APenabled_24" class="col-sm-2 control-label"><script>I18N("h", "Status");</script> :</label>
+						<div class="col-sm-4">
+							<input type="checkbox" id="APenabled_24" onchange="ChangeBandStatus('24')"/>
+						</div>
+					</div>		
+					<div class="form-group">
+						<label for="APssid_24" class="col-sm-2 control-label"><script>I18N("h", "Wi-Fi Name (SSID)");</script> :</label>
+						<div class="col-sm-4">
+							<input type="text" id="APssid_24" name="APssid_24" class="form-control"  maxlength="32">
+						</div>
+					</div>		
+					<div class="form-group">
+						<label for="APkey_24" class="col-sm-2 control-label"><script>I18N("h", "Password");</script> :</label>
+						<div class="col-sm-4">
+							<input type="text" id="APkey_24" name="APkey_24" class="form-control"  maxlength="63">
+						</div>
+					</div>
+
+					<!--test-->
+					<div class="advButton">
+						<span onclick="ShowAdvancedSettings('advancedSettings_24');">
+							<script>I18N("h", "Advanced");</script>...
+						</span>
+					</div>
+					<!--test-->
+
+					<div id="advancedSettings_24" style="display:none;">
+						<hr/>
+						<div id="APOnly_24" class="2GSmartHide">
+							<div class="form-group">
+								<label for="APchannel_24" class="col-sm-2 control-label"><script>I18N("h", "Wi-Fi Channel");</script> :</label>
+								<div class="col-sm-4">
+									<select id="APchannel_24" name="APchannel_24" size="1" width="190">
+										<option value="0">Auto</option>
+									</select> 
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="APchannelWidth_24" class="col-sm-2 control-label"><script>I18N("h", "Channel Width");</script> :</label>
+								<div class="col-sm-4">
+									<select id="APchannelWidth_24" name="APchannelWidth_24" onchange="showCoexistance('24')">
+									</select>
+								</div>
+							</div>
+							<div id="APcoexistence_24_tr" class="form-group">
+								<label for="APcoexistence_24" class="col-sm-2 control-label"><script>I18N("h", "coexistence");</script> :</label>
+								<div class="col-sm-4">
+									<input type="checkbox" id="APcoexistence_24"/>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="schedule_24" class="col-sm-2 control-label"><script>I18N("h", "Schedule");</script> :</label>
+								<div class="col-sm-4">
+									<select id="schedule_24" name="schedule_24" size="1">
+										<option value="Always">Always</option>
+									</select> 
+								</div>
+							</div>
+						</div>
+					</div><!--advancedSettings end-->
+				</div><!--RADIO_24 end-->
+
+				<div id="RADIO_5" class="form-horizontal" style="display:none">
+					<hr/>
+					<div class="title"><script>I18N("h", "5GHz Extended Wi-Fi");</script></div>
+					<div class="form-group">
+						<label for="APenabled_24" class="col-sm-2 control-label"><script>I18N("h", "Status");</script> :</label>
+						<div class="col-sm-4">
+							<input type="checkbox" id="APenabled_5" onchange="ChangeBandStatus('5')"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="APssid_5" class="col-sm-2 control-label"><script>I18N("h", "Wi-Fi Name (SSID)");</script> :</label>
+						<div class="col-sm-4">
+							<input type="text" id="APssid_5" name="APssid_5" class="form-control"  maxlength="32">
+						</div>
+					</div>		
+					<div class="form-group">
+						<label for="APkey_5" class="col-sm-2 control-label"><script>I18N("h", "Password");</script> :</label>
+						<div class="col-sm-4">
+							<input type="text" id="APkey_5" name="APkey_5" class="form-control"  maxlength="63">
+						</div>
+					</div>
+
+					<!--test-->
+					<div class="advButton">
+						<span onclick="ShowAdvancedSettings('advancedSettings_5');">
+							<script>I18N("h", "Advanced");</script>...
+						</span>
+					</div>
+					<!--test-->
+
+					<div id="advancedSettings_5" style="display:none;">
+						<hr/>
+						<div id="APOnly_5">
+							<div class="form-group">
+								<label for="APchannel_5" class="col-sm-2 control-label"><script>I18N("h", "Wi-Fi Channel");</script> :</label>
+								<div class="col-sm-4">
+									<select id="APchannel_5" name="APchannel_5" size="1" width="190">
+										<option value="0">Auto</option>
+									</select> 
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="APchannelWidth_5" class="col-sm-2 control-label"><script>I18N("h", "Channel Width");</script> :</label>
+								<div class="col-sm-4">
+									<select id="APchannelWidth_5" name="APchannelWidth_5">
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="schedule_5" class="col-sm-2 control-label"><script>I18N("h", "Schedule");</script> :</label>
+								<div class="col-sm-4">
+									<select id="schedule_5" name="schedule_5" size="1">
+										<option value="Always">Always</option>
+									</select> 
+								</div>
+							</div>
+						</div>
+					</div><!--advancedSettings end-->
+				</div><!--RADIO_5 end-->
+
+
+				<!--test-->
+				<div id="wpsblock" class="form-horizontal" style="display:none;">
+					<hr/>
+					<div class="title"><script>I18N("h", "WPS-PBC Status");</script></div>
+					<div class="form-group">
+						<label for="wps_pbc" class="col-sm-2 control-label"><script>I18N("h", "WPS-PBC Status");</script> :</label>
+						<div class="col-sm-4">
+							<input type="checkbox" id="wps_pbc" />
+						</div>
+					</div>
+					<div class="form-group" style="display:none;">
+						<label for="wps_pin" class="col-sm-2 control-label"><script>I18N("h", "WPS-PIN Status");</script> :</label>
+						<div class="col-sm-4">
+							<input type="checkbox" id="wps_pin" />
+						</div>
+					</div>
+				</div>
+
+			</div><!--main end-->
+			</form>
+		</div>
+
+		<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+		<div id="DetectRouterConnection" style="display:none"></div>
+
+		<div id="footer" border="0">
+			<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>			
+		</div>
+	</div>
+
+<!-- site survey -->
+<div id="SiteSurvey" class="black_overlay" style="display:none;height:100%">
+	<div id="SiteSurveySection">
+		<button type="button" id="closeBtn"></button>
+		<div id="scanSection">
+			<button type="button" id="refreshBtn"></button>
+			<div>
+				<script>I18N("h", "Please choose the Wi-Fi network you would like to extend.");</script>
+			</div>
+			<div id="SurveyListTable" class="list-group">
+			</div>
+		</div>
+		<div id="passwordSection">
+			<form id="survey_form" class="form-wiz">
+				<div class="form-group">
+					<p id="passwordSection_desc" class="form-control-static"></p>
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control" id="survey_key" name="survey_key">
+				</div>
+			</form>
+		</div>
+		<div id="surveyBtns">
+			<button id="backBtn" type="button" class="btn btn-info btn-step"><script>I18N("h", "Back");</script></button>
+			<button id="selectBtn" type="button" class="btn btn-info btn-step"><script>I18N("h", "Select");</script></button>
+		</div>
+	</div>
+</div>
+
+<!-- popup alert view -->
+<div id="popalert" class="black_overlay" style="display:none">
+	<div class="popup_window_border" style="position:relative;top:15%;">
+		<div class="popup_window">
+			<div id="popalert_circle">
+				<img src="image/loading.gif" width="62px" height="62px">
+			</div>
+			<div id="popalert_countdown">
+			</div>
+			<div id="popalert_desc">
+			</div>
+			<div id="popalert_buttons" class="btn-group" role="group" aria-label="...">
+				<button type="button" id="popalert_cancel" class="btn btn-default">
+					<script>I18N("h", "Cancel");</script>
+				</button>
+				<button type="button" id="popalert_ok" class="btn btn-default">
+					<script>I18N("h", "OK");</script>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+function setValidate()
+{
+	// Check Is WPA
+	$.validator.addMethod("checkASCIIChar", function( value, element ) {
+		//no security
+		if(value.length = 0)
+		{
+			return true;
+		}
+		return CheckASCII(value);
+	}, I18N("j","Text field contains illegal characters."));
+
+	$.validator.addMethod("checkWPAPassword", function( value, element ) {
+		//WPA
+		if (value.length > 63 || value.length < 8)
+		{
+			return false;
+		}
+		return true;
+	}, I18N("j","Your password must be between 8-63 characters length"));
+
+	$.validator.addMethod("checkPassword", function( value, element ) {
+		//no security
+		if(value.length == 0)
+		{
+			return true;
+		}
+
+		//WPA
+		if (value.length > 63 || value.length < 8)
+		{
+			return false;
+		}
+		return true;
+	}, I18N("j","Your password must be between 8-63 characters length"));
+	
+	$.validator.addMethod("checkAPCpwd", function( value, element ) {
+		if((siteSelected != null) && (value.length == 0))
+			return false;
+
+		return true;
+	}, I18N("j","Your password must be between 8-63 characters length"));
+	
+	// check wifi ssid
+	$.validator.addMethod("checkssid", function( value, element )
+	{	
+		var id = $(element).attr("id");
+
+		if(id == "APCssid")
+		{
+			if(value == "")
+			{
+				return false;
+			}
+			return true;
+		}
+
+		var band = id.slice(id.lastIndexOf("_")+1);
+		if($("#APenabled_"+band).prop("checked"))	//if Wi-Fi enabled
+		{
+			if(value == "")
+				return false;
+		}
+
+		return true;
+	}, I18N("j", "Please enter a Wi-Fi Name(SSID)."));
+	
+	$('#extender_form').validate({
+		rules: {
+			APssid_24: {
+				checkssid: true
+			},
+			APkey_24: {
+				checkASCIIChar: true,
+				checkPassword: true
+			},
+			APssid_5: {
+				checkssid: true
+			},
+			APkey_5: {
+				checkASCIIChar: true,
+				checkPassword: true
+			},
+			APCssid: {
+				checkssid: true
+			},
+			APCkey: {
+				checkASCIIChar: true,
+				checkPassword: true,
+				checkAPCpwd: true
+			}
+		},
+		submitHandler: function(form) {
+			saveData();
+			return false;
+		},
+		skipBr: function(element){
+			var div = element.parent("div");
+
+			if(div.length == 0)
+			{
+				return false;
+			}
+			return true;
+		}
+	});
+
+}
+</script>
+</body>
+</html>

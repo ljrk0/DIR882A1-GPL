@@ -13,7 +13,7 @@
   </compound>
   <compound kind="file">
     <name>decoder.h</name>
-    <path>/home/zhangtianchuan/trunk/GPL_Code/source/lib/libflac/include/FLAC++/</path>
+    <path>/home/baifan/dlink_882/trunk/GPL_Code/source/lib/libflac/include/FLAC++/</path>
     <filename>decoder_8h</filename>
     <includes id="_09_2export_8h" name="export.h" local="yes" imported="no">export.h</includes>
     <includes id="stream__decoder_8h" name="stream_decoder.h" local="yes" imported="no">FLAC/stream_decoder.h</includes>
@@ -23,7 +23,7 @@
   </compound>
   <compound kind="file">
     <name>encoder.h</name>
-    <path>/home/zhangtianchuan/trunk/GPL_Code/source/lib/libflac/include/FLAC++/</path>
+    <path>/home/baifan/dlink_882/trunk/GPL_Code/source/lib/libflac/include/FLAC++/</path>
     <filename>encoder_8h</filename>
     <includes id="_09_2export_8h" name="export.h" local="yes" imported="no">export.h</includes>
     <includes id="stream__encoder_8h" name="stream_encoder.h" local="yes" imported="no">FLAC/stream_encoder.h</includes>
@@ -35,7 +35,7 @@
   </compound>
   <compound kind="file">
     <name>callback.h</name>
-    <path>/home/zhangtianchuan/trunk/GPL_Code/source/lib/libflac/include/FLAC/</path>
+    <path>/home/baifan/dlink_882/trunk/GPL_Code/source/lib/libflac/include/FLAC/</path>
     <filename>callback_8h</filename>
     <class kind="struct">FLAC__IOCallbacks</class>
     <member kind="typedef">
@@ -90,7 +90,7 @@
   </compound>
   <compound kind="file">
     <name>export.h</name>
-    <path>/home/zhangtianchuan/trunk/GPL_Code/source/lib/libflac/include/FLAC/</path>
+    <path>/home/baifan/dlink_882/trunk/GPL_Code/source/lib/libflac/include/FLAC/</path>
     <filename>export_8h</filename>
     <member kind="define">
       <type>#define</type>
@@ -130,7 +130,7 @@
   </compound>
   <compound kind="file">
     <name>export.h</name>
-    <path>/home/zhangtianchuan/trunk/GPL_Code/source/lib/libflac/include/FLAC++/</path>
+    <path>/home/baifan/dlink_882/trunk/GPL_Code/source/lib/libflac/include/FLAC++/</path>
     <filename>_09_2export_8h</filename>
     <member kind="define">
       <type>#define</type>
@@ -163,7 +163,7 @@
   </compound>
   <compound kind="file">
     <name>format.h</name>
-    <path>/home/zhangtianchuan/trunk/GPL_Code/source/lib/libflac/include/FLAC/</path>
+    <path>/home/baifan/dlink_882/trunk/GPL_Code/source/lib/libflac/include/FLAC/</path>
     <filename>format_8h</filename>
     <includes id="_09_2export_8h" name="export.h" local="yes" imported="no">export.h</includes>
     <class kind="struct">FLAC__EntropyCodingMethod_PartitionedRiceContents</class>
@@ -1238,7 +1238,7 @@
   </compound>
   <compound kind="file">
     <name>metadata.h</name>
-    <path>/home/zhangtianchuan/trunk/GPL_Code/source/lib/libflac/include/FLAC/</path>
+    <path>/home/baifan/dlink_882/trunk/GPL_Code/source/lib/libflac/include/FLAC/</path>
     <filename>metadata_8h</filename>
     <includes id="_09_2export_8h" name="export.h" local="yes" imported="no">export.h</includes>
     <includes id="callback_8h" name="callback.h" local="yes" imported="no">callback.h</includes>
@@ -2097,7 +2097,7 @@
   </compound>
   <compound kind="file">
     <name>metadata.h</name>
-    <path>/home/zhangtianchuan/trunk/GPL_Code/source/lib/libflac/include/FLAC++/</path>
+    <path>/home/baifan/dlink_882/trunk/GPL_Code/source/lib/libflac/include/FLAC++/</path>
     <filename>_09_2metadata_8h</filename>
     <includes id="_09_2export_8h" name="export.h" local="yes" imported="no">export.h</includes>
     <includes id="metadata_8h" name="metadata.h" local="yes" imported="no">FLAC/metadata.h</includes>
@@ -2176,7 +2176,7 @@
   </compound>
   <compound kind="file">
     <name>stream_decoder.h</name>
-    <path>/home/zhangtianchuan/trunk/GPL_Code/source/lib/libflac/include/FLAC/</path>
+    <path>/home/baifan/dlink_882/trunk/GPL_Code/source/lib/libflac/include/FLAC/</path>
     <filename>stream__decoder_8h</filename>
     <includes id="_09_2export_8h" name="export.h" local="yes" imported="no">export.h</includes>
     <includes id="format_8h" name="format.h" local="yes" imported="no">format.h</includes>
@@ -2786,7 +2786,7 @@
   </compound>
   <compound kind="file">
     <name>stream_encoder.h</name>
-    <path>/home/zhangtianchuan/trunk/GPL_Code/source/lib/libflac/include/FLAC/</path>
+    <path>/home/baifan/dlink_882/trunk/GPL_Code/source/lib/libflac/include/FLAC/</path>
     <filename>stream__encoder_8h</filename>
     <includes id="_09_2export_8h" name="export.h" local="yes" imported="no">export.h</includes>
     <includes id="format_8h" name="format.h" local="yes" imported="no">format.h</includes>
@@ -12507,8 +12507,8 @@
   </compound>
   <compound kind="dir">
     <name>include/FLAC/</name>
-    <path>/home/zhangtianchuan/trunk/GPL_Code/source/lib/libflac/include/FLAC/</path>
-    <filename>dir_d153fdbcef227edcee8fed2ddb27e89b.html</filename>
+    <path>/home/baifan/dlink_882/trunk/GPL_Code/source/lib/libflac/include/FLAC/</path>
+    <filename>dir_cd4707d7665d54edaf814b3265ce6918.html</filename>
     <file>all.h</file>
     <file>assert.h</file>
     <file>callback.h</file>
@@ -12521,8 +12521,8 @@
   </compound>
   <compound kind="dir">
     <name>include/FLAC++/</name>
-    <path>/home/zhangtianchuan/trunk/GPL_Code/source/lib/libflac/include/FLAC++/</path>
-    <filename>dir_f2f110770bf57968279a8dc6867902e5.html</filename>
+    <path>/home/baifan/dlink_882/trunk/GPL_Code/source/lib/libflac/include/FLAC++/</path>
+    <filename>dir_34b7bc8adddd1c80527c4c2386945c1d.html</filename>
     <file>all.h</file>
     <file>decoder.h</file>
     <file>encoder.h</file>
@@ -12531,8 +12531,8 @@
   </compound>
   <compound kind="dir">
     <name>include/</name>
-    <path>/home/zhangtianchuan/trunk/GPL_Code/source/lib/libflac/include/</path>
-    <filename>dir_102dabf58351819b60f625434cc09cf2.html</filename>
+    <path>/home/baifan/dlink_882/trunk/GPL_Code/source/lib/libflac/include/</path>
+    <filename>dir_dd004e6db1f20797786712da30e43fa5.html</filename>
     <dir>include/FLAC/</dir>
     <dir>include/FLAC++/</dir>
   </compound>

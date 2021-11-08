@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+<head>
+<title>D-LINK</title>
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+
+<!-- css -->
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+<link rel="stylesheet" type="text/css" href="/css/style_UpgradeFirmware_Simple.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/jquery.selectbox.css"  />
+<link rel="stylesheet" type="text/css" href="css/style_button.css"  />
+
+<!-- initialJQ-->
+<script type="text/javascript" charset="utf-8" src="/js/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.selectbox-0.2_new.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.stringify.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.cookie.js"></script>
+
+<!-- initialJS -->
+<script type="text/javascript" charset="utf-8" src="/js/comm.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/hmac_md5.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/libajax.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/hnap.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/i18n.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/menu.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/pagetool.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/checkTimeout.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/includeLang.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/AES.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/configuration/DeviceConfig.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAction.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAction_AddHeader.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="/js/initialValidate.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.client.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPDeviceSettings.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPClientInfo.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPWanSettings.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPFirmware.js"></script>
+
+<!-- popView -->
+<link rel="stylesheet" type="text/css" href="css/style_pop.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="/js/popView.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="/js/UpgradeFirmware_Simple.js"></script>
+</head>
+
+<body>
+	<!--***** operationMode_form ****************************************-->
+	<form name="operationMode_form" id="operationMode_form" method="POST" action="">
+		<!--***** wrapper ****************************************-->
+		<div id="wrapper">
+			<!--***** Lheader ****************************************-->
+			<div id="Lheader">
+					<div id="logo">
+							<img id="DLink_logo" src="/image/logo_2.png" width="105" height="20" />
+					</div>
+					<table class="versionTable" border="0" cellspacing="0">
+						<tbody>
+							<thead>
+						     <td><script>I18N("h", "Model Name");</script>:&nbsp;<label id="modelName">--</label></td>
+						     <!-- <td><script>I18N("h", "Hardware Version");</script>:&nbsp;<label id="HWversion">--</label></td> -->
+						     <!-- <td><script>I18N("h", "Firmware Version");</script>:&nbsp;<label id="FWversion">--</label></td> -->
+						  		<td style="text-align:right;">ManualUpgrade Mode</td>
+							</thead>
+						</tbody>
+					</table>
+			</div>
+
+			<!--***** content ****************************************-->
+			<div id="content">
+		     	<!--***** main ****************************************-->
+		     	<div id="main">
+	     			<!--*****  table ****************************************-->	
+
+					<table class="block" style="margin: 10px 0 0 0">
+						<tbody>
+							<tr>
+								<td colspan="3"><div class ="title"><script>I18N("h", "Upgrade Manually");</script></div></td>
+							</tr>
+						</tbody>
+					</table>
+
+<!-- 					<table id="manualFirmwareTable" class="block">
+						<tbody>
+							<tr id="manualFirmwareTable_text">
+								<td colspan="2"><span><script>I18N("h", "Please wait");</script>...</span></td>
+							</tr>
+						</tbody>
+					</table> -->
+
+					<table id="manualFirmwareTable2" class="block">
+						<tbody>
+							<tr id="manualFirmwareTable2_selectFile">
+								<th><script>I18N("h", "Select File");</script>:</th>
+								<td>
+									<button id="manualFirmwareTable2_selectFileBtn" type="button" class="largebtn"><script>I18N("h", "Select File");</script>
+									</button>
+									<input type="file" id="uploadfile" style="display:none" />
+								</td>
+							</tr>
+							<tr id="manualFirmwareTable2_fileName">
+								<th>&nbsp;</th>
+								<td>
+									<p>&nbsp;</p>
+								</td>
+							</tr>
+							<tr id="manualFirmwareTable2_upgrade">
+								<th>&nbsp;</th>
+								<td>
+									<button id="manualFirmwareTable2_upgradeBtn" type="button" class="largebtn"><script>I18N("h", "Upload");</script>
+									</button>
+								</td>
+							</tr>						
+						</tbody>
+					</table>
+				</div><!-- id="main" -->
+
+				<!--***** footer ****************************************-->
+				<div id="footer">
+					<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>
+				</div><!-- id="footer" -->
+			</div><!-- id="content" -->
+		</div><!-- id="wrapper" -->
+	</form>
+
+	<!--***** DetectRouterConnection ****************************************-->
+	<div id="DetectRouterConnection" style="display:none"></div>
+
+	<!-- popalert -->
+	<div id="popalert" class="black_overlay" style="display:none">
+		<div class="popup_window_border" style="position:relative;top:70px;">
+			<div class="popup_window">
+				<div id="popalert_circle">
+					<img src="image/loading.gif" width="62px" height="62px">
+				</div>
+				<div id="popalert_countdown">
+				</div>
+				<div id="popalert_desc">
+				</div>
+				<div id="popalert_buttons" class="btn-group" role="group" aria-label="...">
+					<button type="button" id="popalert_cancel" class="btn btn-default">
+						<script>I18N("h", "Cancel");</script>
+					</button>
+					<button type="button" id="popalert_ok" class="btn btn-default">
+						<script>I18N("h", "OK");</script>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html> 

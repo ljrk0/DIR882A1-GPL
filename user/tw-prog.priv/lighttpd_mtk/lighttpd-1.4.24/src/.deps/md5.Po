@@ -1,5 +1,5 @@
 md5.o: md5.c ../config.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/autoconf.h \
+ /home/luorunzhi/work/MTK7621A_SDK_5_0_2_0/trunk/source/linux-3.10.14.x/include/linux/autoconf.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/string.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/features.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/uClibc_config.h \
@@ -24,7 +24,7 @@ md5.o: md5.c ../config.h \
 
 ../config.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/autoconf.h:
+/home/luorunzhi/work/MTK7621A_SDK_5_0_2_0/trunk/source/linux-3.10.14.x/include/linux/autoconf.h:
 
 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/string.h:
 

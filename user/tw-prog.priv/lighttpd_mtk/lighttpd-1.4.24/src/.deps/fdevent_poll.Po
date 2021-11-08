@@ -1,5 +1,5 @@
 fdevent_poll.o: fdevent_poll.c fdevent.h ../config.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/autoconf.h \
+ /home/luorunzhi/work/MTK7621A_SDK_5_0_2_0/trunk/source/linux-3.10.14.x/include/linux/autoconf.h \
  settings.h bitset.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stdint.h \
@@ -63,8 +63,8 @@ fdevent_poll.o: fdevent_poll.c fdevent.h ../config.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/string.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/errno.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/errno.h \
+ /home/luorunzhi/work/MTK7621A_SDK_5_0_2_0/trunk/source/linux-3.10.14.x/include/linux/errno.h \
+ /home/luorunzhi/work/MTK7621A_SDK_5_0_2_0/trunk/source/linux-3.10.14.x/include/uapi/linux/errno.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/errno.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm-generic/errno-base.h \
  /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/fcntl.h \
@@ -77,7 +77,7 @@ fdevent.h:
 
 ../config.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/autoconf.h:
+/home/luorunzhi/work/MTK7621A_SDK_5_0_2_0/trunk/source/linux-3.10.14.x/include/linux/autoconf.h:
 
 settings.h:
 
@@ -207,9 +207,9 @@ buffer.h:
 
 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/bits/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/linux/errno.h:
+/home/luorunzhi/work/MTK7621A_SDK_5_0_2_0/trunk/source/linux-3.10.14.x/include/linux/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/linux-3.10.14.x/include/uapi/linux/errno.h:
+/home/luorunzhi/work/MTK7621A_SDK_5_0_2_0/trunk/source/linux-3.10.14.x/include/uapi/linux/errno.h:
 
 /opt/buildroot-gcc463/usr/mipsel-buildroot-linux-uclibc/sysroot/usr/include/asm/errno.h:
 

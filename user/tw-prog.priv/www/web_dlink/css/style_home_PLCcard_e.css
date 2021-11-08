@@ -1,0 +1,180 @@
+#slideshow	{	margin: 0 0 0 0;	}
+/* ---------------- Item Instance ---------------- */
+/*
+#itemInstance {
+	width:  188px;
+	height: 86px;
+	background-image: url('../image/qos_itemBg.png');
+	z-index: 10;
+}
+*/
+.dataElement {
+	position: relative;
+	background-image: url('../image/qos_itemBg2.png');
+	background-size:188px 280px;
+	background-position:left top;
+/*	background-color:#FFFFFF;
+	border:2px solid #C1DBE1;
+	border-radius: 15px;
+	box-shadow: 0px 5px 10px rgba(0,0,0,0.1);*/
+}
+
+.dataElement:hover{
+	background-position:left bottom;
+	/*border:2px solid #6AB0BF;*/	
+}
+
+.dataElement_deviceName {
+	position: absolute;
+	top: 18px;
+	left: 22px; /*39*/
+	color: #4598aa;
+	font-size: 13px;
+	width: 140px;
+	overflow: hidden;
+}
+.dataElement_vendor {
+	position: absolute;
+	text-transform:uppercase;
+	top: 38px;
+	left: 22px; /*30*/
+	color: #888;
+	width: 140px;
+	overflow: hidden;
+	font-size: 12px;
+}
+.dataElement_mac {
+	position: absolute;
+	top: 55px;
+	left: 22px; /*30*/
+	color: #666;
+	width: 140px;
+	overflow: hidden;
+	font-size: 12px;
+}
+.dataElement_phynum {
+	position: absolute;
+/*	top: 55px;
+	left: 30px;*/
+	color: #666;
+	width: 140px;
+	overflow: hidden;
+	font-size: 12px;
+
+	border-top:1px solid #888;
+	text-align:center;
+	left:22px;
+	top:80px;
+}
+
+/*test*/
+.dataElement_phynum p{
+	display:inline-block;
+	font-size:35px;
+	color:#6AB0BF;
+}
+
+.dataElement_phynum span{
+	display:inline-block;
+	font-size:15px;
+	color:#888;
+	padding-left:5px;
+}
+/*test end*/
+
+.dataElement_deviceNameReal {
+	position: absolute;
+	display: none;
+	top: 55px;
+	left: 30px;
+	color: #666;
+	width: 140px;
+	overflow: hidden;
+	font-size: 12px;
+}
+.qos_label {
+	font-size: 16px;
+	color: #888;
+	text-align: center;
+}
+#qos_label_alldevices {
+	margin: 18px 0 8px 0;
+}
+#qos_label_priority {
+	margin: 25px 0 20px 0;
+	font-size: 12px;
+}
+
+/*test*/
+.dataElement_editbtn{
+	width:28px;
+	height:28px;
+	position:absolute;
+	right:8px;
+	top:8px;
+	background-image:url('../image/edit_btn.png');
+	background-size:28px 28px;
+	cursor:pointer;
+}
+
+/* ---------------- prioity ---------------- */
+#prioity {
+	width:  825px;
+	height: 400px;
+	margin: 0 auto;
+}
+/* ---------------- prioity : highest ---------------- */
+#prioity_highest {
+	position: relative;
+	display: inline-block;
+	margin: 0 2px;
+	width:  200px;
+	height: 116px;
+	vertical-align: top;
+}
+#prioity_highest_bg {
+	position: absolute;
+	width:  100%;
+	height: 100%;
+	background-image: url('image/qos_priority_highest.png');
+	background-size:contain;
+}
+#prioity_high_bg {
+	position: absolute;
+	width:  100%;
+	height: 100%;
+	background-image: url('image/qos_priority_high.png');
+	background-size:contain;
+}
+#prioity_medium_bg {
+	position: absolute;
+	width:  100%;
+	height: 100%;
+	background-image: url('image/qos_priority_medium.png');
+	background-size:contain;
+}
+#prioity_highest_label, #prioity_high_label, #prioity_medium_label {
+	position: absolute;
+	top:4px;
+	left: 0;
+	text-align:center;
+	width: 100%;
+	color: #fff;
+	font-size: 14px;
+}
+#prioity_highest_container, #prioity_high_container, #prioity_medium_container{
+	position: relative;
+	top: 22px;
+	left: 6px;
+}
+#prioity_highest_hitarea {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width:  200px;
+	height: 116px;
+	background-color: blue;
+	z-index: 500;
+	opacity: 0;
+	filter: alpha(opacity=0); 
+}

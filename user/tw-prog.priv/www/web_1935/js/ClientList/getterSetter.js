@@ -1,0 +1,2 @@
+/* svn info: $Revision: 847 $ $Date: 2018-06-06 18:37:11 +0800 (Wed, 06 Jun 2018) $ */
+define([],function(){return function(n,t){var u=n;return"function"!=typeof t&&(t=null),function(n){return void 0!==n&&(u=n,t&&t(n)),u}}});

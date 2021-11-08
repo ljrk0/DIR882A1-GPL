@@ -22,7 +22,7 @@ srcdir = .
 top_srcdir = ..
 
 
-prefix = /home/zhangtianchuan/trunk/GPL_Code/source/user/confuse/confuse-3.2.2/install
+prefix = /home/baifan/dlink_882/trunk/GPL_Code/source/user/confuse/confuse-3.2.2/install
 exec_prefix = ${prefix}
 datarootdir = ${prefix}/share
 datadir = ${datarootdir}
@@ -35,12 +35,12 @@ INSTALL_DATA = ${INSTALL} -m 644
 # We use $(mkdir_p).
 # In automake <= 1.9.x, $(mkdir_p) is defined either as "mkdir -p --" or as
 # "$(mkinstalldirs)" or as "$(install_sh) -d". For these automake versions,
-# ${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/confuse/confuse-3.2.2/support/install-sh does not start with $(SHELL), so we add it.
+# ${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/user/confuse/confuse-3.2.2/support/install-sh does not start with $(SHELL), so we add it.
 # In automake >= 1.10, $(MKDIR_P) is derived from ${MKDIR_P}, which is defined
 # either as "/path/to/mkdir -p" or ".../install-sh -c -d". For these automake
 # versions, $(mkinstalldirs) and $(install_sh) are unused.
-mkinstalldirs = $(SHELL) ${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/confuse/confuse-3.2.2/support/install-sh -d
-install_sh = $(SHELL) ${SHELL} /home/zhangtianchuan/trunk/GPL_Code/source/user/confuse/confuse-3.2.2/support/install-sh
+mkinstalldirs = $(SHELL) ${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/user/confuse/confuse-3.2.2/support/install-sh -d
+install_sh = $(SHELL) ${SHELL} /home/baifan/dlink_882/trunk/GPL_Code/source/user/confuse/confuse-3.2.2/support/install-sh
 MKDIR_P = /bin/mkdir -p
 mkdir_p = $(MKDIR_P)
 

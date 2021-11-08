@@ -460,13 +460,24 @@ BOOL spnego_parse_auth(DATA_BLOB blob, DATA_BLOB *auth)
 	asn1_end_tag(&data);
 	asn1_end_tag(&data);
 
+	//dump_data(0,data.data,data.length);
 	if (data.has_error) {
-		DEBUG(3,("spnego_parse_auth failed at %d\n", (int)data.ofs));
+		DEBUG(0,("spnego_parse_auth_response failed at data[%d]=%0x,len[%d],ClientOs=%s\n", (int)data.ofs,data.data[data.ofs],data.length,ClientOs));
+		/***change by gjf for Cannot access USB from Mac OS Catalina***/
+		//Mac OS 10.15 Catalina系统的SMB1.0协议中存在不可识别的字节信息(0xa3 0x12 0x04 0x10)导致认证失败，因此无法访问samba服务器
+		if(data.data[data.ofs] == 0xa3 && data.data[data.ofs+1] == 0x12 &&
+		   data.data[data.ofs+2] == 0x04 && data.data[data.ofs+3] == 0x10 &&
+		   !strncmp(ClientOs,"Mac OS X 10.15",strlen(ClientOs)))
+		{
+			DEBUG(0,("spnego_parse_auth_response: Native OS is Mac OS Catalina!\n"));
+			goto response;
+		}
 		data_blob_free(auth);
 		asn1_free(&data);
 		return False;
 	}
-
+	
+response:
 	asn1_free(&data);
 	return True;
 }

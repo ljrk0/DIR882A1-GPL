@@ -1,6 +1,6 @@
 //custom, these settings will override common settings 
  function DeviceInfo() {
-this.createdDec="This Deviceinfo was created for COVRP2500, at Fri May 10 2019 17:23:12 GMT+0800 (CST)";
+this.createdDec="This Deviceinfo was created for COVRP2500, at Mon Sep 09 2019 10:09:20 GMT+0800 (GMT+08:00)";
 this.featureWPS=true;
 this.featureSystemLog=true;
 this.featureRebootSchedule=false;
@@ -26,9 +26,10 @@ this.rebootcount=120;
 this.featureTalkTalkTr069SpecialOf1=false;
 this.featureSystemLogEmailSettings=true;
 this.featureNewTime=true;
-this.featureAutoUpgrade =true;
+this.featureAutoUpgrade=true;
 this.featureRequireLevel=true;
 this.featureLEDControl=true;
 this.featureEnableOnlineUpgrade=true;
 this.featureBundleIcon=true;
+this.featureSecurityOption=null;
 }

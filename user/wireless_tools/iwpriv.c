@@ -259,7 +259,7 @@ set_private_cmd(int		skfd,		/* Socket */
 		int		priv_num)	/* Number of descriptions */
 {
   struct iwreq	wrq;
-  u_char	buffer[8192];	/* Only that big in v25 and later */
+  u_char	buffer[4096*3];	/* Only that big in v25 and later */
   int		i = 0;		/* Start with first command arg */
   int		k;		/* Index in private description table */
   int		temp;

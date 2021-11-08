@@ -5,7 +5,7 @@
 ra_dir_y	+= protest
 #ra_dir_y	+= rssi
 ra_dir_y	+= timer
-
+ra_dir_y	+= led
 
 all romfs:
 	for i in $(ra_dir_y) ; do make -C $$i $@ || exit $?; done

@@ -1,0 +1,405 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+<!-- TrafficUtilization -->
+
+<head>
+<title>D-LINK</title>
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link href="/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/css/style_pages.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>	
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/RGraph.common.core.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/RGraph.line.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/excanvas.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPStatistic.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPClientInfo.js"></script>
+<script type="text/javascript">
+//xframeoption
+if(top!=self){top.location=self.location;}
+
+//session
+if (sessionStorage.getItem('PrivateKey') === null){
+	window.location.replace('../info/Login.html');
+}
+
+var trafficUtilizationList = new TrafficUtilizationList();
+var NoMesh = 0;
+
+$(document).ready(function() {
+	LoadHeader();
+	initialMenu();
+	initialDetectRouterConnection();
+	setMenu("menu_Management");
+
+	DrawLine("cvs_table");
+	// GetStatistics();
+	GetXML();
+	startTimeout();
+});
+		
+function LoadHeader() {
+	$("#header").load("header.html");			
+}
+
+function TrafficUtilizationList() {
+	this.list = new Array();
+}
+
+TrafficUtilizationList.prototype.getRowId = function(mac) {
+	var num = 0;
+	for(num = 0; num < this.list.length; num++) {
+		if(mac == this.list[num].MacAddress) {
+			break;
+		}
+	}
+	return num;
+}
+
+function traffic_data(MacAddress, NickName) {
+	this.MacAddress = MacAddress;
+	this.Nickname = NickName;
+	this.sentAndReceivedChart = new Array();
+	this.receivedChart = new Array();
+	this.time = new Array();
+	this.txTotal = 0;
+	this.rxTotal = 0;
+	this.sentTotal = 0;
+	this.receivedTotal = 0;
+	this.yaxisTop = 100;
+}
+
+function DrawLine(whichCVS) {
+	var line = new RGraph.Line(whichCVS, RGraph.array_pad([]));
+	line.Draw();
+}
+
+function GetXML() {
+	var soapAction = new SOAPAction();
+	var clientInfo = new SOAPGetClientInfoResponse();
+	var clientinfo_query = soapAction.sendSOAPAction("GetClientInfo", null, clientInfo).done(function() {
+		var clientInfo_num = clientInfo.ClientInfoLists.ClientInfo;
+
+		if(clientInfo_num.length == 0) {
+			$('#pleaseWait').hide();
+			$('#mainContent').hide();
+			$('#noDevice').show();
+		} else {
+			var firstTab = true;
+			for(var i = 0; i < clientInfo_num.length; i++) {
+				if(clientInfo_num[i].Type != 'WiFi_2.4G_MeshExtender') {
+					NoMesh ++;
+					if(NoMesh == clientInfo_num.length) {
+						$('#pleaseWait').hide();
+						$('#mainContent').hide();
+						$('#noDevice').show();
+					}
+					continue;
+				}
+
+				var Nickname = clientInfo_num[i].NickName;
+				if(Nickname == '') {
+					Nickname = 'UnKnown';
+				};
+
+				var MacAddress = clientInfo_num[i].MacAddress;
+				var data = new traffic_data(MacAddress, Nickname);
+				trafficUtilizationList.list.push(data);
+
+				(function(i) {
+					var soapAction2 = new SOAPAction();
+					var getInterfaceInfo = new SOAPGetInterfaceStatistics();
+					getInterfaceInfo.Interface = "All_Client_Interfaces";
+					getInterfaceInfo.MACAddress = clientInfo_num[i].MacAddress;
+					getInterfaceInfo.Records = 4;
+
+					var getInterfaceInforesponse = new SOAPGetInterfaceStatisticsResponse();
+					soapAction2.sendSOAPAction("GetInterfaceStatisticsHistory", getInterfaceInfo, getInterfaceInforesponse).done(function() {
+						var interfaceData = getInterfaceInforesponse.InterfaceStatistics.StatisticInfo;
+						var mac = getInterfaceInforesponse.MACAddress;
+						var listNum = trafficUtilizationList.getRowId(getInterfaceInfo.MACAddress);	
+
+						//push null
+						if(interfaceData.length != 4) {
+							for(var x = 0; x < 4 - interfaceData.length; x++) {
+								trafficUtilizationList.list[listNum].sentAndReceivedChart.push(null);
+								trafficUtilizationList.list[listNum].receivedChart.push(null);
+								trafficUtilizationList.list[listNum].time.push('');
+							}			
+						}
+
+						for(var y = 0; y < interfaceData.length; y++) {
+							trafficUtilizationList.list[listNum].sentAndReceivedChart.push(Math.ceil(parseInt(interfaceData[y].Sent) / 1024 + parseInt(interfaceData[y].Received) / 1024));
+							trafficUtilizationList.list[listNum].receivedChart.push(Math.ceil(parseInt(interfaceData[y].Received) / 1024));
+							var ampm = 'AM';
+							if(interfaceData[y].Time.TimeMidDateValue == 'true') {
+								ampm = 'PM';
+							}
+							trafficUtilizationList.list[listNum].time.push(interfaceData[y].Time.TimeHourValue + ':' + interfaceData[y].Time.TimeMinuteValue + ' '+ ampm);
+							trafficUtilizationList.list[listNum].txTotal += Math.ceil(parseInt(interfaceData[y].TXPackets));
+							trafficUtilizationList.list[listNum].rxTotal += Math.ceil(parseInt(interfaceData[y].RXPackets));
+							trafficUtilizationList.list[listNum].sentTotal += Math.ceil(parseInt(interfaceData[y].Sent)/1024);
+							trafficUtilizationList.list[listNum].receivedTotal += Math.ceil(parseInt(interfaceData[y].Received)/1024);
+						}
+
+
+						//yaxisTop
+						var ytopList = trafficUtilizationList.list[listNum].sentAndReceivedChart.slice();
+						for(var z = 0; z < ytopList.length; z++) {
+							if(ytopList[z] == null) {
+								ytopList[z] = 0;
+							}
+						}
+						ytopList.sort(function(a, b) {
+							return a - b;
+						});
+
+						var ytopList_Max = ytopList[ytopList.length - 1];
+						if(ytopList_Max < 100 ) {ytopList_Max = 50;}
+						trafficUtilizationList.list[listNum].yaxisTop = ytopList_Max + 50;
+
+						//li
+						var tabHTML = "<li id='tab_" + listNum +"' onclick='switchBtn("+ listNum + ");'><a>" + trafficUtilizationList.list[listNum].Nickname + "</a></li>";
+						$("#tab_switch").append(tabHTML);
+
+						//trigger click
+						if(firstTab) {
+							firstTab = false;
+							switchBtn(listNum);
+
+							$('#pleaseWait').hide();
+							$('#mainContent').show();
+							$('#noDevice').hide();							
+						}
+					});
+				})(i);
+			}
+		}
+	});
+}
+
+function switchBtn(num) {
+	// focus tab
+	for(var i = 0; i < trafficUtilizationList.list.length; i++) {
+		$("#tab_" + i).removeClass("select");
+	}
+	$("#tab_" + num).addClass("select");
+
+	//表格
+	$('#tx_pkt_info').html(number_format(trafficUtilizationList.list[num].txTotal));
+	$('#rx_pkt_info').html(number_format(trafficUtilizationList.list[num].rxTotal));
+	$('#tx_byte_info').html(number_format(trafficUtilizationList.list[num].sentTotal));
+	$('#rx_byte_info').html(number_format(trafficUtilizationList.list[num].receivedTotal));
+
+	//y軸
+	var whichRate = trafficUtilizationList.list[num].yaxisTop;
+	$("#info_rate1").html(whichRate + " KB");
+	$("#info_rate2").html(parseInt(whichRate * 3 / 4) + " KB");
+	$("#info_rate3").html(parseInt(whichRate / 2) + " KB");
+	$("#info_rate4").html(parseInt(whichRate * 1 / 4) + " KB");
+	$("#info_rate5").html("0 KB");
+
+	//time
+	for(var i = 0; i < trafficUtilizationList.list[num].time.length; i++) {
+		$("#traffic_time" + i).html(trafficUtilizationList.list[num].time[i]);
+	}
+		
+	//面積圖
+	RGraph.Clear(document.getElementById("cvs_table"));
+	RGraph.ObjectRegistry.Clear();
+	var tx_detail = trafficUtilizationList.list[num].sentAndReceivedChart;
+	var rx_detail = trafficUtilizationList.list[num].receivedChart;
+	var tx_line = new RGraph.Line("cvs_table", tx_detail);
+	tx_line.Set('chart.colors', ['rgba(19,121,150,1)']);
+	tx_line.Set('chart.linewidth', 2);
+	tx_line.Set('chart.filled', true);
+	tx_line.Set('chart.fillstyle', 'rgba(70,179,201,0.7)');
+	tx_line.Set('chart.ymax', trafficUtilizationList.list[num].yaxisTop);//rateObj[nowTab].top_rate
+	tx_line.Set('chart.numxticks', 5);
+	tx_line.Set('chart.background.grid.autofit.numhlines', 4);
+	tx_line.Set('chart.background.grid.autofit.numvlines', 3);
+		
+	var rx_line = new RGraph.Line("cvs_table", rx_detail);
+	rx_line.Set('chart.colors', ['rgba(50,177,108,1)']);
+	rx_line.Set('chart.linewidth', 2);
+	rx_line.Set('chart.filled', true);
+	rx_line.Set('chart.fillstyle', 'rgba(82,200,135,0.7)');
+	rx_line.Set('chart.ymax', trafficUtilizationList.list[num].yaxisTop);//rateObj[nowTab].top_rate
+	rx_line.Set('chart.numxticks', 5);
+	rx_line.Set('chart.background.grid.autofit.numhlines', 4);
+	rx_line.Set('chart.background.grid.autofit.numvlines', 3);
+		
+	tx_line.Draw();
+	rx_line.Draw();
+}
+
+// covert number xxxyyy to xxx,yyy format
+function number_format(n) {
+	n += "";
+	var arr = n.split(".");
+	var re = /(\d{1,3})(?=(\d{3})+$)/g;
+	return arr[0].replace(re, "$1,") + (arr.length == 2 ? "." + arr[1] : "");
+}
+
+</script>
+<style>
+	* {
+		box-sizing: initial;
+	}
+	#main {
+		font: 11pt/normal Arial;
+		font-size-adjust: none;
+		font-stretch: normal;
+		margin-top : 20px;
+	}
+	.nav-tabs > li > a {
+		border-bottom: 0px solid;
+		border-top-left-radius: 0px;
+		border-top-right-radius: 15px;
+		color : #fff;
+		background: #88ccdd;
+		border-color: #66b2c2;
+		cursor: pointer;
+	}
+	.nav-tabs > li > a:hover {
+		border-color: #66b2c2;
+		background: #66b2c2;
+		color : #fff;
+	}
+	.nav-tabs > .select > a {
+		background: #4398ad;
+		border-color: #4398ad;
+	}
+	.nav-tabs > .select > a:hover {
+		background: #35889d;
+		border-color: #35889d;
+	}
+	.sentIMG {
+		display: inline-block; 
+		width: 17px; 
+		height: 17px; 
+		background-color: rgba(70,179,201,0.7); 
+		vertical-align: bottom; 
+		margin-right: 10px;
+	}
+	.receivedIMG {
+		display: inline-block;
+		width: 17px;	
+		height: 17px;
+		background-color: rgba(82,200,135,0.7);
+		vertical-align: bottom;
+		margin-right: 10px;
+	}
+	.connectDeviceText {
+		text-align: center;
+		height: 200px;
+		line-height: 200px;
+	}
+	#tab_switch li a{
+		overflow : hidden;
+		text-overflow : ellipsis;
+  		white-space : nowrap;
+	}
+</style>
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header"></div>
+		<div id="menu"></div>
+		<div id="menu_edge"></div>
+		<!-- Content --> 
+		<div id="content">
+			<!-- info --> 
+	  		<div id="info"> 
+				<div id="FunctionName"><script>I18N("h", "Traffic Utilization");</script></div>
+				<div id="wallimage"><img width="195" height="119" src="image/page_Statistic.png"></div>
+		    	<div id="directions">
+		    		<script>I18N("h", "This page gives you various statistics about data transmitted and received by your router through the Internet, your wired network (LAN), and through your wireless networks.");</script>
+		    	</div>
+			</div>
+			<div id="funcBar">		
+				<div id="pagePath"><script>I18N("h", "Management");</script> &gt;&gt; <script>I18N("h", "Traffic Utilization");</script> >> <script>I18N("h", "Extender")</script></div>
+				<ul id="rightFunc">
+					<li style="display:block"><div id="Save_Disable_btn" style="display:none"><script>I18N("h", "Clear");</script></div></li>
+					<li id="routerStatistics" style="display:block"><a href="javascript:CheckHTMLStatus('Statistics');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "Router");</script></div></a></li>
+				</ul>
+			</div>
+			<!-- main --> 
+			<div id="main">
+			<!-- connect -->
+				<div id="pleaseWait" class="connectDeviceText"><script>I18N("h", "Please wait")</script> ...</div>
+			<!-- id="connect" -->
+			<!-- no device -->
+				<div id="noDevice" class="connectDeviceText" style="display:none"><script>I18N("h", "There are no devices available");</script></div>
+			<!-- id="noDevice" -->				
+			<!-- device info -->
+				<div id="mainContent" style="display:none">
+					<div>
+						<ul id="tab_switch" class='nav nav-tabs'></ul>
+					</div>
+					<div id="chart_section">
+						<table class="" ondragstart="return false" onselectstart="return false">
+							<tbody>
+								<tr>
+									<td><canvas id="cvs_table" width="750" height="300">[No canvas support]</canvas></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<center><div id="NotSupport_Message" style="display:none"><label style="color:#FF0000"><script>I18N("h", "Information: Your browser is not support HTML5, please upgrade your browser.");</script></label></div></center>
+					<div>
+						<table id="statistic_info" bordercolor="#66b2c2" border="0" width="650" style="border-collapse: collapse; margin-left:100px;">
+						<tr>
+							<td></td>
+								<td><font color="#4598aa"><script>I18N("h", "Total Packets");</script></font></td>
+								<td><font color="#4598aa"><script>I18N("h", "Total KByte");</script></font></td>
+							</tr>
+							<tr id="tx_info" style="height:35px;">
+								<td style="text-align: left; width : 150px;"><span class="sentIMG"></span><font><script>I18N("h", "Sent (Tx)");</script></font></td>
+								<td style="border: 1px solid #66b2c2;"><span id="tx_pkt_info">0</span></td>
+								<td style="border: 1px solid #66b2c2;"><span id="tx_byte_info">0</span></td>
+								<td></td>
+							</tr>
+							<tr id="rx_info" style="height:35px;">
+								<td style="text-align: left; width : 150px;" nowrap><span class="receivedIMG"></span><font><script>I18N("h", "Received (Rx)");</script></font></td>
+								<td style="border: 1px solid #66b2c2;"><span id="rx_pkt_info">0</span></td>
+								<td style="border: 1px solid #66b2c2;"><span id="rx_byte_info">0</span></td>
+							</tr>
+						</table>
+					</div>
+
+					<!-- Time -->
+					<div id="traffic_time0"></div>
+					<div id="traffic_time1"></div>
+					<div id="traffic_time2"></div>
+					<div id="traffic_time3"></div>
+					<!-- Rate -->
+					<div id="info_rate1"><span id="info_rate1_tab">100</span> KB</div>
+					<div id="info_rate2"><span id="info_rate2_tab">75</span> KB</div>
+					<div id="info_rate3"><span id="info_rate3_tab">50</span> KB</div>
+					<div id="info_rate4"><span id="info_rate4_tab">25</span> KB</div>
+					<div id="info_rate5"><span id="info_rate5_tab">0</span> KB</div>
+				</div>
+			<!-- id="mainContent" -->				
+			</div>
+		</div>
+		<br />
+		<br />
+		<br />
+		<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+		<div id="DetectRouterConnection" style="display:none"></div>
+		<div id="footer" border="0">
+			<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>
+		</div>
+		<br>
+	</div>
+</body>
+</html> 

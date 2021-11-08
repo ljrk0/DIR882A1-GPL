@@ -278,10 +278,7 @@
 #define NETWORK_STATUS_CONNECTED						"Connected"
 #define NETWORK_STATUS_DISCONNECTED						"Disconnected"
 #define NETWORK_STATUS_CONNECTING						"Connecting"
-
 #define NETWORK_STATUS_LIMITED_CONNECTION				"LIMITED_CONNECTION"
-#define NETWORK_STATUS_CONNECTED						"CONNECTED"
-#define NETWORK_STATUS_DISCONNECTED						"DISCONNECTED"
 #define CONF_VALUE_DYNAMIC								"Dynamic"
 #define CONF_VALUE_STATIC								"Static"
 
@@ -415,6 +412,8 @@ extern void file_unlock(int lockfd);
 #define APCLI_WPS_START				(SIGRTMIN + 4)
 #endif
 #define WPS_START					(SIGRTMIN + 5)
+#define DETECT_START				(SIGRTMIN + 6)
+#define LOOPBACK_START				(SIGRTMIN + 7)
 
 
 enum {

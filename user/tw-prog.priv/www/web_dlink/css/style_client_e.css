@@ -1,0 +1,169 @@
+.line {
+	width: 100%;
+	height: 120px;
+	min-height: 50px;
+}
+.client {
+	padding:5px;
+
+	width: 250px;
+	height: 140px;
+
+	position: relative;
+	display:inline-block;
+}
+
+.client_Tag {
+	margin: 0 auto;
+}
+
+.client_Access {
+	display:inline-block;
+	position:absolute;
+	right:0px;
+	bottom:0px;
+}
+
+.client_signal {
+	display:inline-block;
+	position:absolute;
+	left:0px;
+	bottom:0px;
+}
+
+.client_Tag {
+	position: relative;
+	cursor:pointer;
+  	width: 285px;
+   	height: 110px;
+   	background: url(../image/Client_Card_s.png) no-repeat;
+	background-size:contain;
+}
+
+.link_icon{
+	position: absolute;
+	top: 40px;
+	left: 12px;
+	width:32px;
+	height:32px;
+}
+
+.link_icon_band{
+	top:34px;
+	left: 6px;
+	width:45px;
+	height:45px;
+}
+
+.link_IconE,
+.link_IconE_Allow {
+	position: relative;
+	top: 40px;
+	left: 12px;
+	width: 32px;
+	height: 32px;
+	background: url(../image/EthernetClient.png) no-repeat;
+	background-size:contain;
+}
+.link_Offline_Block,
+.link_IconE_Block {
+	position: relative;
+	top: 30px;
+	left: 5px;
+	width: 50px;
+	height: 50px;
+	background: url(../image/Ethernet_Block_.png) no-repeat;
+	background-size:contain;
+	
+}
+.link_Offline_Allow {
+	position: relative;
+	top: 40px;
+	left: 12px;
+	width: 32px;
+	height: 32px;
+	background: url(../image/EthernetClient_Disconnected.png) no-repeat;
+	background-size:contain;
+}
+.link_IconW,
+.link_IconW_Allow {
+	position: relative;
+	top: 40px;
+	left: 12px;
+	width: 32px;
+	height: 32px;
+	background: url(../image/wireless_icon.png) no-repeat;
+	background-size:contain;
+}
+.link_IconW_Block {
+	position: relative;
+	top: 30px;
+	left: 5px;
+	width: 50px;
+	height: 50px;
+	background: url(../image/Wireless_Block_.png) no-repeat;
+	background-size:contain;
+}
+
+.client_Info {
+	position: absolute;
+	top: 30px;
+	left: 65px;
+	width: 190px;
+	height:75px;
+}
+
+.client_Name {
+	position: absolute;
+	top: -20px;
+	font-size: 15px;
+	color: #4598aa;
+	LINE-HEIGHT: 28px;
+	
+	text-overflow: ellipsis;
+	white-space:nowrap;
+	overflow:hidden;
+	width: 170px;
+}
+.client_Name_Offline {
+	color: #666666;
+}
+.client_IPv4Address {
+	display:inline-block;
+	position: absolute;
+
+	top: 10px;
+	right: 0px;
+	font-size: 12px;
+	LINE-HEIGHT: 28px;
+	height:28px;
+}
+.client_Vender {
+	display:inline-block;
+	position: absolute;
+
+	top: 10px;
+	left:0px;
+	font-size: 12px;
+	LINE-HEIGHT: 28px;
+	height:28px;
+}
+
+.client_IPv6Offset {
+	top: 0px;
+}
+
+.client_IPv6Address {
+	position: absolute;	
+	bottom: 8px;
+	right:0px;
+
+	font-size: 12px;
+	LINE-HEIGHT: 28px;
+	height:28px;
+	
+	text-overflow: ellipsis;
+	white-space:nowrap;
+	overflow:hidden;
+}
+

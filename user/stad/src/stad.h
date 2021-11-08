@@ -40,6 +40,8 @@ Copyright (c), 2016-2023, T&W ELECTRONICS(SHENTHEN) Co., Ltd.
 #define CLIENT_INFO_TMP_PATH "/tmp/client.lists.tmp"
 #define IPV6_LEASES_FILE "/tmp/dhcp6s.lease"
 #define NBNS_HOSTNAME_FILE "/tmp/nbns.hostinfo"
+#define DHCP_MON_LIST_PATH "/tmp/dhcp_mon_list"
+#define DHCP_MON_LIST_TMP_PATH "/tmp/dhcp_mon_list.tmp"
 #define MACLIST_FILE_LOCK "maclist"
 #define CLIENT_FILE_LOCK "clientlist"
 #define NETLINK_STA_MSG 29

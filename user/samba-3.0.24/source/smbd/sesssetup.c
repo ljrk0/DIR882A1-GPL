@@ -656,7 +656,8 @@ static int reply_sesssetup_and_X_spnego(connection_struct *conn, char *inbuf,
 	enum remote_arch_types ra_type = get_remote_arch();
 	int vuid = SVAL(inbuf,smb_uid);
 	user_struct *vuser = NULL;
-
+	int native_os_len = 0;
+		
 	DEBUG(3,("Doing spnego session setup\n"));
 
 	if (global_client_caps == 0) {
@@ -689,7 +690,12 @@ static int reply_sesssetup_and_X_spnego(connection_struct *conn, char *inbuf,
 	p2 += srvstr_pull_buf(inbuf, primary_domain, p2, sizeof(primary_domain), STR_TERMINATE);
 	DEBUG(3,("NativeOS=[%s] NativeLanMan=[%s] PrimaryDomain=[%s]\n", 
 		native_os, native_lanman, primary_domain));
-
+	/***add by gjf for Cannot access USB from Mac OS Catalina *****/
+	//获取samba client的操作系统信息
+	memset(ClientOs,0,sizeof(ClientOs));
+	strncpy(ClientOs,native_os,sizeof(ClientOs)-1);
+	/*************************************************************/
+	
 	if ( ra_type == RA_WIN2K ) {
 		/* Windows 2003 doesn't set the native lanman string, 
 		   but does set primary domain which is a bug I think */

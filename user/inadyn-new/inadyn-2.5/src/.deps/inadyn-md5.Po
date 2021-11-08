@@ -1,27 +1,27 @@
 inadyn-md5.o: md5.c ../include/md5.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdint.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wchar.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/string.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdint.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wchar.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/string.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h
 
 ../include/md5.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdint.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/stdint.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/features.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/uClibc_config.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/sys/cdefs.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wchar.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wchar.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/bits/wordsize.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/string.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/uClibc-0.9.33.2/app_headers/include/string.h:
 
 /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h:

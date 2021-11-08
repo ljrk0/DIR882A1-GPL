@@ -1,0 +1,679 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+
+<head>
+<title>D-LINK</title>
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="/css/jquery.selectbox.css" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialCSS.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialValidate.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAction.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPTime.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/timeZoneSearch.js"></script>
+
+<link rel="stylesheet" type="text/css" href="css/style_pop.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="/js/popView.js"></script>
+
+<script>
+//xframeoption
+if(top!=self){ top.location=self.location; }
+
+//session
+if (sessionStorage.getItem('PrivateKey') === null){
+	window.location.replace('../info/Login.html');
+}
+
+$(document).ready(function() {
+	//jquery
+	$("div.checkbox_on" || "div.checkbox_off").click(function(e) {
+	 var checkboxId =  e.target.id +'_ck';	 
+		if(e.target.getAttribute("class") == "checkbox_on") {
+			var disable = I18N("j","Disabled");
+			e.target.setAttribute("class", "checkbox_off");
+			e.target.setAttribute("className", "checkbox_off");
+			document.getElementById(e.target.id).innerHTML='<input type="checkbox" name=' + e.target.id + ' id=' + checkboxId + ' checked>'+disable;
+			document.getElementById(checkboxId).checked=false;
+			if (checkboxId == "ntpServer_ck") {
+				document.getElementById("selectNTPServer").disabled = true;
+				$("#selectNTPServer").selectbox("disable");
+				document.getElementById("show_NTPServer").style.display = "none";
+				document.getElementById("manual_Time").style.display = "inline";
+			}
+			changeFlag = true;
+			save_button_changed();
+		} else {
+			var enable = I18N("j","Enabled");
+			e.target.setAttribute("class", "checkbox_on");
+			e.target.setAttribute("className", "checkbox_on");
+			document.getElementById(e.target.id).innerHTML='<input type="checkbox" name=' + e.target.id + ' id=' + checkboxId + ' checked="">'+enable;
+			document.getElementById(checkboxId).checked=true;
+			if (checkboxId == "ntpServer_ck") {
+				document.getElementById("selectNTPServer").disabled = false;
+				$("#selectNTPServer").selectbox("enable");
+				document.getElementById("show_NTPServer").style.display = "table-row";
+				document.getElementById("manual_Time").style.display = "none";
+			}
+			changeFlag = true;
+			save_button_changed();
+		}
+	});
+	GetXML();
+});
+</script>
+
+<script language="JavaScript">
+	var thisTime = new Date();
+	var nowDate = thisTime.getDate();
+	var nowMonth = thisTime.getMonth() + 1;
+	var nowYear = thisTime.getFullYear();
+	var nowHours = thisTime.getHours();
+	var nowMinutes = thisTime.getMinutes();
+	
+	// Show current time
+	function startTime() {
+		var Set_Year = document.getElementById("year");
+		var Set_Month = document.getElementById("month");
+		var Set_Date = document.getElementById("day");
+		var Set_Hour = document.getElementById("hour");
+		var Set_Minute = document.getElementById("minute");
+		
+		$("#year").selectbox('detach');
+		$("#month").selectbox('detach');
+		$("#day").selectbox('detach');
+		$("#hour").selectbox('detach');
+		$("#minute").selectbox('detach');
+		
+		// set time list
+		for (var i = -5; i <= 5; i ++) {
+			Set_Year.options.add(new Option(nowYear + i, nowYear + i));
+		}
+		for (var i = 1; i <= 12; i ++) {
+			if (i < 10) {
+				Set_Month.options.add(new Option("0" + i, i));
+			} else {
+				Set_Month.options.add(new Option(i, i));
+			}
+		}
+		for (var i = 1; i <= 31; i ++) {
+			if (i < 10) {
+				Set_Date.options.add(new Option("0" + i, i));
+			} else {
+				Set_Date.options.add(new Option(i, i));
+			}
+		}
+		for (var i = 0; i <= 23; i ++) {
+			if (i < 10)	{
+				Set_Hour.options.add(new Option("0" + i, i));
+			} else {
+				Set_Hour.options.add(new Option(i, i));
+			}
+		}
+		for (var i = 0; i <= 59; i ++) {
+			if (i < 10) {
+				Set_Minute.options.add(new Option("0" + i, i));
+			} else {
+				Set_Minute.options.add(new Option(i, i));
+			}
+		}
+		
+		Set_Year.value = nowYear;
+		Set_Month.value = nowMonth;
+		Set_Date.value = nowDate;
+		Set_Hour.value = nowHours;
+		Set_Minute.value = nowMinutes;
+		
+		changeDate(false);
+
+		$("#year").selectbox({width:100});
+		$("#year").selectbox('attach');
+		$("#month").selectbox({width:100});
+		$("#month").selectbox('attach');
+		$("#day").selectbox({width:100});
+		$("#day").selectbox('attach');
+		$("#hour").selectbox({width:100});
+		$("#hour").selectbox('attach');
+		$("#minute").selectbox({width:100});
+		$("#minute").selectbox('attach');
+	}
+	
+	function changeDate(initFlag) {
+		var year = document.getElementById("year").value;
+		var month = document.getElementById("month").value;
+		var count = document.getElementById("day").length;
+		
+		//count : calculate and control days of month
+		if (month == "4" || month == "6" || month == "9" || month == "11") {
+			if(count<29) { 
+				$('#day').append( new Option(29,29) );
+			}
+			if(count<30) {
+		 		$('#day').append( new Option(30,30) );
+			}
+			if(count>30) {
+				$("#day option[value='31']").remove();
+			}
+		} else if(month == "1" || month == "3" || month == "5" || month == "7" || month == "8" || month == "10" || month == "12") { 
+			if(count<29) { 
+				$('#day').append( new Option(29,29) );
+			} 
+			if(count<30) {
+				$('#day').append( new Option(30,30) );
+			} 
+			if(count<31) { 
+				$('#day').append( new Option(31,31) ); 
+			}
+		} else if(month == "2") {
+			if(count>28) {
+				$("#day option[value='31']").remove();
+				$("#day option[value='30']").remove();
+			}
+			if(year% 4 != 0) {
+				if(count>28) {
+					$("#day option[value='29']").remove();
+				}
+			} else {
+				if(count==28) {
+					$('#day').append( new Option(29,29) );
+				}
+			}
+		}
+		if(initFlag) {
+			$("#day").selectbox('detach');
+			$("#day").selectbox({width:100});
+			$("#day").selectbox('attach');
+		}
+	}
+</script>
+
+<script type="text/javascript">
+	var HNAP = new HNAP_XML();
+	var _ReciprocalNumber = 25;
+	var Time_GetRouterTime;
+	var current_Date = "";
+	var current_Time = "";
+	var TimeCycle = 0;
+	var current_Zone = "";
+	var daylightsaving;
+	
+	function Load_HTML() {
+		$("#header").load("header.html");
+	}
+	function Initial() {
+		initialMenu();
+		initialDetectRouterConnection();
+
+		// create timezone option
+		createSelectOption();
+	}
+	function CheckConnectionStatus2() {
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 2000,
+			type : "GET",
+			success : function(data) { GetRouterTime(); },
+			error : function() {
+				document.getElementById("nowDateTimeSpan").innerHTML = I18N("j","Not Available");
+				Time_GetRouterTime = window.clearInterval(Time_GetRouterTime);
+			}
+		});
+	}
+	function GetRouterTime() {
+		var soapAction = new SOAPAction();
+		var GetTimeSettingsResponse = new SOAPGetTimeSettingsResponse();
+
+		soapAction.sendSOAPAction("GetTimeSettings", null, GetTimeSettingsResponse).done(function(obj){
+			current_Date = GetTimeSettingsResponse.CurrentDateTZ;
+			current_Time = GetTimeSettingsResponse.CurrentTimeTZ;
+
+			var split_Time = current_Time.split(/[\s:]+/);
+			var Time_Seconds = split_Time[split_Time.length - 1];
+			var Time_Minutes = split_Time[split_Time.length - 2];
+			var Time_Hours = split_Time[split_Time.length - 3];
+			TimeCycle = Time_Hours * 3600 + Time_Minutes * 60 + Time_Seconds * 1;
+			Time_GetRouterTime = self.setInterval("AutoCalcTimeCycle()", 1000);
+		});
+	}
+
+	function AutoCalcTimeCycle() {
+		// current time
+		var sec_num = parseInt(TimeCycle, 10);
+		var hours = Math.floor(sec_num / 3600);
+		var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+		var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+		// current date
+		var get_Date = current_Date;
+		var split_Date = get_Date.split(/[\s\/]+/);
+		var date = parseInt(split_Date[split_Date.length - 1]);
+		var months = parseInt(split_Date[split_Date.length - 2]);
+		var years = split_Date[split_Date.length - 3];
+		var unit = "";
+		
+		if(months < 10) {
+			months = "0" + months;
+		}
+		if(date < 10) {
+			date = "0" + date;
+		}
+		if(hours < 12) {
+			unit = "AM";
+		} else {
+			unit = "PM";
+			hours = hours - 12;
+		}
+		if(hours < 10) {
+			if(hours == 0) {
+				hours = 12;
+			} else {
+				hours = "0" + hours;
+			}
+		}
+		if(minutes < 10) {
+			minutes = "0" + minutes;
+		}
+		if(seconds < 10) {
+			seconds = "0" + seconds;
+		}
+		dateAndTime = years + "/" + months + "/" + date + " " + hours + ":" + minutes + ":" + seconds + " " + unit;
+		
+		$("#nowDateTimeSpan").html(dateAndTime);
+		
+		TimeCycle++;
+		if(TimeCycle > 86399) {
+			TimeCycle = 0;
+			TimeGetRouterTime = window.clearInterval(Time_GetrouterTime);
+			checkConnectionStatus2();
+		}
+	}
+
+	function GetXML() {
+		var soapAction = new SOAPAction();
+		var GetTimeSettingsResponse = new SOAPGetTimeSettingsResponse();
+		var result_GetTimeSettingsResponse = soapAction.sendSOAPAction("GetTimeSettings", null, GetTimeSettingsResponse);
+
+		$.when(result_GetTimeSettingsResponse).done(function(obj) {
+
+			$("#timeZone").selectbox('detach');
+			$("#timeZone").val(GetTimeSettingsResponse.TZLocation);
+			$("#timeZone").selectbox({width:350});
+			$("#timeZone").selectbox('attach');
+
+			// NTP server
+			// var ntp_Enabled = GetTimeSettingsResponse.NTP;
+			// if(ntp_Enabled == "true"){
+				ntp_Server = GetTimeSettingsResponse.NTPServer;
+				// presetCheckBox("ntpServer", true);
+				// $("#selectNTPServer").selectbox("disable");
+				if(ntp_Server == "ntp1.dlink.com"){
+					document.getElementById("selectNTPServer").options[0].selected = true;
+					$("#NTPServer_Address").val(I18N("j", "D-Link NTP Server"));
+					$("#NTPServer_Address").attr('disabled', true);
+				} else {
+					document.getElementById("selectNTPServer").options[1].selected = true;
+					$("#NTPServer_Address").val(ntp_Server);
+				}
+				$("#manual_Time").hide();
+			// } else {
+			// 	presetCheckBox("ntpServer", false);
+			// 	$("#selectNTPServer").attr('disabled', true);
+			// 	$("#NTPServer_Address").val(I18N("j", "D-Link NTP Server"));
+			// 	$("#NTPServer_Address").attr('disabled', true);
+			// 	$("#selectNTPServer").selectbox("enable");
+			// 	$("#show_NTPServer").hide();
+			// 	$("#manual_Time").show();
+			// }
+
+			current_Date = GetTimeSettingsResponse.CurrentDateTZ;
+			current_Time = GetTimeSettingsResponse.CurrentTimeTZ;
+
+			var split_Time = current_Time.split(/[\s:]+/);
+			var Time_Seconds = split_Time[split_Time.length - 1];
+			var Time_Minutes = split_Time[split_Time.length - 2];
+			var Time_Hours = split_Time[split_Time.length - 3];
+			TimeCycle = Time_Hours * 3600 + Time_Minutes * 60 + Time_Seconds * 1;
+			Time_GetRouterTime = self.setInterval("AutoCalcTimeCycle()",1000);
+			
+			$("#selectNTPServer").selectbox({width:210});
+			$("#year").selectbox({width:100});
+			$("#month").selectbox({width:100});
+			$("#day").selectbox({width:100});
+			$("#hour").selectbox({width:100});
+			$("#minute").selectbox({width:100});
+			// if(document.getElementById("ntpServer_ck").checked != "1")	{
+			// 	$("#selectNTPServer").selectbox("disable");
+			// }
+
+			$("#main").show();
+		});
+	}
+	
+	function CheckConnectionStatus() {
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 5000,
+			type : "GET",
+			success : function(data) { SetXML(); },
+			error : function() { document.getElementById("DetectRouterConnection").style.display = "inline"; }
+		});
+	}
+	function SetXML() {
+		var msg = I18N("j", "Please wait") + " ...";
+		PopView.show(msg);
+
+		var soapAction = new SOAPAction();
+		var SetTimeSettings = new SOAPSetTimeSettings();
+		SetTimeSettings.TZLocation = $("#timeZone").val();
+
+		// if($("#ntpServer_ck").prop('checked') == true) {
+		SetTimeSettings.NTP = "true";
+		if($("#selectNTPServer").val() == 0) {
+			SetTimeSettings.NTPServer = "ntp1.dlink.com";
+		} else {
+			SetTimeSettings.NTPServer = $("#NTPServer_Address").val();
+		}
+		// } else {
+		// 	var setYear = $("#year").val(),
+		// 		setMonth = $("#month").val(),
+		// 		setDay = $("#day").val(),
+		// 		setHour = $("#hour").val(),
+		// 		setMinute = $("#minute").val();
+
+		// 	if(setMonth < 10) {
+		// 		setMonth = "0" + setMonth;
+		// 	}
+		// 	if(setDay < 10) {
+		// 		setDay = "0" + setDay;
+		// 	}
+		// 	if(setHour < 10) {
+		// 		setHour = "0" + setHour;
+		// 	}
+		// 	if(setMinute < 10) {
+		// 		setMinute = "0" + setMinute;
+		// 	}
+
+		// 	var setCurrentDate = setYear + "/" + setMonth + "/" + setDay;
+		// 	var setCurrentTime = setHour + ":" + setMinute + ":00";
+
+		// 	SetTimeSettings.NTP = "false";
+		// 	SetTimeSettings.CurrentDateTZ = setCurrentDate;
+		// 	SetTimeSettings.CurrentTimeTZ = setCurrentTime;
+		// }
+		soapAction.sendSOAPAction("SetTimeSettings", SetTimeSettings, null).done(function(obj){
+			if(obj.SetTimeSettingsResult == "OK" || obj.SetTimeSettingsResult == "RESTART") {
+				Start_reciprocal_Number_RestoreConfiguration(false);
+			} else if(obj.SetTimeSettingsResult == "REBOOT") {
+				Start_reciprocal_Number_RestoreConfiguration(true);
+			} else {
+				location.reload();
+			}
+		});
+	}
+
+	function Start_reciprocal_Number_RestoreConfiguration(reboot) {
+		var msg = I18N("j", "Please wait") + " ...";
+		var msg2 = I18N("j", "The new settings have been saved.");
+		var timer = currentDevice.timeCountdown;
+		var soapAction = new SOAPAction();
+
+		if(reboot == true) {
+			msg = I18N("j", "Your changes are being saved, and the device will need to reboot.");
+			timer = currentDevice.rebootcount;
+			soapAction.sendSOAPAction("Reboot", null, null);
+		}
+
+		PopView.showWithCountdown(msg, timer).always(function() {
+			PopView.showConfirm(msg2).done(function() {
+				location.reload();
+			});
+		});
+	}
+
+	
+	function changeNTPServer(element, value) {	
+		var e = $(element);
+		var get_Selection = $("+div .sbFocus",e).text();
+		if (value != "0") {
+			document.getElementById("NTPServer_Address").value = "";
+			document.getElementById("NTPServer_Address").disabled = false;
+		} else {
+			document.getElementById("NTPServer_Address").value = get_Selection;
+			document.getElementById("NTPServer_Address").disabled = true;
+		}
+	}
+	function createSelectOption() {
+		var timezoneSelect = $("#timeZone");
+
+		for(var i=0; i<countryCity.length; i++){
+			timezoneSelect.append('<option value="' + countryCity[i] + '">' + I18N('j', countryCity[i]) + '</option>');
+		}
+	}
+</script>
+<script language="JavaScript">
+	// 2013/09/23 Timmy Modify
+	$(function() {
+		$("select").change(function () {	save_button_changed();	});
+		$("input").keydown(function () {	save_button_changed();	});
+	});
+	function save_button_changed() {
+		document.getElementById("Save_Disable_btn").style.display = "none";
+		document.getElementById("Save_btn").style.display = "block";
+		changeFlag = true;
+		changeTimeoutAction();
+	}
+</script>
+</head>
+
+<body onload="startTime();">
+	<form name="Time_form" id="Time_form" method="POST" action="">
+	<div id="wrapper">
+		<!-- ------------------ Logo ----------------------- -->
+		<div id="header"></div>
+		<!-- ------------------ Menu ----------------------- -->
+		<div id="menu"></div>
+		<div id="menu_edge"></div>
+		<!-- ------------------ Content -------------------- -->
+		<div id="content">
+			<!-- ------------------ info -------------------- -->	
+	  		<div id="info">
+			  	<div id="FunctionName"><script>I18N("h", "Time");</script></div>
+				<div id="wallimage"><img src="image/page_TimeZone.png" alt="" width="195" height="119"/></div>
+			    <div id="directions">
+					<script>I18N("h", "Your router's internal clock is used for data logging and schedules for features. The date and time can be synchronized with a public time server on the Internet, or set manually.");</script>
+				</div>
+			</div>
+			<!-- ------------------ funcBar -------------------- -->
+			<div id="funcBar">
+				<div id="pagePath">&nbsp;<script>I18N("h", "Management");</script> &gt;&gt; <script>I18N("h", "System Time");</script></div>
+				<ul id="rightFunc">
+					<li style="display:block"><div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click();changeTimeoutAction();" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li> 
+					<li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+					<input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+					<li style="display:block"><a href="javascript:CheckHTMLStatus('Schedule');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "Schedule");</script></div></a></li>
+				</ul>
+			</div>
+	    	<!-- ------------------ main ----------------------- -->
+	     	<div id="main" style="display:none">
+ 		   		<!-- ------------------ general -------------------- -->
+				<table class="block" border="0" cellspacing="0" ondragstart="return false" onselectstart="return false" style="margin: 10px 0 0 0;">
+				<tbody>
+					<tr>
+						<td><div class ="title"><script>I18N("h", "Time Configuration");</script></div></td>
+					</tr>
+					<tr>
+						<th><script>I18N("h", "Time Zone");</script>:</th>
+						<!--  new time zone  -->
+						<td>
+							<div class="styled-select" >
+								<select name="timeZone" id="timeZone"></select>
+							</div>
+						</td>
+						<!--      -->
+					</tr>					
+					<tr>
+						<th><script>I18N("h", "Time");</script>:</th>
+						<td><span id="nowDateTimeSpan">&nbsp;&nbsp;<script>I18N("h", "Not Available");</script></span></td>
+					</tr>
+				</tbody>
+			    </table>
+				<hr />
+				<table class="block" ondragstart="return false" onselectstart="return false" style="margin: 10px 0 0 0;">
+				<tbody>
+					<tr>
+						<td><div class ="title"><script>I18N("h", "Automatic Time Configuration");</script></div></td>
+					</tr>
+					<tr style="display: none">
+						<th><script>I18N("h", "Update Time Using an NTP Server");</script>:</th>
+						<td><div id="ntpServer" class="checkbox_on"><input type="checkbox" name="ntpServer" id="ntpServer_ck"></div></td>
+					</tr>
+					<tr id="show_NTPServer">
+						<th><script>I18N("h", "NTP Server");</script>:</th>
+						<td width="20px"><input class="styled-text" type="text" name="NTPServer_Address" id="NTPServer_Address"></td>
+						<td valign="top">
+							<div class="styled-select">
+							<select name="selectNTPServer" id="selectNTPServer" onChange="changeNTPServer(this, this.value)">
+								<option value="0">D-Link NTP Server</option>
+								<option value="1">Manual</option>
+							</select>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			    </table>
+			    <div id="manual_Time" style="display:none">
+					<hr />
+					<table class="block" ondragstart="return false" onselectstart="return false"  border="0" style="margin: 10px 0 0 0;">
+					<tbody>
+						<tr>
+							<td><div class ="title"><script>I18N("h", "Manual Time Configuration");</script></div></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Date");</script>:</th>
+							<td width="20px">
+								<div class="styled-select" >
+									<select name="year" id="year" onChange="changeDate(true)">
+									</select>
+								</div>
+							</td>
+							<td width="20px">
+								<div class="styled-select" >
+									<select name="month" id="month" onChange="changeDate(true)">
+									</select>
+								</div>
+							</td>
+							<td width="20px">
+								<div class="styled-select" >
+									<select name="day" id="day">
+									</select>
+								</div>
+							</td>
+							<td align="left"><script>I18N("h", "Year/ Month/ Day");</script></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Time");</script>:</th>
+							<td width="20px">
+								<div class="styled-select" >
+									<select name="hour" id="hour">
+									</select>
+								</div>
+							</td>
+							<td width="20px">
+								<div class="styled-select" >
+									<select name="minute" id="minute">
+									</select>
+								</div>
+							</td>
+							<td align="left" colspan="2"><script>I18N("h", "Hour/ Minute");</script></td>
+						</tr>
+					</tbody>
+				    </table>
+				</div>
+		    </div>
+		    <div id="CreatePopAlertMessage" style="display:none">
+				<div id="AlertPopRect">
+				<div id="AlertPopBody">
+					<table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0">
+					   <tbody>
+							 <tr>
+							 	<td>
+									<center><div id="Loading_pop_image2"></div></center>
+								</td>
+							 </tr>
+							 <tr>
+							 	<td><label id="reciprocal_Number"></label></td>
+							 </tr>
+							 <tr>
+							 	<td id="dialog_msg_black2"><script>I18N("h", "Your changes are being saved.");</script></td>
+							 </tr>
+					   </tbody>
+					</table>
+				</div>
+				</div>
+			</div>
+		</div>
+		<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+		<div id="DetectRouterConnection" style="display:none"></div>
+		<div id="footer">
+			<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>
+		</div>
+		<br /><br /><br /><br /><br />
+	</div>
+	<!-- popalert -->
+	<div id="popalert" class="black_overlay" style="display:none">
+	  <div class="popup_window_border" style="position:relative;top:15%;">
+	    <div class="popup_window">
+	      <div id="popalert_circle">
+	        <img src="image/loading.gif" width="62px" height="62px">
+	      </div>
+	      <div id="popalert_countdown"></div>
+	      <div id="popalert_title" style="display:none"></div>
+	      <div id="popalert_InformationIMG" style="display:none"></div>
+	      <div id="popalert_desc"></div>
+	      <div id="popalert_buttons" class="btn-group" role="group" aria-label="...">
+	        <button type="button" id="popalert_ok" class="btn btn-default">
+	          <script>I18N("h", "OK");</script>
+	        </button>
+	        <button type="button" id="popalert_cancel" class="btn btn-default">
+	          <script>I18N("h", "Cancel");</script>
+	        </button>
+	      </div>
+	    </div>
+	  </div>
+	</div><!-- popalert end -->
+
+	</form>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready( function() {
+			$('#Time_form').validate({
+				rules: {
+					NTPServer_Address: { required: true }
+				},
+				messages: {
+					NTPServer_Address: { required: jQuery.validator.messages.required }
+				},
+				submitHandler: function(form) {
+					CheckConnectionStatus();
+				},
+			});
+		});
+	</script>
+
+<script type="text/javascript">
+	Load_HTML();
+	Initial();
+	setMenu("menu_Management");
+	startTimeout();
+</script>
+</body>
+</html> 

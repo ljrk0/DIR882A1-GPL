@@ -10,7 +10,7 @@
  *	as published by the Free Software Foundation; either version
  *	2 of the License, or (at your option) any later version.
  */
-
+#include <linux/version.h>
 #include <linux/kernel.h>
 #include <linux/init.h>
 #include <linux/rculist.h>
@@ -29,11 +29,47 @@
 #include <linux/if.h>
 #include <linux/socket.h>
 #include <linux/netlink.h>
+#include <linux/fs.h>
+#include <linux/uaccess.h>
 
 #define MAX_PAYLOAD 4500
 struct sock *sta_msg_sock = NULL;
 #define NETLINK_STA_MSG 29
 static int g_pid = 0, g_recv = 0;
+#ifdef CONFIG_LOOP_PACKET_ENVENT
+
+#define LOOPBACK_START	(SIGRTMIN + 7)
+
+void kill_sig_workfdbq(void)
+{
+	struct file *fp;
+	char pid[8];
+	struct task_struct *p = NULL;
+	//read timer pid from file, and send signal USR2,USR1 to restart WAN func
+	fp = filp_open("/var/run/timer.pid", O_RDONLY, 0);
+	if (IS_ERR(fp))
+	    return;
+
+	if (fp->f_op && fp->f_op->read) 
+	{
+	    if (fp->f_op->read(fp, pid, 8, &fp->f_pos) > 0) 
+		{
+#if LINUX_VERSION_CODE > KERNEL_VERSION(2,6,35)
+		p = pid_task(find_get_pid(simple_strtoul(pid, NULL, 10)),  PIDTYPE_PID);
+#else
+		p = find_task_by_pid(simple_strtoul(pid, NULL, 10));
+#endif
+			if (NULL != p)
+			{
+				printk("br-lan: Send LOOPBACK_START 60 Signal timer[%uld]\n", simple_strtoul(pid, NULL, 10));
+			    send_sig(LOOPBACK_START, p, 0);
+			}
+	    }
+	}
+	filp_close(fp, NULL);
+	
+}
+#endif
 
 void sta_msg_send(char *data, u_int32_t data_len) 
 {
@@ -592,6 +628,9 @@ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
 {
 	struct hlist_head *head = &br->hash[br_mac_hash(addr, vid)];
 	struct net_bridge_fdb_entry *fdb;
+#ifdef CONFIG_LOOP_PACKET_ENVENT
+	static unsigned long ul_old_time;
+#endif
 
 	/* some users want to always flood. */
 	if (hold_time(br) == 0)
@@ -610,6 +649,17 @@ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
 				br_warn(br, "received packet on %s with "
 					"own address as source address\n",
 					source->dev->name);
+#ifdef CONFIG_LOOP_PACKET_ENVENT
+			if(!ul_old_time) ul_old_time = jiffies;
+			if(jiffies - ul_old_time > 60*HZ && 
+				(!strncmp(source->dev->name, "eth3", 4) || !strncmp(source->dev->name, "apcl", 4)))
+			{
+				printk("kill_sig_workfdbq\n");
+				schedule_work(&br->kill_sig_wq);
+				ul_old_time = jiffies;
+			}
+#endif
+
 		} else {
 			/* fastpath: update of existing entry */
 			fdb->dst = source;

@@ -553,6 +553,7 @@ SendAuth:
 
 #ifdef BAND_STEERING
 	if (pAd->ApCfg.BandSteering == TRUE) {
+		//#if 0  //test for auth attack
 		BND_STRG_CHECK_CONNECTION_REQ(	pAd,
 											wdev, 
 											auth_info.addr2,
@@ -562,11 +563,14 @@ SendAuth:
 											FALSE,
 											0,
 											&bBndStrgCheck);
+		//#endif
 		if (bBndStrgCheck == FALSE) {
 			//APPeerAuthSimpleRspGenAndSend(pAd, pRcvHdr, auth_info.auth_alg, auth_info.auth_seq + 1, MLME_UNSPECIFY_FAIL);
-			MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_TRACE, ("AUTH - BndStrg check failed.\n"));
+//			MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("AUTH-false\n"));
 			return;
 		}
+		else
+		{MTWF_LOG(DBG_CAT_AP, DBG_SUBCAT_ALL, DBG_LVL_OFF, ("AUTH-true\n"));}
 	}
 #endif /* BAND_STEERING */
 

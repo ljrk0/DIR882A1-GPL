@@ -1,0 +1,1641 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+<head>
+<title>D-LINK</title>
+
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" media="all" />
+<link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/jquery.selectbox_e.css" />
+<link rel="stylesheet" type="text/css" href="/css/jquery.checkbox.css" />
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/style_h_e.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/style_home_e.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/style_client_e.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/style_pop.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/style_wizard_e.css" media="all" />
+
+<!--old method-->
+<link rel="stylesheet" type="text/css" href="css/style_h_old_e.css" media="all" />
+
+<!--PLCcard-->
+<link rel="stylesheet" type="text/css" href="css/style_home_PLCcard_e.css" media="all" />
+
+<!--[if lte IE 9]>
+	<link rel="stylesheet" type="text/css" href="css/style_ie.css" />
+<![endif]-->
+<script type="text/javascript" charset="utf-8" src="js/initialJQ_e.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/initialJSDefault.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/Public.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.validate.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery-ui.custom.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.client.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAction.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPWLanRadio_e.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPWanSettings.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPClientInfo_e.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAPSettings.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPWizard_e.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/menu_e.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/checkTimeout.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/wireless.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/AES.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/hmac_md5.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPDeviceSettings.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPLogin.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initEnv.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/Home/homeView_e.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/Home/homeViewController_e.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/Home/homeModels_e.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/popView.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/require-2.2.0.min.js"></script>
+
+<!--test-->
+<script type="text/javascript" charset="utf-8" src="/js/includeLang.js"></script>
+
+<!--client items-->
+<script type="text/javascript" charset="utf-8" src="/js/ConnectedClients_e.js"></script>
+<!--schedule-->
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPSchedule.js"></script>
+
+<style>
+#goto_wizard2 {
+	position: absolute;
+	top:100px;
+	left:314px;
+	opacity: 0.7;
+}
+
+#goto_wizard2:hover {
+	opacity: 1;
+}
+
+#goto_wizard2 > img {
+	position: absolute;
+	top:0px;
+	left:60px;
+	z-index: 100;
+}
+
+#goto_wizard2 > button {
+	position: absolute;
+	top: 8px;
+	left:0px;
+	color: #FFF;
+	background-color: red;
+	z-index: 99;
+
+	border:solid 1px #ff4d4d;
+	text-align:center;
+	padding:10px 5px;
+	width: 150px;
+	cursor:pointer;
+	font-size: 14px;
+
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+
+	box-shadow: 3px 3px 5px #333333;
+}
+
+/*plc*/
+#closeCreatePopBtn_plccard{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 26px;
+	height: 26px;
+	margin: 20px;
+	padding: 0px;
+	background: url(../image/closeDialog3.png) left top no-repeat;
+	cursor:pointer;
+	z-index: 100;
+	background-size:contain;
+}
+
+#closeCreatePopBtn_plccard2{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 26px;
+	height: 26px;
+	margin: 20px;
+	padding: 0px;
+	background: url(../image/closeDialog3_disabled.png) left top no-repeat;
+	cursor:pointer;
+	z-index: 100;
+	background-size:contain;
+}
+
+/*wizard dialog*/
+#CreatePopAlertMessage_wizard {
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+/*addextender dialog*/
+#CreatePopAlertMessage_addextenderwizard {
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+#CreatePopAlertMessage_addextenderwizard2 {
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+/*editpop > closeCreatePopBtn2*/
+#closeCreatePopBtn2 {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 26px;
+	height: 26px;
+	margin: 20px;
+	padding: 0px;
+	background: url(../image/closeDialog3_disabled.png) left top no-repeat;
+	z-index: 100;
+	background-size:contain;
+}
+
+
+/*according wrapper width, relative for tooltip*/
+body{
+	min-width:900px;
+	position:relative;
+}
+
+
+img { border: 0px}
+
+label {
+	font-weight: normal;
+}
+.myProgressBar {
+	font-size:12pt;
+	padding-top:5px;
+}
+
+#internet_left {
+	position: absolute;
+	top: 10px;
+    left: 40px;
+	width: 430px;
+	/*background-color: #ccf;*/
+}
+#internet_right {
+	position: relative;
+	top: 10px;
+    left: 470px;
+	width: 370px;
+	min-height:210px;
+	/*background-color: #fcc;*/
+}
+#internet_v6_left {
+	position: absolute;
+	top: 10px;
+    left: 40px;
+	width: 430px;
+	/*background-color: #ccf;*/
+}
+#internet_v6_right {
+	position: relative;
+	top: 10px;
+	left: 470px;
+	width: 370px;
+	min-height:210px;
+	/*background-color: #fcc;*/
+}
+#router_left {
+    margin-left: 30px;
+	width: 460px;
+	min-height: 300px;
+	/*background-color: #ccf;*/
+}
+#router_right {
+	position: relative;
+	top: 0px;
+    left: 510px;
+	width: 330px;
+	min-height: 300px;
+	/*background-color: #fcc;*/
+}
+#usb_left {
+	display:inline-block;
+	position: relative;
+	top: 20px;
+    left: 20px;
+	width: 460px;
+	min-height:410px; /* 300px */
+	/*background-color: #ccf;*/
+}
+#usb_right {
+	position: absolute;
+	top: 20px;
+    left: 480px;
+	width: 350px;
+	/*background-color: #fcc;*/
+}
+.v4_v6_btn {
+	list-style: none;
+	position: relative;
+	display:inline;
+	top: -10px;
+	right: 100px;
+	margin: 0;
+	padding: 0;
+	height: 20px;
+}
+.v4_v6_btn li {
+	float: right;
+	margin: 0;
+	padding: 0;
+	line-height: 20px;
+}
+
+.infor_title {
+	position: absolute;
+	z-index: 500;
+	top: -80px;
+	left:30px;
+	white-space: nowrap;
+
+	font-size: 25pt;
+	font-family: 'Segoe UI', Tahoma, Arial, Helvetica, Sans-Serif;
+	color: #454547;
+}
+
+.myTable_index {
+	width:100%;
+	line-height:30px;
+}
+.myTable_index th {
+	text-align: left;
+	white-space: nowrap;
+	width: 1px;
+}
+.myTable_index td {
+	text-align: left;
+	padding-left: 5px;
+}
+.lanTitle {
+	color: #4598aa;
+ 	font-weight: bold;
+  	font-size: 12pt;
+  	height:40px;
+  	vertical-align: bottom;
+}
+
+.shadowLine {
+	position: absolute;
+	top: 380px;
+	width:100%;
+	height: 70px;
+	background: #fff url(../image/home_shadow.png);
+	z-index: 1;
+}
+
+.usbtable {
+	display:block;
+	position: relative;
+	width: 80%;
+	max-width: 80%;
+	margin-left:31px;
+	margin-bottom: 20px;
+
+	background-color: transparent;
+}
+
+.usbtable>tbody>tr>th,
+.usbtable>tbody>tr>td {
+	text-align: left;
+	white-space: nowrap;
+	padding: 5px;
+	line-height: 1.42857143;
+	vertical-align: top;
+	border: 0px;
+}
+
+.usbtable>tbody>tr>th {
+	width: 1px;
+}
+.usbtable>tbody>tr>td {
+	padding-left: 10px;
+}
+.usb_warning {
+	color:orange;
+}
+.usb_warning_icon {
+	position:absolute;
+	bottom:15px;
+	right:10px;
+}
+
+.linkstyle_1 a {
+	color: #4598aa;
+	text-decoration: underline;
+}
+
+.uplink_Icon5G {
+	position: relative;
+	top: 50px;
+	width: 28px;
+	height: 28px;
+	background: url(/image/wifi_5g.png) no-repeat;
+	background-size:contain;
+}
+.uplink_Icon {
+	position: relative;
+	top: 50px;
+	width: 28px;
+	height: 28px;
+	background: url(/image/wireless_icon.png) no-repeat;
+	background-size:contain;
+}
+.uplink_IconPowerLine {
+	position: relative;
+	top: 50px;
+	width: 28px;
+	height: 28px;
+	background: url(/image/PLC.png) no-repeat;
+	background-size:contain;
+}
+.uplink_IconAP {
+	position: relative;
+	top: 50px;
+	width: 28px;
+	height: 28px;
+	background: url(/image/ethernet.png) no-repeat;
+	background-size:contain;
+}
+.signal_IconMax {
+	position: relative;
+	top: 24px;
+	left: 30px;
+	width: 28px;
+	height: 28px;
+	background: url(/image/signal4.png) no-repeat;
+	background-size:contain;
+}
+.signal_IconHigh {
+	position: relative;
+	top: 24px;
+	left: 30px;
+	width: 28px;
+	height: 28px;
+	background: url(/image/signal3.png) no-repeat;
+	background-size:contain;
+}
+.signal_IconLow {
+	position: relative;
+	top: 24px;
+	left: 30px;
+	width: 28px;
+	height: 28px;
+	background: url(/image/signal2.png) no-repeat;
+	background-size:contain;
+}
+.signal_IconMin {
+	position: relative;
+	top: 24px;
+	left: 30px;
+	width: 28px;
+	height: 28px;
+	background: url(/image/signal1.png) no-repeat;
+	background-size:contain;
+}
+
+/*extender*/
+#SurveyListTable .list-group-item {
+	width:100%;
+}
+
+
+/*fix menu*/
+#menu ul ul {
+	/*background: #fff;*/
+	padding: 11px 0px 0px 0px;
+	margin: 26px 0 0 0;
+	-moz-box-shadow: 7px 15px 15px #868686;
+	-webkit-box-shadow: 7px 15px 15px #868686;
+	box-shadow: 7px 15px 15px #868686;
+	/*background: #fff url(../image/menu_this.png) left top no-repeat;*/
+	background: url(../image/menu_this.png) left top no-repeat;
+	background-size:contain;
+}
+#menu ul ul li {
+	background-color:#FFFFFF;
+}
+</style>
+
+
+<script type="text/javascript">
+
+	//xframeoption
+	if(top!=self){top.location=self.location;}
+
+	//session
+	if (sessionStorage.getItem('PrivateKey') === null){
+		window.location.replace('../Login.html');
+	}
+
+	var ipv4_connTime = 0;
+	var spinnerObj;
+	var projectName = JSON.parse(XMLEncode_forheader(sessionStorage.getItem('modelInfomation'))).modelName;
+	InitImage(basedImage);
+	var timerList = {};
+	var clientCtrl = null;
+	var wizardCovrwifi = 0;
+	var valueChanged = 0;
+
+	
+	var hometimer = setInterval("initHomeViewController(false)",5000);
+	var hometimer2 = setInterval("Get_ClientInfo()",6000);
+	var hometimer3 = null; //plcCard
+
+	function starthometimer() {
+		//start timer
+		if(hometimer == null){
+			initHomeViewController(false);
+			hometimer = setInterval("initHomeViewController(false)",5000);
+		}
+		if(hometimer2 == null){
+			Get_ClientInfo();
+			hometimer2 = setInterval("Get_ClientInfo()",6000);
+		}
+		if(hometimer3 == null){
+			if(currentDevice.featurePLC_e) {
+				GetXMLPLC();
+				hometimer3 = setInterval("GetXMLPLC()",6000);
+			}
+		}	
+	}
+
+	function clearhometimer() {
+		//clear hometimer
+		clearInterval(hometimer);
+		clearInterval(hometimer2);
+		clearInterval(hometimer3);
+
+		hometimer = null;
+		hometimer2 = null;
+		hometimer3 = null;
+	}
+
+	$(document).ready(function(){
+
+		//start
+		if(currentDevice.featureCovrWIFI_e){
+			if(localStorage.getItem("RunningWizard") == "true") { 
+				$('#waitingblock').show();
+				runWizardcCndition();
+			} else {
+				if(sessionStorage.getItem('WiFiSONRole') === null || sessionStorage.getItem('WiFiSONRole') === "") {
+					$('#waitingblock').show();
+					setTimeout("waitingblockControlFn()",1000);
+				} else {
+					if(sessionStorage.getItem('WiFiSONRole') == "Master") {
+						// InitMenu("Home");
+						initialMenu();
+						setMenu("menu_Home");
+					} else {
+						// InitMenu("Home");
+						initialMenu();
+						setMenu("menu_Home");	
+					}
+					$('#waitingblock').hide();
+				}
+			}
+		} else {
+			if (localStorage.getItem("RunningWizard") == "true"){
+				initWizard(true);
+				clearhometimer();
+			}
+			
+			// InitMenu("Home");
+			initialMenu();
+			setMenu("menu_Home");
+		}
+
+		LoadHeader();
+		
+		startTimeout();
+
+		initHomeViewController(true);
+
+		/*
+		//init Client List
+		require(['js/Home/ClientList/ClientListViewController.js'], function(ClientViewCtrl){
+			ClientViewCtrl.init();
+			clientCtrl = ClientViewCtrl;
+		});
+		*/
+
+		//clientinfo
+		LoadMACList();
+		Get_ClientInfo();
+
+		if(currentDevice.featurePLC_e) {
+			//plccard
+			LoadMACList2();
+		}
+
+		if(currentDevice.featureParentControl_e) {
+			//schedule selectbox
+			GetSchedule_List();
+		}
+
+
+
+		setEvents();
+		setClientValidate();
+		setplcValidate();
+
+
+		$("input").on("keypress", function(){
+			changeTimeoutAction();
+		});
+
+
+
+		
+
+		//addextender
+		$('#addextenderbtn').on('click', function() {	
+			addextenderWizard(false);
+			clearhometimer();
+		});
+	});
+	
+
+	//start
+	function waitingblockControlFn() {
+		if(sessionStorage.getItem('WiFiSONRole') === null || sessionStorage.getItem('WiFiSONRole') === "") {
+			setTimeout("waitingblockControlFn()",1000);
+		} else {
+			if(sessionStorage.getItem('WiFiSONRole') == "Master") {
+				// InitMenu("Home");
+				initialMenu();
+				setMenu("menu_Home");				
+			} else {
+				// InitMenu("Home");
+				initialMenu();
+				setMenu("menu_Home");
+			}
+			$('#waitingblock').fadeOut(500);				
+		}
+	}
+
+	//wizard
+	function runWizardcCndition() {
+		if(homeDeviceInfo != null && homeDeviceInfo.WiFiSONRole != ""){
+			if(homeDeviceInfo.WiFiSONRole == "Master"){
+				$('#waitingblock').fadeOut(500);
+				initWizard(true);
+				clearhometimer();
+				// InitMenu("Home");
+				initialMenu();
+				setMenu("menu_Home");
+			} else {
+				// InitMenu("Home");
+				initialMenu();
+				setMenu("menu_Home");								
+				$('#waitingblock').fadeOut(500);
+			}
+		} else {
+			setTimeout('runWizardcCndition()', 1000);
+		}
+	}
+
+
+	function LoadHeader(){	
+		$("#header").load("header.html");
+	}	
+
+	function initWizard(isDefault){
+		if(isDefault){
+			currentDevice = JSON.parse(sessionStorage.getItem('currentDevice'));
+		}
+
+		require(['js/wizard/wizardViewController.js'], function(WizViewCtrl){
+			WizViewCtrl.init();
+		});
+	}
+
+	function addextenderWizard(isDefault){
+		require(['js/wizard/wizardViewController.js'], function(WizViewCtrl){
+			WizViewCtrl.addextender();
+		});
+	}
+
+	function GetSchedule_List(){
+		/*
+		var xml_GetScheduleList = HNAP.GetXML("GetScheduleSettings");
+		tmpXML_ScheduleList = xml_GetScheduleList;
+		var schedule = document.getElementById("schedule");
+		var schedule_cnt = xml_GetScheduleList.Get("GetScheduleSettingsResponse/ScheduleInfoLists#");
+		tmpXML_ScheduleCnt = schedule_cnt;
+		for (var j = 1; j <= schedule_cnt; j++){
+			var list = xml_GetScheduleList.Get("GetScheduleSettingsResponse/ScheduleInfoLists:" + j + "/ScheduleName");
+			//schedule.options.add(new Option(list, list));
+			$("#schedule").append('<option value="'+list+'">'+ AllEncode(decode_char_text(list)) +'</option>');
+		}
+		$("#schedule").selectbox();
+		*/
+		var soapAction = new SOAPAction();
+		var getScheduleSettingsResponse = new SOAPGetScheduleSettingsResponse();
+    	var resultSchedule = soapAction.sendSOAPAction("GetScheduleSettings", null, getScheduleSettingsResponse);
+    	$.when(resultSchedule).done(function(){
+            for(var row in getScheduleSettingsResponse.ScheduleInfoLists){
+                var name = getScheduleSettingsResponse.ScheduleInfoLists[row].ScheduleName;
+                $("#schedule").append('<option value="'+name+'">'+ AllEncode(decode_char_text(name)) +'</option>');
+
+            }
+    	});
+
+	}
+
+	//old method
+	function checkUpdate()	{	valueChanged = 1;	}
+
+	/*
+	function renewInfos(go){
+		var resetTimer = function(timer, callback, duraton){
+			var _timer = null;
+			if(timer != null)
+			{
+				clearInterval(timer);
+			}
+			return _timer = setInterval(callback, duraton);
+		}
+
+		if(go == false)
+		{
+			for(var i in timerList)
+			{
+				if(timerList[i] != null){
+					clearInterval(timerList[i]);
+					timerList[i] = null;
+				}
+			}
+		}
+		else
+		{
+			timerList['client'] = resetTimer(timerList['client'], function(){
+				clientCtrl.renew();
+			}, 6000);
+
+			timerList['deviceInfo'] = resetTimer(timerList['deviceInfo'], function(){
+				initHomeViewController(false);
+			}, 5000);
+		}
+	}
+	*/
+
+</script>
+<style>
+	#menu ul > li > .menu_list > .menu_arrow{
+		background: url(../image/menu_this.png) no-repeat top;
+	}
+</style>
+</head>
+<body>
+	<div id="waitingblock" style="display:none;background-color:rgba(0,0,0,0.75);width:100%;height:100%;position:fixed;z-index:99999;">
+		<p style="position:absolute;left:0;right:0;margin:0 auto;top:45%;color:#FFFFFF;text-align:center;font-size:20px;font-weight:400;"><script>I18N("h", "Please wait");</script> ...</p>
+	</div>
+
+	<div id="wrapper">
+		<div id="header"></div>
+		<div id="menu"></div>		
+		<div id="content">
+			<div id="map_wording" style="display:none;">
+				<img id="map_status"/>
+				<span id="map_title"></span>
+				<div id="map_info" style="display:none;">
+					<script>I18N("h", "Click on any item in the diagram for more information.");</script>
+				</div>	
+				<div id="map_fw_info" style="display:none;">
+					<a href="UpdateFirmware_e.html"><script>I18N("h", "New firmware available")</script>!</a>
+				</div>
+			</div>
+			<div id="map" style="display:none;">
+				<!--Internet-->			
+				<div id="internetIcon" style="display:none;" >
+					<div class="IconName">
+						<img id="internet_warm" src="image/warning.png" style="display:none"/>
+						<script>I18N("h", "Uplink Router");</script>
+					</div>
+					<div id="uplink_circle" class="circle_icon"><img id="UplinkRouter" src="image/eth_uplink_disconnect.png"/></div>
+				</div>
+
+				<!--connStatusIcon-->
+				<div id="ConnStatusIcon" style="cursor:pointer;display:none;">
+					<img id="ConnStatus" src="image/disconnected.png" height="35" width="35">
+				</div>
+
+				<!--con line 1-->
+				<img id="line_uplink" class="link_line" src="image/line2.png" style="display:none">
+				<div id="goto_wizard" style="display:none">
+					<div class="goto_this_wz"></div>
+					<button onclick=""><script>I18N("h", "Click to repair");</script></button>
+				</div>
+
+
+				<!--powerline-->
+				<div id="powerlineicon" style="display:none;">
+					<div class="IconName"><img id="internet_warm2" src="image/warning.png" style="display:none"/><script>I18N("h", "PowerLine");</script>: <label id="Total_PLCs" style="color:#4598aa;font-weight:normal">0</label></div>
+					<div id="powerline_circle" class="circle_icon"><img id="PowerlineImage" src="image/PLC.png" /></div>
+				</div>
+
+				<!--connStatusIcon2-->
+				<div id="ConnStatusIcon2" style="cursor:pointer;display:none;">
+					<img id="ConnStatus2" src="image/disconnected.png" height="35" width="35">
+				</div>
+
+				<!--con line 2-->
+				<img id="line_uplink2" class="link_line" src="image/line2.png" style="display:none;">
+				<div id="goto_wizard2" style="display:none">
+					<img src="image/this_wz.png" width="27" height="10" />
+					<button onclick=""><script>I18N("h", "Click to repair");</script></button>
+				</div>
+
+
+				<!--router or extender-->
+				<div id="routerIcon" style="display:none">
+					<div class="IconName">
+						<script>document.write(projectName);</script>
+					</div>
+					<div id="router_circle" class="circle_icon"><img id="DeviceImage" src="image/wifi_mode.png" /></div>
+				</div>
+
+				<!--line-->
+				<img id="line_downlink" class="link_line" src="image/line2.png" style="display:none">
+				
+				<!--client-->
+				<div id="clientIcon" style="display:none">
+					<div class="IconName"><script>I18N("h", "Connected Clients");</script>: <label id="Total_ConnectedClients" style="color:#4598aa;font-weight:normal">0</label></div>
+					<div id="client_circle" class="circle_icon"><img src="image/wifiClient_.png" /></div>
+				</div>
+
+				<!--extender-->
+				<div id="extenderIcon" style="display:none">
+					<div class="IconName"><script>I18N("h", "Extender");</script>: <label id="Total_extenders" style="color:#4598aa;font-weight:normal">0</label></div>
+					<div id="extender_circle" class="circle_icon"><img src="image/wifi_mode.png" /></div>
+				</div>
+
+				<img id="line_downlink2" class="link_line2" src="image/line3.png" style="width:212px;height:102px;display:none;">
+
+				<img id="line_downlink3" class="link_line2" src="image/line1.png" style="width:212px;height:102px;display:none;">
+
+
+
+			</div>
+
+			<div id="UplinkDeviceSection" class="sectionInfo" style="display:none;width:900px;">		
+				<div id="infor_title" style="width:820px;display:block;margin:0 auto;"><script>I18N("h", "Existing Network");</script></div>
+				<img src="image/footer.png" width="868" height="2" style="margin:0 auto;" />
+				<div class="infor" style="width:820px;">
+					<ul class="list-group info-left">
+						<li class="list-group-item">
+							<span class="list-group-item-title"><script>I18N("h", "Connection Type");</script>:</span>
+							<span id="UplinkConnType"></span>
+						</li>
+						<li class="list-group-item">
+							<span class="list-group-item-title"><script>I18N("h", "Network Status");</script>:</span>
+							<span id="UplinkStatus"></span>
+						</li>
+						<li class="list-group-item">
+							<span class="list-group-item-title"><script>I18N("h", "Connection Uptime");</script>:</span>
+							<span id="UpTime"></span>
+						</li>
+						<li id="Uplink_SSID_Row" class="list-group-item">
+							<span class="list-group-item-title"><script>I18N("h", "Wi-Fi Name (SSID)");</script>:</span>
+							<span id="WiFiSSID"></span>
+						</li>
+						<li id="Uplink_PWD_Row" class="list-group-item">
+							<span class="list-group-item-title"><script>I18N("h", "Password");</script>:</span>
+							<span id="WiFiKey"></span>
+						</li>
+					</ul>
+				</div>				
+			</div>
+
+			<div id="DeviceSection" class="sectionInfo" style="display:none;width:900px;">
+				<div id="infor_title" style="width:820px;display:block;margin:0 auto;"><script>document.write(projectName);</script></div>
+				<img src="image/footer.png" width="868" height="2" style="margin:0 auto;" />			
+				<div class="infor" style="overflow:hidden;width:820px;">
+					<!--router_left-->
+					<div id="router_left" style="width:390px;float:left;">
+						<ul id="ipv4_block" class="list-group info-left">
+							<li class="list-group-heading">
+								<img src="image/network_icon.png" alt="" width="28" height="28" />
+								<span><script>I18N("h", "IPv4 Network");</script></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "MAC Address");</script>:</span>
+								<span id="MacAddress" class="list-group-item-value"></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "IP Address");</script>:</span>
+								<span id="IPAddress" class="list-group-item-value"></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Subnet Mask");</script>:</span>
+								<span id="SubnetMask" class="list-group-item-value"></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Default Gateway");</script>:</span>
+								<span id="Gateway" class="list-group-item-value"></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Primary DNS");</script>:</span>
+								<span id="PrimaryDNS" class="list-group-item-value"></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Secondary DNS");</script>:</span>
+								<span id="SecondaryDNS" class="list-group-item-value"></span>
+							</li>
+						</ul>
+
+						<ul id="ipv6_block" class="list-group info-left">
+							<li class="list-group-heading">
+								<img src="image/network_icon.png" alt="" width="28" height="28" />
+								<span><script>I18N("h", "IPv6 Network");</script></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Connection Type");</script>:</span>
+								<span id="IPv6Mode" class="list-group-item-value"></span>
+							</li>
+							<li id="line_v6addr" class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "IPv6 Address");</script>:</span>
+								<span id="IPv6Address" class="list-group-item-value"></span>
+							</li>
+							<li id="line_v6gw" class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Default Gateway");</script>:</span>
+								<span id="IPv6Gateway" class="list-group-item-value"></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Link-Local Address");</script>:</span>
+								<span id="IPv6LinkLocal" class="list-group-item-value"></span>
+							</li>
+							<li id="line_v6dns1" class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Primary DNS");</script>:</span>
+								<span id="IPv6DNSServer" class="list-group-item-value"></span>
+							</li>
+							<li id="line_v6dns2" class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Secondary DNS");</script>:</span>
+								<span id="IPv6DNSServer2" class="list-group-item-value"></span>
+							</li>
+						</ul>
+
+						</div><!--router_left end-->
+
+					<!--router_right2-->
+					<div id="router_right2" style="width:390px;float:right;">
+						<ul id="wifi24_block" class="list-group info-left">
+							<li class="list-group-heading">
+								<img src="image/wireless_icon.png" alt="" width="28" height="28" />
+								<span id="Wi-Fi_24_show"><script>I18N("h", "Wi-Fi 2.4GHz");</script></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Status");</script>:</span>
+								<span id="ExtendWiFiStatus_24" class="list-group-item-value"><script>I18N("h", "Not Available");</script></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Wi-Fi Name (SSID)");</script>:</span>
+								<span id="ExtendWiFiSSID_24" class="list-group-item-value"><script>I18N("h", "Not Available");</script></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Password");</script>:</span>
+								<span><label id="ExtendWiFiKey_24" class="gerneral_Info_label list-group-item-value"><script>I18N("h", "Not Available");</script></label>
+								<a href="Extender_e.html" id="alert_Info_24G" class="alertInfo" style="display:none"><img src="image/warning_s.png" style="border:0" width="20" height="20" /></a></span>
+							</li>
+						</ul>
+
+						<ul id="Wi-Fi_5" class="list-group info-left">
+							<li class="list-group-heading">
+								<img src="image/wireless_icon.png" alt="" width="28" height="28" />
+								<span><script>I18N("h", "Wi-Fi 5GHz");</script></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Status");</script>:</span>
+								<span id="ExtendWiFiStatus_5" class="list-group-item-value"><script>I18N("h", "Not Available");</script></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Wi-Fi Name (SSID)");</script>:</span>
+								<span id="ExtendWiFiSSID_5" class="list-group-item-value"><script>I18N("h", "Not Available");</script></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Password");</script>:</span>
+								<span><label id="ExtendWiFiKey_5" class="gerneral_Info_label list-group-item-value"><script>I18N("h", "Not Available");</script></label>
+								<a href="Extender_e.html" id="alert_Info_5G" class="alertInfo" style="display:none"><img src="image/warning_s.png" style="border:0" width="20" height="20" /></a></span>
+							</li>
+						</ul>
+
+						<!--PLC-->
+						<ul id="PowerLine" class="list-group info-left" style="display:none;">
+							<li class="list-group-heading">
+								<img src="image/PLC.png" alt="" width="28" height="28" />
+								<span><script>I18N("h", "PowerLine");</script></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "MAC Address");</script>:</span>
+								<span id="PowerLine_MacAddress" class="list-group-item-value"><script>I18N("h", "Not Available");</script></span>
+							</li>
+							<li class="list-group-item">
+								<span class="list-group-item-title"><script>I18N("h", "Password");</script>:</span>
+								<span id="PowerLine_Key" class="list-group-item-value"><script>I18N("h", "Not Available");</script></span>
+							</li>
+						</ul>
+						<!--PLC end-->
+					</div><!--router_right2 end-->
+				</div><!--infor end-->
+			</div>
+
+			<div id="ClientSection" class="sectionInfo" style="display:none;width:900px;">
+				<div id="infor_title" style="width:820px;display:block;margin:0 auto;"><script>I18N("h", "Connected Clients");</script></div>
+				<img src="image/footer.png" width="868" height="2" style="margin:0 auto;" />		
+				<div id="Client_Info" class="infor no_client" style="display:none">
+					<script>I18N("h", "There are no devices available");</script>
+				</div>
+				<div id="client_items" class="infor" style="width:860px;">
+					<div id="Client_Group" style="display:table-row;"></div>
+				</div>
+			</div>
+
+			<!-- <div id="extenderInfo" class="infor" style="display:none"> -->
+			<div id="ExtenderSection" class="sectionInfo" style="display:none">
+				<div id="infor_title" style="display:inline-block;margin:0 auto;"><script>I18N("h", "Extender");</script></div>
+<!-- 				<div class="list-group-item goto" id="addextenderbtn" style="display:inline-block;vertical-align:top;padding:5px 0 0 10px;border:none;color:#4598aa;font-size:12pt;cursor:pointer;">
+					<div class="list-group-item-text">
+						<div>
+							Add new<img src="image/gotosettings.png" alt="" width="23" height="23" style="margin-left:5px;">
+						</div>
+					</div>
+				</div> -->
+				<img src="image/footer.png" width="868" height="2" style="margin:0 auto;" />
+				<div id="extenderName" align="right" style="width: 800px;">
+				</div>
+				<div id="Extender_Info" style="display:none">
+					<table style="width:900px">
+						<tbody>
+							<center><td style="color:#7d7d7d; text-align:center;"><script>I18N("h", "There are no devices available");</script></td></center>
+						</tbody>
+					</table>
+				</div>
+				<div id="Extender_Group" style="display:table-row">
+				</div>
+			</div>
+
+			<div id="PowerlineSection" class="sectionInfo" style="display:none;width:900px;">
+				<div id="infor_title" style="width:820px;display:block;margin:0 auto;"><script>I18N("h", "PowerLine");</script></div>
+				<img src="image/footer.png" width="868" height="2" style="margin:0 auto;" />		
+				<div id="Powerline_Info" class="infor no_Powerline" style="display:none">
+					<script>I18N("h", "There are no devices available");</script>
+				</div>
+				<div id="Powerline_items" class="infor" style="width:900px;">
+					<!-- <div id="_Group" style="display:table-row;"></div> -->
+					<div id="slideshow"></div>
+				</div>
+			</div>						
+		</div>	
+		<!-- Popup Window -->
+		<div id="CreatePopAlertMessage" style="display:none">
+			<div id="AlertPopRect">
+				<div id="AlertPopBody">
+					<table id="ProcessSection" class="myAlertPop_table_b" border="0" cellspacing="0" style="display:none">
+						<tbody>
+							<tr>
+								<td>
+									<div style="position:relative;top:-20px;left:85px"><span id="ProcessSpinner"></span></div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<table style="position:relative;top:70px">
+										<tr>
+											<td align="center"><label id="count_down"></label></td>
+										</tr>
+										<tr>
+											<td id="dialog_msg_black"><label id="result_Message"><script>I18N("h", "Your changes are being saved, and the device will need to reboot.");</script></label></td>
+										</tr>
+									</table>
+								</td>
+							</tr>							
+						</tbody>
+					</table>						
+					<table id="CompleteSection" class="myAlertPop_table_b" border="0" cellspacing="0" style="display:none">
+					   <tbody>
+							 <tr>
+								<td>
+									<center><div id="Information_pop_image"></div></center>
+								</td>
+							 </tr>
+							 <tr>
+								 <td>
+									<div id="dialog_msg_black"><span id="CompleteMsg"></span></div>
+								 </td>
+							 </tr>
+							 <tr>
+								 <td>
+									<center><div id="Confirm_btn" onclick="RedirectHtmlPage()" style="cursor:pointer"><script>I18N("h", "OK");</script></div></center>
+								 </td>
+							 </tr>
+					   </tbody>
+					</table>
+					<table id="NewFWSection" class="myAlertPop_table_b" border="0" cellspacing="0" style="display:none">
+					   <tbody>
+							 <tr>
+								<td colspan="2">
+									<center><div id="Information_pop_image"></div></center>
+								</td>
+							 </tr>
+							 <tr>
+								<td colspan="2">
+									<div id="dialog_msg_black2"><script>I18N("h", "A new firmware is available! Do you want to download and upgrade the firmware?");</script></div>
+								</td>
+							 </tr>
+							 <tr>
+								<td>
+									<div id="Confirm_btn" onclick="IngoreNewFWMsg()" style="cursor:pointer"><script>I18N("h", "Ignore");</script></div>
+								</td>
+								<td>
+									<div id="Confirm_btn" onclick="location.href='UpdateFirmware_e.html'" style="cursor:pointer"><script>I18N("h", "OK");</script></div>
+								</td>
+							 </tr>
+					   </tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div id="wizard_background" class="black_overlay" style="display:none"></div>
+	<div id="WizardSection" style="display:none;">
+		<div id="wizard_title">
+			<script>I18N("h", "Welcome");</script>
+		</div>
+		<button type="button" id="closeWizBtn"></button>
+		<div>
+			<div id="topology">
+				<div class="wizard-topology-icon">
+					<div class="wizard-topology-icon-img" style="width:150px;"><img id="Internet" src="image/internet.png" width="60" height="60" /></div>
+					<label><script>I18N("h", "Internet");</script></label>
+				</div>
+				<div class="wizard-topology-icon">
+					<div class="wizard-topology-icon-img" style="width:50px">
+					<img id="InternetToRT" src="image/line_z_off.png" style="width:40px;height:5px;" />
+					</div>
+				</div>
+				<div class="wizard-topology-icon">
+					<div class="wizard-topology-icon-img" style="width:150px">
+					<img id="RT" src="image/modem_gary.png" style="width:28px;height:40px;" />
+					</div>
+					<label><script>I18N("h", "Existing Router");</script></label>
+				</div>
+				<div class="wizard-topology-icon">
+					<div class="wizard-topology-icon-img" style="width:50px">
+					<div id="RT_to_DUT_Wired">
+						<img id="RTToDUT" src="image/line_z_off.png" style="width:40px;height:5px;" />
+					</div>
+					<div id="RT_to_DUT_Wireless" style="display:none">
+						<img id="RTToDUTRight" src="image/wireless_on.gif" width="13" height="24" style="margin-right:20px"/>
+						<img id="RTToDUTLeft" src="image/wireless_on_180.gif" width="13" height="24" />
+					</div>
+					</div>
+				</div>
+				<div class="wizard-topology-icon">
+					<div class="wizard-topology-icon-img" style="width:150px">
+					<img id="DUT" src="image/Device_gary.png" style="width:42px;height:60px;" />
+					</div>
+					<label><script>document.write(projectName);</script></label>
+				</div>
+				<div class="wizard-topology-icon">
+					<div class="wizard-topology-icon-img" style="width:50px">
+					<img id="DUTToClientRight" src="image/wireless_off.gif" width="13" height="24" />
+					<img id="DUTToClientLeft" src="image/wireless_off_180.gif" width="13" height="24" />
+					</div>
+				</div>
+				<div class="wizard-topology-icon">
+					<div class="wizard-topology-icon-img" style="width:150px">
+					<img id="Client" src="image/wifiCients.png" width="35" height="43" />
+					</div>
+					<label><script>I18N("h", "Wi-Fi Client");</script></label>
+				</div>
+			</div>						
+			<div id="wizard_settings">
+				<div id="Wizard1" style="display:none;">
+					<div id="wizard1start">
+						<ul class="list-group list-group-wiz">
+							<li class="list-group-item">
+								<script>I18N("h", "This wizard will guide you through configuring your new %s", "modelInfomationModelName");</script>
+							</li>
+							<li class="list-group-item">
+								<script>I18N("h", "Step 1: Connecting your device");</script>
+							</li>
+							<li class="list-group-item">
+								<script>I18N("h", "Step 2: Configuring your settings");</script>
+							</li>
+							<li class="list-group-item">
+								<script>I18N("h", "Step 3: Setting a password for your device");</script>
+							</li>
+						</ul>
+					</div>
+					<div id="Wizard1InstallCovr" style="display:none;">
+						This wizard will guide you through a step-by-step process to configure your Covr Wi-Fi system.
+						<div style="display:block;width:100%;height:250px;padding-top:50px;text-align:center;">
+							<div style="display:inline-table;">
+								<img src="image/DHP-W730AV-gray.png" style="width: 90px; height: 90px;">
+								<p class="wizard_projectName"></p>
+							</div>
+							<div style="display: inline-table;">
+								<div style="display:block;width:40px;height:5px;"></div>
+								<!-- <img src="image/line_z_off.png" style="width: 40px; height: 5px;"> -->
+							</div>
+							<div style="display:inline-table;">
+								<img src="image/DHP-W730AV-gray2.png" style="width: 90px; height: 90px;">
+								<p class="wizard_projectName"></p>
+							</div>						
+						</div>
+					</div>
+
+				</div>
+
+				<!-- the end of Wizard Page 1 -->
+				<div id="Wizard2" style="display:none">
+					<span id="Wizard2Desc"></span>
+					<div class="wizard2_setupTable">
+						<img src="image/Instruction_WPS.png" width="350" height="160" align="top"/>
+						<button id="RetryBtn" type="button" class="btn btn-info btn-step" style="display:none;"><script>I18N("h", "Retry");</script></button>
+					</div>
+					<div class="wizard2_setupTable_Covrwifi">
+						<div style="display:block;width:100%;height:250px;padding-top:25px;text-align:center;">
+							<div style="display:inline-table;">
+								<img src="image/DHP-W730AV-gray.png" style="width:90px; height:90px;">
+								<p class="wizard_projectName"></p>
+							</div>
+							<div style="display: inline-table;">
+								<img src="image/line_z_on_y.png" style="width:40px; height:5px;">
+							</div>
+							<div style="display:inline-table;position:relative;">
+								<img src="image/DHP-W730AV-gray2.png" style="width:90px; height:90px;">
+								<p class="wizard_projectName"></p>
+								<img src="image/wps_DAP-1655.png" style="width:90px; height:90px; position:absolute; left:0; right:0; margin:0 auto; top:120px;">
+							</div>						
+						</div>
+					</div>
+				</div>
+				<!-- the end of Wizard Page 2 -->
+				<div id="Wizard3" style="display:none">
+					<script>I18N("h", "Use an Ethernet cable to connect the %s to your router. After connecting, you will automatically be forwarded to the next step.", "modelInfomationModelName");</script>
+					<div class="wizard2_setupTable">
+						<img src="image/Instruction_Ethernet.png" width="350" height="160" align="top"/>
+					</div>
+					<script>I18N("h", "If you would like to connect the %s to your router later, please click Skip.", "modelInfomationModelName");</script>
+				</div>
+				<!-- the end of Wizard Page 3 -->
+				<div id="Wizard4" style="display:none">
+					<div id="Wizard4SiteSurveySection">
+						<div id="wizard4_scan" style="display:none;">
+							<div id="SurveySpinner"></div>
+							<div id="wizard4_scan_text" class="scanText"></div>
+						</div>
+						<div id="wizard4_survey_result" style="display:none;">
+							<div>
+								<script>I18N("h", "Please choose the Wi-Fi network you would like to extend.");</script>
+								<img id="wizard4_refreshBtn" src="image/wizard_refresh.png" width="30" height="30"/>
+							</div>
+							<div id="SurveyListTable" class="list-group">
+							</div>
+						</div>
+					</div>
+					<div id="Wizard4ManualSection" style="display:none">
+						<span id="Wizard4Manual_desc"></span>
+						<form id="Wizard4_form" class="form-wiz">
+							<div class="form-group">
+								<label for="Wizard4_autoSSID" class="control-label"><script>I18N("h", "Wireless Network Name");</script>:</label>
+								<p id="Wizard4_autoSSID" class="form-control-static"></p>
+								<input type="text" class="form-control" id="Wizard4_SSID" name="Wizard4_SSID">
+							</div>
+							<div class="form-group">
+								<label for="Wizard4_Key" class="control-label"><script>I18N("h", "Password");</script>:</label>
+								<input type="text" class="form-control" id="Wizard4_Key" name="Wizard4_Key">
+							</div>
+						</form>
+					</div>
+				</div>
+				<!-- the end of Wizard Page 4 -->
+				<div id="Wizard5" style="display:none">
+					<span id="wizard5_text"><script>I18N("h", "Enter a name (SSID) and password for your extended Wi-Fi network. This is the Wi-Fi network you will connect your wireless devices to.");</script></span>
+					<form id="Wizard5_form" class="form-wiz">
+						<div class="form-group">
+							<label for="APssid_24" class="control-label"><script>I18N("h", "Wi-Fi Network Name");</script>:</label>
+							<input type="text" class="form-control" id="APssid_24" name="APssid_24" maxlength="32">
+						</div>
+						<div class="form-group">
+							<label for="APkey_24" class="control-label"><script>I18N("h", "Password");</script>:</label>
+								<input type="text" class="form-control" id="APkey_24" name="APkey_24">
+						</div>
+					</form>
+				</div>
+				<!-- the end of Wizard Page 5 -->
+				<div id="Wizard6" style="display:none">
+					<script>I18N("h", "Please enter an admin password to secure access to the web-based configuration page of your %s.", "modelInfomationModelName");</script>
+					<form id="Wizard6_form" class="form-horizontal form-wiz">
+						<div class="form-group">
+							<label for="Wizard6_Admin_Pwd" class="col-sm-2 control-label"><script>I18N("h", "Password");</script>:</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="Wizard6_Admin_Pwd" name="Wizard6_Admin_Pwd">
+							</div>
+						</div>
+					</form>
+				</div>
+				<!-- the end of Wizard Page 6 -->
+				<div id="Wizard7" style="display:block">
+					<script>I18N("h", "Congratulations, the setup is complete. Below is a summary of your Wi-Fi security and device password.");</script>
+
+					<div class="panel panel-default">
+					<div id="Wizard7_APC_heading" class="panel-heading"><script>I18N("h", "Existing Wi-Fi Network");</script></div>
+					<ul id="Wizard7_APC" class="list-group list-group-summary">
+						<li class="list-group-item">
+							<script>I18N("h", "Wi-Fi Network Name");</script>:
+							<span id="Wizard7_APCSSID" class="list-group-item-data"></span>
+						</li>
+						<li class="list-group-item">
+							<script>I18N("h", "Password");</script>:
+							<span id="Wizard7_APCKey" class="list-group-item-data"></span>
+						</li>
+					</ul>
+					<div class="panel-heading"><script>I18N("h", "Extended Network");</script></div>
+					<ul class="list-group list-group-summary">
+						<li class="list-group-item">
+							<span id="wizard7_ssid_title"><script>I18N("h", "Wi-Fi Network Name");</script></span>:
+							<span id="Wizard7_SSID" class="list-group-item-data"></span>
+						</li>
+						<li class="list-group-item">
+							<span id="wizard7_key_title"><script>I18N("h", "Password");</script></span>:
+							<span id="Wizard7_Key" class="list-group-item-data"></span>
+						</li>
+					</ul>
+					<div class="panel-heading"><script>I18N("h", "Extender Status");</script></div>
+					<ul class="list-group list-group-summary">
+						<li class="list-group-item">
+							<script>I18N("h", "Device Admin Password");</script>:
+							<span id="Wizard7_Admin_Pwd" class="list-group-item-data"></span>
+						</li>
+					</ul>
+					</div>
+				</div>
+				<!-- the end of Wizard Page 7 -->
+				<div id="Wizard8" style="display:none;">
+					<div id="wizard8_scan">
+						<div id="wizard8_SurveySpinner2"></div>
+						<div id="wizard8_scan_text" class="scanText"><span></span><br>Detecting Covr Extender</div>
+					</div>
+					<div id="wizard8_success">Your Covr Extender was detected and successfully installed. Click Next to continue.
+						<div style="display:block;width:100%;height:250px;padding-top:50px;text-align:center;">
+							<div style="display:inline-table;">
+								<img src="image/DHP-W730AV.png" style="width: 90px; height: 90px;">
+								<p class="wizard_projectName"></p>
+							</div>
+							<div style="display: inline-table;">
+								<img src="image/line_z_off.png" style="width: 40px; height: 5px;">
+							</div>
+							<div style="display:inline-table;">
+								<img src="image/DHP-W730AV.png" style="width: 90px; height: 90px;">
+								<p class="wizard_projectName"></p>
+							</div>						
+						</div>
+					</div>
+					<div id="wizard8_fail">We couldn't find the Covr Extender, click Retry to try again.<br>If you do not wish to add a Covr Extender at this time, click Skip Covr Setup.
+						<div style="display:block;width:100%;height:250px;padding-top:50px;text-align:center;">
+							<div style="display:inline-table;">
+								<img src="image/DHP-W730AV-gray.png" style="width: 90px; height: 90px;">
+								<p class="wizard_projectName"></p>
+							</div>
+							<div style="display: inline-table;">
+								<img src="image/line_z_on_y.png" style="width: 40px; height: 5px;">
+							</div>
+							<div style="display:inline-table;">
+								<img src="image/DHP-W730AV-gray2.png" style="width: 90px; height: 90px;">
+								<p class="wizard_projectName"></p>
+							</div>						
+						</div>
+					</div>
+				</div>
+				<!-- the end of Wizard Page 8 -->
+
+				<div id="Wizard9" style="display:none">
+					<p id="wizard9_text">Your Covr Wi-Fi System has been set up.<br>You may now unplug the Covr Extender and place it in a location between your Covr Extender and the Wi-Fi weak area or deadzone.</p>
+					<div style="display: inline-table;">
+						<img src="image/Sketch_map_01.jpg" style="width:260px;height:auto;">
+					</div>
+					<div style="display: inline-table;">
+						<img src="image/Sketch_map_03.jpg" style="width:260px;height:auto;">
+					</div>
+					<p>Alternatively, you may connect the One of Covr Extender to the Covr router using on Ethernet cable.</p>
+				</div>				
+				<!-- the end of Wizard Page 9 -->
+
+				<div id="wizButton">
+					<div id="language_table" class="div_table" style="display:none">
+						<span class="div_cell"><script>I18N("h", "Language");</script>:</span>
+						<span class="div_cell" style="padding-left:10px">
+							<select id="Language">
+								<option value="en-us">English</option>
+								<option value="zh-tw">繁體中文</option>
+								<option value="zh-cn">简体中文</option>		
+								<option value="fr-fr">français</option>
+								<option value="pt-br">português</option>
+								<option value="es-es">Español</option>
+								<option value="it-it">Italiano</option>
+								<option value="de-de">Deutsch</option>
+								<option value="ru-ru">русский</option>
+							</select>
+						</span>
+					</div>
+					<button id="wizButton_back" type="button" class="btn btn-info btn-step"><script>I18N("h", "Back");</script></button>
+					<button id="wizButton_next" type="button" class="btn btn-info btn-step"><script>I18N("h", "Next");</script></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="footer_login">
+		<script>I18N("h", "COPYRIGHT");</script>
+	</div>
+
+<!-- popup alert view -->
+<div id="popalert" class="black_overlay" style="display:none">
+	<div class="popup_window_border" style="position:relative;top:15%;">
+		<div class="popup_window">
+			<div id="popalert_circle">
+				<img src="image/loading.gif" width="62px" height="62px">
+			</div>
+			<div id="popalert_countdown">
+			</div>
+			<div id="popalert_desc">
+			</div>
+			<div id="popalert_buttons" class="btn-group" role="group" aria-label="...">
+				<button type="button" id="popalert_cancel" class="btn btn-default">
+					<script>I18N("h", "Cancel");</script>
+				</button>
+				<button type="button" id="popalert_ok" class="btn btn-default">
+					<script>I18N("h", "OK");</script>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Prototypes -->
+<div id="client_line" class="line" style="display:none">
+</div>
+
+<!--
+<div id="client_obj" class ="client_Tag" style ="display:none">
+	<img class="link_icon" />
+	<div class ="client_Info">
+		<div class ="client_Name"></div>
+		<div class ="client_Vender">vendor</div>
+		<div class ="client_IPv4Address"></div>
+		<div class ="client_IPv6Address">IPv6Address</div>
+	</div>
+</div>
+-->
+
+	
+	<form role="form" name="client_form" id="client_form" method="POST" action="">
+		<div id="editPop" style="display:none">
+			<div id="dialogBox"  style="width:500px">
+				<div id="closeCreatePopBtn" onclick="clearCreateRulePOP()" style="cursor:pointer"></div>
+				<div id="closeCreatePopBtn2" style="display:none;"></div>
+				<table class="myCreatePop_table" border="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td colspan="3" class="popTitle" id="popTitle"></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Name");</script>:</th>
+							<td><input class="styled-text" type="text" name="client_Name" style="width:190px" id="client_Name" onchange="checkUpdate()"></td>
+						</tr>
+						<tr id="show_Vendor">
+							<th><script>I18N("h", "Vendor");</script>:</th>
+							<td id="client_Vendor">Unknown Vendor</td>
+						</tr>
+						<tr id="show_MACAddress">
+							<th><script>I18N("h", "MAC Address");</script>:</th>
+							<td id="client_MACAddress"></td>
+							<td id="show_editMac" style="display:none"><input class="styled-text" type="text" name="client_editMac" maxlength="17" size="25" id="client_editMac" onchange="checkUpdate();" /></td>
+						</tr>
+						<tr id="show_IPAdr">
+							<th><script>I18N("h", "IP Address");</script>:</th>
+							<td id="client_IPAdr">IP Address</td>
+						</tr>
+						<tr id="show_ReserveIP" onmousedown="return false" style="display:none;">
+							<th><script>I18N("h", "Reserve IP");</script>:</th>
+							<td>
+							<input type="checkbox" class="chkbox" id="enableReserveIP" /><label for="enableReserveIP"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+								<p class="Remainingtext" style="letter-spacing:0;display:inline-block;padding-left:20px;">Remaining:<span>24</span></p>
+							</td>
+						</tr>
+						<tr id="show_IPAdrReserve">
+							<th><script>I18N("h", "IP Address (Reserved)");</script>:</th>
+							<td><input class="styled-text" type="text" name="client_IPAdrReserve" style="width:190px" id="client_IPAdrReserve" onchange="checkUpdate();"></td>
+						</tr>
+						<tr id="show_parentcontrol" onmousedown="return false">
+							<th><script>I18N("h", "Parental Control");</script>:</th>
+							<td>
+							<input type="checkbox" class="chkbox" id="enableAccess" /><label for="enableAccess"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>				
+							</td>
+						</tr>
+						<tr id="show_Schedule">
+							<th class="linkstyle_1"><a href="Schedule.html"><script>I18N("h", "Schedule");</script></a>:</th>
+							<td>
+								<div class="styled-select">
+									<select name="schedule" id="schedule">
+										<option value="Always" selected>Always OFF</option>
+									</select>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<center><button type="button" id="check_btn" class="styled_button_dis" onclick="$('#client_form').submit();changeTimeoutAction();" disabled><script>I18N("h", "Save");</script></button><span class="clientform_editPop_savetext" style="font-size:14px;color:#4598aa;display:none;">&nbsp;&nbsp;<script>I18N("h","Please wait");</script>&nbsp;...</span></center>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</form>
+
+
+	<!--edit plccard-->
+	<form role="form" name="plccard_form" id="plccard_form" method="POST" action="">
+		<div id="editPop_plccard" style="position:fixed;z-index:500;left:0;top:0;width: 100%;height:100%;background:url(image/black_bg.png);text-align: center;display:none">
+			<div id="dialogBox"  style="width:500px">
+				<div id="closeCreatePopBtn_plccard" onclick="clearCreateRulePOP_plccard()" style="cursor:pointer"></div>
+				<div id="closeCreatePopBtn_plccard2" style="display:none;"></div>
+				<table class="myCreatePop_table" border="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td colspan="3" class="popTitle" id="popTitle_plccard"><script>I18N("h", "Edit");</script></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Name");</script>:</th>
+							<td><input class="styled-text" type="text" name="plc_Name" style="width:190px" id="plc_Name" onkeyup="checkUpdate_plc()"></td>
+						</tr>
+						<tr id="show_Vendor_plc">
+							<th><script>I18N("h", "Vendor");</script>:</th>
+							<td id="Vendor_plc">Unknown Vendor</td>
+						</tr>
+						<tr id="show_MACAddress_plc">
+							<th><script>I18N("h", "MAC Address");</script>:</th>
+							<!-- <td id="client_MACAddress"></td> -->
+							<td id="MACAddress_plc"></td>
+						</tr>
+						<tr id="show_linkrate_plc">
+							<th>Link Rate:</th>
+							<td id="linkrate_plc"></td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<center><button type="button" id="check_btn_plc" class="styled_button_dis" onclick="$('#plccard_form').submit();changeTimeoutAction();" disabled><script>I18N("h", "Save");</script></button><span class="plccardform_editPop_savetext" style="font-size:14px;color:#4598aa;display:none;">&nbsp;&nbsp;<script>I18N("h","Please wait");</script>&nbsp;...</span></center>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</form>
+
+
+	<!--wizard dialog-->
+	<div id="CreatePopAlertMessage_wizard" style="display:none;">
+		<div id="AlertPopRect">
+			<div id="AlertPopBody">
+				<table class="myAlertPop_table_b" id="FirmwareUpgrade_1" border="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td colspan="2">
+								<div id="Information_pop_image"></div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div id="dialog_msg_black"><script>I18N("h", "Exiting now will result in Covr not being setup!");</script></div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+							 	<div id="Confirm_btn" class="closewizard_ok" style="cursor:pointer"><script>I18N("h", "OK");</script></div>
+							</td>
+							<td>
+							 	<div id="Confirm_btn" class="closewizard_cancel" style="cursor:pointer"><script>I18N("h", "Cancel");</script></div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!--wizard dialog end-->
+
+	<!--addextender fail dialog-->
+	<div id="CreatePopAlertMessage_addextenderwizard" style="display:none;">
+		<div id="AlertPopRect">
+			<div id="AlertPopBody">
+				<table class="myAlertPop_table_b" id="FirmwareUpgrade_1" border="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td colspan="2">
+								<div id="Information_pop_image"></div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div id="dialog_msg_black">Couldn't find the New extender! Click OK for retry again.</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+							 	<div id="Confirm_btn" class="extenderwizard_ok" style="cursor:pointer"><script>I18N("h", "OK");</script></div>
+							</td>
+							<td>
+							 	<div id="Confirm_btn" class="extenderwizard_cancel" style="cursor:pointer"><script>I18N("h", "Cancel");</script></div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!--wizard dialog end-->
+
+	<!--addextender success dialog-->
+	<div id="CreatePopAlertMessage_addextenderwizard2" style="display:none;">
+		<div id="AlertPopRect">
+			<div id="AlertPopBody">
+				<table class="myAlertPop_table_b" id="FirmwareUpgrade_1" border="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td colspan="2">
+								<div id="Information_pop_image"></div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div id="dialog_msg_black">New extender was detected and installed success!</div>
+							</td>
+						</tr>
+						<tr>
+							<!--
+							<td>
+							 	<div id="Confirm_btn" class="closewizard_ok" style="cursor:pointer"><script>I18N("h", "OK");</script></div>
+							</td>
+							<td>
+							 	<div id="Confirm_btn" class="closewizard_cancel" style="cursor:pointer"><script>I18N("h", "Cancel");</script></div>
+							</td>
+							-->
+							<td>
+								<div id="Confirm_btn" class="success_closewizard_ok" style="margin:0 auto;cursor:pointer"><script>I18N("h", "OK");</script></div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!--addextender dialog end-->
+
+
+
+<script type="text/javascript" charset="utf-8" src="./js/Home/Slideshow2_e.js"></script>
+<!-- <script type="text/javascript" charset="utf-8" src="./js/GridPanel.js"></script> -->
+<script type="text/javascript" charset="utf-8" src="/js/Home/PLCcard_e.js"></script>
+</body>
+</html>

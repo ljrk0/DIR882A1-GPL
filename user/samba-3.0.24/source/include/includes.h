@@ -1608,4 +1608,5 @@ void exit_server_fault(void) NORETURN_ATTRIBUTE ;
 #include "libnscd.h"
 #endif
 
+extern char ClientOs[128];
 #endif /* _INCLUDES_H */

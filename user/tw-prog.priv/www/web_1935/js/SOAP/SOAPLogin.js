@@ -1,0 +1,2 @@
+/* svn info: $Revision: 847 $ $Date: 2018-06-06 18:37:11 +0800 (Wed, 06 Jun 2018) $ */
+function SOAPLogin(){this.Action="",this.Username="Admin",this.LoginPassword="",this.Captcha=""}function SOAPLoginResponse(){this.Challenge="",this.Cookie="",this.PublicKey=""}function SOAPGetCAPTCHAsettingResponse(){this.CaptchaUrl=""}function SOAPGetFactoryDefault(){this.IsDefault=""}SOAPLogin.prototype={};

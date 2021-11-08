@@ -1,6 +1,7 @@
 #SRCDIR=dnsmasq-2.40
 #SRCDIR=dnsmasq-2.76
-SRCDIR=dnsmasq-2.78
+#SRCDIR=dnsmasq-2.78
+SRCDIR=dnsmasq-2.79
 
 .PHONY: all build clean
 

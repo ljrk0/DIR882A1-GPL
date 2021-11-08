@@ -332,6 +332,8 @@ mDNSexport mDNSBool mDNSAddrIsDNSMulticast(const mDNSAddr *ip)
 
 mDNSexport mDNSBool SameDomainLabel(const mDNSu8 *a, const mDNSu8 *b)
 	{
+	if(!a || !b)
+		return(mDNSfalse); 
 	int i;
 	const int len = *a++;
 

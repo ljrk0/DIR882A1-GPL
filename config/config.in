@@ -538,19 +538,12 @@ fi
 bool 'One Touch (AutoZoing) Support'			CONFIG_DLINKAPP_ONETOUCH
 bool 'Support Wifi Certification'                	CONFIG_SUPPORT_WIFI_CERT
 bool 'Support Img Crypt'                		CONFIG_IMG_CRYPT
-bool 'Support Mydlink'                			CONFIG_MYDLINK_SUPPORT
 bool 'Support ookla'                			CONFIG_OOKLA_SUPPORT
-bool 'Support kwilt'                			CONFIG_KWILT_SUPPORT
-bool 'Support MCAFEE'					CONFIG_MCAFEE_SUPPORT
-if [ "$CONFIG_MCAFEE_SUPPORT" = "y" ]; then
-	define_bool CONFIG_CURL y
-fi
 
-if [ "$CONFIG_MYDLINK_SUPPORT" = "y" ]; then
-	define_bool CONFIG_LIB_LIBEVENT_FORCE y
-fi
 bool 'Support ipset'					CONFIG_USER_IPSET
 bool 'Use Nand Flash'                                   CONFIG_USE_NAND_FLASH
+bool 'Ap & Repeater support'        CONFIG_AP_REPEATER_SUPPORT
+bool 'Use socket to notify rc'        CONFIG_RC_SOCKET_NOTIFY
 endmenu
 
 ##############################################################################

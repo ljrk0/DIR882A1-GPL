@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns= "http://www.w3c.org/1999/xhtml">
+<head>
+<title>D-LINK</title>
+<!-- for browser tab logo -->
+<link rel="icon" href="/image/dlink-favicon.ico">
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" /> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+
+<!-- css -->
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/jquery.selectbox.css"  />
+
+<link rel="stylesheet" type="text/css" href="css/style_button.css"  />
+<link rel="stylesheet" type="text/css" href="css/style_Management_Upgrade.css"  />
+
+<!-- initialJQ-->
+<script type="text/javascript" charset="utf-8" src="/js/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.selectbox-0.2_new.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.stringify.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.cookie.js"></script>
+
+<!-- initialJS -->
+<script type="text/javascript" charset="utf-8" src="/js/comm.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/hmac_md5.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/libajax.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/hnap.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/i18n.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/menu.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/pagetool.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/checkTimeout.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/includeLang.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/AES.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/configuration/DeviceConfig.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAction.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPAction_AddHeader.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="/js/initialValidate.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.client.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPDeviceSettings.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPClientInfo.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPWanSettings.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPFirmware_multi.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/SOAP/SOAPFirmwareAutoUpdate.js"></script>
+
+<!-- popView -->
+<link rel="stylesheet" type="text/css" href="css/style_pop.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="/js/popView.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="/js/Management_Upgrade.js"></script>
+
+</head>
+
+<body>
+	<!--***** autoUpgrade_form ****************************************-->
+	<form name="autoUpgrade_form" id="autoUpgrade_form" method="POST" action="">
+		<!--***** wrapper ****************************************-->
+		<div id="wrapper">
+			<!--***** header ****************************************-->
+			<div id="header"></div>
+
+			<!--***** menu ****************************************-->
+			<div id="menu"></div>
+
+			<!--***** menu_edge ****************************************-->
+			<div id="menu_edge"></div>
+			
+			<!--***** content ****************************************-->
+			<div id="content">
+				<!--***** info ****************************************-->
+				<div id="info">
+					<div id="FunctionName"><script>I18N("h", "Upgrade");</script></div>
+					<div id="wallimage"><img id="image_Network" src="image/page_network2.png" alt="" width="195" height="119"/></div>
+				    <div id="directions">
+						<script>I18N("h", "Your router can automatically detect firmware updates, but requires your authorization to install them. It is also possible to check for new firmware manually, upgrade firmware from a local file.");I18N("h", "GPL licenses");</script>
+					</div>
+				</div>
+				<!--***** funcBar ****************************************-->
+			    <div id="funcBar">
+					<div id="pagePath">&nbsp;<script>I18N("h", "Management");</script> &gt;&gt; <script>I18N("h", "Upgrade");</script></div>
+					<ul id="rightFunc" style="display: none">
+						<li style="display: block"><div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click(); changeTimeoutAction();" style="cursor: pointer; display: none; height: 48px; width: 140px;"><script>I18N("h", "Save");</script></div></li>
+						<li style="display: block"><div id="Save_Disable_btn" style="height: 48px; width: 140px;"><script>I18N("h", "Save");</script></div></li>
+						<input type="submit" id="sumbit_CheckData" class="submit" value="submit" style="display: none" />
+					</ul>
+				</div>
+		     	<!--***** main ****************************************-->
+		     	<div id="main">
+
+		     		<!-- ----------------  Firmware Information  ----------------- -->
+	     			<!--*****  table ****************************************-->	
+					<table class="block" style="margin: 10px 0 0 0">
+						<tbody>
+							<tr>
+								<td colspan="3"><div class ="title"><script>I18N("h", "Firmware Information");</script></div></td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table id="autoFirmwareTable" class="block" style="margin: 10px 0 0 0">
+						<tbody>	
+						</tbody>
+					</table>
+
+					<table id="autoFirmwareTableMessage" class="block" style="margin: 10px 0 0 0">
+						<tbody>
+							<tr id="autoFirmwareTableMessage_text">
+								<td><span><script>I18N('h','Please wait');</script>...</span></td>
+							</tr>
+							<tr id="autoFirmwareTableMessage_checkDevice">
+								<td class="autoFirmwareTableMessage_btnTd">
+									<button id="autoFirmware_checkDeviceBtn" type="button" class="largebtn">Check Device</button>
+								</td>
+							</tr>
+							<tr id="autoFirmwareTableMessage_checkNewFirmware">
+								<td class="autoFirmwareTableMessage_btnTd">
+									<button id="autoFirmwareTableMessage_checkNewFirmwareBtn" type="button" class="largebtn"><script>I18N('h','Check for New Firmware');</script></button>
+								</td>
+							</tr>
+							<tr id="autoFirmwareTableMessage_upgradeFirmware">
+								<td class="autoFirmwareTableMessage_btnTd">
+									<button id="autoFirmwareTableMessage_upgradeFirmwareBtn" type="button" class="largebtn"><script>I18N('h','Upgrade Firmware');</script></button>
+								</td>
+							</tr>						
+						</tbody>
+					</table>
+					<!-- ----------------  Firmware Information  ----------------- -->
+
+					<!-- ----------------  Upgrade Manually  ----------------- -->
+					<div class="advButton">
+						<span onclick="showAdv('advancedBlock');">
+						   	<script>I18N("h", "Advanced Settings");</script>...
+						</span>
+					</div>					
+					<div id="advancedBlock" style="display:none;">
+						<hr>
+
+						<table class="block" style="margin: 10px 0 0 0">
+							<tbody>
+								<tr>
+									<td colspan="3"><div class ="title"><script>I18N("h", "Upgrade Manually");</script></div></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table id="manualFirmwareTable" class="block">
+							<tbody>
+								<tr id="manualFirmwareTable_text">
+									<td colspan="2"><span><script>I18N("h", "Please wait");</script>...</span></td>
+								</tr>
+								<tr id="manualFirmwareTable_selectDevice">
+									<th><script>I18N("h", "Device Name");</script>:</th>
+									<td>
+			    						<div class="styled-select">
+			    							<select name="manualFirmwareTable_seletDeviceSeletbox" id="manualFirmwareTable_seletDeviceSeletbox">
+			    							</select>
+			    						</div>
+									</td>
+								</tr>
+								<tr id="manualFirmwareTable_goDevice">
+									<th></th>
+									<td>
+										<button id="manualFirmwareTable_goDeviceBtn" type="button" class="largebtn">Go to the Device</button>									
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table id="manualFirmwareTable2" class="block">
+							<tbody>
+								<tr id="manualFirmwareTable2_selectFile">
+									<th><script>I18N("h", "Select File");</script>:</th>
+									<td>
+										<button id="manualFirmwareTable2_selectFileBtn" type="button" class="largebtn"><script>I18N("h", "Select File");</script>
+										</button>
+										<input type="file" id="uploadfile" style="display:none" />
+									</td>
+								</tr>
+								<tr id="manualFirmwareTable2_fileName">
+									<th>&nbsp;</th>
+									<td>
+										<p>&nbsp;</p>
+									</td>
+								</tr>
+								<tr id="manualFirmwareTable2_upgrade">
+									<th>&nbsp;</th>
+									<td>
+										<button id="manualFirmwareTable2_upgradeBtn" type="button" class="largebtn"><script>I18N("h", "Upload");</script>
+										</button>
+									</td>
+								</tr>						
+							</tbody>
+						</table>
+					</div>	
+					<!-- ----------------  Upgrade Manually  ----------------- -->
+
+					<!-- ----------------  Auto Firmware Upgrade  ----------------- -->
+					<hr id="AutoFirmwareUpgrade_hr" style="display: none;">
+					<div id="AutoFirmwareUpgrade" style="display: none">
+		                <div class="title">
+		                    <script>
+		                    I18N("h", "Auto Firmware Upgrade");
+		                    </script>
+		                </div>
+		                    <table class="block" border="0" style="display:none;">
+		                        <tbody>
+		                            <tr>
+		                                <th><script>I18N("h", "Automatic Upgrade");</script>:</th>
+		                                <td>
+		                                    <input type="checkbox" class="chkbox" id="status_AutoUpgrade" onchange=""/><label for="status_AutoUpgrade"><span class="chkbox_disabled"><script>I18N("h","Disabled");</script></span><span class="chkbox_enabled"><script>I18N("h","Enabled");</script></span></label>
+		                                </td>
+		                            </tr>
+		                            <tr>
+		                                <td>
+		                                    <div style="position:relative;top:-20px;left:85px"><span id="SpinnerSection"></span></div>
+		                                </td>
+		                                <td colspan='3'>
+		                                    <div style="color: #7d7d7d; font-size: 14px"><script>I18N('h', 'Automatic Upgrade provides latest protection and new feature over the air, gives your device fresh and sound firmware.')</script></div>
+		                                </td>
+		                            </tr>
+		                            <tr id="upgradeTimeTr" style="display:none;">
+		                                <th><script>I18N("h", "Upgrade Time");</script>:</th>
+		                                <td width="20px">
+		                                    <div class="styled-select" >
+		                                        <select name="UpgradeTimeHour" id="UpgradeTimeHour">
+		                                        </select>
+		                                    </div>
+		                                </td>
+		                                <td style="text-align: center; font-weight: bold;"><span>:</span></td>
+		                                <td>
+		                                    <div class="styled-select" >
+		                                        <select name="UpgradeTimeMinute" id="UpgradeTimeMinute">
+		                                        </select>
+		                                    </div>
+		                                </td>
+		                            </tr>
+		                        </tbody>
+		                    </table>
+						<hr>
+		            </div><!-- id="AutoFirmwareUpgrade" -->
+					<!-- ----------------  Auto Firmware Upgrade  ----------------- -->
+				</div><!-- id="main" -->
+
+				<!--***** footer ****************************************-->
+				<div id="footer">
+					<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>
+				</div><!-- id="footer" -->
+			</div><!-- id="content" -->
+		</div><!-- id="wrapper" -->
+	</form>
+
+	<!--***** DetectRouterConnection ****************************************-->
+	<div id="DetectRouterConnection" style="display:none"></div>
+
+	<!-- popalert -->
+	<div id="popalert" class="black_overlay" style="display:none">
+		<div class="popup_window_border" style="position:relative;top:15%;">
+			<div class="popup_window">
+				<div id="popalert_circle">
+					<img src="image/loading.gif" width="62px" height="62px">
+				</div>
+				<div id="popalert_countdown">
+				</div>
+				<div id="popalert_desc">
+				</div>
+				<div id="popalert_buttons" class="btn-group" role="group" aria-label="...">
+					<button type="button" id="popalert_cancel" class="btn btn-default">
+						<script>I18N("h", "Cancel");</script>
+					</button>
+					<button type="button" id="popalert_ok" class="btn btn-default">
+						<script>I18N("h", "OK");</script>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html> 

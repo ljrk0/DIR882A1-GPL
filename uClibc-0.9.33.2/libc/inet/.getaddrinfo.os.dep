@@ -3,9 +3,9 @@ libc/inet/getaddrinfo.os: libc/inet/getaddrinfo.c include/libc-symbols.h \
  include/bits/uClibc_config.h include/sys/cdefs.h include/libc-internal.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include/stddef.h \
  include/assert.h include/errno.h include/bits/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h \
  include/netdb.h include/netinet/in.h include/stdint.h \
  include/bits/wchar.h include/bits/wordsize.h include/sys/socket.h \
  include/sys/uio.h include/sys/types.h include/bits/types.h \
@@ -18,19 +18,19 @@ libc/inet/getaddrinfo.os: libc/inet/getaddrinfo.c include/libc-symbols.h \
  include/bits/socket.h include/limits.h \
  /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed/limits.h \
  include/bits/posix1_lim.h include/bits/local_lim.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h \
  include/bits/uClibc_local_lim.h include/bits/posix2_lim.h \
  include/bits/xopen_lim.h include/bits/stdio_lim.h \
  include/bits/sockaddr.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h \
  include/bits/in.h include/rpc/netdb.h include/bits/siginfo.h \
  include/bits/netdb.h include/resolv.h include/sys/param.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
- /home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/param.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/param.h \
+ /home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h \
  include/stdio.h include/bits/uClibc_stdio.h include/wchar.h \
  include/bits/uClibc_mutex.h include/pthread.h include/sched.h \
  include/bits/uClibc_clk_tck.h include/signal.h include/bits/initspin.h \
@@ -65,11 +65,11 @@ include/errno.h:
 
 include/bits/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/errno.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/errno-base.h:
 
 include/netdb.h:
 
@@ -131,7 +131,7 @@ include/bits/posix1_lim.h:
 
 include/bits/local_lim.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/limits.h:
 
 include/bits/uClibc_local_lim.h:
 
@@ -143,13 +143,13 @@ include/bits/stdio_lim.h:
 
 include/bits/sockaddr.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/socket.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/sockios.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/ioctl.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/ioctl.h:
 
 include/bits/in.h:
 
@@ -163,11 +163,11 @@ include/resolv.h:
 
 include/sys/param.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/linux/param.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm/param.h:
 
-/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
+/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/asm-generic/param.h:
 
 include/stdio.h:
 
@@ -232,4 +232,4 @@ include/bits/utsname.h:
 include/net/if.h:
 
 include/ifaddrs.h:
-cmd_libc_inet_getaddrinfo.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/inet/getaddrinfo.c -o libc/inet/getaddrinfo.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/zhangtianchuan/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -DRESOLVER="\"resolv.c\"" -MT libc/inet/getaddrinfo.os -MD -MP -MF libc/inet/.getaddrinfo.os.dep
+cmd_libc_inet_getaddrinfo.os := /opt/buildroot-gcc463/usr/bin/mipsel-linux-gcc -c libc/inet/getaddrinfo.c -o libc/inet/getaddrinfo.os -include include/libc-symbols.h -Wstrict-prototypes -Wstrict-aliasing -funsigned-char -fno-builtin -fno-asm -std=gnu99 -march=mips32r2 -mtune=mips32r2 -mabi=32 -fno-stack-protector -nostdinc -Iinclude -Iinclude -I. -Ilibc/sysdeps/linux -Ilibc/sysdeps/linux/mips -Os -funit-at-a-time -fmerge-all-constants -fstrict-aliasing -fno-tree-loop-optimize -fno-tree-dominator-opts -fno-strength-reduce -mno-split-addresses -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux/mips -Ilibpthread/linuxthreads.old/sysdeps/mips -Ilibpthread/linuxthreads.old/sysdeps/unix/sysv/linux -Ilibpthread/linuxthreads.old/sysdeps/pthread -Ilibpthread/linuxthreads.old -Ilibpthread -Ilibc/sysdeps/linux/common -I/home/baifan/dlink_882/trunk/GPL_Code/source/kernel_headers/include/ -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include-fixed -isystem /opt/buildroot-gcc463/usr/lib/gcc/mipsel-buildroot-linux-uclibc/4.6.3/include -DNDEBUG -fPIC -DRESOLVER="\"resolv.c\"" -MT libc/inet/getaddrinfo.os -MD -MP -MF libc/inet/.getaddrinfo.os.dep
